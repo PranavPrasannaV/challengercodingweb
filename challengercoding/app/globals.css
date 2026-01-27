@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #ffffff;
+  --color-foreground: #09090b;
+  /* Zinc 950 */
+
+  --color-primary: #000000;
+  --color-primary-foreground: #ffffff;
+
+  --color-secondary: #f4f4f5;
+  /* Zinc 100 */
+  --color-secondary-foreground: #18181b;
+
+  --color-muted: #f4f4f5;
+  --color-muted-foreground: #71717a;
+  /* Zinc 500 */
+
+  --color-border: #e4e4e7;
+  /* Zinc 200 */
+  --color-card: #ffffff;
+  --color-card-foreground: #09090b;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+/* Base Styles */
+body {
+  @apply bg-background text-foreground antialiased;
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+/* Minimalist Utilities */
+.container-padded {
+  @apply max-w-5xl mx-auto px-6;
+}
+
+/* Clean Borders */
+.border-thin {
+  @apply border border-border;
+}
+
+/* Typography Helpers */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply tracking-tight font-semibold;
+}
