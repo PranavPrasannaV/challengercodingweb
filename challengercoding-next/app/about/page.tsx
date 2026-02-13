@@ -7,7 +7,7 @@ export default function About() {
     return (
         <main className="min-h-screen">
             {/* Hero Section */}
-            <section className="relative pt-32 pb-20 px-6 bg-gradient-to-br from-secondary to-gray-900 text-white overflow-hidden">
+            <section className="relative pt-32 pb-20 px-6 bg-gradient-to-br from-secondary to-primary-dark text-white overflow-hidden">
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 -z-10" />
                 <div className="max-w-7xl mx-auto text-center space-y-6">
                     <h1 className="text-5xl md:text-7xl font-bold font-poppins text-transparent bg-clip-text bg-gradient-to-r from-accent to-yellow-200">
@@ -20,7 +20,7 @@ export default function About() {
             </section>
 
             {/* Mission Section */}
-            <section className="py-24 px-6 bg-white">
+            <section className="py-24 px-6 bg-background">
                 <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
                     <div className="space-y-8">
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-primary font-semibold text-sm">
@@ -59,8 +59,8 @@ export default function About() {
             {/* Founder Section */}
             <section className="py-24 px-6 bg-background">
                 <div className="max-w-5xl mx-auto">
-                    <div className="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100 flex flex-col md:flex-row">
-                        <div className="md:w-1/3 relative h-96 md:h-auto bg-gray-200">
+                    <div className="bg-white rounded-3xl overflow-hidden shadow-xl border border-blue-100 flex flex-col md:flex-row">
+                        <div className="md:w-1/3 relative h-96 md:h-auto bg-blue-50">
                             <Image
                                 src="/jaden.jpg"
                                 alt="Jaden Tang"
@@ -95,7 +95,7 @@ export default function About() {
             </section>
 
             {/* Leadership Team */}
-            <section className="py-24 px-6 bg-white">
+            <section className="py-24 px-6 bg-background">
                 <div className="max-w-7xl mx-auto text-center space-y-16">
                     <h2 className="text-4xl font-bold text-secondary font-poppins">Meet Our Leadership</h2>
 
@@ -105,7 +105,7 @@ export default function About() {
                             { name: "Pranav Prasanna Venkatesh", role: "VP of Education" },
                             { name: "Miheer Pandya", role: "Webmaster" },
                         ].map((member, i) => (
-                            <div key={i} className="group p-6 rounded-2xl bg-gray-50 border border-gray-100 hover:bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                            <div key={i} className="group p-6 rounded-2xl bg-blue-50 border border-blue-100 hover:bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                                 <div className="w-24 h-24 mx-auto bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mb-6 text-white text-2xl font-bold shadow-lg group-hover:scale-110 transition-transform">
                                     {member.name.charAt(0)}
                                 </div>
