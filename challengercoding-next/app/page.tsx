@@ -1,171 +1,242 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import Image from "next/image"; // Can use Next.js Image for optimization, but standard img is fine for strict migration
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { ArrowRight, Code2, GraduationCap, Users, Play, CheckCircle2, Terminal, MonitorPlay } from "lucide-react";
 
 export default function Home() {
-  const [userCount, setUserCount] = useState<number>(0);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Determine user count logic - checking localStorage as per original script
-    const count = localStorage.getItem('userCount') || '0';
-    setUserCount(parseInt(count, 10));
-
-    // Initialize Lucide icons
-    if ((window as any).lucide) {
-      (window as any).lucide.createIcons();
-    }
+    setMounted(true);
   }, []);
 
-  // Carousel Logic
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const totalSlides = 3; // Based on index.html content
-
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % totalSlides);
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
-  };
-
-  useEffect(() => {
-    const interval = setInterval(nextSlide, 5000);
-    return () => clearInterval(interval);
-  }, []);
+  if (!mounted) return null;
 
   return (
-    <main>
-      <div className="hero">
-        <h1>Welcome to <span style={{ color: '#FFC107' }}>Challenger Coding!</span></h1>
-        <p>Code with Confidence.</p>
-        <p>Interactive tutorials, projects, and real learning – all in one place.</p>
-        <div className="hero-button">
-          <button onClick={() => window.location.href = '/signup'}>Start Learning Today, For Free!</button>
-        </div>
-      </div>
+    <main className="min-h-screen">
+      {/* Hero Section */}
+      <section className="relative pt-32 pb-20 px-6 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-white -z-10" />
+        <div className="absolute top-20 right-0 w-[800px] h-[800px] bg-gradient-to-l from-blue-100/50 to-transparent rounded-full blur-3xl -z-10" />
 
-      <div className="impact-section">
-        <div className="impact-box">
-          <i data-lucide="users"></i>
-          <h3>1000+</h3>
-          <p>Students Taught</p>
-        </div>
-        <div className="impact-box">
-          <i data-lucide="hourglass"></i>
-          <h3>50+</h3>
-          <p>Hours of Course Content</p>
-        </div>
-        <div className="impact-box">
-          <i data-lucide="school"></i>
-          <h3>6</h3>
-          <p>Unique Courses</p>
-        </div>
-      </div>
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 text-primary font-semibold text-sm">
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+              </span>
+              New Courses Available
+            </div>
 
-      <div className="main-content">
-        <div className="mission-statement full-width">
-          <strong>Our Mission</strong>
-          <p>At Challenger Coding, we empower students of all ages to embrace coding, equipping them with skills for a digital world.</p>
-          <p>Coding is valuable for everyone, and we make it accessible and fun through interactive tutorials.</p>
-        </div>
-      </div>
+            <h1 className="text-5xl lg:text-7xl font-bold font-poppins leading-tight text-secondary">
+              Code with <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-dark">Confidence.</span>
+            </h1>
 
-      <div className="carousel">
-        <div
-          className="carousel-container"
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-        >
-          <div className="carousel-item">
-            <Image src="/assets/lesson preview.png" alt="Hands-on Coding Exercise" width={800} height={400} />
-            <div className="carousel-description">
-              <h3>Video Tutorials</h3>
-              <p>Quality video tutorials to learn and enhance your understanding.</p>
+            <p className="text-lg text-text-light max-w-xl leading-relaxed">
+              Master programming through interactive tutorials, real-world projects, and expert mentorship.
+              Start your journey from absolute beginner to confident developer today.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link
+                href="/signup"
+                className="inline-flex items-center justify-center gap-2 bg-accent hover:bg-accent-hover text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg shadow-accent/20 transition-all hover:-translate-y-1"
+              >
+                Start Learning Free
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+              <Link
+                href="/tutorials"
+                className="inline-flex items-center justify-center gap-2 bg-white text-secondary border border-gray-200 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all"
+              >
+                View Courses
+              </Link>
+            </div>
+
+            <div className="flex items-center gap-8 pt-8 text-sm font-medium text-text-light">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-green-500" />
+                <span>Free Forever</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-green-500" />
+                <span>No Credit Card</span>
+              </div>
             </div>
           </div>
-          <div className="carousel-item">
-            <Image src="/assets/autograder.png" alt="Expert Instructors" width={800} height={400} />
-            <div className="carousel-description">
-              <h3>Autograder</h3>
-              <p>Built in autograder and code compiler provides instant feedback.</p>
-            </div>
-          </div>
-          <div className="carousel-item">
-            <Image src="/assets/sample exercise.png" alt="Interactive Lesson Preview" width={800} height={400} />
-            <div className="carousel-description">
-              <h3>Interactive Lessons</h3>
-              <p>Engage with our interactive coding lessons and exercises designed for all skill levels.</p>
-            </div>
-          </div>
-        </div>
-        <div className="carousel-nav">
-          <button className="prev" onClick={prevSlide}>&lt;</button>
-          <button className="next" onClick={nextSlide}>&gt;</button>
-        </div>
-        <div className="carousel-indicators">
-          {[0, 1, 2].map((idx) => (
-            <div
-              key={idx}
-              className={`carousel-indicator ${idx === currentIndex ? 'active' : ''}`}
-              onClick={() => setCurrentIndex(idx)}
-            ></div>
-          ))}
-        </div>
-      </div>
 
-      <section className="course-offerings">
-        <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Course Offerings</h2>
-        <div className="course-container">
-          <div className="course-button">
-            <div className="course-title">Scratch Programming</div>
-            <div className="course-description">An introductory course on visual programming for beginners.</div>
-          </div>
-          <div className="course-button">
-            <div className="course-title">Python Programming</div>
-            <div className="course-description">Learn the basics of Python programming with hands-on projects.</div>
-          </div>
-          <div className="course-button">
-            <div className="course-title">Java Programming</div>
-            <div className="course-description">Get started with Java, one of the most popular programming languages.</div>
-          </div>
-          <div className="course-button">
-            <div className="course-title">Scratch Programming 2</div>
-            <div className="course-description">Advanced Scratch concepts for building interactive projects.</div>
-          </div>
-          <div className="course-button">
-            <div className="course-title">Python Programming 2</div>
-            <div className="course-description">Intermediate Python programming, including data structures and more.</div>
-          </div>
-          <div className="course-button">
-            <div className="course-title">Java Programming 2</div>
-            <div className="course-description">Deep dive into Java with object-oriented programming and algorithms.</div>
+          <div className="relative lg:h-[600px] flex items-center justify-center">
+            {/* Abstract Code Visualization */}
+            <div className="relative w-full max-w-lg aspect-square">
+              <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-accent/20 rounded-full blur-3xl animate-pulse" />
+              <div className="relative glass p-8 rounded-2xl shadow-2xl border border-white/50 rotate-3 hover:rotate-0 transition-all duration-500">
+                <div className="flex gap-2 mb-4">
+                  <div className="w-3 h-3 rounded-full bg-red-400" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-400" />
+                  <div className="w-3 h-3 rounded-full bg-green-400" />
+                </div>
+                <div className="space-y-3 font-mono text-sm text-secondary">
+                  <div className="flex">
+                    <span className="text-purple-600">function</span>
+                    <span className="text-blue-600 ml-2">startJourney</span>
+                    <span className="text-gray-500">()</span>
+                    <span className="text-gray-500 ml-2">{"{"}</span>
+                  </div>
+                  <div className="pl-4">
+                    <span className="text-primary">const</span>
+                    <span className="text-gray-700 ml-2">skills</span>
+                    <span className="text-gray-500 ml-2">=</span>
+                    <span className="text-gray-500 ml-2">[</span>
+                    <span className="text-green-600">"Python"</span>,
+                    <span className="text-green-600 ml-2">"Java"</span>,
+                    <span className="text-green-600 ml-2">"Scratch"</span>
+                    <span className="text-gray-500">];</span>
+                  </div>
+                  <div className="pl-4">
+                    <span className="text-purple-600">return</span>
+                    <span className="text-blue-600 ml-2">skills</span>.
+                    <span className="text-yellow-600">map</span>
+                    <span className="text-gray-500">(</span>
+                    <span className="text-gray-700">skill</span>
+                    <span className="text-purple-600 ml-2">=&gt;</span>
+                    <span className="text-gray-500 ml-2">new</span>
+                    <span className="text-yellow-600 ml-2">Future</span>
+                    <span className="text-gray-500">(</span>
+                    <span className="text-gray-700">skill</span>
+                    <span className="text-gray-500">)</span>
+                    <span className="text-gray-500">);</span>
+                  </div>
+                  <div className="text-gray-500">{"}"}</div>
+                </div>
+
+                {/* Floating Elements on top of code block */}
+                <div className="absolute -right-12 top-20 glass-dark p-4 rounded-xl shadow-xl animate-bounce">
+                  <Terminal className="w-8 h-8 text-accent" />
+                </div>
+                <div className="absolute -left-8 bottom-20 bg-white p-4 rounded-xl shadow-xl animate-pulse">
+                  <Code2 className="w-8 h-8 text-primary" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <div className="testimonials-carousel">
-        <div className="testimonials-content">
-          <div className="testimonial-item">
-            <p>&quot;My child has learned so much through Challenger Coding. The patience and creativity of the instructors are unmatched!&quot;</p>
-            <span>- Current Parent</span>
-          </div>
-          <div className="testimonial-item">
-            <p>&quot;Jaden was very easygoing and patient. The study materials were simple and self-explanatory!&quot;</p>
-            <span>- Current Parent</span>
-          </div>
-          <div className="testimonial-item">
-            <p>&quot;Jaden is an amazing instructor, he brings such good energy and positivity. The kids really appreciate that!&quot;</p>
-            <span>- Current Parent</span>
+      {/* Stats Bento Grid */}
+      <section className="py-20 px-6 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="p-8 rounded-3xl bg-blue-50 border border-blue-100 hover:shadow-xl transition-all hover:-translate-y-1 group">
+              <Users className="w-12 h-12 text-primary mb-6 group-hover:scale-110 transition-transform" />
+              <div className="text-4xl font-bold text-secondary mb-2">1,000+</div>
+              <div className="text-text-light font-medium">Active Students</div>
+            </div>
+            <div className="p-8 rounded-3xl bg-amber-50 border border-amber-100 hover:shadow-xl transition-all hover:-translate-y-1 group">
+              <MonitorPlay className="w-12 h-12 text-accent mb-6 group-hover:scale-110 transition-transform" />
+              <div className="text-4xl font-bold text-secondary mb-2">50+</div>
+              <div className="text-text-light font-medium">Hours of Content</div>
+            </div>
+            <div className="p-8 rounded-3xl bg-gray-50 border border-gray-100 hover:shadow-xl transition-all hover:-translate-y-1 group">
+              <GraduationCap className="w-12 h-12 text-secondary mb-6 group-hover:scale-110 transition-transform" />
+              <div className="text-4xl font-bold text-secondary mb-2">6</div>
+              <div className="text-text-light font-medium">Comprehensive Courses</div>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="center-button">
-        <button onClick={() => window.location.href = '/signup'}>Interested? Sign up to learn NOW, FOR FREE!</button>
-      </div>
+      {/* Mission Section */}
+      <section className="py-24 px-6 relative overflow-hidden">
+        <div className="absolute inset-0 bg-secondary -z-10" />
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 -z-10" />
 
-      {/* Script logic for userCount passed to UI */}
-      {/* <div style={{display: 'none'}} id="userCount">{userCount}</div> */}
+        <div className="max-w-4xl mx-auto text-center text-white space-y-8">
+          <h2 className="text-3xl md:text-5xl font-bold font-poppins">Empowering the Next Generation</h2>
+          <p className="text-xl md:text-2xl text-gray-300 leading-relaxed font-light">
+            "At Challenger Coding, we believe coding is a superpower. We empower students of all ages to embrace technology,
+            providing the tools and mentorship needed to thrive in a digital world."
+          </p>
+          <div className="pt-8">
+            <Link href="/about" className="text-accent hover:text-white font-semibold flex items-center justify-center gap-2 group">
+              Read Our Story <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Courses Grid */}
+      <section className="py-24 px-6 bg-background">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16 space-y-4">
+            <h2 className="text-4xl font-bold text-secondary">Our Course Offerings</h2>
+            <p className="text-text-light max-w-2xl mx-auto">
+              From visual blocking building to object-oriented programming, we have a path for every learner.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              { title: "Scratch Programming", level: "Beginner", desc: "Start your journey with visual block-based coding.", color: "bg-orange-500" },
+              { title: "Python Programming", level: "Intermediate", desc: "Learn the world's most popular language for AI and Data.", color: "bg-blue-500" },
+              { title: "Java Programming", level: "Advanced", desc: "Master object-oriented concepts for enterprise dev.", color: "bg-red-500" },
+              { title: "Scratch Level 2", level: "Beginner +", desc: "Advanced game mechanics and interactive storytelling.", color: "bg-orange-600" },
+              { title: "Python Level 2", level: "Intermediate +", desc: "Data structures, algorithms, and complex logic.", color: "bg-blue-600" },
+              { title: "Java Level 2", level: "Advanced +", desc: "Deep dive into APIs, libraries, and system design.", color: "bg-red-600" }
+            ].map((course, idx) => (
+              <div key={idx} className="group bg-white rounded-3xl p-2 shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                <div className={`h-40 rounded-2xl ${course.color} flex items-center justify-center mb-6 relative overflow-hidden`}>
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
+                  <Code2 className="w-16 h-16 text-white opacity-80" />
+                </div>
+                <div className="px-6 pb-6 space-y-4">
+                  <div className="flex justify-between items-start">
+                    <h3 className="text-xl font-bold text-secondary">{course.title}</h3>
+                    <span className="text-xs font-semibold px-2 py-1 bg-gray-100 rounded-md text-gray-600">{course.level}</span>
+                  </div>
+                  <p className="text-text-light text-sm">{course.desc}</p>
+                  <Link href="/tutorials" className="block w-full py-3 text-center rounded-xl border-2 border-primary text-primary font-bold hover:bg-primary hover:text-white transition-colors">
+                    View Course
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-20 px-6 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-16 text-secondary">Trusted by Parents & Students</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { quote: "My child has learned so much. The patience and creativity of the instructors are unmatched!", author: "Parent" },
+              { quote: "Jaden was very easygoing and patient. The study materials were simple and self-explanatory!", author: "Parent" },
+              { quote: "An amazing instructor, he brings such good energy and positivity. The kids really appreciate that!", author: "Parent" }
+            ].map((t, i) => (
+              <div key={i} className="p-8 rounded-2xl bg-gray-50 border border-gray-100">
+                <div className="text-accent text-4xl font-serif mb-4">"</div>
+                <p className="text-text-light italic mb-6">{t.quote}</p>
+                <div className="font-bold text-secondary">- {t.author}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Footer */}
+      <section className="py-24 px-6 bg-primary text-white text-center">
+        <div className="max-w-3xl mx-auto space-y-8">
+          <h2 className="text-4xl md:text-5xl font-bold">Ready to Start Coding?</h2>
+          <p className="text-xl text-blue-100">Join thousands of students learning to code with confidence.</p>
+          <button onClick={() => window.location.href = '/signup'} className="bg-white text-primary px-10 py-4 rounded-xl font-bold text-xl hover:bg-gray-50 hover:scale-105 transition-all shadow-xl">
+            Create Free Account
+          </button>
+        </div>
+      </section>
     </main>
   );
 }

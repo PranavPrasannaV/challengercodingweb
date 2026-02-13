@@ -6,7 +6,19 @@ import { useRouter } from 'next/navigation';
 import { pythonNotes } from '@/src/data/notes/python';
 import { javaNotes } from '@/src/data/notes/java';
 import { SubLesson, QuizQuestion } from '@/src/data/notes/types';
-import { Menu, X, ChevronLeft, CheckCircle2, Circle } from 'lucide-react';
+import {
+    Menu,
+    X,
+    ChevronLeft,
+    ChevronRight,
+    CheckCircle2,
+    Circle,
+    BookOpen,
+    Play,
+    Award,
+    ArrowLeft,
+    Lightbulb
+} from 'lucide-react';
 
 const notesMap: Record<string, Record<string, SubLesson[]>> = {
     'python': pythonNotes,
@@ -19,7 +31,7 @@ export default function NotesViewerClient({ params }: { params: { courseId: stri
 
     const [subLessons, setSubLessons] = useState<SubLesson[] | null>(null);
     const [currentSubLessonIndex, setCurrentSubLessonIndex] = useState(0);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Mobile sidebar toggle
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     // Quiz State
     const [quizAnswers, setQuizAnswers] = useState<Record<string, string | number>>({});
@@ -29,34 +41,33 @@ export default function NotesViewerClient({ params }: { params: { courseId: stri
         const courseNotes = notesMap[courseId];
         if (courseNotes && courseNotes[lessonId]) {
             setSubLessons(courseNotes[lessonId]);
-            setCurrentSubLessonIndex(0); // Reset to first sub-lesson on lesson change
+            setCurrentSubLessonIndex(0);
             setQuizAnswers({});
             setQuizFeedback({});
-        } else {
-            console.warn(`Notes data not found for ${courseId} lesson ${lessonId}`);
         }
     }, [courseId, lessonId]);
 
-    if (!subLessons && !notesMap[courseId]) {
+    if (!subLessons) {
         return (
-            <div className="p-8 text-center min-h-screen flex flex-col items-center justify-center bg-[#F5F7FA]">
-                <h1 className="text-2xl font-bold mb-4 text-gray-800">Lesson Not Found</h1>
-                <button onClick={() => router.back()} className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                    Go Back
-                </button>
+            <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-background">
+                <div className="bg-white/80 backdrop-blur-xl border border-white/40 p-12 rounded-[2.5rem] shadow-2xl text-center space-y-6 max-w-lg">
+                    <div className="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto text-primary">
+                        <BookOpen className="w-10 h-10" />
+                    </div>
+                    <h1 className="text-3xl font-bold text-secondary font-poppins font-bold">Content Loading...</h1>
+                    <button
+                        onClick={() => router.back()}
+                        className="px-8 py-4 bg-primary text-white rounded-2xl font-bold hover:bg-primary-dark transition-all shadow-lg shadow-primary/25"
+                    >
+                        Go Back
+                    </button>
+                </div>
             </div>
         );
     }
 
-    if (!subLessons) {
-        return <div className="p-8 text-center min-h-screen flex items-center justify-center bg-[#F5F7FA]">
-            <div className="text-xl font-semibold text-gray-600">Loading lesson content...</div>
-        </div>;
-    }
-
     const currentSubLesson = subLessons[currentSubLessonIndex];
 
-    // Helper to normalize quiz data into an array
     const getQuizQuestions = () => {
         if (!currentSubLesson.quiz) return [];
         return Array.isArray(currentSubLesson.quiz) ? currentSubLesson.quiz : [currentSubLesson.quiz];
@@ -70,259 +81,238 @@ export default function NotesViewerClient({ params }: { params: { courseId: stri
 
         let isCorrect = false;
         if (typeof question.correctAnswer === 'number' && question.options) {
-            // Compare index
             const selectedIndex = question.options.indexOf(String(userAnswer));
             isCorrect = selectedIndex === question.correctAnswer;
         } else {
-            // Direct string match
             isCorrect = String(userAnswer).trim().toLowerCase() === String(question.correctAnswer).trim().toLowerCase();
         }
 
         setQuizFeedback(prev => ({
             ...prev,
-            [qIndex]: isCorrect ? "Correct! Great job." : "Not quite. Try again!"
+            [qIndex]: isCorrect ? "Fantastic! That's the correct answer." : "Not quite. Review the notes and try again."
         }));
     };
 
     return (
-        <div className="min-h-screen bg-[#F5F7FA] flex flex-col md:flex-row">
+        <div className="min-h-screen bg-background relative overflow-hidden flex flex-col pt-20">
             {/* Mobile Header */}
-            <div className="md:hidden bg-white border-b border-gray-200 p-4 flex items-center justify-between sticky top-0 z-20 shadow-sm">
-                <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="text-gray-700 hover:text-blue-600 transition-colors">
-                    {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+            <div className="lg:hidden bg-white/80 backdrop-blur-md border-b border-gray-100 p-4 flex items-center justify-between sticky top-20 z-30">
+                <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 rounded-xl bg-primary/10 text-primary">
+                    {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
                 </button>
-                <span className="font-semibold text-gray-800 truncate ml-2 flex-1 text-center">
+                <span className="font-bold text-secondary text-sm font-poppins truncate max-w-[200px]">
                     {currentSubLesson.title}
                 </span>
-                <button onClick={() => router.push(`/tutorials/${courseId}`)} className="text-blue-600 text-sm font-medium hover:text-blue-800 transition-colors">
-                    Exit
-                </button>
+                <div className="w-10" /> {/* Spacer */}
             </div>
 
-            {/* Sidebar Navigation */}
-            <aside className={`
-                fixed inset-y-0 left-0 z-10 w-72 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out shadow-lg md:shadow-none
-                ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-                md:relative md:translate-x-0 md:block md:w-80
-            `}>
-                <div className="p-6 border-b border-gray-100 hidden md:flex items-center justify-between">
-                    <button
-                        onClick={() => router.push(`/tutorials/${courseId}`)}
-                        className="flex items-center text-gray-600 hover:text-blue-600 transition-colors text-sm font-medium group"
-                    >
-                        <ChevronLeft size={18} className="mr-1 group-hover:-translate-x-1 transition-transform" />
-                        Back to Course
-                    </button>
-                </div>
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-8 w-full flex flex-col lg:flex-row gap-8 pb-12">
 
-                <div className="p-4 md:p-6 overflow-y-auto h-full pb-20 md:pb-6">
-                    <h2 className="font-bold text-gray-800 mb-6 text-lg px-2">Lesson Content</h2>
-                    <div className="space-y-2">
-                        {subLessons.map((lesson, idx) => (
-                            <button
-                                key={lesson.id}
-                                onClick={() => {
-                                    setCurrentSubLessonIndex(idx);
-                                    setIsSidebarOpen(false); // Close mobile sidebar on select
-                                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                                }}
-                                className={`
-                                    w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all flex items-center
-                                    ${currentSubLessonIndex === idx
-                                        ? 'bg-blue-50 text-blue-700 border border-blue-200 shadow-sm'
-                                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-transparent'}
-                                `}
-                            >
-                                <div className={`mr-3 ${currentSubLessonIndex === idx ? 'text-blue-600' : 'text-gray-300'}`}>
-                                    {currentSubLessonIndex === idx ? <CheckCircle2 size={20} /> : <Circle size={20} />}
-                                </div>
-                                <span className="truncate flex-1">{lesson.title}</span>
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            </aside>
-
-            {/* Overlay for mobile sidebar */}
-            {isSidebarOpen && (
-                <div
-                    className="fixed inset-0 bg-black/20 z-0 md:hidden backdrop-blur-sm"
-                    onClick={() => setIsSidebarOpen(false)}
-                />
-            )}
-
-            {/* Main Content */}
-            <main className="flex-1 p-4 md:p-8 overflow-y-auto w-full max-w-5xl mx-auto min-h-[calc(100vh-60px)]">
-                <div className="mb-6 md:mb-8">
-                    <div className="flex items-center text-sm text-gray-500 mb-2 uppercase tracking-wider font-semibold">
-                        Step {currentSubLessonIndex + 1} of {subLessons.length}
-                    </div>
-                    <h1 className="text-2xl md:text-4xl font-bold text-gray-900 leading-tight">{currentSubLesson.title}</h1>
-                </div>
-
-                {/* Video Section */}
-                {currentSubLesson.video && (
-                    <div className="bg-black rounded-2xl overflow-hidden shadow-xl mb-10 aspect-video w-full ring-1 ring-black/5">
-                        <iframe
-                            src={currentSubLesson.video}
-                            className="w-full h-full"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                        ></iframe>
-                    </div>
-                )}
-
-                {/* Text Content */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-10 mb-10">
-                    <div
-                        className="prose prose-blue prose-lg max-w-none text-gray-600"
-                        dangerouslySetInnerHTML={{ __html: currentSubLesson.description }}
-                    />
-                </div>
-
-                {/* Quiz Section - Only render if questions exist */}
-                {quizQuestions.length > 0 && (
-                    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                        {quizQuestions.map((q: QuizQuestion, qIdx: number) => (
-                            <div key={qIdx} className="bg-white rounded-2xl shadow-md border border-gray-100 p-6 md:p-8 relative overflow-hidden">
-                                <div className="absolute top-0 left-0 w-1 h-full bg-yellow-400"></div>
-
-                                <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-                                    <span className="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full uppercase tracking-wide mr-3 font-bold border border-yellow-200">Knowledge Check</span>
-                                    Question {quizQuestions.length > 1 ? qIdx + 1 : ''}
-                                </h3>
-
-                                <p className="mb-8 text-gray-800 font-medium text-lg leading-relaxed">{q.question}</p>
-
-                                <div className="space-y-3 mb-8">
-                                    {q.options && q.options.length > 0 ? (
-                                        q.options.map((opt: string, optIdx: number) => (
-                                            <label
-                                                key={optIdx}
-                                                className={`
-                                                    flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 group
-                                                    ${quizAnswers[qIdx] === opt
-                                                        ? 'border-blue-500 bg-blue-50 shadow-md ring-1 ring-blue-500/20'
-                                                        : 'border-gray-100 bg-gray-50 hover:border-blue-200 hover:bg-white'}
-                                                `}
-                                            >
-                                                <div className={`
-                                                    w-5 h-5 rounded-full border-2 flex items-center justify-center
-                                                    ${quizAnswers[qIdx] === opt ? 'border-blue-500' : 'border-gray-300 group-hover:border-blue-400'}
-                                                `}>
-                                                    {quizAnswers[qIdx] === opt && <div className="w-2.5 h-2.5 rounded-full bg-blue-500" />}
-                                                </div>
-                                                <input
-                                                    type="radio"
-                                                    name={`quiz-${qIdx}`}
-                                                    value={opt}
-                                                    checked={quizAnswers[qIdx] === opt}
-                                                    onChange={() => setQuizAnswers(prev => ({ ...prev, [qIdx]: opt }))}
-                                                    className="hidden" // Hiding default radio for custom UI
-                                                />
-                                                <span className={`font-medium ${quizAnswers[qIdx] === opt ? 'text-blue-900' : 'text-gray-600'}`}>
-                                                    {opt}
-                                                </span>
-                                            </label>
-                                        ))
-                                    ) : (
-                                        <input
-                                            type="text"
-                                            placeholder="Type your answer here..."
-                                            className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-50 focus:border-blue-500 outline-none transition-all text-lg"
-                                            value={quizAnswers[qIdx] || ''}
-                                            onChange={(e) => setQuizAnswers(prev => ({ ...prev, [qIdx]: e.target.value }))}
-                                        />
-                                    )}
-                                </div>
-
-                                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                                    <button
-                                        onClick={() => checkAnswer(qIdx, q)}
-                                        disabled={!quizAnswers[qIdx]}
-                                        className={`
-                                            px-8 py-3 rounded-xl font-bold shadow-lg transition-all transform active:scale-95
-                                            ${!quizAnswers[qIdx]
-                                                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                                                : 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 shadow-blue-500/30'}
-                                        `}
-                                    >
-                                        Check Answer
-                                    </button>
-
-                                    {quizFeedback[qIdx] && (
-                                        <div className={`
-                                            px-4 py-2 rounded-lg font-bold flex items-center animate-in fade-in slide-in-from-right-4
-                                            ${quizFeedback[qIdx].includes("Correct")
-                                                ? "bg-green-100 text-green-700"
-                                                : "bg-red-100 text-red-700"}
-                                        `}>
-                                            {quizFeedback[qIdx].includes("Correct") ? (
-                                                <CheckCircle2 size={18} className="mr-2" />
-                                            ) : (
-                                                <X size={18} className="mr-2" />
-                                            )}
-                                            {quizFeedback[qIdx]}
-                                        </div>
-                                    )}
-                                </div>
-
-                                {q.explanation && quizFeedback[qIdx]?.includes("Correct") && (
-                                    <div className="mt-6 p-5 bg-blue-50/50 rounded-xl border border-blue-100 text-sm text-blue-800 animate-in fade-in slide-in-from-top-2">
-                                        <strong className="block mb-1 text-blue-900">Why?</strong> {q.explanation}
+                {/* Sidebar */}
+                <aside className={`
+                    fixed lg:sticky lg:top-32 inset-y-0 left-0 z-40 w-80 transform transition-transform duration-300 lg:translate-x-0
+                    ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+                `}>
+                    <div className="h-full lg:h-auto bg-white/70 backdrop-blur-xl border border-white/40 rounded-r-[2rem] lg:rounded-[2rem] shadow-2xl overflow-hidden flex flex-col">
+                        <div className="p-6 border-b border-gray-100 bg-primary/5 hidden lg:block">
+                            <h3 className="font-bold text-secondary text-sm uppercase tracking-widest font-poppins">Study Guide</h3>
+                        </div>
+                        <div className="p-4 space-y-2 overflow-y-auto max-h-[70vh]">
+                            {subLessons.map((lesson, idx) => (
+                                <button
+                                    key={lesson.id}
+                                    onClick={() => {
+                                        setCurrentSubLessonIndex(idx);
+                                        setIsSidebarOpen(false);
+                                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    }}
+                                    className={`w-full text-left p-4 rounded-2xl transition-all flex items-start gap-4 group ${currentSubLessonIndex === idx
+                                            ? 'bg-primary text-white shadow-lg shadow-primary/25'
+                                            : 'bg-white/50 hover:bg-white text-text-light hover:text-secondary border border-transparent hover:border-gray-200'
+                                        }`}
+                                >
+                                    <div className={`mt-1 shrink-0 ${currentSubLessonIndex === idx ? 'text-white' : 'text-gray-300 group-hover:text-primary/40'}`}>
+                                        {currentSubLessonIndex === idx ? <CheckCircle2 size={18} /> : <Circle size={18} />}
                                     </div>
-                                )}
-                            </div>
-                        ))}
+                                    <span className="font-medium text-sm leading-snug">{lesson.title}</span>
+                                </button>
+                            ))}
+                        </div>
+                        <div className="p-4 border-t border-gray-100">
+                            <button
+                                onClick={() => router.push(`/tutorials/${courseId}`)}
+                                className="w-full p-4 rounded-2xl bg-white border border-gray-200 text-text-light hover:text-primary hover:border-primary/30 transition-all flex items-center justify-center gap-2 group shadow-sm text-sm font-semibold"
+                            >
+                                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                                Exit to HUB
+                            </button>
+                        </div>
                     </div>
+                </aside>
+
+                {/* Overlay for mobile */}
+                {isSidebarOpen && (
+                    <div className="fixed inset-0 bg-secondary/20 backdrop-blur-sm z-30 lg:hidden" onClick={() => setIsSidebarOpen(false)} />
                 )}
 
-                {/* Navigation Footer */}
-                <div className="mt-12 flex justify-between items-center pt-8 border-t border-gray-200">
-                    <button
-                        onClick={() => {
-                            if (currentSubLessonIndex > 0) {
-                                setCurrentSubLessonIndex(prev => prev - 1);
-                                window.scrollTo({ top: 0, behavior: 'smooth' });
-                            }
-                        }}
-                        disabled={currentSubLessonIndex === 0}
-                        className={`
-                            px-6 py-3 rounded-xl font-medium transition-all flex items-center
-                            ${currentSubLessonIndex === 0
-                                ? 'text-gray-300 cursor-not-allowed'
-                                : 'text-gray-600 hover:bg-white hover:shadow-md hover:text-blue-600 bg-gray-50'}
-                        `}
-                    >
-                        <ChevronLeft size={20} className="mr-2" />
-                        Previous Lesson
-                    </button>
+                {/* Content */}
+                <main className="flex-1 w-full space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    <div className="bg-white/80 backdrop-blur-xl border border-white/40 rounded-[2.5rem] shadow-2xl overflow-hidden p-8 md:p-12 lg:p-16">
+                        <header className="mb-12 space-y-4">
+                            <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/20 px-4 py-2 rounded-2xl">
+                                <Lightbulb className="w-4 h-4 text-accent" />
+                                <span className="text-[10px] font-bold text-accent uppercase tracking-widest font-poppins">
+                                    Step {currentSubLessonIndex + 1} of {subLessons.length}
+                                </span>
+                            </div>
+                            <h1 className="text-4xl md:text-5xl font-bold text-secondary font-poppins leading-tight">
+                                {currentSubLesson.title}
+                            </h1>
+                        </header>
 
-                    <button
-                        onClick={() => {
-                            if (currentSubLessonIndex < subLessons.length - 1) {
-                                setCurrentSubLessonIndex(prev => prev + 1);
-                                window.scrollTo({ top: 0, behavior: 'smooth' });
-                            } else {
-                                router.push(`/tutorials/${courseId}`);
-                            }
-                        }}
-                        className="px-6 py-3 rounded-xl font-bold bg-gray-900 text-white hover:bg-gray-800 shadow-lg hover:shadow-xl transition-all flex items-center"
-                    >
-                        {currentSubLessonIndex < subLessons.length - 1 ? (
-                            <>
-                                Next: {subLessons[currentSubLessonIndex + 1].title}
-                                <ChevronLeft size={20} className="ml-2 rotate-180" />
-                            </>
-                        ) : (
-                            <>
-                                Complete Week
-                                <CheckCircle2 size={20} className="ml-2" />
-                            </>
+                        {/* Video */}
+                        {currentSubLesson.video && (
+                            <div className="relative rounded-[2rem] overflow-hidden border border-gray-200 shadow-2xl mb-12 group">
+                                <div className="absolute inset-0 bg-primary/5 pointer-events-none group-hover:bg-primary/0 transition-colors" />
+                                <iframe
+                                    src={currentSubLesson.video}
+                                    className="w-full aspect-video"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                />
+                            </div>
                         )}
-                    </button>
-                </div>
-            </main>
+
+                        {/* Description */}
+                        <div className="prose prose-blue max-w-none text-text leading-relaxed prose-headings:font-poppins prose-headings:text-secondary prose-a:text-primary prose-strong:text-secondary mb-12 prose-lg">
+                            <div dangerouslySetInnerHTML={{ __html: currentSubLesson.description }} />
+                        </div>
+
+                        {/* Quiz */}
+                        {quizQuestions.length > 0 && (
+                            <div className="mt-16 pt-16 border-t border-gray-100 space-y-10">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center text-accent shadow-sm border border-accent/20">
+                                        <Award className="w-6 h-6" />
+                                    </div>
+                                    <h2 className="text-3xl font-bold text-secondary font-poppins">Quick Check</h2>
+                                </div>
+
+                                <div className="space-y-8">
+                                    {quizQuestions.map((q: QuizQuestion, qIdx: number) => (
+                                        <div key={qIdx} className="bg-gray-50/50 border border-gray-100 p-8 rounded-[2rem] space-y-6 shadow-sm relative overflow-hidden group">
+                                            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                                                <Award size={64} className="text-secondary" />
+                                            </div>
+                                            <p className="text-xl font-bold text-secondary leading-relaxed pr-12">{q.question}</p>
+
+                                            <div className="grid grid-cols-1 gap-3">
+                                                {q.options && q.options.length > 0 ? (
+                                                    q.options.map((opt: string, optIdx: number) => {
+                                                        const isSelected = quizAnswers[qIdx] === opt;
+                                                        return (
+                                                            <button
+                                                                key={optIdx}
+                                                                onClick={() => setQuizAnswers(prev => ({ ...prev, [qIdx]: opt }))}
+                                                                className={`p-5 rounded-2xl border-2 text-left font-medium transition-all flex items-center gap-4 group ${isSelected
+                                                                        ? 'bg-primary/5 border-primary text-primary shadow-lg shadow-primary/10'
+                                                                        : 'bg-white border-gray-100 hover:border-primary/30 hover:shadow-md text-text-light'
+                                                                    }`}
+                                                            >
+                                                                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${isSelected ? 'border-primary' : 'border-gray-200 group-hover:border-primary/30'}`}>
+                                                                    {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-primary" />}
+                                                                </div>
+                                                                {opt}
+                                                            </button>
+                                                        );
+                                                    })
+                                                ) : (
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Type your insight here..."
+                                                        className="w-full p-6 bg-white border border-gray-100 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all font-medium shadow-sm"
+                                                        value={quizAnswers[qIdx] || ''}
+                                                        onChange={(e) => setQuizAnswers(prev => ({ ...prev, [qIdx]: e.target.value }))}
+                                                    />
+                                                )}
+                                            </div>
+
+                                            <div className="flex flex-col sm:flex-row items-center gap-4 pt-4 border-t border-gray-100/50">
+                                                <button
+                                                    onClick={() => checkAnswer(qIdx, q)}
+                                                    disabled={!quizAnswers[qIdx]}
+                                                    className="px-8 py-4 bg-secondary text-white rounded-2xl font-bold shadow-lg shadow-secondary/20 hover:bg-gray-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 group"
+                                                >
+                                                    Validate Answer
+                                                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                                </button>
+
+                                                {quizFeedback[qIdx] && (
+                                                    <div className={`p-4 rounded-2xl flex items-center gap-3 animate-in fade-in zoom-in duration-300 ${quizFeedback[qIdx].includes("Fantastic") ? "bg-green-100 text-green-700 border border-green-200" : "bg-red-100 text-red-700 border border-red-200"
+                                                        }`}>
+                                                        {quizFeedback[qIdx].includes("Fantastic") ? <CheckCircle2 size={20} /> : <X size={20} />}
+                                                        <span className="text-sm font-semibold">{quizFeedback[qIdx]}</span>
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            {q.explanation && quizFeedback[qIdx]?.includes("Fantastic") && (
+                                                <div className="mt-6 p-6 bg-blue-50 border border-blue-100 rounded-2xl text-sm text-blue-900 animate-in fade-in slide-in-from-top-2 flex gap-4">
+                                                    <Lightbulb className="w-5 h-5 text-blue-500 shrink-0" />
+                                                    <p><strong>Insight:</strong> {q.explanation}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Navigation Footer */}
+                    <footer className="flex justify-between items-center bg-white/50 backdrop-blur-xl border border-white/40 p-6 rounded-[2rem] shadow-xl">
+                        <button
+                            onClick={() => {
+                                if (currentSubLessonIndex > 0) {
+                                    setCurrentSubLessonIndex(prev => prev - 1);
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }
+                            }}
+                            disabled={currentSubLessonIndex === 0}
+                            className={`px-8 py-4 rounded-2xl font-bold transition-all flex items-center gap-2 group ${currentSubLessonIndex === 0 ? 'text-gray-300 bg-gray-100 cursor-not-allowed' : 'bg-white text-secondary hover:text-primary hover:shadow-lg border border-gray-200'
+                                }`}
+                        >
+                            <ChevronLeft className={`w-5 h-5 group-hover:-translate-x-1 transition-transform ${currentSubLessonIndex === 0 ? '' : 'text-primary'}`} />
+                            Back
+                        </button>
+
+                        <button
+                            onClick={() => {
+                                if (currentSubLessonIndex < subLessons.length - 1) {
+                                    setCurrentSubLessonIndex(prev => prev + 1);
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                } else {
+                                    router.push(`/tutorials/${courseId}`);
+                                }
+                            }}
+                            className="px-10 py-4 rounded-2xl font-bold bg-primary text-white hover:bg-primary-dark shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all flex items-center gap-3 group"
+                        >
+                            {currentSubLessonIndex < subLessons.length - 1 ? (
+                                <>
+                                    <span className="hidden sm:inline">Continue to Next</span>
+                                    <span className="sm:hidden">Next</span>
+                                    <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                </>
+                            ) : (
+                                <>
+                                    Complete Session
+                                    <CheckCircle2 className="w-5 h-5" />
+                                </>
+                            )}
+                        </button>
+                    </footer>
+                </main>
+            </div>
         </div>
     );
 }
