@@ -1,0 +1,435 @@
+﻿
+> challengercoding-next@0.1.0 build
+> next build
+
+node.exe : ΓÜá 
+Warning: Next.js 
+inferred your 
+workspace root, but 
+it may not be 
+correct.
+At C:\Program Files\n
+odejs\npm.ps1:29 
+char:3
++   & $NODE_EXE 
+$NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (ΓÜá War   
+ ning: Ne...not b    
+e correct.:Strin    
+g) [], RemoteExc    
+eption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+ We detected 
+multiple lockfiles 
+and selected the 
+directory of C:\Users
+\ppras\package-lock.j
+son as the root 
+directory.
+ To silence this 
+warning, set 
+`turbopack.root` in 
+your Next.js config, 
+or consider removing 
+one of the lockfiles 
+if it's not needed.
+   See https://nextjs
+.org/docs/app/api-ref
+erence/config/next-co
+nfig-js/turbopack#roo
+t-directory for more 
+information.
+ Detected additional 
+lockfiles: 
+   * C:\Users\ppras\O
+neDrive\Desktop\chall
+engercodingweb-1\chal
+lengercoding-next\pac
+kage-lock.json
+   * C:\Users\ppras\O
+neDrive\Desktop\chall
+engercodingweb-1\pack
+age-lock.json
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+
+  Creating an optimized production build ...
+
+> Build error 
+occurred
+Error: Turbopack 
+build failed with 1 
+errors:
+./OneDrive/Desktop/ch
+allengercodingweb-1/c
+hallengercoding-next/
+app/notes/[courseId]/
+[lessonId]/page.tsx:1
+6:8
+Next.js can't 
+recognize the 
+exported `generateSta
+ticParams` field in 
+route. App pages 
+cannot use both "use 
+client" and export 
+function "generateSta
+ticParams()".
+[0m [90m 14 |[39m 
+}[33m;[39m
+ [90m 15 |[39m
+[31m[1m>[22m[39m
+[90m 16 |[39m 
+[36mexport[39m 
+[36masync[39m 
+[36mfunction[39m ge
+nerateStaticParams() 
+{
+ [90m    |[39m     
+   [31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m
+[31m[1m>[22m[39m
+[90m 17 |[39m     
+[36mconst[39m 
+params [33m=[39m 
+[][33m;[39m
+ [90m    |[39m [31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m
+[31m[1m>[22m[39m
+[90m 18 |[39m     
+[36mfor[39m 
+([36mconst[39m 
+courseId 
+[36min[39m 
+notesMap) {
+ [90m    |[39m [31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m
+[31m[1m>[22m[39m
+[90m 19 |[39m       
+  [36mconst[39m 
+courseNotes 
+[33m=[39m notesMap[
+courseId][33m;[39m
+ [90m    |[39m [31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m
+[31m[1m>[22m[39m
+[90m 20 |[39m       
+  [36mfor[39m 
+([36mconst[39m 
+lessonId 
+[36min[39m 
+courseNotes) {
+ [90m    |[39m [31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m
+[31m[1m>[22m[39m
+[90m 21 |[39m       
+      params[33m.[3
+9mpush({ 
+courseId[33m,[39m 
+lessonId 
+})[33m;[39m
+ [90m    |[39m [31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m
+[31m[1m>[22m[39m
+[90m 22 |[39m       
+  }
+ [90m    |[39m [31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m
+[31m[1m>[22m[39m
+[90m 23 |[39m     }
+ [90m    |[39m [31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m
+[31m[1m>[22m[39m
+[90m 24 |[39m     
+[36mreturn[39m 
+params[33m;[39m
+ [90m    |[39m [31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m
+[31m[1m>[22m[39m
+[90m 25 |[39m }
+ [90m    |[39m [31
+m[1m^[22m[39m[31m
+[1m^[22m[39m
+ [90m 26 |[39m
+ [90m 27 |[39m 
+[36mexport[39m 
+[36mdefault[39m 
+[36mfunction[39m [
+33mNotesViewer[39m()
+ {
+ [90m 28 |[39m     
+[36mconst[39m 
+params [33m=[39m us
+eParams()[33m;[39m
+[0m
+
+The exported 
+configuration object 
+in a source file 
+needs to have a very 
+specific format from 
+which some 
+properties can be 
+statically parsed at 
+compiled-time.
+
+Import traces:
+  Client Component 
+Browser:
+    ./OneDrive/Deskto
+p/challengercodingweb
+-1/challengercoding-n
+ext/app/notes/[course
+Id]/[lessonId]/page.t
+sx [Client Component 
+Browser]
+    ./OneDrive/Deskto
+p/challengercodingweb
+-1/challengercoding-n
+ext/app/notes/[course
+Id]/[lessonId]/page.t
+sx [Server Component]
+
+  Client Component 
+SSR:
+    ./OneDrive/Deskto
+p/challengercodingweb
+-1/challengercoding-n
+ext/app/notes/[course
+Id]/[lessonId]/page.t
+sx [Client Component 
+SSR]
+    ./OneDrive/Deskto
+p/challengercodingweb
+-1/challengercoding-n
+ext/app/notes/[course
+Id]/[lessonId]/page.t
+sx [Server Component]
+
+https://nextjs.org/do
+cs/app/api-reference/
+file-conventions/rout
+e-segment-config
+
+
+    at <unknown> (./O
+neDrive/Desktop/chall
+engercodingweb-1/chal
+lengercoding-next/app
+/notes/[courseId]/[le
+ssonId]/page.tsx:16:8
+)
+    at <unknown> (htt
+ps://nextjs.org/docs/
+app/api-reference/fil
+e-conventions/route-s
+egment-config)
+Assertion failed: 
+!(handle->flags & 
+UV_HANDLE_CLOSING), 
+file c:\ws\deps\uv\sr
+c\win\async.c, line 
+76
