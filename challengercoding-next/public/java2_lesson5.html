@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java 2 Guided Tutorials - Week 6: Polymorphism</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #FF4081;
+            --accent: #FFC107;
+            --background: #f0f4f8;
+            --surface: #ffffff;
+            --border: #e0e7ff;
+            --text: #2d3748;
+            --text-light: #4a5568;
+            --success: #48bb78;
+            --error: #f56565;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 5px;
+            width: 100%;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 2rem auto;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .exercise-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item:hover {
+            background: var(--primary);
+            color: var(--surface);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item.active {
+            background: var(--primary);
+            color: var(--surface);
+            border-color: var(--primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .main-content {
+            flex: 1;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .tutorial-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .tutorial-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .content-box {
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .highlight-box {
+            background-color: #e6f7ff;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .step-box {
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            margin-right: 0.5rem;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+        }
+
+        iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .quiz-container {
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .quiz-question {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-options {
+            list-style-type: none;
+        }
+
+        .quiz-option {
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-feedback {
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+
+        .button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .autograder-container {
+            margin-top: 1.5rem;
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .autograder-input {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .autograder-feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .autograder-feedback.success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .autograder-feedback.error {
+            background-color: var(--error);
+            color: white;
+        }
+
+        .common-errors {
+            margin-top: 1rem;
+        }
+
+        .common-errors summary {
+            cursor: pointer;
+            padding: 0.5rem;
+            background-color: var(--background);
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .common-errors ul {
+            margin-top: 0.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .common-errors li {
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="#" target="_blank" rel="noopener noreferrer">Enroll</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="exercise-list">
+                <div class="exercise-item active" data-exercise="overview">
+                    <span>Lesson Overview</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise1">
+                    <span>1. Understanding Polymorphism</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise2">
+                    <span>2. Method Overriding</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise3">
+                    <span>3. Runtime Polymorphism</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise4">
+                    <span>4. Polymorphism with Interfaces</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise5">
+                    <span>5. Abstract Classes and Polymorphism</span>
+                </div>
+                <div class="exercise-item" data-exercise="quiz">
+                    <span>6. Quiz</span>
+                </div>
+                <div class="exercise-item" data-exercise="project">
+                    <span>7. Weekly Project</span>
+                </div>
+                <div class="exercise-item" onclick="window.location.href='java2_tutorials.html'">
+                    <span>Return to Home</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div id="tutorial-content">
+                <!-- Content will be dynamically loaded here -->
+            </div>
+            <div id="compiler-container" style="display: none;">
+                <iframe src="https://www.jdoodle.com/online-java-compiler"></iframe>
+            </div>
+            <div id="autograder-container" class="autograder-container" style="display: none;">
+                <h3 class="text-xl font-semibold mb-2">Autograder</h3>
+                <textarea id="autograder-input" class="autograder-input" placeholder="Paste your code output here..."></textarea>
+                <button onclick="checkOutput()" class="button">Check Output</button>
+                <div id="autograder-feedback" class="autograder-feedback"></div>
+            </div>
+            <details class="common-errors">
+                <summary>Common Java Errors</summary>
+                <ul>
+                    <li>
+                        <strong>Error:</strong> "method does not override or implement a method from a supertype"
+                        <br>
+                        <strong>Cause:</strong> Attempting to use @Override annotation on a method that doesn't actually override a superclass method
+                        <br>
+                        <strong>Fix:</strong> Check the method signature in the superclass and ensure it matches exactly in the subclass
+                    </li>
+                    <li>
+                        <strong>Error:</strong> "incompatible types: [Class] cannot be converted to [Interface]"
+                        <br>
+                        <strong>Cause:</strong> Trying to assign an object to a variable of an interface type that the object's class doesn't implement
+                        <br>
+                        <strong>Fix:</strong> Ensure the class implements the interface, or use a different interface that the class does implement
+                    </li>
+                </ul>
+            </details>
+        </main>
+    </div>
+    <!-- Include Scripts -->
+    <script src="config.js"></script>
+    <script>
+        document.querySelectorAll(".enroll-button").forEach(button => {
+            button.href = enrollLink;
+        });
+    </script>
+    <script>
+        lucide.createIcons();
+
+        const exercises = [
+            {
+                title: "Lesson Overview",
+                content: `
+                    <h1 class="tutorial-title">Java 2 Guided Tutorials - Week 6: Polymorphism</h1>
+                    <div class="content-box">
+                        <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
+                        <p class="tutorial-text">
+                            Welcome to Week 6 of Java 2! This week, we'll explore polymorphism, a powerful concept in object-oriented programming. Polymorphism allows objects of different types to be treated as objects of a common superclass or interface, enabling more flexible and reusable code.
+                        </p>
+                        <div class="highlight-box">
+                            <h3 class="text-xl font-semibold mb-2">Lesson Overview:</h3>
+                            <ul class="list-disc list-inside">
+                                <li>Understanding Polymorphism</li>
+                                <li>Method Overriding</li>
+                                <li>Runtime Polymorphism</li>
+                                <li>Polymorphism with Interfaces</li>
+                                <li>Abstract Classes and Polymorphism</li>
+                                <li>Quiz to test your knowledge</li>
+                                <li>Weekly project to apply what you've learned</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">
+                            By the end of this week, you'll have a solid understanding of polymorphism and how to use it effectively in your Java programs. Let's get started!
+                        </p>
+                    </div>
+                `,
+                showCompiler: false,
+                showAutograder: false,
+                expectedOutput: ""
+            },
+            {
+                title: "Understanding Polymorphism",
+                content: `
+                    <h1 class="tutorial-title">1. Understanding Polymorphism</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">What is Polymorphism?</h3>
+                        <p class="tutorial-text">
+                            Polymorphism is a fundamental concept in object-oriented programming that allows objects of different types to be treated as objects of a common superclass. The word "polymorphism" means "many forms," and in Java, it refers to the ability of a single interface to represent different underlying forms (data types or classes).
+                        </p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Key Points:</h4>
+                            <ul class="list-disc list-inside">
+                                <li>Polymorphism allows you to write more flexible and reusable code</li>
+                                <li>It enables you to perform a single action in different ways</li>
+                                <li>In Java, polymorphism is often achieved through method overriding and interfaces</li>
+                                <li>It's closely related to inheritance and interfaces</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Here's a simple example to illustrate the concept of polymorphism:</p>
+                        <pre><code>class Animal {
+    public void makeSound() {
+        System.out.println("The animal makes a sound");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("The dog barks");
+    }
+}
+
+class Cat extends Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("The cat meows");
+    }
+}
+
+public class PolymorphismExample {
+    public static void main(String[] args) {
+        Animal myAnimal = new Animal();
+        Animal myDog = new Dog();
+        Animal myCat = new Cat();
+
+        myAnimal.makeSound();
+        myDog.makeSound();
+        myCat.makeSound();
+    }
+}</code></pre>
+                        <p class="tutorial-text">In this example, we have a superclass <code>Animal</code> and two subclasses <code>Dog</code> and <code>Cat</code>. Each subclass overrides the <code>makeSound()</code> method. When we create objects of these classes and call the <code>makeSound()</code> method, the appropriate version of the method is called based on the actual object type, not the reference type. This is polymorphism in action.</p>
+                        <p class="tutorial-text">Try running this code in the compiler below and observe how polymorphism allows different objects to respond to the same method call in different ways.</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "The animal makes a sound\nThe dog barks\nThe cat meows"
+            },
+            {
+                title: "Method Overriding",
+                content: `
+                    <h1 class="tutorial-title">2. Method Overriding</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Understanding Method Overriding</h3>
+                        <p class="tutorial-text">
+                            Method overriding is a key mechanism for achieving polymorphism in Java. It allows a subclass to provide a specific implementation of a method that is already defined in its superclass.
+                        </p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Key Points:</h4>
+                            <ul class="list-disc list-inside">
+                                <li>The method in the subclass must have the same name and signature as the method in the superclass</li>
+                                <li>The @Override annotation is recommended (but not required) to indicate an overridden method</li>
+                                <li>Overriding methods can't have a more restrictive access modifier</li>
+                                <li>Static and final methods can't be overridden</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Here's an example demonstrating method overriding:</p>
+                        <pre><code>class Shape {
+    public double calculateArea() {
+        return 0;
+    }
+}
+
+class Circle extends Shape {
+    private double radius;
+
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    public double calculateArea() {
+        return Math.PI * radius * radius;
+    }
+}
+
+class Rectangle extends Shape {
+    private double length;
+    private double width;
+
+    public Rectangle(double length, double width) {
+        this.length = length;
+        this.width = width;
+    }
+
+    @Override
+    public double calculateArea() {
+        return length * width;
+    }
+}
+
+public class MethodOverridingExample {
+    public static void main(String[] args) {
+        Shape shape = new Shape();
+        Shape circle = new Circle(5);
+        Shape rectangle = new Rectangle(4, 6);
+
+        System.out.println("Shape area: " + shape.calculateArea());
+        System.out.println("Circle area: " + circle.calculateArea());
+        System.out.println("Rectangle area: " + rectangle.calculateArea());
+    }
+}</code></pre>
+                        <p class="tutorial-text">In this example, both <code>Circle</code> and <code>Rectangle</code> override the <code>calculateArea()</code> method from the <code>Shape</code> class. When we call <code>calculateArea()</code> on each object, the appropriate version of the method is called based on the actual object type.</p>
+                        <p class="tutorial-text">Try running this code in the compiler and observe how method overriding allows each shape to calculate its area differently. Can you add another shape, like a Triangle, and override its <code>calculateArea()</code> method?</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Shape area: 0.0\nCircle area: 78.53981633974483\nRectangle area: 24.0"
+            },
+            {
+                title: "Runtime Polymorphism",
+                content: `
+                    <h1 class="tutorial-title">3. Runtime Polymorphism</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Understanding Runtime Polymorphism</h3>
+                        <p class="tutorial-text">
+                            Runtime polymorphism, also known as dynamic method dispatch, is a process in which a call to an overridden method is resolved at runtime rather than at compile time. This is one of the most powerful features of object-oriented programming.
+                        </p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Key Points:</h4>
+                            <ul class="list-disc list-inside">
+                                <li>It's achieved through method overriding</li>
+                                <li>The method to be executed is determined by the object being referred to at runtime</li>
+                                <li>It allows you to write flexible and extensible code</li>
+                                <li>It's the basis for the "program to an interface, not an implementation" principle</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Here's an example demonstrating runtime polymorphism:</p>
+                        <pre><code>class Vehicle {
+    public void move() {
+        System.out.println("Vehicle is moving");
+    }
+}
+
+class Car extends Vehicle {
+    @Override
+    public void move() {
+        System.out.println("Car is driving");
+    }
+}
+
+class Bicycle extends Vehicle {
+    @Override
+    public void move() {
+        System.out.println("Bicycle is pedaling");
+    }
+}
+
+class Boat extends Vehicle {
+    @Override
+    public void move() {
+        System.out.println("Boat is sailing");
+    }
+}
+
+public class RuntimePolymorphismExample {
+    public static void main(String[] args) {
+        Vehicle[] vehicles = new Vehicle[3];
+        vehicles[0] = new Car();
+        vehicles[1] = new Bicycle();
+        vehicles[2] = new Boat();
+
+        for (Vehicle vehicle : vehicles) {
+            vehicle.move();
+        }
+    }
+}</code></pre>
+                        <p class="tutorial-text">In this example, we have a <code>Vehicle</code> superclass and several subclasses. We create an array of <code>Vehicle</code> objects, but each element is actually a different subclass. When we call the <code>move()</code> method on each object, the appropriate version of the method is called based on the actual object type at runtime.</p>
+                        <p class="tutorial-text">Try running this code in the compiler. Can you add another vehicle type and see how it fits into the polymorphic structure without changing the main method?</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Car is driving\nBicycle is pedaling\nBoat is sailing"
+            },
+            {
+                title: "Polymorphism with Interfaces",
+                content: `
+                    <h1 class="tutorial-title">4. Polymorphism with Interfaces</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Using Interfaces for Polymorphism</h3>
+                        <p class="tutorial-text">
+                            Interfaces provide another way to achieve polymorphism in Java. An interface defines a contract of methods that a class must implement, allowing for a high degree of abstraction and flexibility in your code.
+                        </p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Key Points:</h4>
+                            <ul class="list-disc list-inside">
+                                <li>Interfaces define a set of abstract methods</li>
+                                <li>Classes that implement an interface must provide implementations for all its methods</li>
+                                <li>A class can implement multiple interfaces</li>
+                                <li>Interfaces enable you to program to a contract rather than an implementation</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Here's an example demonstrating polymorphism with interfaces:</p>
+                        <pre><code>interface Drawable {
+    void draw();
+}
+
+class Circle implements Drawable {
+    @Override
+    public void draw() {
+        System.out.println("Drawing a circle");
+    }
+}
+
+class Rectangle implements Drawable {
+    @Override
+    public void draw() {
+        System.out.println("Drawing a rectangle");
+    }
+}
+
+class Triangle implements Drawable {
+    @Override
+    public void draw() {
+        System.out.println("Drawing a triangle");
+    }
+}
+
+public class InterfacePolymorphismExample {
+    public static void drawShape(Drawable shape) {
+        shape.draw();
+    }
+
+    public static void main(String[] args) {
+        Drawable circle = new Circle();
+        Drawable rectangle = new Rectangle();
+        Drawable triangle = new Triangle();
+
+        drawShape(circle);
+        drawShape(rectangle);
+        drawShape(triangle);
+    }
+}</code></pre>
+                        <p class="tutorial-text">In this example, we define a <code>Drawable</code> interface and several classes that implement it. The <code>drawShape</code> method takes a <code>Drawable</code> object as a parameter, allowing it to work with any class that implements the <code>Drawable</code> interface. This is polymorphism through interfaces.</p>
+                        <p class="tutorial-text">Try running this code in the compiler. Can you add another shape that implements the <code>Drawable</code> interface? How does this approach differ from using inheritance for polymorphism?</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Drawing a circle\nDrawing a rectangle\nDrawing a triangle"
+            },
+            {
+                title: "Abstract Classes and Polymorphism",
+                content: `
+                    <h1 class="tutorial-title">5. Abstract Classes and Polymorphism</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Using Abstract Classes for Polymorphism</h3>
+                        <p class="tutorial-text">
+                            Abstract classes provide a way to achieve polymorphism while also allowing for some implementation details to be shared among subclasses. An abstract class is a class that cannot be instantiated and may contain abstract methods (methods without a body) that must be implemented by its subclasses.
+                        </p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Key Points:</h4>
+                            <ul class="list-disc list-inside">
+                                <li>Abstract classes can have both abstract and concrete methods</li>
+                                <li>Subclasses of an abstract class must implement all its abstract methods</li>
+                                <li>Abstract classes can have constructors and instance variables</li>
+                                <li>They provide a common interface while allowing for some shared implementation</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Here's an example demonstrating polymorphism with abstract classes:</p>
+                        <pre><code>abstract class Animal {
+    protected String name;
+
+    public Animal(String name) {
+        this.name = name;
+    }
+
+    public abstract void makeSound();
+
+    public void eat() {
+        System.out.println(name + " is eating");
+    }
+}
+
+class Dog extends Animal {
+    public Dog(String name) {
+        super(name);
+    }
+
+    @Override
+    public void makeSound() {
+        System.out.println(name + " barks");
+    }
+}
+
+class Cat extends Animal {
+    public Cat(String name) {
+        super(name);
+    }
+
+    @Override
+    public void makeSound() {
+        System.out.println(name + " meows");
+    }
+}
+
+public class AbstractClassPolymorphismExample {
+    public static void main(String[] args) {
+        Animal dog = new Dog("Buddy");
+        Animal cat = new Cat("Whiskers");
+
+        dog.makeSound();
+        dog.eat();
+
+        cat.makeSound();
+        cat.eat();
+    }
+}</code></pre>
+                        <p class="tutorial-text">In this example, we have an abstract <code>Animal</code> class with an abstract <code>makeSound()</code> method and a concrete <code>eat()</code> method. The <code>Dog</code> and <code>Cat</code> classes extend <code>Animal</code> and provide their own implementations of <code>makeSound()</code>. This allows for polymorphic behavior while also sharing common functionality through the abstract class.</p>
+                        <p class="tutorial-text">Try running this code in the compiler. Can you add another animal type<cut_off_point>
+Try running this code in the compiler. Can you add another animal type
+</cut_off_point>
+
+ that extends the Animal class? How does using an abstract class compare to using an interface in this scenario?</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Buddy barks\nBuddy is eating\nWhiskers meows\nWhiskers is eating"
+            },
+            {
+                title: "Quiz",
+                content: `
+                    <h1 class="tutorial-title">6. Polymorphism Quiz</h1>
+                    <div class="quiz-container">
+                        <form id="quizForm">
+                            <div class="question">
+                                <p class="quiz-question">1. What is polymorphism in Java?</p>
+                                <ul class="quiz-options">
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q1" value="a" id="q1a">
+                                        <label for="q1a">The ability to create multiple objects</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q1" value="b" id="q1b">
+                                        <label for="q1b">The ability of an object to take on many forms</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q1" value="c" id="q1c">
+                                        <label for="q1c">The process of creating a new class from an existing class</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="question">
+                                <p class="quiz-question">2. Which of the following is NOT a way to achieve polymorphism in Java?</p>
+                                <ul class="quiz-options">
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q2" value="a" id="q2a">
+                                        <label for="q2a">Method overriding</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q2" value="b" id="q2b">
+                                        <label for="q2b">Interfaces</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q2" value="c" id="q2c">
+                                        <label for="q2c">Method overloading</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="question">
+                                <p class="quiz-question">3. What is runtime polymorphism?</p>
+                                <ul class="quiz-options">
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q3" value="a" id="q3a">
+                                        <label for="q3a">Polymorphism achieved through method overloading</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q3" value="b" id="q3b">
+                                        <label for="q3b">Polymorphism achieved through method overriding and resolved at runtime</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q3" value="c" id="q3c">
+                                        <label for="q3c">Polymorphism achieved through interfaces and resolved at compile time</label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                        <button onclick="submitQuiz()" class="button mt-4">Submit Quiz</button>
+                        <p id="quizResult" class="quiz-feedback"></p>
+                    </div>
+                `,
+                showCompiler: false,
+                showAutograder: false,
+                expectedOutput: ""
+            },
+            {
+                title: "Weekly Project",
+                content: `
+                    <h1 class="tutorial-title">7. Weekly Project: Shape Calculator</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Project Description</h3>
+                        <p class="tutorial-text">For this week's project, you'll create a Shape Calculator that demonstrates polymorphism. You'll implement various shapes and calculate their areas and perimeters using polymorphic methods.</p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Requirements:</h4>
+                            <ul class="list-disc list-inside mb-4">
+                                <li>Create an abstract Shape class with abstract methods for calculating area and perimeter</li>
+                                <li>Implement at least three different shape classes (e.g., Circle, Rectangle, Triangle) that extend the Shape class</li>
+                                <li>Create a ShapeCalculator class that can work with any shape</li>
+                                <li>Demonstrate polymorphism by creating an array of shapes and performing calculations on them</li>
+                                <li>Implement error handling for invalid inputs</li>
+                                <li>Add a simple menu-driven interface for user interaction</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Here's a template to get you started:</p>
+                        <pre><code>import java.util.Scanner;
+
+abstract class Shape {
+    abstract double calculateArea();
+    abstract double calculatePerimeter();
+}
+
+class Circle extends Shape {
+    // Implement Circle class
+}
+
+class Rectangle extends Shape {
+    // Implement Rectangle class
+}
+
+class Triangle extends Shape {
+    // Implement Triangle class
+}
+
+class ShapeCalculator {
+    public void printShapeDetails(Shape shape) {
+        System.out.println("Area: " + shape.calculateArea());
+        System.out.println("Perimeter: " + shape.calculatePerimeter());
+    }
+}
+
+public class ShapeCalculatorApp {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ShapeCalculator calculator = new ShapeCalculator();
+        Shape[] shapes = new Shape[3];
+
+        while (true) {
+            System.out.println("\n1. Create Circle");
+            System.out.println("2. Create Rectangle");
+            System.out.println("3. Create Triangle");
+            System.out.println("4. Calculate for all shapes");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    // Implement circle creation
+                    break;
+                case 2:
+                    // Implement rectangle creation
+                    break;
+                case 3:
+                    // Implement triangle creation
+                    break;
+                case 4:
+                    for (Shape shape : shapes) {
+                        if (shape != null) {
+                            calculator.printShapeDetails(shape);
+                        }
+                    }
+                    break;
+                case 5:
+                    System.out.println("Exiting the program. Goodbye!");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+}</code></pre>
+                        <p class="tutorial-text">Implement the missing parts of the Shape Calculator. Create the Circle, Rectangle, and Triangle classes, and complete the main method to allow user input for creating shapes. Use polymorphism to store different shapes in the array and calculate their properties. Once you've completed the implementation, use the compiler to test your Shape Calculator application. Make sure to handle different scenarios and demonstrate how polymorphism allows you to work with different shapes uniformly.</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "1. Create Circle\n2. Create Rectangle\n3. Create Triangle\n4. Calculate for all shapes\n5. Exit\nEnter your choice: 1\nEnter radius: 5\n1. Create Circle\n2. Create Rectangle\n3. Create Triangle\n4. Calculate for all shapes\n5. Exit\nEnter your choice: 2\nEnter length: 4\nEnter width: 6\n1. Create Circle\n2. Create Rectangle\n3. Create Triangle\n4. Calculate for all shapes\n5. Exit\nEnter your choice: 3\nEnter side1: 3\nEnter side2: 4\nEnter side3: 5\n1. Create Circle\n2. Create Rectangle\n3. Create Triangle\n4. Calculate for all shapes\n5. Exit\nEnter your choice: 4\nCircle:\nArea: 78.54\nPerimeter: 31.42\nRectangle:\nArea: 24.00\nPerimeter: 20.00\nTriangle:\nArea: 6.00\nPerimeter: 12.00\n1. Create Circle\n2. Create Rectangle\n3. Create Triangle\n4. Calculate for all shapes\n5. Exit\nEnter your choice: 5\nExiting the program. Goodbye!"
+            }
+        ];
+
+        let currentExercise = 0;
+
+        function loadExercise(index) {
+            const exercise = exercises[index];
+            document.getElementById('tutorial-content').innerHTML = exercise.content;
+            document.getElementById('compiler-container').style.display = exercise.showCompiler ? 'block' : 'none';
+            document.getElementById('autograder-container').style.display = exercise.showAutograder ? 'block' : 'none';
+            if (exercise.showAutograder) {
+                document.getElementById('autograder-input').value = '';
+                document.getElementById('autograder-feedback').textContent = '';
+            }
+            document.querySelectorAll('.exercise-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+            currentExercise = index;
+        }
+
+        function checkOutput() {
+            const userOutput = document.getElementById('autograder-input').value.trim();
+            const expectedOutput = exercises[currentExercise].expectedOutput;
+            const feedback = document.getElementById('autograder-feedback');
+
+            if (expectedOutput === "") {
+                feedback.textContent = "Great job on your exercise! Your output looks good.";
+                feedback.className = 'autograder-feedback success';
+            } else if (userOutput === expectedOutput) {
+                feedback.textContent = "Success! Your output matches the expected result.";
+                feedback.className = 'autograder-feedback success';
+            } else {
+                feedback.textContent = `Not quite there yet. Expected output:\n${expectedOutput}\n\nYour output:\n${userOutput}\n\nKeep trying!`;
+                feedback.className = 'autograder-feedback error';
+            }
+        }
+
+        document.querySelectorAll('.exercise-item').forEach((item, index) => {
+            item.addEventListener('click', () => loadExercise(index));
+        });
+
+        function submitQuiz() {
+            const answers = {
+                q1: 'b',
+                q2: 'c',
+                q3: 'b'
+            };
+            let score = 0;
+            let feedback = '';
+
+            for (let i = 1; i <= 3; i++) {
+                const selectedAnswer = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selectedAnswer) {
+                    if (selectedAnswer.value === answers[`q${i}`]) {
+                        score++;
+                        feedback += `Question ${i}: Correct\n`;
+                    } else {
+                        feedback += `Question ${i}: Incorrect\n`;
+                    }
+                } else {
+                    feedback += `Question ${i}: Not answered\n`;
+                }
+            }
+
+            const result = document.getElementById('quizResult');
+            result.textContent = `You scored ${score} out of 3.\n\n${feedback}`;
+        }
+
+        // Load the first exercise by default
+        loadExercise(0);
+    </script>
+</body>
+</html>
+

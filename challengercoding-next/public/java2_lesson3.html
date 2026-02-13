@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java 2 Guided Tutorials - Week 3: Encapsulation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #FF4081;
+            --accent: #FFC107;
+            --background: #f0f4f8;
+            --surface: #ffffff;
+            --border: #e0e7ff;
+            --text: #2d3748;
+            --text-light: #4a5568;
+            --success: #48bb78;
+            --error: #f56565;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 5px;
+            width: 100%;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 2rem auto;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .exercise-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item:hover {
+            background: var(--primary);
+            color: var(--surface);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item.active {
+            background: var(--primary);
+            color: var(--surface);
+            border-color: var(--primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .main-content {
+            flex: 1;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .tutorial-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .tutorial-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .content-box {
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .highlight-box {
+            background-color: #e6f7ff;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .step-box {
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            margin-right: 0.5rem;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+        }
+
+        iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .quiz-container {
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .quiz-question {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-options {
+            list-style-type: none;
+        }
+
+        .quiz-option {
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-feedback {
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+
+        .button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .autograder-container {
+            margin-top: 1.5rem;
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .autograder-input {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .autograder-feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .autograder-feedback.success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .autograder-feedback.error {
+            background-color: var(--error);
+            color: white;
+        }
+
+        .common-errors {
+            margin-top: 1rem;
+        }
+
+        .common-errors summary {
+            cursor: pointer;
+            padding: 0.5rem;
+            background-color: var(--background);
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .common-errors ul {
+            margin-top: 0.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .common-errors li {
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="#" target="_blank" rel="noopener noreferrer">Enroll</a></li>
+        </ul>
+    </nav>
+    <!-- Include Scripts -->
+    <script src="config.js"></script>
+    <script>
+        document.querySelectorAll(".enroll-button").forEach(button => {
+            button.href = enrollLink;
+        });
+    </script>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="exercise-list">
+                <div class="exercise-item active" data-exercise="overview">
+                    <span>Lesson Overview</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise1">
+                    <span>1. Understanding Encapsulation</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise2">
+                    <span>2. Access Modifiers</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise3">
+                    <span>3. Getters and Setters</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise4">
+                    <span>4. Encapsulation Best Practices</span>
+                </div>
+                <div class="exercise-item" data-exercise="quiz">
+                    <span>5. Quiz</span>
+                </div>
+                <div class="exercise-item" data-exercise="project">
+                    <span>6. Weekly Project</span>
+                </div>
+                <div class="exercise-item" onclick="window.location.href='java2_tutorials.html'">
+                    <span>Return to Home</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div id="tutorial-content">
+                <!-- Content will be dynamically loaded here -->
+            </div>
+            <div id="compiler-container" style="display: none;">
+                <iframe src="https://www.jdoodle.com/online-java-compiler"></iframe>
+            </div>
+            <div id="autograder-container" class="autograder-container" style="display: none;">
+                <h3 class="text-xl font-semibold mb-2">Autograder</h3>
+                <textarea id="autograder-input" class="autograder-input" placeholder="Paste your code output here..."></textarea>
+                <button onclick="checkOutput()" class="button">Check Output</button>
+                <div id="autograder-feedback" class="autograder-feedback"></div>
+            </div>
+            <details class="common-errors">
+                <summary>Common Java Errors</summary>
+                <ul>
+                    <li>
+                        <strong>Error:</strong> "Cannot access private member"
+                        <br>
+                        <strong>Cause:</strong> Attempting to access a private field or method from outside the class
+                        <br>
+                        <strong>Fix:</strong> Use public getter and setter methods to access private members
+                    </li>
+                    <li>
+                        <strong>Error:</strong> "The field is never used"
+                        <br>
+                        <strong>Cause:</strong> A private field is declared but never accessed within the class
+                        <br>
+                        <strong>Fix:</strong> Either use the field or remove it if it's unnecessary
+                    </li>
+                </ul>
+            </details>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const exercises = [
+            {
+                title: "Lesson Overview",
+                content: `
+                    <h1 class="tutorial-title">Java 2 Guided Tutorials - Week 3: Encapsulation</h1>
+                    <div class="content-box">
+                        <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
+                        <p class="tutorial-text">
+                            Welcome to Week 3 of Java 2! This week, we'll dive deep into encapsulation, one of the fundamental principles of object-oriented programming (OOP). We'll explore how encapsulation helps in creating more secure and maintainable code.
+                        </p>
+                        <div class="highlight-box">
+                            <h3 class="text-xl font-semibold mb-2">Lesson Overview:</h3>
+                            <ul class="list-disc list-inside">
+                                <li>Understanding Encapsulation</li>
+                                <li>Access Modifiers in Java</li>
+                                <li>Getters and Setters</li>
+                                <li>Encapsulation Best Practices</li>
+                                <li>Quiz to test your knowledge</li>
+                                <li>Weekly project to apply what you've learned</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">
+                            By the end of this week, you'll have a solid understanding of encapsulation and how to apply it in your Java programs. Let's get started!
+                        </p>
+                    </div>
+                `,
+                showCompiler: false,
+                showAutograder: false,
+                expectedOutput: ""
+            },
+            {
+                title: "Understanding Encapsulation",
+                content: `
+                    <h1 class="tutorial-title">1. Understanding Encapsulation</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">What is Encapsulation?</h3>
+                        <p class="tutorial-text">
+                            Encapsulation is one of the four fundamental OOP concepts. It refers to the bundling of data with the methods that operate on that data, or the restricting of direct access to some of an object's components. Encapsulation is used to hide the values or state of a structured data object inside a class, preventing direct access to them by clients in a way that could expose hidden implementation details or violate class invariants.
+                        </p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Key Points:</h4>
+                            <ul class="list-disc list-inside">
+                                <li>Encapsulation provides data hiding</li>
+                                <li>It helps in maintaining the integrity of data</li>
+                                <li>It reduces system complexity</li>
+                                <li>It improves modularity</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Here's a simple example of encapsulation:</p>
+                        <pre><code>public class BankAccount {
+    private double balance;  // private - encapsulated
+
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+}</code></pre>
+                        <p class="tutorial-text">In this example, the <code>balance</code> variable is private and can only be accessed or modified through the public methods <code>deposit()</code> and <code>getBalance()</code>. This is encapsulation in action.</p>
+                    </div>
+                `,
+                showCompiler: false,
+                showAutograder: false,
+                expectedOutput: ""
+            },
+            {
+                title: "Access Modifiers",
+                content: `
+                    <h1 class="tutorial-title">2. Access Modifiers</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Understanding Access Modifiers</h3>
+                        <p class="tutorial-text">
+                            Access modifiers are keywords in object-oriented languages that set the accessibility of classes, methods, and other members. Java provides four types of access modifiers:
+                        </p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Types of Access Modifiers:</h4>
+                            <ul class="list-disc list-inside">
+                                <li><strong>public:</strong> Accessible from any other class</li>
+                                <li><strong>protected:</strong> Accessible within the same package and subclasses</li>
+                                <li><strong>default (no modifier):</strong> Accessible only within the same package</li>
+                                <li><strong>private:</strong> Accessible only within the same class</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Here's an example demonstrating different access modifiers:</p>
+                        <pre><code>public class AccessModifierDemo {
+    public int publicVar = 1;
+    protected int protectedVar = 2;
+    int defaultVar = 3;
+    private int privateVar = 4;
+
+    public void publicMethod() {
+        System.out.println("This is a public method");
+    }
+
+    protected void protectedMethod() {
+        System.out.println("This is a protected method");
+    }
+
+    void defaultMethod() {
+        System.out.println("This is a default method");
+    }
+
+    private void privateMethod() {
+        System.out.println("This is a private method");
+    }
+}</code></pre>
+                        <p class="tutorial-text">Try creating a class with different access modifiers and experiment with accessing them from another class. Use the compiler below to write your code.</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Public method accessed\nProtected method accessed\nDefault method accessed\nPrivate method not accessible" // Example output, adjust as needed
+            },
+            {
+                title: "Getters and Setters",
+                content: `
+                    <h1 class="tutorial-title">3. Getters and Setters</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Understanding Getters and Setters</h3>
+                        <p class="tutorial-text">
+                            Getters and setters are methods used to retrieve and modify the values of private variables. They are a fundamental part of encapsulation, allowing controlled access to class members.
+                        </p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Key Points:</h4>
+                            <ul class="list-disc list-inside">
+                                <li>Getters retrieve the value of a private field</li>
+                                <li>Setters modify the value of a private field</li>
+                                <li>They allow for validation before setting a value</li>
+                                <li>They provide a way to make a class immutable</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Here's an example of a class using getters and setters:</p>
+                        <pre><code>public class Person {
+    private String name;
+    private int age;
+
+    // Getter for name
+    public String getName() {
+        return name;
+    }
+
+    // Setter for name
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // Getter for age
+    public int getAge() {
+        return age;
+    }
+
+    // Setter for age with validation
+    public void setAge(int age) {
+        if (age > 0 && age < 120) {
+            this.age = age;
+        } else {
+            System.out.println("Invalid age");
+        }
+    }
+}</code></pre>
+                        <p class="tutorial-text">Try creating a class with private fields and implement getters and setters for them. Use the compiler below to write your code.</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Name: John Doe\nAge: 25\nInvalid age" // Example output, adjust as needed
+            },
+            {
+                title: "Encapsulation Best Practices",
+                content: `
+                    <h1 class="tutorial-title">4. Encapsulation Best Practices</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Best Practices for Encapsulation</h3>
+                        <p class="tutorial-text">
+                            Implementing encapsulation effectively involves following certain best practices. These guidelines help in creating more robust and maintainable code.
+                        </p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Best Practices:</h4>
+                            <ul class="list-disc list-inside">
+                                <li>Declare instance variables as private</li>
+                                <li>Provide public setter and getter methods to modify and view the variables' values</li>
+                                <li>For read-only fields, only provide a getter method</li>
+                                <li>For write-only fields, only provide a setter method</li>
+                                <li>Perform data validation in setter methods</li>
+                                <li>Use meaningful names for getter and setter methods</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Here's an example demonstrating these best practices:</p>
+                        <pre><code>public class Employee {
+    private String name;
+    private double salary;
+    private final String employeeId;  // read-only
+
+    public Employee(String name, String employeeId) {
+        this.name = name;
+        this.employeeId = employeeId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        if (name != null && !name.isEmpty()) {
+            this.name = name;
+        } else {
+            throw new IllegalArgumentException("Name cannot be null or empty");
+        }
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        if (salary > 0) {
+            this.salary = salary;
+        } else {
+            throw new IllegalArgumentException("Salary must be positive");
+        }
+    }
+
+    public String getEmployeeId() {
+        return employeeId;
+    }
+}</code></pre>
+                        <p class="tutorial-text">Try creating a class that follows these best practices. Implement proper encapsulation for at least three attributes, including one read-only attribute. Use the compiler below to write your code.</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Name: Alice Johnson\nEmployee ID: EMP001\nSalary: 50000.0\nIllegal Argument Exception: Salary must be positive" // Example output, adjust as needed
+            },
+            {
+                title: "Quiz",
+                content: `
+                    <h1 class="tutorial-title">5. Encapsulation Quiz</h1>
+                    <div class="quiz-container">
+                        <form id="quizForm">
+                            <div class="question">
+                                <p class="quiz-question">1. What is the main purpose of encapsulation?</p>
+                                <ul class="quiz-options">
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q1" value="a" id="q1a">
+                                        <label for="q1a">To hide the implementation details of a class</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q1" value="b" id="q1b">
+                                        <label for="q1b">To create multiple instances of a class</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q1" value="c" id="q1c">
+                                        <label for="q1c">To inherit properties from a parent class</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="question">
+                                <p class="quiz-question">2. Which access modifier provides the highest level of encapsulation?</p>
+                                <ul class="quiz-options">
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q2" value="a" id="q2a">
+                                        <label for="q2a">public</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q2" value="b" id="q2b">
+                                        <label for="q2b">protected</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q2" value="c" id="q2c">
+                                        <label for="q2c">private</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="question">
+                                <p class="quiz-question">3. What is the primary purpose of getter methods in encapsulation?</p>
+                                <ul class="quiz-options">
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q3" value="a" id="q3a">
+                                        <label for="q3a">To modify private variables</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q3" value="b" id="q3b">
+                                        <label for="q3b">To retrieve the values of private variables</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q3" value="c" id="q3c">
+                                        <label for="q3c">To create new instances of a class</label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                        <button onclick="submitQuiz()" class="button mt-4">Submit Quiz</button>
+                        <p id="quizResult" class="quiz-feedback"></p>
+                    </div>
+                `,
+                showCompiler: false,
+                showAutograder: false,
+                expectedOutput: ""
+            },
+            {
+                title: "Weekly Project",
+                content: `
+                    <h1 class="tutorial-title">6. Weekly Project: Bank Account Management System</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Project Description</h3>
+                        <p class="tutorial-text">For this week's project, you'll create a simple Bank Account Management System that demonstrates the principles of encapsulation.</p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Requirements:</h4>
+                            <ul class="list-disc list-inside mb-4">
+                                <li>Create a BankAccount class with private fields for account number, balance, and owner name</li>
+                                <li>Implement proper getters and setters for each field</li>
+                                <li>Include methods for deposit and withdrawal with appropriate validation</li>
+                                <li>Create a read-only field for the account creation date</li>
+                                <li>Implement a method to print account details</li>
+                                <li>In the main method, create multiple bank accounts and perform various operations</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Here's a template to get you started:</p>
+                        <pre><code>import java.util.Date;
+
+public class BankAccount {
+    private String accountNumber;
+    private double balance;
+    private String ownerName;
+    private final Date creationDate;
+
+    // Constructor
+    public BankAccount(String accountNumber, String ownerName) {
+        // Initialize fields here
+    }
+
+    // Implement getters and setters
+
+    public void deposit(double amount) {
+        // Implement deposit logic
+    }
+
+    public void withdraw(double amount) {
+        // Implement withdrawal logic
+    }
+
+    public void printAccountDetails() {
+        // Print account details
+    }
+
+    public static void main(String[] args) {
+        // Create bank accounts and perform operations
+    }
+}
+</code></pre>
+                        <p class="tutorial-text">Implement the BankAccount class and demonstrate its usage in the main method. Make sure to include proper encapsulation and validation. Use the online compiler to write and test your code. Once you're satisfied with your program, paste a sample output of creating an account, depositing money, withdrawing money, and printing account details in the autograder to check your work.</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Account created for John Doe\nDeposit: $1000.0\nWithdrawal: $500.0\nAccount Details:\nAccount Number: AC001\nOwner: John Doe\nBalance: $500.0\nCreation Date: [Current Date]" // Example output, adjust based on your implementation
+            }
+        ];
+
+        let currentExercise = 0;
+
+        function loadExercise(index) {
+            const exercise = exercises[index];
+            document.getElementById('tutorial-content').innerHTML = exercise.content;
+            document.getElementById('compiler-container').style.display = exercise.showCompiler ? 'block' : 'none';
+            document.getElementById('autograder-container').style.display = exercise.showAutograder ? 'block' : 'none';
+            if (exercise.showAutograder) {
+                document.getElementById('autograder-input').value = '';
+                document.getElementById('autograder-feedback').textContent = '';
+            }
+            document.querySelectorAll('.exercise-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+            currentExercise = index;
+        }
+
+        function checkOutput() {
+            const userOutput = document.getElementById('autograder-input').value.trim();
+            const expectedOutput = exercises[currentExercise].expectedOutput;
+            const feedback = document.getElementById('autograder-feedback');
+
+            if (expectedOutput === "") {
+                feedback.textContent = "Great job on your exercise! Your output looks good.";
+                feedback.className = 'autograder-feedback success';
+            } else if (userOutput === expectedOutput) {
+                feedback.textContent = "Success! Your output matches the expected result.";
+                feedback.className = 'autograder-feedback success';
+            } else {
+                feedback.textContent = `Not quite there yet. Expected output:\n${expectedOutput}\n\nYour output:\n${userOutput}\n\nKeep trying!`;
+                feedback.className = 'autograder-feedback error';
+            }
+        }
+
+        document.querySelectorAll('.exercise-item').forEach((item, index) => {
+            item.addEventListener('click', () => loadExercise(index));
+        });
+
+        function submitQuiz() {
+            const answers = {
+                q1: 'a',
+                q2: 'c',
+                q3: 'b'
+            };
+            let score = 0;
+            let feedback = '';
+
+            for (let i = 1; i <= 3; i++) {
+                const selectedAnswer = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selectedAnswer) {
+                    if (selectedAnswer.value === answers[`q${i}`]) {
+                        score++;
+                        feedback += `Question ${i}: Correct\n`;
+                    } else {
+                        feedback += `Question ${i}: Incorrect\n`;
+                    }
+                } else {
+                    feedback += `Question ${i}: Not answered\n`;
+                }
+            }
+
+            const result = document.getElementById('quizResult');
+            result.textContent = `You scored ${score} out of 3.\n\n${feedback}`;
+        }
+
+        // Load the first exercise by default
+        loadExercise(0);
+    </script>
+</body>
+</html>
+

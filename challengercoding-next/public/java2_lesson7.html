@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java 2 Guided Tutorials - Week 7: Recursion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #FF4081;
+            --accent: #FFC107;
+            --background: #f0f4f8;
+            --surface: #ffffff;
+            --border: #e0e7ff;
+            --text: #2d3748;
+            --text-light: #4a5568;
+            --success: #48bb78;
+            --error: #f56565;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 5px;
+            width: 100%;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 2rem auto;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .exercise-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item:hover {
+            background: var(--primary);
+            color: var(--surface);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item.active {
+            background: var(--primary);
+            color: var(--surface);
+            border-color: var(--primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .main-content {
+            flex: 1;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .tutorial-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .tutorial-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .content-box {
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .highlight-box {
+            background-color: #e6f7ff;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .step-box {
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            margin-right: 0.5rem;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+        }
+
+        iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .quiz-container {
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .quiz-question {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-options {
+            list-style-type: none;
+        }
+
+        .quiz-option {
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-feedback {
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+
+        .button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .autograder-container {
+            margin-top: 1.5rem;
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .autograder-input {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .autograder-feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .autograder-feedback.success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .autograder-feedback.error {
+            background-color: var(--error);
+            color: white;
+        }
+
+        .common-errors {
+            margin-top: 1rem;
+        }
+
+        .common-errors summary {
+            cursor: pointer;
+            padding: 0.5rem;
+            background-color: var(--background);
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .common-errors ul {
+            margin-top: 0.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .common-errors li {
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="#" target="_blank" rel="noopener noreferrer">Enroll</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="exercise-list">
+                <div class="exercise-item active" data-exercise="overview">
+                    <span>Lesson Overview</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise1">
+                    <span>1. Understanding Recursion</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise2">
+                    <span>2. Basic Recursive Functions</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise3">
+                    <span>3. Recursive vs Iterative Approaches</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise4">
+                    <span>4. Tail Recursion</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise5">
+                    <span>5. Recursion in Problem Solving</span>
+                </div>
+                <div class="exercise-item" data-exercise="quiz">
+                    <span>6. Quiz</span>
+                </div>
+                <div class="exercise-item" data-exercise="project">
+                    <span>7. Weekly Project</span>
+                </div>
+                <div class="exercise-item" onclick="window.location.href='java_tutorials.html'">
+                    <span>Return to Home</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div id="tutorial-content">
+                <!-- Content will be dynamically loaded here -->
+            </div>
+            <div id="compiler-container" style="display: none;">
+                <iframe src="https://www.jdoodle.com/online-java-compiler"></iframe>
+            </div>
+            <div id="autograder-container" class="autograder-container" style="display: none;">
+                <h3 class="text-xl font-semibold mb-2">Autograder</h3>
+                <textarea id="autograder-input" class="autograder-input" placeholder="Paste your code output here..."></textarea>
+                <button onclick="checkOutput()" class="button">Check Output</button>
+                <div id="autograder-feedback" class="autograder-feedback"></div>
+            </div>
+            <details class="common-errors">
+                <summary>Common Java Errors</summary>
+                <ul>
+                    <li>
+                        <strong>Error:</strong> "StackOverflowError"
+                        <br>
+                        <strong>Cause:</strong> Infinite recursion or very deep recursion
+                        <br>
+                        <strong>Fix:</strong> Ensure your recursive function has a proper base case and is progressing towards it
+                    </li>
+                    <li>
+                        <strong>Error:</strong> "Missing return statement"
+                        <br>
+                        <strong>Cause:</strong> Not all code paths in a recursive function return a value
+                        <br>
+                        <strong>Fix:</strong> Make sure all possible paths in your recursive function return a value
+                    </li>
+                </ul>
+            </details>
+        </main>
+    </div>
+    <!-- Include Scripts -->
+    <script src="config.js"></script>
+    <script>
+        document.querySelectorAll(".enroll-button").forEach(button => {
+            button.href = enrollLink;
+        });
+    </script>
+    <script>
+        lucide.createIcons();
+
+        const exercises = [
+            {
+                title: "Lesson Overview",
+                content: `
+                    <h1 class="tutorial-title">Java 2 Guided Tutorials - Week 7: Recursion</h1>
+                    <div class="content-box">
+                        <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
+                        <p class="tutorial-text">
+                            Welcome to Week 7 of Java 2! This week, we'll explore recursion, a powerful programming concept where a function calls itself to solve a problem. Recursion can lead to elegant solutions for complex problems and is fundamental in many algorithms.
+                        </p>
+                        <div class="highlight-box">
+                            <h3 <cut_off_point>
+p>
+                        <div class="highlight-box">
+                            <h3 
+</cut_off_point>
+
+class="text-xl font-semibold mb-2">Lesson Overview:</h3>
+                            <ul class="list-disc list-inside">
+                                <li>Understanding Recursion</li>
+                                <li>Basic Recursive Functions</li>
+                                <li>Recursive vs Iterative Approaches</li>
+                                <li>Tail Recursion</li>
+                                <li>Recursion in Problem Solving</li>
+                                <li>Quiz to test your knowledge</li>
+                                <li>Weekly project to apply what you've learned</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">
+                            By the end of this week, you'll have a solid understanding of recursion and how to apply it in your Java programs. Let's dive in!
+                        </p>
+                    </div>
+                `,
+                showCompiler: false,
+                showAutograder: false,
+                expectedOutput: ""
+            },
+            {
+                title: "Understanding Recursion",
+                content: `
+                    <h1 class="tutorial-title">1. Understanding Recursion</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">What is Recursion?</h3>
+                        <p class="tutorial-text">
+                            Recursion is a programming technique where a function calls itself to solve a problem. It's a way of breaking down a complex problem into smaller, more manageable subproblems. Each recursive call works on a smaller instance of the same problem, eventually reaching a base case that can be solved directly.
+                        </p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Key Components of Recursion:</h4>
+                            <ul class="list-disc list-inside">
+                                <li>Base Case: The condition that stops the recursion</li>
+                                <li>Recursive Case: The part where the function calls itself</li>
+                                <li>Progress Towards Base Case: Each recursive call should move closer to the base case</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Here's a simple example to illustrate recursion:</p>
+                        <pre><code>public class RecursionExample {
+    public static void countDown(int n) {
+        // Base case
+        if (n == 0) {
+            System.out.println("Done!");
+            return;
+        }
+        
+        // Print the current number
+        System.out.println(n);
+        
+        // Recursive case
+        countDown(n - 1);
+    }
+
+    public static void main(String[] args) {
+        countDown(5);
+    }
+}</code></pre>
+                        <p class="tutorial-text">In this example, the <code>countDown</code> function calls itself with a smaller number each time, until it reaches zero (the base case). Try running this code and observe how recursion works step by step.</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "5\n4\n3\n2\n1\nDone!"
+            },
+            {
+                title: "Basic Recursive Functions",
+                content: `
+                    <h1 class="tutorial-title">2. Basic Recursive Functions</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Common Recursive Functions</h3>
+                        <p class="tutorial-text">
+                            Let's explore some basic recursive functions to help you understand how recursion works in practice. We'll look at factorial calculation and the Fibonacci sequence, two classic examples of recursion.
+                        </p>
+                        <h4 class="text-lg font-semibold mb-2">Factorial Calculation</h4>
+                        <p class="tutorial-text">
+                            The factorial of a non-negative integer n, denoted as n!, is the product of all positive integers less than or equal to n. Here's a recursive implementation:
+                        </p>
+                        <pre><code>public class FactorialExample {
+    public static int factorial(int n) {
+        // Base case
+        if (n == 0 || n == 1) {
+            return 1;
+        }
+        
+        // Recursive case
+        return n * factorial(n - 1);
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Factorial of 5: " + factorial(5));
+    }
+}</code></pre>
+                        <h4 class="text-lg font-semibold mb-2">Fibonacci Sequence</h4>
+                        <p class="tutorial-text">
+                            The Fibonacci sequence is a series of numbers where each number is the sum of the two preceding ones. Here's a recursive implementation to find the nth Fibonacci number:
+                        </p>
+                        <pre><code>public class FibonacciExample {
+    public static int fibonacci(int n) {
+        // Base cases
+        if (n <= 1) {
+            return n;
+        }
+        
+        // Recursive case
+        return fibonacci(n - 1) + fibonacci(n - 2);
+    }
+
+    public static void main(String[] args) {
+        System.out.println("8th Fibonacci number: " + fibonacci(8));
+    }
+}</code></pre>
+                        <p class="tutorial-text">Try running these examples and experiment with different input values. Can you trace the recursive calls for small inputs?</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Factorial of 5: 120\n8th Fibonacci number: 21"
+            },
+            {
+                title: "Recursive vs Iterative Approaches",
+                content: `
+                    <h1 class="tutorial-title">3. Recursive vs Iterative Approaches</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Comparing Recursion and Iteration</h3>
+                        <p class="tutorial-text">
+                            Many problems can be solved using either recursive or iterative approaches. Let's compare these two methods to understand their strengths and weaknesses.
+                        </p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Recursion vs Iteration:</h4>
+                            <ul class="list-disc list-inside">
+                                <li>Recursion can lead to more elegant and readable code for some problems</li>
+                                <li>Iteration is often more efficient in terms of memory usage</li>
+                                <li>Recursive solutions can be slower due to function call overhead</li>
+                                <li>Some problems are naturally recursive and harder to solve iteratively</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Let's look at an example of calculating the sum of numbers from 1 to n using both approaches:</p>
+                        <pre><code>public class SumExample {
+    // Recursive approach
+    public static int sumRecursive(int n) {
+        if (n <= 1) {
+            return n;
+        }
+        return n + sumRecursive(n - 1);
+    }
+
+    // Iterative approach
+    public static int sumIterative(int n) {
+        int sum = 0;
+        for (int i = 1; i <= n; i++) {
+            sum += i;
+        }
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        int n = 5;
+        System.out.println("Recursive sum: " + sumRecursive(n));
+        System.out.println("Iterative sum: " + sumIterative(n));
+    }
+}</code></pre>
+                        <p class="tutorial-text">Both approaches produce the same result, but they differ in how they achieve it. The recursive approach breaks down the problem into smaller subproblems, while the iterative approach uses a loop to accumulate the sum. Try implementing both approaches for other problems, like factorial or Fibonacci, and compare their performance for larger inputs.</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Recursive sum: 15\nIterative sum: 15"
+            },
+            {
+                title: "Tail Recursion",
+                content: `
+                    <h1 class="tutorial-title">4. Tail Recursion</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Understanding Tail Recursion</h3>
+                        <p class="tutorial-text">
+                            Tail recursion is a special form of recursion where the recursive call is the last operation in the function. This allows for potential optimizations by the compiler, as it can transform the recursion into a loop, saving stack space.
+                        </p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Key Points:</h4>
+                            <ul class="list-disc list-inside">
+                                <li>The recursive call is the last operation in the function</li>
+                                <li>No computation is done after the recursive call</li>
+                                <li>Can be optimized by the compiler to use constant stack space</li>
+                                <li>Not all recursive functions can be easily converted to tail recursive form</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Here's an example of converting the factorial function to use tail recursion:</p>
+                        <pre><code>public class TailRecursionExample {
+    // Non-tail recursive factorial
+    public static int factorial(int n) {
+        if (n <= 1) return 1;
+        return n * factorial(n - 1);
+    }
+
+    // Tail recursive factorial
+    public static int factorialTail(int n, int accumulator) {
+        if (n <= 1) return accumulator;
+        return factorialTail(n - 1, n * accumulator);
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Non-tail recursive: " + factorial(5));
+        System.out.println("Tail recursive: " + factorialTail(5, 1));
+    }
+}</code></pre>
+                        <p class="tutorial-text">In the tail recursive version, we use an accumulator to store intermediate results. This allows the function to return immediately after the recursive call, without needing to perform any additional computations. While Java doesn't automatically optimize tail recursion, understanding this concept can help you write more efficient recursive functions.</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Non-tail recursive: 120\nTail recursive: 120"
+            },
+            {
+                title: "Recursion in Problem Solving",
+                content: `
+                    <h1 class="tutorial-title">5. Recursion in Problem Solving</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Applying Recursion to Solve Problems</h3>
+                        <p class="tutorial-text">
+                            Recursion is particularly useful for solving problems that have a recursive structure or can be broken down into smaller, similar subproblems. Let's look at a classic example: the Tower of Hanoi puzzle.
+                        </p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Tower of Hanoi:</h4>
+                            <p>The puzzle consists of three rods and a number of disks of different sizes which can slide onto any rod. The puzzle starts with the disks in a neat stack in ascending order of size on one rod, the smallest at the top. The objective is to move the entire stack to another rod, obeying the following rules:</p>
+                            <ul class="list-disc list-inside">
+                                <li>Only one disk can be moved at a time.</li>
+                                <li>Each move consists of taking the upper disk from one of the stacks and placing it on top of another stack or on an empty rod.</li>
+                                <li>No larger disk may be placed on top of a smaller disk.</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Here's a recursive solution to the Tower of Hanoi problem:</p>
+                        <pre><code>public class TowerOfHanoi {
+    public static void solveTowerOfHanoi(int n, char source, char auxiliary, char destination) {
+        // Base case: If only one disk, move it directly
+        if (n == 1) {
+            System.out.println("Move disk 1 from " + source + " to " + destination);
+            return;
+        }
+        
+        // Move n-1 disks from source to auxiliary using destination as auxiliary
+        solveTowerOfHanoi(n - 1, source, destination, auxiliary);
+        
+        // Move the nth disk from source to destination
+        System.out.println("Move disk " + n + " from " + source + " to " + destination);
+        
+        // Move n-1 disks from auxiliary to destination using source as auxiliary
+        solveTowerOfHanoi(n - 1, auxiliary, source, destination);
+    }
+
+    public static void main(String[] args) {
+        int numberOfDisks = 3;
+        solveTowerOfHanoi(numberOfDisks, 'A', 'B', 'C');
+    }
+}</code></pre>
+                        <p class="tutorial-text">This recursive solution breaks down the problem into smaller subproblems, moving n-1 disks recursively. Try running this code and observe how it solves the Tower of Hanoi puzzle step by step. Can you visualize the process for a small number of disks?</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Move disk 1 from A to C\nMove disk 2 from A to B\nMove disk 1 from C to B\nMove disk 3 from A to C\nMove disk 1 from B to A\nMove disk 2 from B to C\nMove disk 1 from A to C"
+            },
+            {
+                title: "Quiz",
+                content: `
+                    <h1 class="tutorial-title">6. Recursion Quiz</h1>
+                    <div class="quiz-container">
+                        <form id="quizForm">
+                            <div class="question">
+                                <p class="quiz-question">1. What is the base case in a recursive function?</p>
+                                <ul class="quiz-options">
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q1" value="a" id="q1a">
+                                        <label for="q1a">The case where the function calls itself</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q1" value="b" id="q1b">
+                                        <label for="q1b">The condition that stops the recursion</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q1" value="c" id="q1c">
+                                        <label for="q1c">The initial value passed to the function</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="question">
+                                <p class="quiz-question">2. What is tail recursion?</p>
+                                <ul class="quiz-options">
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q2" value="a" id="q2a">
+                                        <label for="q2a">A recursive function that never reaches its base case</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q2" value="b" id="q<cut_off_point>
+option">
+                                        <input type="radio" name="q2" value="b" id="q
+</cut_off_point>
+
+2b">
+                                        <label for="q2b">A recursive function where the recursive call is the last operation</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q2" value="c" id="q2c">
+                                        <label for="q2c">A recursive function that calls itself multiple times</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="question">
+                                <p class="quiz-question">3. Which of the following is NOT a common use case for recursion?</p>
+                                <ul class="quiz-options">
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q3" value="a" id="q3a">
+                                        <label for="q3a">Traversing tree-like data structures</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q3" value="b" id="q3b">
+                                        <label for="q3b">Solving divide-and-conquer problems</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q3" value="c" id="q3c">
+                                        <label for="q3c">Performing simple arithmetic operations</label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                        <button onclick="submitQuiz()" class="button mt-4">Submit Quiz</button>
+                        <p id="quizResult" class="quiz-feedback"></p>
+                    </div>
+                `,
+                showCompiler: false,
+                showAutograder: false,
+                expectedOutput: ""
+            },
+            {
+                title: "Weekly Project",
+                content: `
+                    <h1 class="tutorial-title">7. Weekly Project: Recursive File Explorer</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Project Description</h3>
+                        <p class="tutorial-text">For this week's project, you'll create a simple recursive file explorer that lists all files and directories in a given directory and its subdirectories.</p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Requirements:</h4>
+                            <ul class="list-disc list-inside mb-4">
+                                <li>Create a recursive function that explores directories</li>
+                                <li>Print the names of all files and directories</li>
+                                <li>Show the directory structure with proper indentation</li>
+                                <li>Handle potential exceptions (e.g., access denied to certain directories)</li>
+                                <li>Implement a simple command-line interface to specify the starting directory</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Here's a template to get you started:</p>
+                        <pre><code>import java.io.File;
+import java.util.Scanner;
+
+public class RecursiveFileExplorer {
+    public static void exploreDirectory(File directory, String indent) {
+        // TODO: Implement the recursive file exploration
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the directory path to explore: ");
+        String path = scanner.nextLine();
+        
+        File rootDirectory = new File(path);
+        if (rootDirectory.exists() && rootDirectory.isDirectory()) {
+            System.out.println("Exploring directory: " + rootDirectory.getAbsolutePath());
+            exploreDirectory(rootDirectory, "");
+        } else {
+            System.out.println("Invalid directory path.");
+        }
+    }
+}</code></pre>
+                        <p class="tutorial-text">Implement the <code>exploreDirectory</code> method using recursion to list all files and subdirectories. Use proper indentation to show the directory structure. Remember to handle exceptions and edge cases. Once you've completed the implementation, test your file explorer with different directories and ensure it correctly displays the file structure.</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Exploring directory: /path/to/directory\n- File1.txt\n- Folder1\n  - Subfolder\n    - File2.txt\n  - File3.txt\n- File4.txt"
+            }
+        ];
+
+        let currentExercise = 0;
+
+        function loadExercise(index) {
+            const exercise = exercises[index];
+            document.getElementById('tutorial-content').innerHTML = exercise.content;
+            document.getElementById('compiler-container').style.display = exercise.showCompiler ? 'block' : 'none';
+            document.getElementById('autograder-container').style.display = exercise.showAutograder ? 'block' : 'none';
+            if (exercise.showAutograder) {
+                document.getElementById('autograder-input').value = '';
+                document.getElementById('autograder-feedback').textContent = '';
+            }
+            document.querySelectorAll('.exercise-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+            currentExercise = index;
+        }
+
+        function checkOutput() {
+            const userOutput = document.getElementById('autograder-input').value.trim();
+            const expectedOutput = exercises[currentExercise].expectedOutput;
+            const feedback = document.getElementById('autograder-feedback');
+
+            if (expectedOutput === "") {
+                feedback.textContent = "Great job on your exercise! Your output looks good.";
+                feedback.className = 'autograder-feedback success';
+            } else if (userOutput === expectedOutput) {
+                feedback.textContent = "Success! Your output matches the expected result.";
+                feedback.className = 'autograder-feedback success';
+            } else {
+                feedback.textContent = `Not quite there yet. Expected output:\n${expectedOutput}\n\nYour output:\n${userOutput}\n\nKeep trying!`;
+                feedback.className = 'autograder-feedback error';
+            }
+        }
+
+        document.querySelectorAll('.exercise-item').forEach((item, index) => {
+            item.addEventListener('click', () => loadExercise(index));
+        });
+
+        function submitQuiz() {
+            const answers = {
+                q1: 'b',
+                q2: 'b',
+                q3: 'c'
+            };
+            let score = 0;
+            let feedback = '';
+
+            for (let i = 1; i <= 3; i++) {
+                const selectedAnswer = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selectedAnswer) {
+                    if (selectedAnswer.value === answers[`q${i}`]) {
+                        score++;
+                        feedback += `Question ${i}: Correct\n`;
+                    } else {
+                        feedback += `Question ${i}: Incorrect\n`;
+                    }
+                } else {
+                    feedback += `Question ${i}: Not answered\n`;
+                }
+            }
+
+            const result = document.getElementById('quizResult');
+            result.textContent = `You scored ${score} out of 3.\n\n${feedback}`;
+        }
+
+        // Load the first exercise by default
+        loadExercise(0);
+    </script>
+</body>
+</html>
+

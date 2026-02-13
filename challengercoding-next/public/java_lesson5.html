@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Tutorial</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <style>
+        /* Ensure that all exercises take up the full width of the page */
+        .exercise {
+            width: 100%;
+            box-sizing: border-box; /* Include padding and border in the element's width and height */
+        }
+        
+        /* Ensure that iframes take up the full width of their container */
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: 0; /* Remove border if not needed */
+        }
+    </style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 3 Exercises</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/skulpt@1.2.0/dist/skulpt.min.js"></script>
+    <script src="https://unpkg.com/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+</head>
+<body>
+    <h1>Lesson 5: Conditionals Practice</h1>
+    <div class="button-container">
+        <button onclick="showExercise('exercise1')">Exercise 1</button>
+        <button onclick="showExercise('exercise2')">Exercise 2</button>
+        <button onclick="showExercise('exercise3')">Exercise 3</button>
+        <button onclick="showExercise('project')">Project</button>
+        <button onclick="goToHomepage()" class="home-button">Back to Homepage</button>
+    </div>
+
+    <div class="exercise-container">
+        <!-- Exercise 1 -->
+        <div id="exercise1" class="exercise" style="display: none;">
+            <div class="instructions">
+                <h2>Exercise 1: Understanding Static Methods</h2>
+                <p><strong>What is a Static Method?</strong></p>
+                <p>A <strong>static method</strong> belongs to the class rather than any instance of the class. This means you can call a static method without creating an object of the class. Static methods are often used for operations that don’t depend on the state of an object, like utility or helper methods.</p>
+
+                <p><strong>Why use Static Methods?</strong></p>
+                <p>Static methods are useful when you want to perform an action that doesn't depend on any object data. For example, a method that converts temperature from Celsius to Fahrenheit can be static because it doesn't need any instance variables.</p>
+
+                <p><strong>Syntax:</strong></p>
+                <pre><code>
+public class ClassName {
+    public static void methodName() {
+        // code to be executed
+    }
+}
+                </code></pre>
+
+                <p><strong>Calling a Static Method:</strong></p>
+                <p>To call a static method, use the class name followed by a dot and the method name.</p>
+                <pre><code>
+ClassName.methodName();
+                </code></pre>
+
+                <p><strong>Example:</strong></p>
+                <pre><code>
+public class Converter {
+    // Static method to convert Celsius to Fahrenheit
+    public static double celsiusToFahrenheit(double celsius) {
+        return (celsius * 9/5) + 32;
+    }
+
+    // Main method
+    public static void main(String[] args) {
+        double tempInF = Converter.celsiusToFahrenheit(25);
+        System.out.println("25°C in Fahrenheit is: " + tempInF);
+    }
+}
+                </code></pre>
+                
+                <p><strong>Practice Exercise:</strong></p>
+                <p>Create a class <code>MathUtils</code> with a static method <code>square</code> to calculate the square of a number and a static method <code>cube</code> to calculate the cube. Call these methods from the <code>Main</code> method and print the results.</p>
+            </div>
+            <iframe src="https://www.jdoodle.com/online-java-compiler"></iframe>
+        </div>
+    
+
+        <!-- Exercise 2 -->
+        <div id="exercise2" class="exercise" style="display: none;">
+            <div class="instructions">
+                <h2>Exercise 2: Methods that Return Values</h2>
+                <p><strong>What is a Return Method?</strong></p>
+                <p>A method that returns a value provides a result that can be used elsewhere in the program. Unlike <code>void</code> methods, which don't return anything, these methods return a specific data type (e.g., <code>int</code>, <code>double</code>, <code>String</code>).</p>
+
+                <p><strong>Why use Return Methods?</strong></p>
+                <p>Returning values from methods is important when you need the result of a calculation or operation to be used elsewhere in your program.</p>
+
+                <p><strong>Syntax:</strong></p>
+                <pre><code>
+public class ClassName {
+    public static returnType methodName() {
+        // code to be executed
+        return value;
+    }
+}
+                </code></pre>
+
+                <p><strong>Example:</strong></p>
+                <pre><code>
+public class MathOperations {
+    public static int add(int a, int b) {
+        return a + b;
+    }
+
+    public static double multiply(double x, double y) {
+        return x * y;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        int sum = MathOperations.add(5, 10);
+        double product = MathOperations.multiply(4.5, 3.2);
+
+        System.out.println("Sum: " + sum);
+        System.out.println("Product: " + product);
+    }
+}
+                </code></pre>
+
+                <p><strong>Practice Exercise:</strong></p>
+                <p>Create a class <code>Calculator</code> with methods that return the difference, quotient, and remainder of two numbers. Call these methods from the <code>Main</code> class and print the results.</p>
+            </div>
+            <iframe src="https://www.jdoodle.com/online-java-compiler"></iframe>
+        </div>
+
+
+        <!-- Exercise 3 -->
+        <div id="exercise3" class="exercise" style="display: none;">
+            <div class="instructions">
+                <h2>Exercise 3: Understanding Parameters</h2>
+                <p><strong>What are Parameters?</strong></p>
+                <p>In Java, parameters allow you to pass values to methods. These values can be used inside the method to perform operations. Parameters make methods flexible and reusable.</p>
+
+                <p><strong>Why use Parameters?</strong></p>
+                <p>Parameters allow methods to accept input values, making them more adaptable and reusable for different scenarios.</p>
+
+                <p><strong>Syntax:</strong></p>
+                <pre><code>
+public class ClassName {
+    public static void methodName(parameterType parameterName) {
+        // code to be executed
+    }
+}
+                </code></pre>
+
+                <p><strong>Example:</strong></p>
+                <pre><code>
+public class Greeter {
+    public static void greet(String name) {
+        System.out.println("Hello, " + name + "!");
+    }
+
+    public static void personalizedGreet(String name, int age) {
+        System.out.println("Hello, " + name + ". You are " + age + " years old.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Greeter.greet("Alice");
+        Greeter.personalizedGreet("Bob", 25);
+    }
+}
+                </code></pre>
+
+                <p><strong>Practice Exercise:</strong></p>
+                <p>Create a class <code>Rectangle</code> with a method <code>area</code> that takes two parameters: <code>length</code> and <code>width</code>, and returns the area. Call this method from the <code>Main</code> class and print the result.</p>
+            </div>
+            <iframe src="https://www.jdoodle.com/online-java-compiler"></iframe>
+        </div>
+    </div>
+
+public class Main {
+    public static void main(String[] args) {
+        Greeter.greet("Alice");   // Calling method with one argument
+        Greeter.personalizedGreet("Bob", 25);  // Calling method with two arguments
+    }
+}
+            </code></pre>
+            <p>In this example, the <code>greet</code> method takes a single parameter <code>name</code> and uses it to print a greeting. The <code>personalizedGreet</code> method takes two parameters, <code>name</code> and <code>age</code>, and uses them to print a more personalized message.</p>
+            
+            <h3>Try it Yourself</h3>
+            <p>Write a Java program that defines methods with different parameters and calls them from another class. Use the code below to get started.</p>
+        </div>
+        <div class="editor">
+            <textarea id="codeEditor3" rows="10" cols="50">
+public class MathOperations {
+    // Step 1: Create a method that adds two integers
+    public static int add(int a, int b) {
+        return a + b;  // returns the sum of a and b
+    }
+    
+    // Step 2: Create a method that multiplies two doubles
+    public static double multiply(double x, double y) {
+        return x * y;  // returns the product of x and y
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Step 3: Call the methods and store the returned values
+        int sum = MathOperations.add(5, 10);               // stores the returned sum
+        double product = MathOperations.multiply(4.5, 3.2); // stores the returned product
+        
+        // Step 4: Print the results
+        System.out.println("Sum: " + sum);
+        System.out.println("Product: " + product);
+    }
+}
+            </textarea>
+            <iframe src="https://www.jdoodle.com/online-java-compiler"></iframe>
+        </div>
+    </div>
+</div>
+
+
+        <!-- Project: Build Your Own Function -->
+        <div id="project" class="exercise" style="display: none;">
+            <div class="instructions">
+                <h2>Project: Create a Complex Function</h2>
+                <p>Use this space to create a more complex function that takes multiple parameters, performs some calculations or operations, and returns a result.</p>
+                <h3>Example Project Idea:</h3>
+                <p>Create a function that takes the radius of a circle as a parameter and returns the area of the circle.</p>
+            </div>
+            <div class="editor">
+                <textarea id="codeEditorProject" rows="20" cols="100"># Start your complex function project here!</textarea>
+                <button onclick="runCode('codeEditorProject', 'outputProject', 'resultProject')">Run</button>
+                <div class="output">
+                    <h3>Output</h3>
+                    <pre id="outputProject"></pre>
+                </div>
+                <div class="result">
+                    <h3>Result</h3>
+                    <pre id="resultProject"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showExercise(exerciseId) {
+            const exercises = document.querySelectorAll('.exercise');
+            exercises.forEach(exercise => {
+                exercise.style.display = 'none';
+            });
+            document.getElementById(exerciseId).style.display = 'flex';
+        }
+    </script>
+            <script>
+            function goToHomepage() {
+                window.location.href = 'java_tutorials.html';  
+            }
+        </script>
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guided Lessons - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #263238;
+            --accent: #FFC107;
+            --background: #F5F7FA;
+            --text: #333;
+            --text-light: #666;
+            --white: #ffffff;
+            --success: #4CAF50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Top Strip */
+        .top-strip {
+            background-color: var(--primary);
+            height: 30px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+
+        /* Navbar */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: fixed;
+            top: 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Container and Sidebar */
+        .container {
+            display: flex;
+            min-height: calc(100vh - 60px);
+            margin-top: 80px;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: var(--white);
+            padding: 2rem;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            font-size: 1rem;
+            color: var(--text);
+            padding: 0.5rem;
+            border-radius: 8px;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        /* Main Content */
+        .content {
+            flex-grow: 1;
+            padding: 2rem;
+            background-color: var(--background);
+        }
+
+        .content h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Video Container */
+        .video-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 800px; /* Adjusted for larger size */
+            max-height: 450px; /* Adjusted height */
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 450px;
+            border: none;
+        }
+
+        /* Lesson Content */
+        .lesson-content {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .lesson-content h3 {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .lesson-content p, .lesson-content ul {
+            margin-bottom: 1rem;
+        }
+
+        .lesson-content ul {
+            padding-left: 1.5rem;
+            list-style: disc;
+        }
+
+        .example-box {
+            background-color: #f0f0f0;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        code {
+            background-color: #e0e0e0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        /* Knowledge Check */
+        .knowledge-check {
+            background-color: var(--accent);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            color: var(--text);
+        }
+
+        .knowledge-check h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .knowledge-check button {
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .knowledge-check button:hover {
+            background-color: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="online_compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Links and Other Resources</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- Sidebar for lesson progress -->
+        <div class="sidebar">
+            <h2>Lesson 1 - Intro to Python</h2>
+            <ul>
+                <li><a href="#" class="active" onclick="showLesson('lesson1', event)">Lesson Overview</a></li>
+                <li><a href="#" onclick="showLesson('lesson2', event)">What is Programming?</a></li>
+                <li><a href="#" onclick="showLesson('lesson3', event)">Python Overview</a></li>
+                <li><a href="#" onclick="showLesson('lesson4', event)">Installation and Setup of Visual Studio Code</a></li>
+                <li><a href="#" onclick="showLesson('lesson5', event)">Your First Program</a></li>
+                <li><a href="python_tutorials.html">Back to Homepage</a></li> 
+            </ul>
+        </div>
+
+        <!-- Main content for text-only lesson -->
+        <div class="content">
+            <h1 id="lesson-title">Python Week 1: Overview</h1>
+            <div class="video-container" style="display: none;">
+                <iframe id="lesson-video" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="lesson-content" id="lesson-description">
+                <!-- Lesson content goes here -->
+            </div>
+            <div class="knowledge-check" id="knowledge-check" style="display: none;">
+                <h3>Knowledge Check</h3>
+                <p id="quiz-question"></p>
+                <button onclick="checkAnswer()">Check Answer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const lessons = {
+            lesson1: {
+                title: 'Python Week 1: Overview',
+                video: '',
+                description: `
+                    <p>This lesson focuses on setting up your development environment and understanding the basics of Python programming.</p>
+                    <h3>Key Topics:</h3>
+                    <ul>
+                        <li>Setting up Visual Studio Code</li>
+                        <li>Understanding file structure and the terminal</li>
+                        <li>Writing your first Python program</li>
+                    </ul>
+                    <p><strong>Next:</strong> We’ll dive into programming concepts and why they matter.</p>
+                `,
+                showQuiz: true,
+                quiz: {
+                    question: "What is the primary function of the terminal in VS Code?",
+                    correctAnswer: "To display the output of your code."
+                }
+            },
+            lesson2: {
+                title: 'What is Programming?',
+                video: 'https://www.youtube.com/embed/FCMxA3m_Imc?si=7FiJs3RVoyOodMlt',
+                description: `<p>This lesson explains the purpose and importance of programming in various applications.</p>`,
+                showQuiz: true,
+                quiz: {
+                    question: "Which of these is a key benefit of programming?",
+                    correctAnswer: "Automation of repetitive tasks"
+                }
+            },
+            lesson3: {
+                title: 'Python Overview',
+                video: 'https://www.youtube.com/embed/Y8Tko2YC5hA?si=1MV0uXbyGClVEqIT',
+                description: `<p>An introduction to Python and its benefits as a programming language.</p>`,
+                showQuiz: false
+            },
+            lesson4: {
+                title: 'Installation and Setup of VS Code',
+                video: 'https://www.youtube.com/embed/D2cwvpJSBX4?si=e026slqh0ltLPilk',
+                description: `<p>This video will guide you through setting up Visual Studio Code for Python development.</p>`,
+                showQuiz: true,
+                quiz: {
+                    question: "What file extension is commonly used for Python scripts?",
+                    correctAnswer: ".py"
+                }
+            },
+            lesson5: {
+                title: 'Your First Program!',
+                video: 'https://www.youtube.com/embed/hp4pYFASTrc?si=2m--_GuZ8qjz550G',
+                description: `<p>Learn how to write your first Python program using print statements.</p>`,
+                showQuiz: true,
+                quiz: {
+                    question: "What function is used to display output in Python?",
+                    correctAnswer: "print()"
+                }
+            }
+        };
+
+        function showLesson(lessonKey, event) {
+            if (event) event.preventDefault();
+            const lesson = lessons[lessonKey];
+            document.getElementById('lesson-title').textContent = lesson.title;
+            document.getElementById('lesson-description').innerHTML = lesson.description;
+
+            const videoContainer = document.querySelector('.video-container');
+            const videoFrame = document.getElementById('lesson-video');
+
+            if (lesson.video) {
+                videoContainer.style.display = 'block';
+                videoFrame.src = lesson.video;
+            } else {
+                videoContainer.style.display = 'none';
+                videoFrame.src = '';
+            }
+
+            document.querySelectorAll('.sidebar ul li a').forEach(a => a.classList.remove('active'));
+            document.querySelector(`.sidebar ul li a[href="#"]`).classList.add('active');
+
+            const knowledgeCheck = document.getElementById('knowledge-check');
+            if (lesson.showQuiz) {
+                knowledgeCheck.style.display = 'block';
+                document.getElementById('quiz-question').textContent = lesson.quiz.question;
+            } else {
+                knowledgeCheck.style.display = 'none';
+            }
+        }
+
+        function checkAnswer() {
+            alert("Correct! The 'print()' function outputs text to the terminal.");
+        }
+
+        showLesson('lesson1');
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scratch 2 - Lesson 2: Calculator - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #FF4081;
+            --accent: #FFC107;
+            --background: #f0f4f8;
+            --surface: #ffffff;
+            --border: #e0e7ff;
+            --text: #2d3748;
+            --text-light: #4a5568;
+            --success: #48bb78;
+            --error: #f56565;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 5px;
+            width: 100%;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 2rem auto;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .exercise-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item:hover {
+            background: var(--primary);
+            color: var(--surface);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item.active {
+            background: var(--primary);
+            color: var(--surface);
+            border-color: var(--primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .tutorial-section {
+            flex: 1;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .code-preview {
+            width: 50%;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            overflow-y: auto;
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 80px;
+        }
+
+        .tutorial-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .tutorial-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .content-box {
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .highlight-box {
+            background-color: #e6f7ff;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .step-box {
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            margin-right: 0.5rem;
+        }
+
+        .image-block {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .image-caption {
+            text-align: center;
+            font-style: italic;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+
+        .interactive-demo {
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            background-color: #f8f9fa;
+        }
+
+        .demo-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .demo-button {
+            padding: 0.5rem 1rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .demo-button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+
+            .main-content {
+                flex-direction: column;
+            }
+
+            .code-preview {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="#" target="_blank" rel="noopener noreferrer">Enroll</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="exercise-list">
+                <div class="exercise-item" data-exercise="overview">
+                    <span>Lesson Overview</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise1">
+                    <span>1. Ask Function & Conditional Logic</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise2">
+                    <span>2. Coding the Subtraction Operation</span>
+                </div>
+                <div class="exercise-item" data-exercise="homework">
+                    <span>Homework and Exercises</span>
+                </div>
+                <div class="exercise-item" onclick="window.location.href='scratch2_tutorials.html'">
+                    <span>Return to Home</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="tutorial-section">
+                <div id="tutorial-content"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Include Scripts -->
+    <script src="config.js"></script>
+    <script>
+        document.querySelectorAll(".enroll-button").forEach(button => {
+            button.href = enrollLink;
+        });
+    </script>
+    <script>
+        lucide.createIcons();
+
+        const exercises = [
+            {
+                title: "Lesson Overview",
+                content: `
+                    <h1 class="tutorial-title">Scratch 2 - Lesson 2: Calculator</h1>
+                    <div class="content-box">
+                        <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
+                        <p class="tutorial-text">
+                            In this lesson, you will create a simple calculator in Scratch. By the end of this project, you'll have a functioning calculator that can perform basic math operations (addition, subtraction, multiplication, and division).
+                        </p>
+                    </div>
+
+                    <div class="interactive-demo">
+                        <h3 class="text-xl font-semibold mb-2">Interactive Calculator Demo</h3>
+                        <div id="calculator-demo">
+                            <input type="number" id="num1" placeholder="Enter number 1">
+                            <input type="number" id="num2" placeholder="Enter number 2">
+                            <select id="operation">
+                                <option value="add">Add</option>
+                                <option value="subtract">Subtract</option>
+                                <option value="multiply">Multiply</option>
+                                <option value="divide">Divide</option>
+                            </select>
+                            <button onclick="calculate()">Calculate</button>
+                            <p id="result"></p>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Check out the final Scratch project below!</h3>
+                        <iframe src="https://scratch.mit.edu/projects/963670311/embed" allowtransparency="true" width="485" height="402" frameborder="0" scrolling="no" allowfullscreen></iframe>
+                    </div>
+
+                    <div class="highlight-box">
+                        <p><strong>Key Concepts:</strong> Variables, User Input, Conditional Statements, Mathematical Operations</p>
+                    </div>
+                `
+            },
+            {
+                title: "Ask Function & Conditional Logic",
+                content: `
+                    <h1 class="tutorial-title">1. Ask Function & Conditional Logic</h1>
+                    <div class="interactive-demo">
+                        <h3 class="text-xl font-semibold mb-2">Try It: Conditional Logic</h3>
+                        <div id="conditional-demo">
+                            <input type="text" id="user-input" placeholder="Enter 'add', 'subtract', 'multiply', or 'divide'">
+                            <button onclick="checkCondition()">Check Condition</button>
+                            <p id="condition-result"></p>
+                        </div>
+                    <p>Type your math operation</p>
+                    </div>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">The Ask and Wait Block</h3>
+                        <p class="tutorial-text">
+                            The <strong>ask [ ] and wait</strong> block in Scratch is crucial for getting user input. It's like asking a question and waiting for an answer.
+                        </p>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Drag the <strong>ask [ ] and wait</strong> block from the "Sensing" category.</p>
+                            <p><span class="step-number">2</span> Type your question in the block, e.g., "What operation do you want to perform?"</p>
+                            <p><span class="step-number">3</span> The user's answer is stored in the <strong>answer</strong> block.</p>
+                        </div>
+                        <img src="/placeholder.svg?height=100&width=300" alt="Ask and Wait Block" class="image-block">
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Conditional Logic with If-Then Blocks</h3>
+                        <p class="tutorial-text">
+                            We use conditional logic to decide what operation to perform based on the user's input.
+                        </p>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Drag an <strong>if [ ] then</strong> block from the "Control" category.</p>
+                            <p><span class="step-number">2</span> Use the <strong>=</strong> block from "Operators" to check the <strong>answer</strong>.</p>
+                            <p><span class="step-number">3</span> Add blocks inside the if-then to perform the chosen operation.</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box">
+                        <p><strong>Pro Tip:</strong> Use multiple if-then blocks to handle different operations in your calculator.</p>
+                    </div>
+                `
+            },
+            {
+                title: "Coding the Subtraction Operation",
+                content: `
+                    <h1 class="tutorial-title">2. Coding the Subtraction Operation</h1>
+                    <div class="interactive-demo">
+                        <h3 class="text-xl font-semibold mb-2">Try It: Subtraction</h3>
+                        <div id="subtraction-demo">
+                            <input type="number" id="sub-num1" placeholder="Enter number 1">
+                            <input type="number" id="sub-num2" placeholder="Enter number 2">
+                            <button onclick="subtract()">Subtract</button>
+                            <p id="subtraction-result"></p>
+                        </div>
+                    </div>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Getting the Numbers</h3>
+                        <p class="tutorial-text">
+                            Before we can subtract, we need to get two numbers from the user.
+                        </p>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Use two <strong>ask [ ] and wait</strong> blocks to get both numbers.</p>
+                            <p><span class="step-number">2</span> Store each answer in a variable (e.g., 'number1' and 'number2').</p>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Performing the Subtraction</h3>
+                        <p class="tutorial-text">
+                            Now let's subtract the numbers and show the result.
+                        </p>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Use the <strong>-</strong> block from the "Operators" category.</p>
+                            <p><span class="step-number">2</span> Place your 'number1' and 'number2' variables in the subtraction block.</p>
+                            <p><span class="step-number">3</span> Use a <strong>say [ ]</strong> block to display the result.</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box">
+                        <p><strong>Challenge:</strong> Can you modify this code to handle addition, multiplication, and division as well?</p>
+                    </div>
+                `
+            },
+            {
+                title: "Homework and Exercises",
+                content: `
+                    <h1 class="tutorial-title">Homework and Exercises</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Exercise 1: Complete Calculator</h3>
+                        <p class="tutorial-text">
+                            Extend your calculator to handle all four basic operations: addition, subtraction, multiplication, and division.
+                        </p>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Add if-then blocks for each operation.</p>
+                            <p><span class="step-number">2</span> Use appropriate operator blocks for each calculation.</p>
+                            <p><span class="step-number">3</span> Test your calculator with different inputs.</p>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Exercise 2: Advanced Operations</h3>
+                        <p class="tutorial-text">
+                            Add more advanced operations to your calculator.
+                        </p>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Implement a square root function.</p>
+                            <p><span class="step-number">2</span> Add a power function (x to the power of y).</p>
+                            <p><span class="step-number">3</span> Include a modulo operation (remainder after division).</p>
+                        </div>
+                    </div>
+
+                    <div class="interactive-demo">
+                        <h3 class="text-xl font-semibold mb-2">Practice: Advanced Calculator</h3>
+                        <div id="advanced-calculator">
+                            <input type="number" id="adv-num1" placeholder="Enter number">
+                            <select id="adv-operation">
+                                <option value="sqrt">Square Root</option>
+                                <option value="power">Power</option>
+                                <option value="modulo">Modulo</option>
+                            </select>
+                            <input type="number" id="adv-num2" placeholder="Enter second number (if needed)">
+                            <button onclick="advancedCalculate()">Calculate</button>
+                            <p id="advanced-result"></p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box">
+                        <p><strong>Remember:</strong> The key to becoming a great programmer is practice and creativity. Keep experimenting and building new things!</p>
+                    </div>
+                `
+            }
+        ];
+
+        let currentExercise = 0;
+
+        function loadExercise(index) {
+            const exercise = exercises[index];
+            document.getElementById('tutorial-content').innerHTML = exercise.content;
+            document.querySelectorAll('.exercise-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+            currentExercise = index;
+            loadCodePreview(index);
+        }
+
+
+        document.querySelectorAll('.exercise-item').forEach((item, index) => {
+            item.addEventListener('click', () => loadExercise(index));
+        });
+
+        // Interactive demo functions
+        function calculate() {
+            const num1 = parseFloat(document.getElementById('num1').value);
+            const num2 = parseFloat(document.getElementById('num2').value);
+            const operation = document.getElementById('operation').value;
+            let result;
+
+            switch(operation) {
+                case 'add':
+                    result = num1 + num2;
+                    break;
+                case 'subtract':
+                    result = num1 - num2;
+                    break;
+                case 'multiply':
+                    result = num1 * num2;
+                    break;
+                case 'divide':
+                    result = num2 !== 0 ? num1 / num2 : 'Error: Division by zero';
+                    break;
+            }
+
+            document.getElementById('result').textContent = `Result: ${result}`;
+        }
+
+        function checkCondition() {
+            const input = document.getElementById('user-input').value.toLowerCase();
+            let message;
+
+            if (input === 'add') {
+                message = 'You chose addition!';
+            } else if (input === 'subtract') {
+                message = 'You chose subtraction!';
+            } else if (input === 'multiply') {
+                message = 'You chose multiplication!';
+            } else if (input === 'divide') {
+                message = 'You chose division!';
+            } else {
+                message = 'Invalid input. Please enter add, subtract, multiply, or divide.';
+            }
+
+            document.getElementById('condition-result').textContent = message;
+        }
+
+        function subtract() {
+            const num1 = parseFloat(document.getElementById('sub-num1').value);
+            const num2 = parseFloat(document.getElementById('sub-num2').value);
+            const result = num1 - num2;
+            document.getElementById('subtraction-result').textContent = `Result: ${result}`;
+        }
+
+        function advancedCalculate() {
+            const num1 = parseFloat(document.getElementById('adv-num1').value);
+            const num2 = parseFloat(document.getElementById('adv-num2').value);
+            const operation = document.getElementById('adv-operation').value;
+            let result;
+
+            switch(operation) {
+                case 'sqrt':
+                    result = Math.sqrt(num1);
+                    break;
+                case 'power':
+                    result = Math.pow(num1, num2);
+                    break;
+                case 'modulo':
+                    result = num1 % num2;
+                    break;
+            }
+
+            document.getElementById('advanced-result').textContent = `Result: ${result}`;
+        }
+
+        // Load the first exercise by default
+        loadExercise(0);
+    </script>
+</body>
+</html>

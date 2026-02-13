@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scratch 2 - Lesson 3: Basic Platformer - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #FF4081;
+            --accent: #FFC107;
+            --background: #f0f4f8;
+            --surface: #ffffff;
+            --border: #e0e7ff;
+            --text: #2d3748;
+            --text-light: #4a5568;
+            --success: #48bb78;
+            --error: #f56565;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 5px;
+            width: 100%;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 2rem auto;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .exercise-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item:hover {
+            background: var(--primary);
+            color: var(--surface);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item.active {
+            background: var(--primary);
+            color: var(--surface);
+            border-color: var(--primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .main-content {
+            flex: 1;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .tutorial-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .tutorial-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .content-box {
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .highlight-box {
+            background-color: #e6f7ff;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .step-box {
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            margin-right: 0.5rem;
+        }
+
+        .image-block {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .image-caption {
+            text-align: center;
+            font-style: italic;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+
+        .interactive-demo {
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            background-color: #f8f9fa;
+        }
+
+        .demo-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .demo-button {
+            padding: 0.5rem 1rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .demo-button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="#" target="_blank" rel="noopener noreferrer">Enroll</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="exercise-list">
+                <div class="exercise-item" data-exercise="overview">
+                    <span>Lesson Overview</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise1">
+                    <span>1. Creating the Platforms</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise2">
+                    <span>2. Creating the Character</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise3">
+                    <span>3. Jumping and Gravity</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise4">
+                    <span>4. Collisions with Platforms</span>
+                </div>
+                <div class="exercise-item" data-exercise="homework">
+                    <span>Homework</span>
+                </div>
+                <div class="exercise-item" onclick="window.location.href='scratch2_tutorials.html'">
+                    <span>Return to Home</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div id="tutorial-content"></div>
+        </main>
+    </div>
+
+    <!-- Include Scripts -->
+    <script src="config.js"></script>
+    <script>
+        document.querySelectorAll(".enroll-button").forEach(button => {
+            button.href = enrollLink;
+        });
+    </script>
+    <script>
+        const exercises = [
+            {
+                title: "Lesson Overview",
+                content: `
+                    <h1 class="tutorial-title">Scratch 2 Class - Guided Exercise</h1>
+                    <h2 class="text-2xl font-semibold mb-4">Lesson 3: Basic Platformer</h2>
+                    <div class="content-box">
+                        <p class="tutorial-text">
+                            In this lesson, we will create a basic platformer game. You will learn how to move a character left and right, jump between platforms, and avoid falling off the screen.
+                        </p>
+                        <p class="tutorial-text">
+                            By the end of this project, you'll have a simple but functioning platformer game with basic character movement, platform interaction, and gravity effects.
+                        </p>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Check out the final project below!</h3>
+                        <iframe src="https://scratch.mit.edu/projects/123456789/embed" allowtransparency="true" width="485" height="402" frameborder="0" scrolling="no" allowfullscreen class="mx-auto"></iframe>
+                    </div>
+
+                    <div class="interactive-demo">
+                        <h3 class="text-xl font-semibold mb-2">Interactive Platformer Demo</h3>
+                        <canvas id="game-canvas" width="400" height="300"></canvas>
+                        <div class="demo-controls">
+                            <button class="demo-button" onclick="moveLeft()">Move Left</button>
+                            <button class="demo-button" onclick="moveRight()">Move Right</button>
+                            <button class="demo-button" onclick="jump()">Jump</button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Creating the Platforms",
+                content: `
+                    <h1 class="tutorial-title">Mini-Lesson 1: Creating the Platforms</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 1: Drawing the Platforms</h3>
+                        <p class="tutorial-text">How do you think we should create platforms for our platformer game?</p>
+                        <div class="highlight-box">
+                            <p>Go to the "Backdrops" tab and draw simple rectangular platforms at different heights and widths. These will be the platforms that your character will jump onto.</p>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 2: Setting Up the Ground</h3>
+                        <p class="tutorial-text">What should we do to set up a ground at the bottom of the screen?</p>
+                        <div class="highlight-box">
+                            <p>Create a large rectangular ground that spans the bottom of the screen. This will act as the base platform in your game.</p>
+                        </div>
+                    </div>
+
+                    <div class="interactive-demo">
+                        <h3 class="text-xl font-semibold mb-2">Platform Designer</h3>
+                        <canvas id="platform-canvas" width="400" height="300"></canvas>
+                        <div class="demo-controls">
+                            <button class="demo-button" onclick="addPlatform()">Add Platform</button>
+                            <button class="demo-button" onclick="clearPlatforms()">Clear All</button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Creating the Character",
+                content: `
+                    <h1 class="tutorial-title">Mini-Lesson 2: Creating the Character</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 1: Drawing the Player Character</h3>
+                        <p class="tutorial-text">Next, we'll need to create a character that the player will control. How should we design the character?</p>
+                        <div class="highlight-box">
+                            <p>Go to the "Sprites" tab and draw a simple character sprite. You can draw a stick figure, a block character, or import an existing character.</p>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 2: Adding Basic Movement</h3>
+                        <p class="tutorial-text">How do you think we can program the character to move left and right?</p>
+                        <div class="highlight-box">
+                            <p>Use the <strong>when [left arrow] pressed</strong> and <strong>when [right arrow] pressed</strong> blocks to move the character left and right across the screen. Use the <strong>change x by [ ]</strong> block to control the movement.</p>
+                        </div>
+                    </div>
+
+                    <div class="interactive-demo">
+                        <h3 class="text-xl font-semibold mb-2">Character Movement Demo</h3>
+                        <canvas id="character-canvas" width="400" height="300"></canvas>
+                        <div class="demo-controls">
+                            <button class="demo-button" onmousedown="startMove('left')" onmouseup="stopMove()" ontouchstart="startMove('left')" ontouchend="stopMove()">Move Left</button>
+                            <button class="demo-button" onmousedown="startMove('right')" onmouseup="stopMove()" ontouchstart="startMove('right')" ontouchend="stopMove()">Move Right</button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Jumping and Gravity",
+                content: `
+                    <h1 class="tutorial-title">Mini-Lesson 3: Jumping and Gravity</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 1: Implementing Jumping</h3>
+                        <p class="tutorial-text">How do you think we can program the character to jump?</p>
+                        <div class="highlight-box">
+                            <p>Use the <strong>when [space key] pressed</strong> block and the <strong>change y by [ ]</strong> block to make the character jump. Adjust the value to simulate the jump height.</p>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 2: Simulating Gravity</h3>
+                        <p class="tutorial-text">What do we need to do to simulate gravity so that the character falls back down after jumping?</p>
+                        <div class="highlight-box">
+                            <p>Use a <strong>forever</strong> loop with the <strong>change y by -1</strong> block to make the character constantly move down. This will simulate gravity. You'll also need to add a condition that stops the character from falling through platforms.</p>
+                        </div>
+                    </div>
+
+                    <div class="interactive-demo">
+                        <h3 class="text-xl font-semibold mb-2">Interactive Platformer Demo</h3>
+                        <canvas id="game-canvas" width="400" height="300"></canvas>
+                        <div class="demo-controls">
+                            <button class="demo-button" onclick="moveLeft()">Move Left</button>
+                            <button class="demo-button" onclick="moveRight()">Move Right</button>
+                            <button class="demo-button" onclick="jump()">Jump</button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Collisions with Platforms",
+                content: `
+                    <h1 class="tutorial-title">Mini-Lesson 4: Collisions with Platforms</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 1: Stopping the Character on Platforms</h3>
+                        <p class="tutorial-text">How can we make sure the character stops falling when it lands on a platform using the color of the platform?</p>
+                        <div class="highlight-box">
+                            <p>Instead of checking if the character is touching a platform sprite, we will check if the character is touching the <strong>color</strong> of the platform. Use the <strong>if touching color [ ]</strong> block to detect the platform color.</p>
+                            <p>Once the character is touching the platform's color, use the <strong>set y to [y position]</strong> block to keep the character at the same y-coordinate. This will prevent the character from falling through the platform.</p>
+                            <p>You can pick the platform's color by clicking on the color picker in the <strong>if touching color [ ]</strong> block and selecting the platform's color directly.</p>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 2: Preventing the Character from Falling Off the Screen</h3>
+                        <p class="tutorial-text">What happens if the player falls off the platforms? How can we prevent the character from falling off the screen?</p>
+                        <div class="highlight-box">
+                            <p>If the character's <strong>y</strong> position goes below the screen's bottom (e.g., y < -180), reset the game or place the character back at the start position. You can use an <strong>if</strong> statement to check the <strong>y</strong> value and trigger the response.</p>
+                        </div>
+                    </div>
+
+                    <div class="interactive-demo">
+                        <h3 class="text-xl font-semibold mb-2">Interactive Platformer Demo</h3>
+                        <canvas id="game-canvas" width="400" height="300"></canvas>
+                        <div class="demo-controls">
+                            <button class="demo-button" onclick="moveLeft()">Move Left</button>
+                            <button class="demo-button" onclick="moveRight()">Move Right</button>
+                            <button class="demo-button" onclick="jump()">Jump</button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Homework",
+                content: `
+                    <h1 class="tutorial-title">Homework</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Extend Your Platformer:</h3>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>Add new levels or obstacles to your game.</li>
+                            <li>Create a goal for the player to reach at the end of each level.</li>
+                            <li>Implement a scoring system based on time or collected items.</li>
+                            <li>Add moving platforms or enemies to increase the challenge.</li>
+                        </ul>
+                    </div>
+
+                    <div class="highlight-box">
+                        <p><strong>Challenge:</strong> Can you create a level editor that allows players to design their own platformer levels?</p>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Reflection Questions:</h3>
+                        <ol class="list-decimal list-inside space-y-2">
+                            <li>What was the most challenging part of creating your platformer game?</li>
+                            <li>How did you handle the collision detection between the character and platforms?</li>
+                            <li>What additional features would you like to add to your game in the future?</li>
+                        </ol>
+                    </div>
+                `
+            }
+        ];
+
+        let currentExercise = 0;
+
+        function loadExercise(index) {
+            const exercise = exercises[index];
+            document.getElementById('tutorial-content').innerHTML = exercise.content;
+            document.querySelectorAll('.exercise-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+            currentExercise = index;
+            initializeInteractiveDemos();
+        }
+
+        document.querySelectorAll('.exercise-item').forEach((item, index) => {
+            item.addEventListener('click', () => loadExercise(index));
+        });
+
+        // Interactive demo functions
+        function initializeInteractiveDemos() {
+            // Platformer Demo
+            const gameCanvas = document.getElementById('game-canvas');
+            if (gameCanvas) {
+                const ctx = gameCanvas.getContext('2d');
+                let characterX = 200;
+                let characterY = 250;
+                let isJumping = false;
+                let jumpVelocity = 0;
+                const gravity = 0.5;
+                const platforms = [
+                    {x: 0, y: 280, width: 400, height: 20},
+                    {x: 100, y: 200, width: 100, height: 20},
+                    {x: 250, y: 150, width: 100, height: 20}
+                ];
+                
+                function drawPlatformerDemo() {
+                    ctx.clearRect(0, 0, 400, 300);
+                    // Draw platforms
+                    ctx.fillStyle = '#8B4513';
+                    platforms.forEach(platform => {
+                        ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
+                    });
+                    // Draw character
+                    ctx.fillStyle = '#FF0000';
+                    ctx.fillRect(characterX, characterY, 20, 30);
+                }
+
+                function checkCollision() {
+                    for (let platform of platforms) {
+                        if (characterX < platform.x + platform.width &&
+                            characterX + 20 > platform.x &&
+                            characterY + 30 > platform.y &&
+                            characterY < platform.y + platform.height) {
+                            return platform;
+                        }
+                    }
+                    return null;
+                }
+
+                function applyPhysics() {
+                    if (isJumping) {
+                        jumpVelocity += gravity;
+                        characterY += jumpVelocity;
+                    }
+
+                    const collidedPlatform = checkCollision();
+                    if (collidedPlatform) {
+                        characterY = collidedPlatform.y - 30;
+                        isJumping = false;
+                        jumpVelocity = 0;
+                    } else if (characterY < 250) {
+                        isJumping = true;
+                    }
+
+                    if (characterY > 300) {
+                        characterX = 200;
+                        characterY = 250;
+                        isJumping = false;
+                        jumpVelocity = 0;
+                    }
+
+                    drawPlatformerDemo();
+                    requestAnimationFrame(applyPhysics);
+                }
+
+                window.moveLeft = function() {
+                    characterX = Math.max(0, characterX - 10);
+                };
+
+                window.moveRight = function() {
+                    characterX = Math.min(380, characterX + 10);
+                };
+
+                window.jump = function() {
+                    if (!isJumping) {
+                        isJumping = true;
+                        jumpVelocity = -10;
+                    }
+                };
+
+                applyPhysics();
+            }
+
+            // Platform Designer Demo
+            const platformCanvas = document.getElementById('platform-canvas');
+            if (platformCanvas) {
+                const ctx = platformCanvas.getContext('2d');
+                const platforms = [];
+                
+                function drawPlatforms() {
+                    ctx.clearRect(0, 0, 400, 300);
+                    ctx.fillStyle = '#8B4513';
+                    platforms.forEach(platform => {
+                        ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
+                    });
+                }
+
+                window.addPlatform = function() {
+                    const platform = {
+                        x: Math.random() * 350,
+                        y: Math.random() * 250,
+                        width: 50 + Math.random() * 50,
+                        height: 10 + Math.random() * 10
+                    };
+                    platforms.push(platform);
+                    drawPlatforms();
+                };
+
+                window.clearPlatforms = function() {
+                    platforms.length = 0;
+                    drawPlatforms();
+                };
+
+                drawPlatforms();
+            }
+
+            // Character Movement Demo
+            const characterCanvas = document.getElementById('character-canvas');
+            if (characterCanvas) {
+                const ctx = characterCanvas.getContext('2d');
+                let characterX = 200;
+                let moveInterval;
+                
+                function drawCharacter() {
+                    ctx.clearRect(0, 0, 400, 300);
+                    ctx.fillStyle = '#FF0000';
+                    ctx.fillRect(characterX, 135, 20, 30);
+                }
+
+                window.startMove = function(direction) {
+                    clearInterval(moveInterval);
+                    moveInterval = setInterval(() => {
+                        if (direction === 'left') {
+                            characterX = Math.max(0, characterX - 5);
+                        } else {
+                            characterX = Math.min(380, characterX + 5);
+                        }
+                        drawCharacter();
+                    }, 50);
+                };
+
+                window.stopMove = function() {
+                    clearInterval(moveInterval);
+                };
+
+                drawCharacter();
+            }
+
+            // Jumping and Gravity Demo
+            const jumpCanvas = document.getElementById('jump-canvas');
+            if (jumpCanvas) {
+                const ctx = jumpCanvas.getContext('2d');
+                let characterY = 250;
+                let isJumping = false;
+                let jumpVelocity = 0;
+                const gravity = 0.5;
+                
+                function drawJumpDemo() {
+                    ctx.clearRect(0, 0, 400, 300);
+                    ctx.fillStyle = '#8B4513';
+                    ctx.fillRect(0, 280, 400, 20);
+                    ctx.fillStyle = '#FF0000';
+                    ctx.fillRect(190, characterY, 20, 30);
+                }
+
+                function applyGravity() {
+                    if (characterY < 250) {
+                        jumpVelocity += gravity;
+                        characterY += jumpVelocity;
+                        if (characterY > 250) {
+                            characterY = 250;
+                            isJumping = false;
+                            jumpVelocity = 0;
+                        }
+                    }
+                    drawJumpDemo();
+                    requestAnimationFrame(applyGravity);
+                }
+
+                window.jump = function() {
+                    if (!isJumping) {
+                        isJumping = true;
+                        jumpVelocity = -10;
+                    }
+                };
+
+                applyGravity();
+            }
+
+            // Collision Demo
+            const collisionCanvas = document.getElementById('collision-canvas');
+            if (collisionCanvas) {
+                const ctx = collisionCanvas.getContext('2d');
+                let characterX = 200;
+                let characterY = 250;
+                let isJumping = false;
+                let jumpVelocity = 0;
+                const gravity = 0.5;
+                const platforms = [
+                    {x: 0, y: 280, width: 400, height: 20},
+                    {x: 100, y: 200, width: 100, height: 20},
+                    {x: 250, y: 150, width: 100, height: 20}
+                ];
+                
+                function drawCollisionDemo() {
+                    ctx.clearRect(0, 0, 400, 300);
+                    // Draw platforms
+                    ctx.fillStyle = '#8B4513';
+                    platforms.forEach(platform => {
+                        ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
+                    });
+                    // Draw character
+                    ctx.fillStyle = '#FF0000';
+                    ctx.fillRect(characterX, characterY, 20, 30);
+                }
+
+                function checkCollision() {
+                    for (let platform of platforms) {
+                        if (characterX < platform.x + platform.width &&
+                            characterX + 20 > platform.x &&
+                            characterY + 30 > platform.y &&
+                            characterY < platform.y + platform.height) {
+                            return platform;
+                        }
+                    }
+                    return null;
+                }
+
+                function applyPhysics() {
+                    if (isJumping) {
+                        jumpVelocity += gravity;
+                        characterY += jumpVelocity;
+                    }
+
+                    const collidedPlatform = checkCollision();
+                    if (collidedPlatform) {
+                        characterY = collidedPlatform.y - 30;
+                        isJumping = false;
+                        jumpVelocity = 0;
+                    } else if (characterY < 250) {
+                        isJumping = true;
+                    }
+
+                    if (characterY > 300) {
+                        characterX = 200;
+                        characterY = 250;
+                        isJumping = false;
+                        jumpVelocity = 0;
+                    }
+
+                    drawCollisionDemo();
+                    requestAnimationFrame(applyPhysics);
+                }
+
+                window.startMove = function(direction) {
+                    clearInterval(moveInterval);
+                    moveInterval = setInterval(() => {
+                        if (direction === 'left') {
+                            characterX = Math.max(0, characterX - 5);
+                        } else {
+                            characterX = Math.min(380, characterX + 5);
+                        }
+                    }, 50);
+                };
+
+                window.stopMove = function() {
+                    clearInterval(moveInterval);
+                };
+
+                window.jump = function() {
+                    if (!isJumping) {
+                        isJumping = true;
+                        jumpVelocity = -10;
+                    }
+                };
+
+                applyPhysics();
+            }
+        }
+
+        // Load the first exercise by default
+        loadExercise(0);
+    </script>
+</body>
+</html>

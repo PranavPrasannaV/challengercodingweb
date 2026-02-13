@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guided Lessons - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #263238;
+            --accent: #FFC107;
+            --background: #F5F7FA;
+            --text: #333;
+            --text-light: #666;
+            --white: #ffffff;
+            --success: #4CAF50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 30px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: fixed;
+            top: 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            min-height: calc(100vh - 60px);
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: var(--white);
+            padding: 2rem;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .progress-bar {
+            width: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-right: 1rem;
+            align-self: stretch;
+            position: relative;
+        }
+
+        .progress {
+            width: 100%;
+            background-color: var(--primary);
+            border-radius: 5px;
+            position: absolute;
+            bottom: 0;
+            transition: height 0.3s ease;
+        }
+
+        .lesson-list {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            font-size: 1rem;
+            color: var(--text);
+            display: block;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: 0.3s;
+            flex-grow: 1;
+        }
+
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 14px;
+        }
+
+        .checkbox.completed {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .content h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .lesson-content {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .lesson-content h2 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        .lesson-content h3 {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .lesson-content p, .lesson-content ul {
+            margin-bottom: 1rem;
+        }
+
+        .lesson-content ul {
+            padding-left: 1.5rem;
+        }
+
+        .example-box {
+            background-color: #f0f0f0;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        code {
+            background-color: #e0e0e0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        .knowledge-check {
+            background-color: var(--accent);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .knowledge-check h3 {
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .knowledge-check label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .knowledge-check button {
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .knowledge-check button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .back-button {
+            display: block;
+            text-decoration: none;
+            color: var(--text);
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            background-color: var(--accent);
+            border-radius: 8px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                order: 2;
+            }
+
+            .progress-bar {
+                width: 100%;
+                height: 10px;
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+
+            .progress {
+                width: 0;
+                height: 100%;
+            }
+
+            .content {
+                order: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="online_compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="sidebar">
+            <br>
+            <br>
+            <br>
+            <a href="python_tutorials.html" class="back-button">
+                <i data-lucide="arrow-left"></i> Back to Tutorials
+            </a>
+            <div class="progress-bar">
+                <div class="progress" id="lesson-progress"></div>
+            </div>
+            <div class="lesson-list">
+                <h2>Lesson 2 - Variables</h2>
+                <ul id="lesson-list"></ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <br>
+            <br>
+            <br>
+            <h1 id="lesson-title"></h1>
+            <div class="video-container">
+                <iframe id="lesson-video" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="lesson-content" id="lesson-description"></div>
+            <div class="knowledge-check" id="knowledge-check"></div>
+        </div>
+    </div>
+
+    <script>
+        const lessons = [
+            {
+                id: 'lesson1',
+                title: 'Python Week 2: Overview',
+                video: 'https://www.youtube.com/embed/hC1GL4ZQYcs',
+                description: `
+                    <p>This lesson introduces key concepts regarding variables and their role in storing information. We also explore the three main types of variables in Python and different operations that can be performed on them.</p>
+
+                    <h2>Key Topics Covered:</h2>
+                    <ul>
+                        <li>Introduction to Variables</li>
+                        <li>Data Types: String, Integer, Float</li>
+                        <li>Declaring and Redefining Variables</li>
+                        <li>Operations on Integer and Float Variables</li>
+                        <li>String Concatenation</li>
+                    </ul>
+
+                    <h2>Definitions:</h2>
+                    <h3>Variables:</h3>
+                    <p>Variables are used to store information in memory. Think of a variable like a labeled box, and the information inside the box is what the computer remembers. Variables get erased and replaced each time you rerun your program.</p>
+
+                    <h3>Data Types:</h3>
+                    <p>Data types represent the kinds of information you can store in variables. Python allows a flexible system where variables can switch between types as needed. We covered the following:</p>
+                    <ul>
+                        <li><strong>Strings:</strong> Sequences of characters, including text, surrounded by quotation marks (<code>" "</code> or <code>' '</code>).</li>
+                        <li><strong>Integer:</strong> Whole numbers without decimals.</li>
+                        <li><strong>Float:</strong> Numbers with decimal points.</li>
+                    </ul>
+
+                    <h2>Examples:</h2>
+                    <div class="example-box">
+                        <strong>Declaring a String:</strong>
+                        <code>name = "Aadi Saraf"</code>
+                    </div>
+                    <div class="example-box">
+                        <strong>Declaring an Integer:</strong>
+                        <code>num = 10</code>
+                    </div>
+                    <div class="example-box">
+                        <strong>Declaring a Float:</strong>
+                        <code>pi = 3.14159</code>
+                    </div>
+
+                    <h2>String Concatenation:</h2>
+                    <p>Strings can be added together using concatenation. This combines multiple strings into one longer string.</p>
+                    <div class="example-box">
+                        <strong>Example:</strong>
+                        <code>greeting = "Hello, " + "world!"</code> will produce <code>"Hello, world!"</code>
+                    </div>
+
+                    <h2>Operations on Variables:</h2>
+                    <p>Python allows you to perform operations on integers and floats, such as addition, subtraction, multiplication, and more.</p>
+                    <ul>
+                        <li><strong>Addition:</strong> <code>+</code></li>
+                        <li><strong>Subtraction:</strong> <code>-</code></li>
+                        <li><strong>Multiplication:</strong> <code>*</code></li>
+                        <li><strong>Division:</strong> <code>/</code></li>
+                        <li><strong>Floor Division:</strong> <code>//</code> (Removes decimals)</li>
+                        <li><strong>Modulo:</strong> <code>%</code> (Finds the remainder)</li>
+                    </ul>
+
+                    <h2>Redefining Variables:</h2>
+                    <p>Variables can be redeclared at any time. For example:</p>
+                    <div class="example-box">
+                        <strong>Initial:</strong> <code>num = 10</code><br>
+                        <strong>Redeclaration:</strong> <code>num = 20</code>
+                    </div>
+
+                    <h2>Advanced Printing:</h2>
+                    <p>To insert variables into a string during a <code>print()</code> statement, use an <code>f-string</code>. It lets you include variables within a string by surrounding the variable name with curly brackets <code>{ }</code>.</p>
+                    <div class="example-box">
+                        <strong>Example:</strong> <code>print(f"My favorite number is {favNumber}")</code>
+                    </div>
+                `,
+                quiz: [
+                    {
+                        question: "What is a variable in Python?",
+                        options: [
+                            "A fixed value that cannot be changed",
+                            "A container for storing data values",
+                            "A type of loop in Python",
+                            "A built-in function"
+                        ],
+                        correctAnswer: 1
+                    },
+                    {
+                        question: "Which of the following is NOT a basic data type in Python?",
+                        options: [
+                            "Integer",
+                            "Float",
+                            "String",
+                            "Array"
+                        ],
+                        correctAnswer: 3
+                    },
+                    {
+                        question: "What is the output of the following code: print('Hello' + ' ' + 'World')?",
+                        options: [
+                            "HelloWorld",
+                            
+                            "Hello World",
+                            "Error",
+                            "None of the above"
+                        ],
+                        correctAnswer: 1
+                    }
+                ]
+            },
+            {
+                id: 'lesson2',
+                title: 'What is a Variable?',
+                video: 'https://www.youtube.com/embed/nOZuCmkahvM?si=-oAVoR5NJbE3maYr',
+                description: '<p>In this lesson, you will learn about variables, which are used to store data, and data types, such as numbers and strings.</p>',
+                quiz: [
+                    {
+                        question: "Which symbol is used to assign a value to a variable in Python?",
+                        options: [
+                            "==",
+                            "=",
+                            ":",
+                            "->"
+                        ],
+                        correctAnswer: 1
+                    }
+                ]
+            },
+            {
+                id: 'lesson3',
+                title: 'Types of Variables',
+                video: 'https://www.youtube.com/embed/WKTgwJlA7gg?si=U8cdNZJaBzt47kiV',
+                description: '<p>Control structures are blocks of programming that analyze variables and choose directions in which to go based on given parameters.</p>',
+                quiz: [
+                    {
+                        question: "Which of the following is a valid variable name in Python?",
+                        options: [
+                            "2myVariable",
+                            "my-variable",
+                            "my_variable",
+                            "my variable"
+                        ],
+                        correctAnswer: 2
+                    }
+                ]
+            },
+            {
+                id: 'lesson4',
+                title: 'Creating and Defining a Variable',
+                video: 'https://www.youtube.com/embed/QFIxEreA6dY?si=yQTawsYLp18l5961',
+                description: '<p>Loops allow you to repeat actions in code. In this lesson, you will learn about different types of loops like while loops and for loops.</p>',
+                quiz: [
+                    {
+                        question: "What is the correct way to declare a variable 'x' with the value 5?",
+                        options: [
+                            "x == 5",
+                            "int x = 5",
+                            "x = 5",
+                            "let x = 5"
+                        ],
+                        correctAnswer: 2
+                    }
+                ]
+            },
+            {
+                id: 'lesson5',
+                title: 'Printing Variables',
+                video: 'https://www.youtube.com/embed/EeIBJFojBGE?si=Pbn_2IraJ9kg9yMl',
+                description: '<p>Learn how to use functions to break down complex tasks into smaller, reusable pieces. This lesson covers parameters and function calls.</p>',
+                quiz: [
+                    {
+                        question: "What is the correct way to print the value of a variable 'name'?",
+                        options: [
+                            "print(name)",
+                            "console.log(name)",
+                            "echo name",
+                            "printf(name)"
+                        ],
+                        correctAnswer: 0
+                    }
+                ]
+            },
+            {
+                id: 'lesson6',
+                title: 'Variable Operations',
+                video: 'https://www.youtube.com/embed/wvjJk5xBXa4?si=4UcvL96noAogQkBt',
+                description: '<p>Now it\'s time to put everything together and build your first game! In this project, you will use what you\'ve learned to create an interactive game.</p>',
+                quiz: [
+                    {
+                        question: "What is the result of 5 + 3 * 2 in Python?",
+                        options: [
+                            "16",
+                            "11",
+                            "13",
+                            "10"
+                        ],
+                        correctAnswer: 1
+                    }
+                ]
+            }
+        ];
+
+        let currentLessonIndex = 0;
+        let completedLessons = new Set();
+
+        function showLesson(index) {
+            const lesson = lessons[index];
+            document.getElementById('lesson-title').textContent = lesson.title;
+            document.getElementById('lesson-video').src = lesson.video;
+            document.getElementById('lesson-description').innerHTML = lesson.description;
+
+            document.querySelectorAll('#lesson-list a').forEach((a, i) => {
+                a.classList.toggle('active', i === index);
+            });
+
+            showKnowledgeCheck(lesson.quiz);
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = (completedLessons.size / lessons.length) * 100;
+            document.getElementById('lesson-progress').style.height = `${progress}%`;
+        }
+
+        function createLessonList() {
+            const lessonList = document.getElementById('lesson-list');
+            lessons.forEach((lesson, index) => {
+                const li = document.createElement('li');
+                const checkbox = document.createElement('div');
+                checkbox.className = 'checkbox';
+                checkbox.id = `checkbox-${lesson.id}`;
+                li.appendChild(checkbox);
+
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = lesson.title;
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    currentLessonIndex = index;
+                    showLesson(index);
+                };
+                li.appendChild(a);
+                lessonList.appendChild(li);
+            });
+        }
+
+        function showKnowledgeCheck(quiz) {
+            const knowledgeCheck = document.getElementById('knowledge-check');
+            knowledgeCheck.innerHTML = '';
+
+            const h3 = document.createElement('h3');
+            h3.textContent = 'Knowledge Check';
+            knowledgeCheck.appendChild(h3);
+
+            quiz.forEach((question, index) => {
+                const p = document.createElement('p');
+                p.textContent = question.question;
+                knowledgeCheck.appendChild(p);
+
+                question.options.forEach((option, optionIndex) => {
+                    const label = document.createElement('label');
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = `question-${index}`;
+                    radio.value = optionIndex;
+                    label.appendChild(radio);
+                    label.appendChild(document.createTextNode(` ${option}`));
+                    knowledgeCheck.appendChild(label);
+                });
+            });
+
+            const submitButton = document.createElement('button');
+            submitButton.textContent = 'Submit';
+            submitButton.onclick = () => checkAnswers(quiz);
+            knowledgeCheck.appendChild(submitButton);
+        }
+
+        function checkAnswers(quiz) {
+            let allCorrect = true;
+            quiz.forEach((question, index) => {
+                const selectedAnswer = document.querySelector(`input[name="question-${index}"]:checked`);
+                if (!selectedAnswer || parseInt(selectedAnswer.value) !== question.correctAnswer) {
+                    allCorrect = false;
+                }
+            });
+
+            if (allCorrect) {
+                alert('Congratulations! You have completed this lesson.');
+                completedLessons.add(lessons[currentLessonIndex].id);
+                updateCheckbox(lessons[currentLessonIndex].id);
+                updateProgress();
+            } else {
+                alert('Please try again. Review the lesson material and retake the quiz.');
+            }
+        }
+
+        function updateCheckbox(lessonId) {
+            const checkbox = document.getElementById(`checkbox-${lessonId}`);
+            checkbox.classList.add('completed');
+            checkbox.innerHTML = '✓';
+        }
+
+        createLessonList();
+        showLesson(0);
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>

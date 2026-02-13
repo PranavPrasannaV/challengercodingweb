@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Tutorial</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <style>
+        /* Ensure that all exercises take up the full width of the page */
+        .exercise {
+            width: 100%;
+            box-sizing: border-box; /* Include padding and border in the element's width and height */
+        }
+        
+        /* Ensure that iframes take up the full width of their container */
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: 0; /* Remove border if not needed */
+        }
+    </style>
+<head>
+<body>
+    <h1>Lesson 7: Array Basics in Java</h1>
+    <div class="button-container">
+        <button onclick="showExercise('exercise1')">Exercise 1: Introduction to Arrays</button>
+        <button onclick="showExercise('exercise2')">Exercise 2: Array Methods</button>
+        <button onclick="showExercise('exercise3')">Exercise 3: Traversing Arrays</button>
+        <button onclick="goToHomepage()" class="home-button">Back to Homepage</button>
+    </div>
+
+    <div class="exercise-container">
+        <!-- Exercise 1 -->
+        <div id="exercise1" class="exercise">
+            <div class="instructions">
+                <h2>Exercise 1: Introduction to Arrays</h2>
+                <p><strong>What is an Array?</strong></p>
+                <p>An array is a collection of variables that are stored in a contiguous block of memory and can be accessed using an index. Arrays are used to store multiple values of the same type in a single variable.</p>
+
+                <p>Think of an array as a row of lockers in a hallway. Each locker is numbered (indexed), and you can store one item (a value) in each locker.</p>
+
+                <p><strong>Syntax:</strong></p>
+                <pre><code>
+// Declaring an array of integers
+int[] numbers = new int[5];
+
+// Initializing an array
+int[] numbers = {1, 2, 3, 4, 5};
+                </code></pre>
+
+                <p><strong>Accessing Array Elements:</strong></p>
+                <p>Array elements are accessed using their index, which starts at 0. For example, <code>numbers[0]</code> gives the first element, and <code>numbers[4]</code> gives the last element in the example above.</p>
+                <pre><code>
+int firstNumber = numbers[0];  // Accessing the first element
+int lastNumber = numbers[4];   // Accessing the last element
+                </code></pre>
+
+                <p><strong>Practice Exercise:</strong></p>
+                <p>Create an array of 5 double values that represent the grades of a student. Assign values to each element in the array and print the first and last grades.</p>
+            </div>
+            <iframe src="https://www.jdoodle.com/online-java-compiler"></iframe>
+        </div>
+
+<!-- Exercise 2 -->
+<div id="exercise2" class="exercise" style="display: none;">
+    <div class="instructions">
+        <h2>Exercise 2: Array Methods</h2>
+        <p><strong>Array Class and Methods:</strong></p>
+        <p>Java provides an <code>Arrays</code> class in the <code>java.util</code> package, which contains various methods for manipulating arrays, such as sorting, searching, and comparing arrays.</p>
+
+        <p><strong>Commonly Used Array Methods:</strong></p>
+        <p>The following are some of the commonly used methods in the <code>Arrays</code> class. To use them, simply replace "arrays" with the name of the Array.</p>
+        <ul>
+            <li><code>Arrays.sort(array)</code>: Sorts the array in ascending order.</li>
+            <li><code>Arrays.toString(array)</code>: Converts the array to a String for easy printing.</li>
+            <li><code>Arrays.fill(array, value)</code>: Fills the array with the specified value.</li>
+            <li><code>Arrays.equals(array1, array2)</code>: Checks if two arrays are equal.</li>
+            <li><code>Arrays.binarySearch(array, key)</code>: Searches for a specific value within a sorted array. Returns the index of the key if found, otherwise returns a negative value.</li>
+            <li><code>Arrays.copyOf(array, newLength)</code>: Copies the original array into a new array with the specified length.</li>
+            <li><code>array.length</code>: Returns the length (number of elements) of the array.</li>
+        </ul>
+
+        <p><strong>Example:</strong></p>
+        <pre><code>
+import java.util.Arrays;
+
+public class ArrayMethodsExample {
+    public static void main(String[] args) {
+        int[] numbers = {5, 3, 8, 1, 2};
+
+        // Sorting the array
+        Arrays.sort(numbers);
+        System.out.println("Sorted array: " + Arrays.toString(numbers));
+
+        // Filling the array with a single value
+        Arrays.fill(numbers, 7);
+        System.out.println("Array after fill: " + Arrays.toString(numbers));
+
+        // Searching for a value in the sorted array
+        int index = Arrays.binarySearch(numbers, 7);
+        System.out.println("Index of 7 in the array: " + index);
+
+        // Copying the array
+        int[] newArray = Arrays.copyOf(numbers, 10);
+        System.out.println("New array after copy: " + Arrays.toString(newArray));
+
+        // Checking if two arrays are equal
+        int[] otherArray = {7, 7, 7, 7, 7};
+        boolean isEqual = Arrays.equals(numbers, otherArray);
+        System.out.println("Are the two arrays equal? " + isEqual);
+
+        // Getting the length of the array
+        System.out.println("Length of the array: " + numbers.length);
+    }
+}
+        </code></pre>
+
+        <p><strong>Practice Exercise:</strong></p>
+        <p>Create an array of 6 integers. Use the <code>Arrays.fill()</code> method to initialize all elements with the value 10. Then, sort the array, perform a binary search for the number 10, and print the index. Check the length of the array using the <code>length</code> property and print it. Finally, compare this array to another array with identical elements and print the result.</p>
+    </div>
+    <iframe src="https://www.jdoodle.com/online-java-compiler"></iframe>
+</div>
+
+
+        <!-- Exercise 3 -->
+        <div id="exercise3" class="exercise" style="display: none;">
+            <div class="instructions">
+                <h2>Exercise 3: Traversing Arrays with Loops</h2>
+                <p><strong>What is Array Traversing?</strong></p>
+                <p>Array traversing refers to accessing each element of an array in sequence. This is often done using loops like <code>for</code> or <code>while</code>.</p>
+
+                <p><strong>Traversing with a For Loop:</strong></p>
+                <pre><code>
+public class ArrayTraversal {
+    public static void main(String[] args) {
+        int[] numbers = {10, 20, 30, 40, 50};
+
+        // Using a for loop to traverse the array
+        for (int i = 0; i < numbers.length; i++) {
+            System.out.println("Element at index " + i + ": " + numbers[i]);
+        }
+    }
+}
+                </code></pre>
+
+                <p><strong>Traversing with an Enhanced For Loop:</strong></p>
+                <pre><code>
+public class ArrayTraversal {
+    public static void main(String[] args) {
+        int[] numbers = {10, 20, 30, 40, 50};
+
+        // Using an enhanced for loop to traverse the array
+        for (int num : numbers) {
+            System.out.println("Number: " + num);
+        }
+    }
+}
+                </code></pre>
+
+                <p><strong>Practice Exercise:</strong></p>
+                <p>Create an array of 10 integers. Use a loop to fill the array with even numbers. Then, traverse the array and print each element.</p>
+            </div>
+            <iframe src="https://www.jdoodle.com/online-java-compiler"></iframe>
+        </div>
+    </div>
+
+    <script>
+        function showExercise(exerciseId) {
+            const exercises = document.querySelectorAll('.exercise');
+            exercises.forEach(exercise => {
+                exercise.style.display = 'none';
+            });
+            document.getElementById(exerciseId).style.display = 'flex';
+        }
+
+        function builtinRead(x) {
+            if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined) {
+                throw "File not found: '" + x + "'";
+            }
+            return Sk.builtinFiles["files"][x];
+        }
+         
+    </script>
+        <script>
+            function goToHomepage() {
+                window.location.href = 'java_tutorials.html';  
+            }
+        </script>
+</body>
+<html>

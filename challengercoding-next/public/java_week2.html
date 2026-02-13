@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java 1 Lesson 2: Objects, Variables, and Data - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #263238;
+            --accent: #FFC107;
+            --background: #F5F7FA;
+            --text: #333;
+            --text-light: #666;
+            --white: #ffffff;
+            --success: #4CAF50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 30px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: fixed;
+            top: 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            min-height: calc(100vh - 60px);
+            margin-top: 60px;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: var(--white);
+            padding: 2rem;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+
+        .progress-bar {
+            width: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-right: 1rem;
+            align-self: stretch;
+            position: relative;
+        }
+
+        .progress {
+            width: 100%;
+            background-color: var(--primary);
+            border-radius: 5px;
+            position: absolute;
+            bottom: 0;
+            transition: height 0.3s ease;
+        }
+
+        .lesson-list {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            font-size: 1rem;
+            color: var(--text);
+            display: block;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: 0.3s;
+            flex-grow: 1;
+        }
+
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 14px;
+        }
+
+        .checkbox.completed {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 2rem;
+            margin-left: 300px;
+            overflow-y: auto;
+        }
+
+        .content h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .lesson-content {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .lesson-content h2 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        .lesson-content h3 {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .lesson-content p, .lesson-content ul {
+            margin-bottom: 1rem;
+        }
+
+        .lesson-content ul {
+            padding-left: 1.5rem;
+        }
+
+        .code-example {
+            background-color: #f0f0f0;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0 8px 8px 0;
+            font-family: 'Fira Code', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        code {
+            display: block;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .back-button {
+            display: block;
+            text-decoration: none;
+            color: var(--text);
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            background-color: var(--accent);
+            border-radius: 8px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .progress-bar {
+                width: 100%;
+                height: 10px;
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+
+            .progress {
+                width: 0;
+                height: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="online_compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="sidebar">
+            <a href="java_tutorials.html" class="back-button">
+                <i data-lucide="arrow-left"></i> Back to Tutorials
+            </a>
+            <div class="progress-bar">
+                <div class="progress" id="lesson-progress"></div>
+            </div>
+            <div class="lesson-list">
+                <h2>Java 1 Lesson 2: Objects, Variables, and Data</h2>
+                <ul id="lesson-list"></ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h1 id="lesson-title"></h1>
+            <div class="video-container" style="display: none;">
+                <iframe id="lesson-video" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="lesson-content" id="lesson-description"></div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const lessons = [
+            {
+                id: 'overview',
+                title: 'Lesson Overview',
+                video: null,
+                description: `
+                    <h2>Overview: Understanding Java Objects, Variables, and Data</h2>
+                    
+                    <h3>What are Objects, Variables, and Data?</h3>
+                    <p>Objects, variables, and data are fundamental concepts in Java programming. They form the building blocks of any Java application, allowing you to store, manipulate, and organize information in your programs.</p>
+
+                    <h3>Key Concepts</h3>
+                    <ul>
+                        <li>
+                            <strong>Variables</strong>
+                            <ul>
+                                <li>Variables are containers for storing data values</li>
+                                <li>They have a specific type and name</li>
+                                <li>Example declaration:
+                                    <div class="code-example">int age;</div>
+                                </li>
+                                <li>Example initialization:
+                                    <div class="code-example">int age = 25;</div>
+                                </li>
+                            </ul>
+                        </li>
+                        
+                        <li>
+                            <strong>Data Types</strong>
+                            <ul>
+                                <li>Java is a strongly-typed language, meaning every variable must have a declared type</li>
+                                <li>Primitive types: int, double, boolean, char</li>
+                                <li>Reference type: String</li>
+                                <li>Example:
+                                    <div class="code-example">
+int age = 25;
+double height = 5.9;
+boolean isStudent = true;
+char grade = 'A';
+String name = "Alice";</div>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <strong>Basic Operations</strong>
+                            <ul>
+                                <li>Arithmetic operations: +, -, *, /, %</li>
+                                <li>String concatenation: +</li>
+                                <li>Increment and decrement: ++, --</li>
+                                <li>Example:
+                                    <div class="code-example">
+int a = 5;
+int b = 3;
+int sum = a + b;  // Addition
+String fullName = "John" + " " + "Doe";  // Concatenation
+a++;  // Increment</div>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <strong>Printing Variables</strong>
+                            <ul>
+                                <li>Use System.out.println() for basic printing</li>
+                                <li>Use System.out.printf() for formatted output</li>
+                                <li>Examples:
+                                    <div class="code-example">
+System.out.println("Age: " + age);
+System.out.printf("Name: %s, Age: %d\n", name, age);</div>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <strong>Objects</strong>
+                            <ul>
+                                <li>Objects are instances of classes</li>
+                                <li>They bundle related state and behavior</li>
+                                <li>Created using the new keyword</li>
+                                <li>Example:
+                                    <div class="code-example">
+String greeting = new String("Hello, World!");
+java.util.Date today = new java.util.Date();</div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h3>Why are these concepts important?</h3>
+                    <ul>
+                        <li>They form the foundation of Java programming</li>
+                        <li>Enable data storage and manipulation in programs</li>
+                        <li>Allow for creation of complex, interactive applications</li>
+                        <li>Essential for understanding object-oriented programming</li>
+                    </ul>
+
+                    <p>Select a lesson from the sidebar to dive deeper into each of these concepts!</p>
+                `
+            },
+            {
+                id: 'variables',
+                title: 'Variables in Java',
+                video: 'https://www.youtube.com/embed/N8LDSryePuc',
+                description: `
+                    <h2>Understanding Variables in Java</h2>
+                    
+                    <p>Variables are fundamental to programming in Java. They allow us to store and manipulate data in our programs.</p>
+
+                    <h3>What is a Variable?</h3>
+                    <p>A variable is a container that holds a value. In Java, every variable has a specific type that determines what kind of data it can hold.</p>
+
+                    <h3>Declaring Variables</h3>
+                    <p>To declare a variable in Java, you specify its type and give it a name:</p>
+                    <div class="code-example">
+int age;
+String name;
+double salary;</div>
+
+                    <h3>Initializing Variables</h3>
+                    <p>You can initialize a variable when you declare it, or later in your code:</p>
+                    <div class="code-example">
+int age = 25;
+String name = "John Doe";
+double salary;
+salary = 50000.50;</div>
+
+                    <h3>Variable Naming Rules</h3>
+                    <ul>
+                        <li>Variable names are case-sensitive</li>
+                        <li>They must begin with a letter, underscore (_), or dollar sign ($)</li>
+                        <li>Subsequent characters may be letters, digits, underscores, or dollar signs</li>
+                        <li>Convention is to use camelCase for variable names</li>
+                    </ul>
+
+                    <h3>Practice</h3>
+                    <p>Try declaring and initializing different types of variables. Experiment with naming conventions and try to use meaningful variable names in your code.</pnaming conventions and try to use meaningful variable names in your code.</p>
+
+                    <h3>Key Takeaways</h3>
+                    <ul>
+                        <li>Variables are containers for storing data</li>
+                        <li>Each variable in Java has a specific type</li>
+                        <li>Variables must be declared before use</li>
+                        <li>You can initialize variables at declaration or later in the code</li>
+                        <li>Follow Java naming conventions for clear and readable code</li>
+                    </ul>
+                `
+            },
+            {
+                id: 'data-types',
+                title: 'Data Types in Java',
+                video: 'https://www.youtube.com/embed/UwpXXiGdlOE?si=VRev5VK0GucLtQvs',
+                description: `
+                    <h2>Understanding Data Types in Java</h2>
+                    
+                    <p>Java is a strongly-typed language, which means every variable must have a declared data type. Understanding these types is crucial for effective Java programming.</p>
+
+                    <h3>Primitive Data Types</h3>
+                    <p>Java has eight primitive data types:</p>
+                    <ul>
+                        <li><strong>byte</strong>: 8-bit signed two's complement integer</li>
+                        <li><strong>short</strong>: 16-bit signed two's complement integer</li>
+                        <li><strong>int</strong>: 32-bit signed two's complement integer</li>
+                        <li><strong>long</strong>: 64-bit signed two's complement integer</li>
+                        <li><strong>float</strong>: single-precision 32-bit IEEE 754 floating point</li>
+                        <li><strong>double</strong>: double-precision 64-bit IEEE 754 floating point</li>
+                        <li><strong>boolean</strong>: true or false</li>
+                        <li><strong>char</strong>: single 16-bit Unicode character</li>
+                    </ul>
+
+                    <h3>Reference Data Types</h3>
+                    <p>Reference types are used to refer to objects. The most commonly used reference type is String.</p>
+                    <div class="code-example">
+String greeting = "Hello, World!";</div>
+
+                    <h3>Examples</h3>
+                    <div class="code-example">
+int age = 25;
+double height = 5.9;
+boolean isStudent = true;
+char grade = 'A';
+String name = "Alice";</div>
+
+                    <h3>Type Conversion</h3>
+                    <p>Java supports both implicit and explicit type conversion:</p>
+                    <div class="code-example">
+int x = 5;
+long y = x;  // Implicit conversion
+int z = (int) y;  // Explicit conversion (casting)</div>
+
+                    <h3>Practice</h3>
+                    <p>Try declaring variables of different data types and perform operations on them. Experiment with type conversions and observe the results.</p>
+
+                    <h3>Key Takeaways</h3>
+                    <ul>
+                        <li>Java has 8 primitive data types and many reference types</li>
+                        <li>Each data type has a specific size and range of values it can hold</li>
+                        <li>Choosing the right data type is important for memory efficiency and preventing errors</li>
+                        <li>Type conversion allows you to change a value from one data type to another</li>
+                    </ul>
+                `
+            },
+            {
+                id: 'objects',
+                title: 'Objects in Java',
+                video: 'https://www.youtube.com/embed/8yjkWGRlUmY',
+                description: `
+                    <h2>Understanding Objects in Java</h2>
+                    
+                    <p>Objects are a fundamental concept in Java, as it is an object-oriented programming language. Understanding objects is key to mastering Java.</p>
+
+                    <h3>What is an Object?</h3>
+                    <p>An object is an instance of a class. It bundles related data and methods that operate on that data.</p>
+
+                    <h3>Creating Objects</h3>
+                    <p>Objects are created using the 'new' keyword:</p>
+                    <div class="code-example">
+String greeting = new String("Hello, World!");
+java.util.Date today = new java.util.Date();</div>
+
+                    <h3>Object Properties and Methods</h3>
+                    <p>Objects have properties (attributes) and methods (behaviors):</p>
+                    <div class="code-example">
+String str = "Hello";
+int length = str.length();  // length() is a method of String objects
+char firstChar = str.charAt(0);  // charAt() is another method</div>
+
+                    <h3>The 'null' Value</h3>
+                    <p>'null' is a special value that indicates an object reference is not currently referring to any object:</p>
+                    <div class="code-example">
+String str = null;
+// str.length();  // This would cause a NullPointerException</div>
+
+                    <h3>Practice</h3>
+                    <p>Try creating objects of different classes (like String, Date, ArrayList). Experiment with calling methods on these objects and accessing their properties.</p>
+
+                    <h3>Key Takeaways</h3>
+                    <ul>
+                        <li>Objects are instances of classes</li>
+                        <li>They bundle data (properties) and behavior (methods)</li>
+                        <li>Objects are created using the 'new' keyword</li>
+                        <li>Understanding objects is crucial for Java programming</li>
+                        <li>Always check for 'null' before using an object to avoid NullPointerExceptions</li>
+                    </ul>
+                `
+            }
+        ];
+
+        let currentLessonIndex = 0;
+        let completedLessons = new Set();
+
+        function showLesson(index) {
+            const lessonTitle = document.getElementById('lesson-title');
+            const lessonVideo = document.getElementById('lesson-video');
+            const videoContainer = document.querySelector('.video-container');
+            const lessonDescription = document.getElementById('lesson-description');
+
+            const lesson = lessons[index];
+            lessonTitle.textContent = lesson.title;
+            lessonDescription.innerHTML = lesson.description;
+
+            if (lesson.video) {
+                lessonVideo.src = lesson.video;
+                videoContainer.style.display = 'block';
+            } else {
+                videoContainer.style.display = 'none';
+            }
+
+            document.querySelectorAll('#lesson-list a').forEach((a, i) => {
+                a.classList.toggle('active', i === index);
+            });
+
+            currentLessonIndex = index;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = (completedLessons.size / (lessons.length - 1)) * 100;
+            document.getElementById('lesson-progress').style.height = `${progress}%`;
+        }
+
+        function createLessonList() {
+            const lessonList = document.getElementById('lesson-list');
+            lessons.forEach((lesson, index) => {
+                const li = document.createElement('li');
+                const checkbox = document.createElement('div');
+                checkbox.className = 'checkbox';
+                checkbox.id = `checkbox-${lesson.id}`;
+                li.appendChild(checkbox);
+
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = lesson.title;
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    showLesson(index);
+                };
+                li.appendChild(a);
+                lessonList.appendChild(li);
+            });
+        }
+
+        function updateCheckbox(lessonId) {
+            const checkbox = document.getElementById(`checkbox-${lessonId}`);
+            checkbox.classList.add('completed');
+            checkbox.innerHTML = '✓';
+        }
+
+        createLessonList();
+        showLesson(0);
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>
+

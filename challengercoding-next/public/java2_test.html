@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java 2 Final Test - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #FFC107;
+            --background: #FFFFFF;
+            --surface: #F5F5F5;
+            --text: #212121;
+            --text-light: #757575;
+            --success: #4CAF50;
+            --error: #F44336;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            gap: 2rem;
+        }
+        .sidebar {
+            width: 250px;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--text-light);
+        }
+        .main-content {
+            flex: 1;
+        }
+        h1 {
+            color: var(--primary);
+            margin-bottom: 2rem;
+        }
+        .question {
+            background-color: var(--surface);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .question h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+        .options {
+            display: grid;
+            gap: 0.5rem;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border: 1px solid var(--text-light);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .option:hover {
+            background-color: var(--secondary);
+        }
+        .option input {
+            margin-right: 0.5rem;
+        }
+        .code-block {
+            background: var(--surface);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Fira Code', monospace;
+            border: 1px solid var(--text-light);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .compiler-section {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .compiler-left {
+            flex: 6;
+        }
+        .compiler-right {
+            flex: 4;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .editor {
+            background: var(--surface);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--text-light);
+        }
+        .editor-header {
+            background: var(--primary);
+            color: var(--background);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            border: none;
+            resize: vertical;
+            line-height: 1.5;
+            background-color: var(--background);
+        }
+        textarea:focus {
+            outline: none;
+        }
+        .run-button {
+            background: var(--secondary);
+            color: var(--text);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s ease;
+        }
+        .run-button:hover {
+            background: #FFA000;
+        }
+        .output-container {
+            background: var(--surface);
+            border-radius: 8px;
+            border: 1px solid var(--text-light);
+            overflow: hidden;
+        }
+        .output-header {
+            background: var(--primary);
+            color: var(--background);
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+        }
+        .output, .result {
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            min-height: 100px;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: var(--background);
+        }
+        button[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button[type="submit"]:hover {
+            background-color: var(--primary-dark);
+        }
+        #result {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <a href="java_tutorials.html" class="option">Return to Main Page</a>
+            <div class="option" onclick="showSection('multiple-choice')">Multiple Choice Questions</div>
+            <div class="option" onclick="showSection('free-response')">Free Response Questions</div>
+        </aside>
+
+        <main class="main-content">
+            <h1>Java 2 Final Test</h1>
+            <form id="quiz-form">
+                <div id="multiple-choice-section">
+                    <div class="question">
+                        <h3>1. What is the correct way to declare a 2D array in Java?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q1" value="a"> a) int[][] array = new int[][];</label>
+                            <label class="option"><input type="radio" name="q1" value="b"> b) int array[][] = new int[][];</label>
+                            <label class="option"><input type="radio" name="q1" value="c"> c) int[][] array = new int[3][3];</label>
+                            <label class="option"><input type="radio" name="q1" value="d"> d) int[3][3] array = new int[][];</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>2. Which of the following is true about classes in Java?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q2" value="a"> a) A class can have multiple constructors</label>
+                            <label class="option"><input type="radio" name="q2" value="b"> b) A class can only have one constructor</label>
+                            <label class="option"><input type="radio" name="q2" value="c"> c) A class must have at least one constructor</label>
+                            <label class="option"><input type="radio" name="q2" value="d"> d) A class cannot have a constructor with parameters</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>3. What is encapsulation in Java?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q3" value="a"> a) The process of inheriting properties from a parent class</label>
+                            <label class="option"><input type="radio" name="q3" value="b"> b) The bundling of data and methods that operate on that data within a single unit</label>
+                            <label class="option"><input type="radio" name="q3" value="c"> c) The ability of an object to take on many forms</label>
+                            <label class="option"><input type="radio" name="q3" value="d"> d) The process of creating a new instance of a class</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>4. Which keyword is used to implement inheritance in Java?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q4" value="a"> a) extends</label>
+                            <label class="option"><input type="radio" name="q4" value="b"> b) implements</label>
+                            <label class="option"><input type="radio" name="q4" value="c"> c) inherits</label>
+                            <label class="option"><input type="radio" name="q4" value="d"> d) super</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>5. What is polymorphism in Java?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q5" value="a"> a) The ability to create multiple objects</label>
+                            <label class="option"><input type="radio" name="q5" value="b"> b) The ability to have multiple methods with the same name</label>
+                            <label class="option"><input type="radio" name="q5" value="c"> c) The ability of an object to take on many forms</label>
+                            <label class="option"><input type="radio" name="q5" value="d"> d) The ability to restrict access to class members</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>6. Which of the following is true about ArrayList in Java?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q6" value="a"> a) ArrayList is a fixed-size data structure</label>
+                            <label class="option"><input type="radio" name="q6" value="b"> b) ArrayList can only store primitive data types</label>
+                            <label class="option"><input type="radio" name="q6" value="c"> c) ArrayList implements the List interface</label>
+                            <label class="option"><input type="radio" name="q6" value="d"> d) ArrayList elements can be accessed using square bracket notation</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>7. What is recursion in Java?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q7" value="a"> a) A method that calls itself</label>
+                            <label class="option"><input type="radio" name="q7" value="b"> b) A loop that runs indefinitely</label>
+                            <label class="option"><input type="radio" name="q7" value="c"> c) A way to create multiple instances of a class</label>
+                            <label class="option"><input type="radio" name="q7" value="d"> d) A method to sort elements in an array</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>8. Which of the following is a correct way to initialize a 2D array in Java?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q8" value="a"> a) int[][] array = {{1, 2}, {3, 4}, {5, 6}};</label>
+                            <label class="option"><input type="radio" name="q8" value="b"> b) int[][] array = [1, 2; 3, 4; 5, 6];</label>
+                            <label class="option"><input type="radio" name="q8" value="c"> c) int[][] array = new int[3]{1, 2, 3, 4, 5, 6};</label>
+                            <label class="option"><input type="radio" name="q8" value="d"> d) int[][] array = (1, 2), (3, 4), (5, 6);</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>9. What is the purpose of the 'private' access modifier in Java?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q9" value="a"> a) To make the member accessible only within the same package</label>
+                            <label class="option"><input type="radio" name="q9" value="b"> b) To make the member accessible only within the same class</label>
+                            <label class="option"><input type="radio" name="q9" value="c"> c) To make the member accessible from any class</label>
+                            <label class="option"><input type="radio" name="q9" value="d"> d) To make the member accessible only to subclasses</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>10. Which of the following is true about method overriding in Java?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q10" value="a"> a) The overriding method must have the same return type as the overridden method</label>
+                            <label class="option"><input type="radio" name="q10" value="b"> b) The overriding method can have a different access modifier</label>
+                            <label class="option"><input type="radio" name="q10" value="c"> c) The overriding method can throw broader exceptions than the overridden method</label>
+                            <label class="option"><input type="radio" name="q10" value="d"> d) The overriding method must have the same method name and parameter list as the overridden method</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>11. What is the output of the following code?</h3>
+                        <div class="code-block">
+ArrayList<String> list = new ArrayList<>();
+list.add("A");
+list.add("B");
+list.add("C");
+list.add(1, "D");
+System.out.println(list);
+                        </div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q11" value="a"> a) [A, B, C, D]</label>
+                            <label class="option"><input type="radio" name="q11" value="b"> b) [A, D, B, C]</label>
+                            <label class="option"><input type="radio" name="q11" value="c"> c) [D, A, B, C]</label>
+                            <label class="option"><input type="radio" name="q11" value="d"> d) [A, B, D, C]</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>12. Which of the following is true about abstract classes in Java?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q12" value="a"> a) Abstract classes can be instantiated</label>
+                            <label class="option"><input type="radio" name="q12" value="b"> b) Abstract classes can have both abstract and non-abstract methods</label>
+                            <label class="option"><input type="radio" name="q12" value="c"> c) All methods in an abstract class must be abstract</label>
+                            <label class="option"><input type="radio" name="q12" value="d"> d) Abstract classes cannot have constructors</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>13. What is the purpose of the 'super' keyword in Java?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q13" value="a"> a) To call the superclass constructor</label>
+                            <label class="option"><input type="radio" name="q13" value="b"> b) To create a new instance of the superclass</label>
+                            <label class="option"><input type="radio" name="q13" value="c"> c) To access the superclass members</label>
+                            <label class="option"><input type="radio" name="q13" value="d"> d) Both a and c</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>14. Which of the following is true about the 'final' keyword in Java?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q14" value="a"> a) A final class cannot be subclassed</label>
+                            <label class="option"><input type="radio" name="q14" value="b"> b) A final method cannot be overridden</label>
+                            <label class="option"><input type="radio" name="q14" value="c"> c) A final variable cannot be reassigned</label>
+                            <label class="option"><input type="radio" name="q14" value="d"> d) All of the above</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>15. What is the correct way to declare a method that throws an exception in Java?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q15" value="a"> a) public void myMethod() throws Exception { }</label>
+                            <label class="option"><input type="radio" name="q15" value="b"> b) public void myMethod() throw Exception { }</label>
+                            <label class="option"><input type="radio" name="q15" value="c"> c) public void myMethod() : Exception { }</label>
+                            <label class="option"><input type="radio" name="q15" value="d"> d) public void myMethod() exception { }</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>16. Which of the following is NOT a valid way to iterate over an ArrayList in Java?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q16" value="a"> a) for (int i = 0; i < list.size(); i++) { }</label>
+                            <label class="option"><input type="radio" name="q16" value="b"> b) for (String item : list) { }</label>
+                            <label class="option"><input type="radio" name="q16" value="c"> c) list.forEach(item -> { });</label>
+                            <label class="option"><input type="radio" name="q16" value="d"> d) while (list.hasNext()) { }</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>17. What is the output of the following recursive method call?</h3>
+                        <div class="code-block">
+public static int mystery(int n) {
+    if (n == 0) return 0;
+    return n + mystery(n - 1);
+}
+
+System.out.println(mystery(5));
+                        </div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q17" value="a"> a) 5</label>
+                            <label class="option"><input type="radio" name="q17" value="b"> b) 10</label>
+                            <label class="option"><input type="radio" name="q17" value="c"> c) 15</label>
+                            <label class="option"><input type="radio" name="q17" value="d"> d) 20</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>18. Which of the following is true about interfaces in Java?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q18" value="a"> a) Interfaces can have instance variables</label>
+                            <label class="option"><input type="radio" name="q18" value="b"> b) A class can implement multiple interfaces</label>
+                            <label class="option"><input type="radio" name="q18" value="c"> c) Interfaces can have constructors</label>
+                            <label class="option"><input type="radio" name="q18" value="d"> d) All methods in an interface are concrete</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>19. What is the purpose of the 'instanceof' operator in Java?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q19" value="a"> a) To create a new instance of a class</label>
+                            <label class="option"><input type="radio" name="q19" value="b"> b) To check if an object is an instance of a specific class or interface</label>
+                            <label class="option"><input type="radio" name="q19" value="c"> c) To compare two objects for equality</label>
+                            <label class="option"><input type="radio" name="q19" value="d"> d) To check if a class is a subclass of another class</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>20. Which of the following is true about method overloading in Java?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q20" value="a"> a) Overloaded methods must have different return types</label>
+                            <label class="option"><input type="radio" name="q20" value="b"> b) Overloaded methods must have different access modifiers</label>
+                            <label class="option"><input type="radio" name="q20" value="c"> c) Overloaded methods must have different parameter lists</label>
+                            <label class="option"><input type="radio" name="q20" value="d"> d) Overloaded methods must be in different classes</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="free-response-section" style="display: none;">
+                    <div class="question">
+                        <h3>Free Response Question 1: Write a Java method that takes a 2D array of integers and returns the sum of all elements on the main diagonal (top-left to bottom-right).</h3>
+                        <div class="compiler-section">
+                            <div class="compiler-left">
+                                <div class="editor">
+                                    <div class="editor-header">
+                                        <span>Java Code</span>
+                                        <button class="run-button" onclick="runCode('code-editor-1', 'output-1', 'result-1')">
+                                            <i data-lucide="play"></i> Run
+                                        </button>
+                                    </div>
+                                    <textarea id="code-editor-1" spellcheck="false">
+public class DiagonalSum {
+    public static int sumDiagonal(int[][] array) {
+        // Your code here
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        int[][] matrix = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        System.out.println(sumDiagonal(matrix));  // Should output 15 (1 + 5 + 9)
+    }
+}
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="compiler-right">
+                                <div class="output-container">
+                                    <div class="output-header">Output</div>
+                                    <div id="output-1" class="output"></div>
+                                </div>
+                                <div class="output-container">
+                                    <div class="output-header">Autograder</div>
+                                    <div id="result-1" class="result"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>Free Response Question 2: Implement a recursive method to calculate the nth Fibonacci number.</h3>
+                        <div class="compiler-section">
+                            <div class="compiler-left">
+                                <div class="editor">
+                                    <div class="editor-header">
+                                        <span>Java Code</span>
+                                        <button class="run-button" onclick="runCode('code-editor-2', 'output-2', 'result-2')">
+                                            <i data-lucide="play"></i> Run
+                                        </button>
+                                    </div>
+                                    <textarea id="code-editor-2" spellcheck="false">
+public class Fibonacci {
+    public static int fibonacci(int n) {
+        // Your code here
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(fibonacci(10));  // Should print the 10th Fibonacci number
+    }
+}
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="compiler-right">
+                                <div class="output-container">
+                                    <div class="output-header">Output</div>
+                                    <div id="output-2" class="output"></div>
+                                </div>
+                                <div class="output-container">
+                                    <div class="output-header">Autograder</div>
+                                    <div id="result-2" class="result"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit">Submit Test</button>
+            </form>
+            <div id="result"></div>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function showSection(sectionId) {
+            document.getElementById('multiple-choice-section').style.display = sectionId === 'multiple-choice' ? 'block' : 'none';
+            document.getElementById('free-response-section').style.display = sectionId === 'free-response' ? 'block' : 'none';
+        }
+
+        function runCode(editorId, outputId, resultId) {
+            const code = document.getElementById(editorId).value;
+            const outputElement = document.getElementById(outputId);
+            const resultElement = document.getElementById(resultId);
+            outputElement.textContent = "Running Java code is not supported in this browser environment.";
+            resultElement.textContent = "Unable to execute Java code.";
+            resultElement.style.color = "var(--error)";
+        }
+
+        document.getElementById('quiz-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let score = 0;
+            const answers = {
+                q1: 'c', q2: 'a', q3: 'b', q4: 'a', q5: 'c',
+                q6: 'c', q7: 'a', q8: 'a', q9: 'b', q10: 'd',
+                q11: 'b', q12: 'b', q13: 'd', q14: 'd', q15: 'a',
+                q16: 'd', q17: 'c', q18: 'b', q19: 'b', q20: 'c'
+            };
+
+            for (let question in answers) {
+                const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedAnswer && selectedAnswer.value === answers[question]) {
+                    score++;
+                }
+            }
+
+            const resultElement = document.getElementById('result');
+            resultElement.textContent = `Your score: ${score} out of ${Object.keys(answers).length}`;
+            resultElement.style.color = score >= Object.keys(answers).length / 2 ? 'var(--success)' : 'var(--error)';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #263238;
+            --accent: #FFC107;
+            --background: #F5F7FA;
+            --text: #333;
+            --text-light: #666;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 30px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+
+        /* Navigation Bar Styling */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: fixed;
+            top: 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 8rem 1.5rem 4rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark) 60%, #4da6ff 100%);
+            color: white;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .about-us-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-section, .founder-section {
+            background-color: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 4rem;
+            transition: transform 0.3s ease;
+        }
+
+        .header-section:hover, .founder-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .logo {
+            max-width: 200px;
+            margin-bottom: 1rem;
+        }
+
+        .header-section h1, .founder-section h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .founder-bio {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            text-align: center;
+            flex-direction: column; /* Ensures text and image are vertically centered on smaller screens */
+        }
+
+        .founder-image {
+            width: 200px;
+            height: 200px; /* Ensure the image height matches the width for a perfect circle */
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+            object-fit: cover; /* Ensures the image is not stretched */
+        }
+
+
+        .header-section, .founder-section {
+            background-color: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 4rem;
+            transition: transform 0.3s ease;
+        }
+
+        /* Hover Effect for Sections */
+        .header-section:hover, .founder-section:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Responsive Centering */
+        @media (max-width: 768px) {
+            .founder-bio {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+
+
+        footer {
+            background: var(--secondary);
+            color: var(--white);
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .contact-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .founder-bio {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .founder-image {
+                margin-bottom: 1rem;
+            }
+        }
+
+        /* Instructors Section Styling */
+        .instructors-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .instructors-section h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Instructor Grid */
+        .instructor-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        /* Instructor Box Styling */
+        .instructor-box {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .instructor-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .instructor-box h3 {
+            color: var(--primary-dark);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .instructor-box p {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .instructor-grid {
+                grid-template-columns: 1fr; /* Stacks boxes on smaller screens */
+            }
+        }
+
+        .enroll-button {
+            background-color: var(--accent);
+            color: white;
+            font-weight: 600;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .enroll-button:hover {
+            background-color: #d8a106;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="#" target="_blank" class="enroll-button">Enroll</a></li>
+
+        </ul>
+    </nav>
+
+    <div class="hero">
+        <h1>About Us</h1>
+        <p>Empowering the Next Generation of Coders</p>
+    </div>
+
+    <div class="about-us-container">
+        <div class="header-section">
+            <h1>Our Mission</h1>
+            <p>At Challenger Coding, our mission is to empower students of all ages to embrace coding and technology, equipping them with the skills they need to succeed in an increasingly digital world. We believe that coding is not just for computer scientists, but a valuable skill for everyone. By offering accessible and engaging tutorials, we aim to make coding fun and approachable for all.</p>
+        </div>
+
+        <div class="founder-section">
+            <h2>Meet the Founder</h2>
+            <div class="founder-bio">
+                <img src="jaden.jpg" alt="Founder Image" class="founder-image">
+                <div>
+                    <p>Jaden founded Challenger Coding in the summer of 2023 after observing the lack of tailored, engaging coding resources for young learners. With a deep passion for technology, Jaden started his coding journey in 3rd grade with Scratch and has since learned multiple programming languages, earning the Microsoft Intro to Java Programming certification, scoring a 5 on the AP Computer Science A exam, and conducted AI research.</p>
+                    <br>
+                    <p>With extensive tutoring experience, Jaden is dedicated to breaking down barriers of educational access and hopes to inspire the next generation of coders. Outside of Challenger Coding, Jaden loves playing soccer, piano, and hanging out with friends and family.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="instructors-section">
+        <h2>Meet Our Leadership:</h2>
+        <div class="instructor-grid">
+            <!-- VP of Education -->
+            <div class="instructor-box">
+                <h3>VP of Education</h3>
+                <p>Aadi Saraf</p>
+            </div>
+            
+            <!-- VP of Outreach -->
+            <div class="instructor-box">
+                <h3>VP of Outreach</h3>
+                <p>Ananya Denduluri</p>
+            </div>
+            
+            <!-- Instructor -->
+            <div class="instructor-box">
+                <h3>Webmaster</h3>
+                <p>Miheer Pandya</p>
+            </div>
+            
+            <!-- Instructor -->
+            <div class="instructor-box">
+                <h3>Secretary</h3>
+                <p>Brinda Aniga</p>
+            </div>
+        </div>
+    </div>
+    
+
+    <footer>
+        <div class="footer-content">
+            <div class="contact-box">
+                <div class="footer-links">
+                    <a href="https://www.linkedin.com/in/jaden-tang" target="_blank">LinkedIn</a>
+                    <a href="mailto:contact@challengercoding.com">Email</a>
+                    <a href="contact.html">Contact Us</a>
+                </div>
+            </div>
+            <p>&copy; 2024 Challenger Coding. All rights reserved.</p>
+        </div>
+    </footer>
+    <!-- Include Scripts -->
+    <script src="config.js"></script>
+    <script>
+        document.querySelectorAll(".enroll-button").forEach(button => {
+            button.href = enrollLink;
+        });
+    </script>
+</body>
+</html>

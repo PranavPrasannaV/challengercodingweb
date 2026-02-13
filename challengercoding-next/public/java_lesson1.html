@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Guided Tutorials - Week 1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #FF4081;
+            --accent: #FFC107;
+            --background: #f0f4f8;
+            --surface: #ffffff;
+            --border: #e0e7ff;
+            --text: #2d3748;
+            --text-light: #4a5568;
+            --success: #48bb78;
+            --error: #f56565;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 5px;
+            width: 100%;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 2rem auto;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .exercise-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item:hover {
+            background: var(--primary);
+            color: var(--surface);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item.active {
+            background: var(--primary);
+            color: var(--surface);
+            border-color: var(--primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .main-content {
+            flex: 1;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .tutorial-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .tutorial-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .content-box {
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .highlight-box {
+            background-color: #e6f7ff;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .step-box {
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            margin-right: 0.5rem;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+        }
+
+        iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .quiz-container {
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .quiz-question {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-options {
+            list-style-type: none;
+        }
+
+        .quiz-option {
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-feedback {
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+
+        .button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .autograder-container {
+            margin-top: 1.5rem;
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .autograder-input {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .autograder-feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .autograder-feedback.success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .autograder-feedback.error {
+            background-color: var(--error);
+            color: white;
+        }
+
+        .common-errors {
+            margin-top: 1rem;
+        }
+
+        .common-errors summary {
+            cursor: pointer;
+            padding: 0.5rem;
+            background-color: var(--background);
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .common-errors ul {
+            margin-top: 0.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .common-errors li {
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="#" target="_blank" rel="noopener noreferrer">Enroll</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="exercise-list">
+                <div class="exercise-item active" data-exercise="overview">
+                    <span>Lesson Overview</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise1">
+                    <span>1. My First Java Program</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise2">
+                    <span>2. Syntax and Java Basics</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise3">
+                    <span>3. Debugging</span>
+                </div>
+                <div class="exercise-item" data-exercise="quiz">
+                    <span>4. Quiz</span>
+                </div>
+                <div class="exercise-item" data-exercise="project">
+                    <span>5. Weekly Project</span>
+                </div>
+                <div class="exercise-item" onclick="window.location.href='java_tutorials.html'">
+                    <span>Return to Home</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div id="tutorial-content">
+                <!-- Content will be dynamically loaded here -->
+            </div>
+            <div id="compiler-container" style="display: none;">
+                <iframe src="https://www.jdoodle.com/online-java-compiler"></iframe>
+            </div>
+            <div id="autograder-container" class="autograder-container" style="display: none;">
+                <h3 class="text-xl font-semibold mb-2">Autograder</h3>
+                <textarea id="autograder-input" class="autograder-input" placeholder="Paste your code output here..."></textarea>
+                <button onclick="checkOutput()" class="button">Check Output</button>
+                <div id="autograder-feedback" class="autograder-feedback"></div>
+            </div>
+            <details class="common-errors">
+                <summary>Common Java Errors</summary>
+                <ul>
+                    <li>
+                        <strong>Error:</strong> "; expected"
+                        <br>
+                        <strong>Cause:</strong> Missing semicolon at the end of a statement
+                        <br>
+                        <strong>Fix:</strong> Add a semicolon at the end of the statement.
+                        <pre><code>System.out.println("Hello, World");</code></pre>
+                    </li>
+                    <li>
+                        <strong>Error:</strong> "reached end of file while parsing" or "')' expected"
+                        <br>
+                        <strong>Cause:</strong> Unmatched parentheses, brackets, or braces
+                        <br>
+                        <strong>Fix:</strong> Ensure all opening parentheses, brackets, and braces have matching closing ones.
+                        <pre><code>if (condition) {
+                // code
+            }</code></pre>
+                    </li>
+                    <li>
+                        <strong>Error:</strong> "cannot find symbol" or "variable x is not defined"
+                        <br>
+                        <strong>Cause:</strong> Using undeclared variables
+                        <br>
+                        <strong>Fix:</strong> Declare the variable before using it.
+                        <pre><code>int x = 5;
+            System.out.println(x);</code></pre>
+                    </li>
+                    <li>
+                        <strong>Error:</strong> "cannot find symbol" (for methods) or "cannot resolve symbol" (for variables)
+                        <br>
+                        <strong>Cause:</strong> Incorrect method or variable names (case-sensitive)
+                        <br>
+                        <strong>Fix:</strong> Check the spelling and capitalization of method and variable names.
+                        <pre><code>String message = "Hello";
+            System.out.println(message); // Not Message or MESSAGE</code></pre>
+                    </li>
+                    <li>
+                        <strong>Error:</strong> "main method not found in class"
+                        <br>
+                        <strong>Cause:</strong> Forgetting to declare the main method
+                        <br>
+                        <strong>Fix:</strong> Include the main method in your class.
+                        <pre><code>public class MyClass {
+                public static void main(String[] args) {
+                    // Your code here
+                }
+            }</code></pre>
+                    </li>
+                    <li>
+                        <strong>Error:</strong> "incompatible types" or "possible lossy conversion"
+                        <br>
+                        <strong>Cause:</strong> Incorrect data type assignments
+                        <br>
+                        <strong>Fix:</strong> Ensure you're assigning values to variables of the correct type, or use explicit casting when necessary.
+                        <pre><code>int x = 5;
+            double y = 2.5;
+            int z = (int) y; // Explicit casting</code></pre>
+                    </li>
+                    <li>
+                        <strong>Error:</strong> "ArrayIndexOutOfBoundsException"
+                        <br>
+                        <strong>Cause:</strong> Trying to access an array index that doesn't exist
+                        <br>
+                        <strong>Fix:</strong> Ensure array indices are within the valid range (0 to length-1).
+                        <pre><code>int[] arr = {1, 2, 3};
+            System.out.println(arr[2]); // Last valid index is 2</code></pre>
+                    </li>
+                    <li>
+                        <strong>Error:</strong> "NullPointerException"
+                        <br>
+                        <strong>Cause:</strong> Trying to use a reference variable that points to a null object
+                        <br>
+                        <strong>Fix:</strong> Initialize objects before using them, or check for null before accessing object methods or properties.
+                        <pre><code>String str = null;
+            if (str != null) {
+                System.out.println(str.length());
+            }</code></pre>
+                    </li>
+                </ul>
+            </details>
+        </main>
+    </div>
+    <!-- Include Scripts -->
+    <script src="config.js"></script>
+    <script>
+        document.querySelectorAll(".enroll-button").forEach(button => {
+            button.href = enrollLink;
+        });
+    </script>
+    <script>
+        lucide.createIcons();
+
+        const exercises = [
+            {
+                title: "Lesson Overview",
+                content: `
+                    <h1 class="tutorial-title">Java Guided Tutorials - Week 1</h1>
+                    <div class="content-box">
+                        <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
+                        <p class="tutorial-text">
+                            Welcome to Week 1 of our Java Guided Tutorials! This week, we'll introduce you to the basics of Java programming. You'll learn how to create and run your first Java program, understand Java syntax, and practice basic debugging techniques.
+                        </p>
+                        <div class="highlight-box">
+                            <h3 class="text-xl font-semibold mb-2">Lesson Overview:</h3>
+                            <ul class="list-disc list-inside">
+                                <li>Creating and running your first Java program</li>
+                                <li>Understanding Java syntax and structure</li>
+                                <li>Basic debugging techniques</li>
+                                <li>Quiz to test your knowledge</li>
+                                <li>Weekly project to apply what you've learned</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">
+                            By the end of this week, you'll have a solid foundation in Java programming and be ready to tackle more advanced concepts. Let's get started!
+                        </p>
+                    </div>
+                `,
+                showCompiler: false,
+                showAutograder: false,
+                expectedOutput: ""
+            },
+            {
+                title: "My First Java Program",
+                content: `
+                    <h1 class="tutorial-title">1. My First Java Program</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Hello, Java!</h3>
+                        <p class="tutorial-text">Let's start by creating a simple Java program that prints "Hello, Java!" to the console. Follow these steps:</p>
+                        <ol class="list-decimal list-inside mb-4">
+                            <li>Open the online compiler below</li>
+                            <li>Replace the existing code with the following:</li>
+                        </ol>
+                        <pre><code>public class HelloJava {
+    public static void main(String[] args) {
+        System.out.println("Hello, Java!");
+    }
+}</code></pre>
+                        <p class="tutorial-text">Let's break down this code:</p>
+                        <ul class="list-disc list-inside mb-4">
+                            <li><code>public class HelloJava</code>: This declares a public class named HelloJava.</li>
+                            <li><code>public static void main(String[] args)</code>: This is the main method, which is the entry point of our program.</li>
+                            <li><code>System.out.println("Hello, Java!");</code>: This line prints the text "Hello, Java!" to the console.</li>
+                        </ul>
+                        <p class="tutorial-text">Now, click the "Run" button in the compiler to execute your first Java program!</p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Try it Yourself</h4>
+                            <p>Modify the program to print "Welcome to Java class!" instead. Once you've made the change, run the program and paste the output in the autograder below to check your work.</p>
+                        </div>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Welcome to Java class!"
+            },
+            {
+                title: "Syntax and Java Basics",
+                content: `
+                    <h1 class="tutorial-title">2. Syntax and Java Basics</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Java Program Structure</h3>
+                        <p class="tutorial-text">Every executable Java program consists of a <strong>class</strong> that contains a <strong>main method</strong>. Let's explore the basic structure of a Java program:</p>
+                        <pre><code>public class ProgramName {
+    public static void main(String[] args) {
+        // Your code goes here
+        System.out.println("This is a Java program!");
+    }
+}</code></pre>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Key Points:</h4>
+                            <ul class="list-disc list-inside">
+                                <li>The class name (ProgramName) should match the file name (ProgramName.java)</li>
+                                <li>The main method is the entry point of the program</li>
+                                <li>Statements end with a semicolon ;</li>
+                                <li>Code blocks are enclosed in curly braces { }</li>
+                                <li>Java is case-sensitive: System.out.println is not the same as system.out.println</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Try it Yourself</h3>
+                        <p class="tutorial-text">Create a Java program that prints the following output:</p>
+                        <pre><code>Hello, world!
+
+This program produces
+four lines of output.</code></pre>
+                        <p class="tutorial-text">Use the online compiler below to write and run your code. Then, paste your output in the autograder to check your work.</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Hello, world!\n\nThis program produces\nfour lines of output."
+            },
+            {
+                title: "Debugging",
+                content: `
+                    <h1 class="tutorial-title">3. Debugging</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Finding and Fixing Errors</h3>
+                        <p class="tutorial-text">Debugging is an essential skill for any programmer. Let's practice by finding and fixing errors in Java code.</p>
+                        <p class="tutorial-text">Here's a Java program with some errors:</p>
+                        <pre><code>public class DebugExample {
+    public static void main(String[] args) {
+        System.out.println("Let's debug this program!)
+        int x = 5
+        int y = 0;
+        System.out.println(x / y);
+    }
+}</code></pre>
+                        <p class="tutorial-text">This program contains several errors. Can you identify and fix them?</p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Common Java Errors:</h4>
+                            <ul class="list-disc list-inside">
+                                <li>Syntax errors (missing semicolons, unmatched quotes or brackets)</li>
+                                <li>Runtime errors (division by zero)</li>
+                                <li>Logical errors (incorrect calculations or unexpected behavior)</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Try to fix the errors in the code above. Use the online compiler to test your solutions. Once you've corrected all the errors and the program runs without any issues, paste the output in the autograder to check your work.</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Let's debug this program!\nCannot divide by zero"
+            },
+            {
+                title: "Quiz",
+                content: `
+                    <h1 class="tutorial-title">4. Java Basics Quiz</h1>
+                    <div class="quiz-container">
+                        <form id="quizForm">
+                            <div class="question">
+                                <p class="quiz-question">1. What is the correct syntax to output "Hello, World" in Java?</p>
+                                <ul class="quiz-options">
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q1" value="a" id="q1a">
+                                        <label for="q1a">System.out.println("Hello, World");</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q1" value="b" id="q1b">
+                                        <label for="q1b">echo("Hello, World");</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q1" value="c" id="q1c">
+                                        <label for="q1c">print("Hello, World");</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="question">
+                                <p class="quiz-question">2. Which of the following is the correct way to declare the main method in Java?</p>
+                                <ul class="quiz-options">
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q2" value="a" id="q2a">
+                                        <label for="q2a">public static void main(String args[])</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q2" value="b" id="q2b">
+                                        <label for="q2b">public void main(String[] args)</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q2" value="c" id="q2c">
+                                        <label for="q2c">static public void main(String[] args)</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="question">
+                                <p class="quiz-question">3. What is the purpose of the semicolon (;) in Java?</p>
+                                <ul class="quiz-options">
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q3" value="a" id="q3a">
+                                        <label for="q3a">To separate methods</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q3" value="b" id="q3b">
+                                        <label for="q3b">To end a statement</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q3" value="c" id="q3c">
+                                        <label for="q3c">To declare a variable</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="question">
+                                <p class="quiz-question">4. Which of the following is NOT a valid Java identifier?</p>
+                                <ul class="quiz-options">
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q4" value="a" id="q4a">
+                                        <label for="q4a">myVariable</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q4" value="b" id="q4b">
+                                        <label for="q4b">_myVariable</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q4" value="c" id="q4c">
+                                        <label for="q4c">2myVariable</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="question">
+                                <p class="quiz-question">5. What is the output of the following code?</p>
+                                <pre><code>public class Test {
+    public static void main(String[] args) {
+        int x = 5;
+        System.out.println(x++);
+        System.out.println(x);
+    }
+}</code></pre>
+                                <ul class="quiz-options">
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q5" value="a" id="q5a">
+                                        <label for="q5a">5 5</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q5" value="b" id="q5b">
+                                        <label for="q5b">5 6</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q5" value="c" id="q5c">
+                                        <label for="q5c">6 6</label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                        <button onclick="submitQuiz()" class="button mt-4">Submit Quiz</button>
+                        <p id="quizResult" class="quiz-feedback"></p>
+                    </div>
+                `,
+                showCompiler: false,
+                showAutograder: false,
+                expectedOutput: ""
+            },
+            {
+                title: "Weekly Project",
+                content: `
+                    <h1 class="tutorial-title">5. Weekly Project: Personal Information Printer</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Project Description</h3>
+                        <p class="tutorial-text">For this week's project, you'll create a Java program that prints out your personal information. This will help you practice using the System.out.println() method and formatting your output.</p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Requirements:</h4>
+                            <p>Your program should print the following information:</p>
+                            <ul class="list-disc list-inside mb-4">
+                                <li>Your name</li>
+                                <li>Your age</li>
+                                <li>Your favorite programming language</li>
+                                <li>A short sentence about why you're learning Java</li>
+                            </ul>
+                            <p>Use separate System.out.println() statements for each piece of information.</p>
+                        </div>
+                        <p class="tutorial-text">Here's a template to get you started:</p>
+                        <pre><code>public class PersonalInfo {
+    public static void main(String[] args) {
+        // Your code here
+    }
+}</code></pre>
+                        <p class="tutorial-text">Use the online compiler below to write and test your code. Once you're satisfied with your program, paste the output in the autograder to check your work.</p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Bonus Challenge:</h4>
+                            <p>Try to format your output to look like a simple ASCII art business card!</p>
+                        </div>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Name: [Your Name]\nAge: [Your Age]\nFavorite Language: [Your Favorite Language]\nWhy I'm learning Java: [Your Reason]"
+            }
+        ];
+
+        let currentExercise = 0;
+
+        function loadExercise(index) {
+            const exercise = exercises[index];
+            document.getElementById('tutorial-content').innerHTML = exercise.content;
+            document.getElementById('compiler-container').style.display = exercise.showCompiler ? 'block' : 'none';
+            document.getElementById('autograder-container').style.display = exercise.showAutograder ? 'block' : 'none';
+            if (exercise.showAutograder) {
+                document.getElementById('autograder-input').value = '';
+                document.getElementById('autograder-feedback').textContent = '';
+            }
+            document.querySelectorAll('.exercise-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+            currentExercise = index;
+        }
+
+        function checkOutput() {
+            const userOutput = document.getElementById('autograder-input').value.trim();
+            const expectedOutput = exercises[currentExercise].expectedOutput;
+            const feedback = document.getElementById('autograder-feedback');
+
+            if (expectedOutput === "") {
+                feedback.textContent = "Great job on your exercise! Your output looks good.";
+                feedback.className = 'autograder-feedback success';
+            } else if (userOutput === expectedOutput) {
+                feedback.textContent = "Success! Your output matches the expected result.";
+                feedback.className = 'autograder-feedback success';
+            } else {
+                feedback.textContent = `Not quite there yet. Expected output:\n${expectedOutput}\n\nYour output:\n${userOutput}\n\nKeep trying!`;
+                feedback.className = 'autograder-feedback error';
+            }
+        }
+
+        document.querySelectorAll('.exercise-item').forEach((item, index) => {
+            item.addEventListener('click', () => loadExercise(index));
+        });
+
+        function submitQuiz() {
+            const answers = {
+                q1: 'a',
+                q2: 'a',
+                q3: 'b',
+                q4: 'c',
+                q5: 'b'
+            };
+            let score = 0;
+            let feedback = '';
+
+            for (let i = 1; i <= 5; i++) {
+                const selectedAnswer = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selectedAnswer) {
+                    if (selectedAnswer.value === answers[`q${i}`]) {
+                        score++;
+                        feedback += `Question ${i}: Correct\n`;
+                    } else {
+                        feedback += `Question ${i}: Incorrect\n`;
+                    }
+                } else {
+                    feedback += `Question ${i}: Not answered\n`;
+                }
+            }
+
+            const result = document.getElementById('quizResult');
+            result.textContent = `You scored ${score} out of 5.\n\n${feedback}`;
+        }
+
+        // Load the first exercise by default
+        loadExercise(0);
+    </script>
+</body>
+</html>

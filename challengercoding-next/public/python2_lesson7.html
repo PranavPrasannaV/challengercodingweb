@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Tutorial: Recursion - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/skulpt@1.2.0/dist/skulpt.min.js"></script>
+    <script src="https://unpkg.com/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #2980b9;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --background: #ffffff;
+            --surface: #f8f9fa;
+            --border: #e9ecef;
+            --text: #2d3436;
+            --text-light: #636e72;
+            --success: #2ecc71;
+            --error: #e74c3c;
+        }
+        .top-strip {
+            background-color: var(--primary);
+            height: 30px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: fixed;
+            top: 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            gap: 2rem;
+        }
+        .sidebar {
+            width: 250px;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+        }
+        .exercise-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--background);
+            border: 1px solid var(--border);
+        }
+        .exercise-item:hover {
+            background: var(--surface);
+            transform: translateY(-1px);
+        }
+        .exercise-item.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .main-content {
+            flex: 1;
+        }
+        .tutorial-section {
+            background: var(--background);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+        .tutorial-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        .tutorial-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+        .code-block {
+            background: var(--surface);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Fira Code', monospace;
+            border: 1px solid var(--border);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .compiler-section {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .compiler-left {
+            flex: 6;
+        }
+        .compiler-right {
+            flex: 4;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .editor {
+            background: var(--surface);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .editor-header {
+            background: var(--primary);
+            color: var(--background);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            border: none;
+            resize: vertical;
+            line-height: 1.5;
+            background-color: var(--background);
+        }
+        textarea:focus {
+            outline: none;
+        }
+        .run-button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s ease;
+        }
+        .run-button:hover {
+            background: var(--accent);
+            opacity: 0.9;
+        }
+        .output-container {
+            background: var(--surface);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            height: calc(50% - 0.5rem);
+        }
+        .output-header {
+            background: var(--primary);
+            color: var(--background);
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+        }
+        .output, .result {
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            height: calc(100% - 40px);
+            overflow-y: auto;
+            background-color: var(--background);
+        }
+        .hint-box {
+            background-color: #e3f2fd;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        .challenge-box {
+            background-color: #fff3e0;
+            border-left: 4px solid var(--secondary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+            .compiler-section {
+                flex-direction: column;
+            }
+            .compiler-left, .compiler-right {
+                flex: 1;
+            }
+            .output-container {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="#" target="_blank" class="enroll-button">Enroll</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="exercise-list">
+                <a href="python2_tutorials.html" class="exercise-item">
+                    <span>Return Home</span>
+                </a>
+                <div class="exercise-item" data-exercise="1">
+                    <span>1. Introduction to Recursion</span>
+                </div>
+                <div class="exercise-item" data-exercise="2">
+                    <span>2. Recursive Functions</span>
+                </div>
+                <div class="exercise-item" data-exercise="3">
+                    <span>3. Base Case and Recursive Case</span>
+                </div>
+                <div class="exercise-item" data-exercise="4">
+                    <span>4. Recursion vs. Iteration</span>
+                </div>
+                <div class="exercise-item" data-exercise="5">
+                    <span>5. Weekly Project: Fractal Tree</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <br>
+            <br>
+            <br>
+            <div id="tutorial-content"></div>
+
+            <div class="compiler-section">
+                <div class="compiler-left">
+                    <div class="editor">
+                        <div class="editor-header">
+                            <span>Python Code</span>
+                            <button class="run-button" onclick="runCode()">
+                                <i data-lucide="play"></i> Run
+                            </button>
+                        </div>
+                        <textarea id="code-editor" spellcheck="false"></textarea>
+                    </div>
+                </div>
+                <div class="compiler-right">
+                    <div class="output-container">
+                        <div class="output-header">Output</div>
+                        <div id="output" class="output"></div>
+                    </div>
+                    <div class="output-container">
+                        <div class="output-header">Autograder</div>
+                        <div id="result" class="result"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Include Scripts -->
+    <script src="config.js"></script>
+    <script>
+        document.querySelectorAll(".enroll-button").forEach(button => {
+            button.href = enrollLink;
+        });
+    </script>
+    <script>
+        lucide.createIcons();
+
+        const exercises = [
+            {
+                title: "Introduction to Recursion",
+                content: `
+                    <h1 class="tutorial-title">Exercise 1: Introduction to Recursion</h1>
+                    <p class="tutorial-text">
+                        Welcome to Python Week 2, Lesson 7! Today, we'll learn about recursion, a powerful programming concept where a function calls itself to solve a problem.
+                    </p>
+                    <div class="hint-box">
+                        <h3>What is Recursion?</h3>
+                        <p>Recursion is a method of solving a problem where the solution depends on solutions to smaller instances of the same problem. In programming, recursion occurs when a function calls itself.</p>
+                    </div>
+                    <p class="tutorial-text">
+                        Let's start with a simple example of a recursive function that counts down from a given number:
+                    </p>
+                    <div class="code-block">
+def countdown(n):
+    if n <= 0:
+        print("Blastoff!")
+    else:
+        print(n)
+        countdown(n - 1)
+
+countdown(5)
+                    </div>
+                    <p class="tutorial-text">
+                        Now it's your turn! Create a recursive function called <code>count_up</code> that counts up from 1 to a given number:
+                    </p>
+                    <ol class="tutorial-text">
+                        <li>Define the function <code>count_up(n)</code></li>
+                        <li>If n is greater than 5, print "Done!"</li>
+                        <li>Otherwise, print the current number and call <code>count_up(n + 1)</code></li>
+                        <li>Test your function with <code>count_up(1)</code></li>
+                    </ol>
+                `,
+                initialCode: "# Define your count_up function here\n\n# Test your function\ncount_up(1)\n"
+            },
+            {
+                title: "Recursive Functions",
+                content: `
+                    <h1 class="tutorial-title">Exercise 2: Recursive Functions</h1>
+                    <p class="tutorial-text">
+                        Recursive functions are functions that call themselves. They can be very powerful for solving problems that have a recursive nature.
+                    </p>
+                    <div class="hint-box">
+                        <h3>Key Components of a Recursive Function</h3>
+                        <ul>
+                            <li>Base case: The condition that stops the recursion</li>
+                            <li>Recursive case: The part where the function calls itself</li>
+                            <li>Progress towards the base case: Each recursive call should bring us closer to the base case</li>
+                        </ul>
+                    </div>
+                    <p class="tutorial-text">
+                        Let's look at a classic example of a recursive function: calculating the factorial of a number.
+                    </p>
+                    <div class="code-block">
+def factorial(n):
+    if n == 0 or n == 1:
+        return 1
+    else:
+        return n * factorial(n - 1)
+
+print(factorial(5))  # Should print 120
+                    </div>
+                    <p class="tutorial-text">
+                        Your turn! Create a recursive function to calculate the sum of all numbers from 1 to n:
+                    </p>
+                    <ol class="tutorial-text">
+                        <li>Define a function called <code>sum_to_n(n)</code></li>
+                        <li>If n is 1, return 1 (this is the base case)</li>
+                        <li>Otherwise, return n plus the result of calling sum_to_n(n-1)</li>
+                        <li>Test your function with sum_to_n(5) (which should return 15)</li>
+                    </ol>
+                `,
+                initialCode: "# Define your sum_to_n function here\n\n# Test your function\nprint(sum_to_n(5))\n"
+            },
+            {
+                title: "Base Case and Recursive Case",
+                content: `
+                    <h1 class="tutorial-title">Exercise 3: Base Case and Recursive Case</h1>
+                    <p class="tutorial-text">
+                        Understanding the base case and recursive case is crucial for writing effective recursive functions.
+                    </p>
+                    <div class="hint-box">
+                        <h3>Base Case vs Recursive Case</h3>
+                        <ul>
+                            <li>Base case: The condition where the function stops calling itself</li>
+                            <li>Recursive case: The condition where the function calls itself with a modified input</li>
+                        </ul>
+                    </div>
+                    <p class="tutorial-text">
+                        Let's look at an example of a recursive function to calculate the nth Fibonacci number:
+                    </p>
+                    <div class="code-block">
+def fibonacci(n):
+    # Base cases
+    if n <= 0:
+        return "Invalid input"
+    elif n == 1 or n == 2:
+        return 1
+    # Recursive case
+    else:
+        return fibonacci(n-1) + fibonacci(n-2)
+
+print(fibonacci(7))  # Should print 13
+                    </div>
+                    <p class="tutorial-text">
+                        Your task: Create a recursive function to calculate the power of a number:
+                    </p>
+                    <ol class="tutorial-text">
+                        <li>Define a function called <code>power(base, exponent)</code></li>
+                        <li>If the exponent is 0, return 1 (base case)</li>
+                        <li>Otherwise, return base multiplied by power(base, exponent - 1) (recursive case)</li>
+                        <li>Test your function with power(2, 3) (which should return 8)</li>
+                    </ol>
+                `,
+                initialCode: "# Define your power function here\n\n# Test your function\nprint(power(2, 3))\n"
+            },
+            {
+                title: "Recursion vs. Iteration",
+                content: `
+                    <h1 class="tutorial-title">Exercise 4: Recursion vs. Iteration</h1>
+                    <p class="tutorial-text">
+                        Many problems can be solved using either recursion or iteration. It's important to understand the trade-offs between these approaches.
+                    </p>
+                    <div class="hint-box">
+                        <h3>Recursion vs. Iteration</h3>
+                        <ul>
+                            <li>Recursion can make code more readable and easier to understand for some problems</li>
+                            <li>Iteration can be more efficient in terms of memory usage</li>
+                            <li>Some problems are naturally recursive and are easier to solve with recursion</li>
+                        </ul>
+                    </div>
+                    <p class="tutorial-text">
+                        Let's compare recursive and iterative approaches to calculating the sum of a list of numbers:
+                    </p>
+                    <div class="code-block">
+# Recursive approach
+def sum_recursive(lst):
+    if not lst:
+        return 0
+    return lst[0] + sum_recursive(lst[1:])
+
+# Iterative approach
+def sum_iterative(lst):
+    total = 0
+    for num in lst:
+        total += num
+    return total
+
+numbers = [1, 2, 3, 4, 5]
+print(sum_recursive(numbers))  # Should print 15
+print(sum_iterative(numbers))  # Should print 15
+                    </div>
+                    <p class="tutorial-text">
+                        Your task: Implement both a recursive and an iterative function to reverse a string:
+                    </p>
+                    <ol class="tutorial-text">
+                        <li>Define a function called <code>reverse_recursive(s)</code> that reverses a string recursively</li>
+                        <li>Define a function called <code>reverse_iterative(s)</code> that reverses a string iteratively</li>
+                        <li>Test both functions with the string "hello"</li>
+                    </ol>
+                `,
+                initialCode: "# Define your recursive and iterative string reversal functions here\n\n# Test your functions\nprint(reverse_recursive('hello'))\nprint(reverse_iterative('hello'))\n"
+            },
+            {
+                title: "Weekly Project: Fractal Tree",
+                content: `
+                    <h1 class="tutorial-title">Weekly Project: Fractal Tree</h1>
+                    <p class="tutorial-text">
+                        Let's put everything we've learned about recursion into practice by creating a fractal tree using the turtle graphics library.
+                    </p>
+                    <p class="tutorial-text">
+                        Your task is to create a program that:
+                    </p>
+                    <ol class="tutorial-text">
+                        <li>Uses the turtle graphics library to draw a fractal tree</li>
+                        <li>Implements a recursive function to draw branches of the tree</li>
+                        <li>Allows customization of the tree's depth and angle</li>
+                    </ol>
+                    <p class="tutorial-text">
+                        Here's a starting template:
+                    </p>
+                    <div class="code-block">
+import turtle
+
+def draw_tree(branch_length, angle, depth):
+    if depth > 0:
+        turtle.forward(branch_length)
+        turtle.right(angle)
+        draw_tree(branch_length - 15, angle, depth - 1)
+        turtle.left(2 * angle)
+        draw_tree(branch_length - 15, angle, depth - 1)
+        turtle.right(angle)
+        turtle.backward(branch_length)
+
+def main():
+    turtle.speed(0)  # Set the drawing speed to the fastest
+    turtle.left(90)  # Turn the turtle to point upwards
+    turtle.up()
+    turtle.backward(100)
+    turtle.down()
+    draw_tree(75, 20, 7)
+    turtle.done()
+
+if __name__ == "__main__":
+    main()
+                    </div>
+                    <p class="tutorial-text">
+                        Enhance the Fractal Tree program by adding the following features:
+                    </p>
+                    <ol class="tutorial-text">
+                        <li>Add color to the branches (e.g., make them brown)</li>
+                        <li>Add leaves at the end of the smallest branches (e.g., green circles)</li>
+                        <li>Allow user input for the initial branch length, angle, and depth</li>
+                        <li>Experiment with different patterns by changing the angle or length reduction in recursive calls</li>
+                    </ol>
+                    <p class="tutorial-text">
+                        This project will give you hands-on experience with recursion and visual programming. Have fun and be creative with your fractal tree!
+                    </p>
+                `,
+                initialCode: "# Implement your enhanced Fractal Tree program here\n"
+            }
+        ];
+
+        let currentExercise = 0;
+
+        function loadExercise(index) {
+            console.log(`Loading exercise ${index}`);
+            const exercise = exercises[index];
+            document.getElementById('tutorial-content').innerHTML = exercise.content;
+            document.getElementById('code-editor').value = exercise.initialCode;
+            document.querySelectorAll('.exercise-item').forEach((item, i) => {
+                if (i === 0) return; // Skip the "Return Home" button
+                item.classList.toggle('active', i - 1 === index);
+            });
+            document.getElementById('output').textContent = '';
+            document.getElementById('result').textContent = '';
+            currentExercise = index;
+        }
+
+        function builtinRead(x) {
+            if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined) {
+                throw "File not found: '" + x + "'";
+            }
+            return Sk.builtinFiles["files"][x];
+        }
+
+        async function runCode() {
+            const code = document.getElementById('code-editor').value;
+            const outputElement = document.getElementById('output');
+            const resultElement = document.getElementById('result');
+            outputElement.textContent = "";
+            resultElement.textContent = "";
+
+            try {
+                Sk.configure({ 
+                    output: function(text) {
+                        outputElement.textContent += text;
+                    },
+                    read: builtinRead,
+                    __future__: Sk.python3
+                });
+                
+                const promise = Sk.misceval.asyncToPromise(() => 
+                    Sk.importMainWithBody("<stdin>", false, code, true)
+                );
+                
+                await promise;
+                resultElement.textContent = "Great job on your exercise! Your output looks good.";
+                resultElement.style.color = "var(--success)";
+            } catch (error) {
+                resultElement.textContent = "Oops! There's an error in your code: " + error.toString() + "\nTry to fix it and run again!";
+                resultElement.style.color = "var(--error)";
+                console.error("Code execution error:", error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            console.log("DOM fully loaded and parsed");
+            document.querySelectorAll('.exercise-item').forEach((item, index) => {
+                if (index === 0) return; // Skip the "Return Home" button
+                item.addEventListener('click', () => {
+                    console.log(`Exercise ${index - 1} clicked`);
+                    loadExercise(index - 1);
+                });
+            });
+
+            try {
+                loadExercise(0);
+            } catch (error) {
+                console.error("Error loading initial exercise:", error);
+                alert("There was an error loading the exercise. Please check the console for more information.");
+            }
+        });
+    </script>
+</body>
+</html>
+

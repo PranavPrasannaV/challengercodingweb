@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Conditionals Tutorial - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #263238;
+            --accent: #FFC107;
+            --background: #F5F7FA;
+            --text: #333;
+            --text-light: #666;
+            --white: #ffffff;
+            --success: #4CAF50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 30px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: fixed;
+            top: 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            min-height: calc(100vh - 60px);
+            margin-top: 60px;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: var(--white);
+            padding: 2rem;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+
+        .progress-bar {
+            width: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-right: 1rem;
+            align-self: stretch;
+            position: relative;
+        }
+
+        .progress {
+            width: 100%;
+            background-color: var(--primary);
+            border-radius: 5px;
+            position: absolute;
+            bottom: 0;
+            transition: height 0.3s ease;
+        }
+
+        .lesson-list {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            font-size: 1rem;
+            color: var(--text);
+            display: block;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: 0.3s;
+            flex-grow: 1;
+        }
+
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 14px;
+        }
+
+        .checkbox.completed {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 2rem;
+            margin-left: 300px;
+            overflow-y: auto;
+        }
+
+        .content h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .lesson-content {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .lesson-content h2 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        .lesson-content h3 {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .lesson-content p, .lesson-content ul {
+            margin-bottom: 1rem;
+        }
+
+        .lesson-content ul {
+            padding-left: 1.5rem;
+        }
+
+        .example-box {
+            background-color: #f0f0f0;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        code {
+            background-color: #e0e0e0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .back-button {
+            display: block;
+            text-decoration: none;
+            color: var(--text);
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            background-color: var(--accent);
+            border-radius: 8px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .progress-bar {
+                width: 100%;
+                height: 10px;
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+
+            .progress {
+                width: 0;
+                height: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="online_compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="sidebar">
+            <a href="python_tutorials.html" class="back-button">
+                <i data-lucide="arrow-left"></i> Back to Tutorials
+            </a>
+            <div class="progress-bar">
+                <div class="progress" id="lesson-progress"></div>
+            </div>
+            <div class="lesson-list">
+                <h2>Python Conditionals</h2>
+                <ul id="lesson-list"></ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h1 id="lesson-title"></h1>
+            <div class="video-container" style="display: none;">
+                <iframe id="lesson-video" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="lesson-content" id="lesson-description"></div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const lessons = [
+            {
+                id: 'lesson0',
+                title: 'Introduction to Conditionals',
+                video: null,
+                description: `
+                    <h2>Definitions and More</h2>
+                    <p>Here, you can find the definitions and the topics that we had covered in class.</p>
+
+                    <h3>What are Conditionals?</h3>
+                    <p>Conditionals are simply statements that say that if something happens, the computer must do this, otherwise, the computer should do something else.</p>
+                    <div class="example-box">
+                        <p>Think of it as your mom telling you to finish your chores. If you finish your chores, you will get your allowance. But if you don't, your mom will get mad at you.</p>
+                    </div>
+
+                    <h3>Types of Conditional Statements</h3>
+                    <ul>
+                        <li><strong>If statement:</strong> The if statement simply starts off the conditional</li>
+                        <li><strong>Elif statement:</strong> This is the middle, it is like, if the one before didn't happen, but this event occurs, then do the following function</li>
+                        <li><strong>Else statement:</strong> This is the final statement, this ends it saying that, if nothing above happened, then do the following</li>
+                    </ul>
+
+                    <h3>Conditions</h3>
+                    <p>Conditions are the part of the conditional which state what is supposed to happen.</p>
+                    <h4>For math:</h4>
+                    <ul>
+                        <li>Equal to: <code>==</code></li>
+                        <li>Not equal to: <code>!=</code></li>
+                        <li>Less than: <code><</code></li>
+                        <li>Greater than: <code>></code></li>
+                        <li>Less than or Equal to: <code><=</code></li>
+                        <li>Greater than or equal to: <code>>=</code></li>
+                    </ul>
+                    <p>For strings, you can use equal (==) to and not equal to (!=) for determining whether the string is the same or not the same as the other string that it is compared to.</p>
+
+                    <h3>How to Write Conditionals:</h3>
+                    <ul>
+                        <li>For conditionals, you have the if or the elif, and then have a space and write the condition statement followed by a colon.</li>
+                        <li>The next line, which tells the computer what to do, must have a tab or 4 spaces before you can start writing.</li>
+                        <li>After the writing of what to do under a condition, write the elif and the statement (back to the same level/remove the four spaces/tab), or the else, depending on what you are trying to do.</li>
+                        <li>Tabs/4 spaces are basically indicators that something is part of a loop, function, or conditional statement.</li>
+                    </ul>
+                `
+            },
+            {
+                id: 'lesson1',
+                title: 'If Statements',
+                video: 'https://www.youtube.com/embed/DZwmZ8Usvnk?si=vpyDCb9-wi_-2NRp',
+                description: `
+                    <h2>If Statements in Python</h2>
+                    <p>The if statement is the most basic form of conditional in Python. It allows you to execute a block of code only if a certain condition is true.</p>
+
+                    <h3>Basic Syntax</h3>
+                    <div class="example-box">
+                        <code>
+                        if condition:
+                            # code to execute if condition is true
+                        </code>
+                    </div>
+
+                    <h3>Example</h3>
+                    <div class="example-box">
+                        <code>
+                        age = 18
+                        if age >= 18:
+                            print("You are an adult")
+                        </code>
+                    </div>
+
+                    <p>In this example, the message "You are an adult" will only be printed if the age is 18 or greater.</p>
+
+                    <h3>Multiple Conditions</h3>
+                    <p>You can use logical operators to check multiple conditions:</p>
+                    <ul>
+                        <li><code>and</code>: Both conditions must be true</li>
+                        <li><code>or</code>: At least one condition must be true</li>
+                        <li><code>not</code>: Inverts the condition</li>
+                    </ul>
+
+                    <div class="example-box">
+                        <code>
+                        age = 25
+                        has_license = True
+
+                        if age >= 18 and has_license:
+                            print("You can drive a car")
+                        </code>
+                    </div>
+
+                    <p>Remember, indentation is crucial in Python. The indented block under the if statement will only execute if the condition is true.</p>
+                `
+            },
+            {
+                id: 'lesson2',
+                title: 'Elif and Else Statements',
+                video: 'https://www.youtube.com/embed/FvMPfrgGeKs?si=cGaa6cDWggZSa5Qe',
+                description: `
+                    <h2>Elif and Else Statements</h2>
+                    <p>The elif (else if) and else statements allow you to handle multiple conditions and provide alternative code blocks to execute.</p>
+
+                    <h3>Elif Statement</h3>
+                    <p>The elif statement allows you to check multiple conditions one after another.</p>
+                    <div class="example-box">
+                        <code>
+                        score = 85
+
+                        if score >= 90:
+                            print("A grade")
+                        elif score >= 80:
+                            print("B grade")
+                        elif score >= 70:
+                            print("C grade")
+                        elif score >= 60:
+                            print("D grade")
+                        </code>
+                    </div>
+
+                    <h3>Else Statement</h3>
+                    <h3>Else Statement</h3>
+                    
+<p>The else statement provides a default block of code to execute when none of the previous conditions are true.</p>
+<div class="example-box">
+    <code>
+    score = 55
+
+    if score >= 90:
+        print("A grade")
+    elif score >= 80:
+        print("B grade")
+    elif score >= 70:
+        print("C grade")
+    elif score >= 60:
+        print("D grade")
+    else:
+        print("F grade")
+    </code>
+</div>
+
+<p>In this example, if the score doesn't meet any of the previous conditions, it will print "F grade".</p>
+
+<h3>Combining If, Elif, and Else</h3>
+<p>You can use these statements together to create complex decision-making structures:</p>
+<div class="example-box">
+    <code>
+    age = 25
+
+    if age < 13:
+        print("Child")
+    elif age < 20:
+        print("Teenager")
+    elif age < 65:
+        print("Adult")
+    else:
+        print("Senior")
+    </code>
+</div>
+
+<p>Remember, Python will execute the first condition that evaluates to True and skip the rest of the conditions.</p>
+                `
+            },
+            {
+                id: 'lesson3',
+                title: 'Nested Conditionals',
+                video: 'https://www.youtube.com/embed/dePS_B7Loxs?si=xoK_Pz2zhWp--sne" title="YouTube video player',
+                description: `
+                    <h2>Nested Conditionals</h2>
+                    <p>Nested conditionals are conditional statements inside other conditional statements. They allow for more complex decision-making processes.</p>
+
+                    <h3>Basic Structure</h3>
+                    <div class="example-box">
+                        <code>
+                        if outer_condition:
+                            # outer code
+                            if inner_condition:
+                                # inner code
+                            else:
+                                # inner else code
+                        else:
+                            # outer else code
+                        </code>
+                    </div>
+
+                    <h3>Example</h3>
+                    <div class="example-box">
+                        <code>
+                        age = 25
+                        has_license = True
+
+                        if age >= 18:
+                            print("You are an adult")
+                            if has_license:
+                                print("You can drive a car")
+                            else:
+                                print("You need a license to drive")
+                        else:
+                            print("You are not an adult yet")
+                        </code>
+                    </div>
+
+                    <p>In this example, we first check if the person is an adult. If they are, we then check if they have a license to determine if they can drive.</p>
+
+                    <h3>Tips for Using Nested Conditionals</h3>
+                    <ul>
+                        <li>Use nested conditionals sparingly, as they can make your code harder to read and maintain.</li>
+                        <li>Consider using logical operators (and, or) instead of nesting when possible.</li>
+                        <li>Pay close attention to indentation, as it determines the structure of your nested conditionals.</li>
+                    </ul>
+
+                    <p>Nested conditionals are powerful, but remember that simpler code is often easier to understand and maintain.</p>
+                `
+            }
+        ];
+
+        let currentLessonIndex = 0;
+        let completedLessons = new Set();
+
+        function showLesson(index) {
+            const lessonTitle = document.getElementById('lesson-title');
+            const lessonVideo = document.getElementById('lesson-video');
+            const videoContainer = document.querySelector('.video-container');
+            const lessonDescription = document.getElementById('lesson-description');
+
+            const lesson = lessons[index];
+            lessonTitle.textContent = lesson.title;
+            lessonDescription.innerHTML = lesson.description;
+
+            if (lesson.video) {
+                lessonVideo.src = lesson.video;
+                videoContainer.style.display = 'block';
+            } else {
+                videoContainer.style.display = 'none';
+            }
+
+            document.querySelectorAll('#lesson-list a').forEach((a, i) => {
+                a.classList.toggle('active', i === index);
+            });
+
+            currentLessonIndex = index;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = (completedLessons.size / lessons.length) * 100;
+            document.getElementById('lesson-progress').style.height = `${progress}%`;
+        }
+
+        function createLessonList() {
+            const lessonList = document.getElementById('lesson-list');
+            lessons.forEach((lesson, index) => {
+                const li = document.createElement('li');
+                const checkbox = document.createElement('div');
+                checkbox.className = 'checkbox';
+                checkbox.id = `checkbox-${lesson.id}`;
+                li.appendChild(checkbox);
+
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = lesson.title;
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    showLesson(index);
+                };
+                li.appendChild(a);
+                lessonList.appendChild(li);
+            });
+        }
+
+        function updateCheckbox(lessonId) {
+            const checkbox = document.getElementById(`checkbox-${lessonId}`);
+            checkbox.classList.add('completed');
+            checkbox.innerHTML = '✓';
+        }
+
+        createLessonList();
+        showLesson(0);
+    </script>
+</body>
+</html>

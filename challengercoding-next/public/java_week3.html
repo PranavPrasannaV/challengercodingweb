@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Week 3: If Statements - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #263238;
+            --accent: #FFC107;
+            --background: #F5F7FA;
+            --text: #333;
+            --text-light: #666;
+            --white: #ffffff;
+            --success: #4CAF50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 30px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: fixed;
+            top: 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            min-height: calc(100vh - 60px);
+            margin-top: 60px;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: var(--white);
+            padding: 2rem;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+
+        .progress-bar {
+            width: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-right: 1rem;
+            align-self: stretch;
+            position: relative;
+        }
+
+        .progress {
+            width: 100%;
+            background-color: var(--primary);
+            border-radius: 5px;
+            position: absolute;
+            bottom: 0;
+            transition: height 0.3s ease;
+        }
+
+        .lesson-list {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            font-size: 1rem;
+            color: var(--text);
+            display: block;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: 0.3s;
+            flex-grow: 1;
+        }
+
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 14px;
+        }
+
+        .checkbox.completed {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 2rem;
+            margin-left: 300px;
+            overflow-y: auto;
+        }
+
+        .content h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .lesson-content {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .lesson-content h2 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        .lesson-content h3 {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .lesson-content p, .lesson-content ul {
+            margin-bottom: 1rem;
+        }
+
+        .lesson-content ul {
+            padding-left: 1.5rem;
+        }
+
+        .code-example {
+            background-color: #f0f0f0;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0 8px 8px 0;
+            font-family: 'Fira Code', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        code {
+            display: block;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .back-button {
+            display: block;
+            text-decoration: none;
+            color: var(--text);
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            background-color: var(--accent);
+            border-radius: 8px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .progress-bar {
+                width: 100%;
+                height: 10px;
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+
+            .progress {
+                width: 0;
+                height: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="online_compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="sidebar">
+            <a href="java_tutorials.html" class="back-button">
+                <i data-lucide="arrow-left"></i> Back to Tutorials
+            </a>
+            <div class="progress-bar">
+                <div class="progress" id="lesson-progress"></div>
+            </div>
+            <div class="lesson-list">
+                <h2>Java Week 3: If Statements</h2>
+                <ul id="lesson-list"></ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h1 id="lesson-title"></h1>
+            <div class="video-container" style="display: none;">
+                <iframe id="lesson-video" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="lesson-content" id="lesson-description"></div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const lessons = [
+            {
+                id: 'overview',
+                title: 'Introduction to If Statements',
+                video: null,
+                description: `
+                    <h2>Overview: Understanding If Statements in Java</h2>
+                    
+                    <h3>What are If Statements?</h3>
+                    <p>If statements are fundamental control structures in Java that allow you to make decisions in your code. They enable your program to execute different blocks of code based on whether a specified condition is true or false.</p>
+
+                    <h3>Key Concepts</h3>
+                    <ul>
+                        <li>
+                            <strong>Basic If Statement</strong>
+                            <ul>
+                                <li>Executes a block of code if a condition is true</li>
+                                <li>Example:
+                                    <div class="code-example">
+if (condition) {
+    // code to be executed if condition is true
+}</div>
+                                </li>
+                            </ul>
+                        </li>
+                        
+                        <li>
+                            <strong>If-Else Statement</strong>
+                            <ul>
+                                <li>Provides an alternative block of code to execute if the condition is false</li>
+                                <li>Example:
+                                    <div class="code-example">
+if (condition) {
+    // code to be executed if condition is true
+} else {
+    // code to be executed if condition is false
+}</div>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <strong>If-Else If-Else Statement</strong>
+                            <ul>
+                                <li>Allows checking multiple conditions</li>
+                                <li>Example:
+                                    <div class="code-example">
+if (condition1) {
+    // code to be executed if condition1 is true
+} else if (condition2) {
+    // code to be executed if condition2 is true
+} else {
+    // code to be executed if all conditions are false
+}</div>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <strong>Nested If Statements</strong>
+                            <ul>
+                                <li>If statements inside other if statements</li>
+                                <li>Example:
+                                    <div class="code-example">
+if (outerCondition) {
+    if (innerCondition) {
+        // code to be executed if both conditions are true
+    }
+}</div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h3>Why are If Statements important?</h3>
+                    <ul>
+                        <li>They allow programs to make decisions</li>
+                        <li>Enable creation of more complex and interactive applications</li>
+                        <li>Form the basis for more advanced control structures</li>
+                        <li>Essential for implementing business logic and algorithms</li>
+                    </ul>
+
+                    <p>Select a lesson from the sidebar to dive deeper into each of these concepts!</p>
+                `
+            },
+            {
+                id: 'basic-if',
+                title: 'Basic If Statements',
+                video: 'https://www.youtube.com/embed/MY03bt_0JQI',
+                description: `
+                    <h2>Understanding Basic If Statements in Java</h2>
+                    
+                    <p>The basic if statement is the simplest form of conditional statement in Java. It allows you to execute a block of code only if a specified condition is true.</p>
+
+                    <h3>Syntax of Basic If Statement</h3>
+                    <div class="code-example">
+if (condition) {
+    // code to be executed if condition is true
+}</div>
+
+                    <h3>How It Works</h3>
+                    <ol>
+                        <li>The condition inside the parentheses is evaluated.</li>
+                        <li>If the condition is true, the code block inside the curly braces is executed.</li>
+                        <li>If the condition is false, the code block is skipped.</li>
+                    </ol>
+
+                    <h3>Example</h3>
+                    <div class="code-example">
+int age = 18;
+
+if (age >= 18) {
+    System.out.println("You are eligible to vote.");
+}</div>
+
+                    <p>In this example, the message will be printed because the condition (age >= 18) is true.</p>
+
+                    <h3>Important Points</h3>
+                    <ul>
+                        <li>The condition must be a boolean expression (evaluates to true or false).</li>
+                        <li>If the code block contains only one statement, curly braces are optional (but recommended for clarity).</li>
+                        <li>You can use any valid boolean expression as the condition, including method calls that return boolean values.</li>
+                    </ul>
+
+                    <h3>Practice</h3>
+                    <p>Try writing if statements with different conditions. Experiment with various comparison operators (==, !=, >, <, >=, <=) and logical operators (&&, ||, !).</p>
+
+                    <h3>Key Takeaways</h3>
+                    <ul>
+                        <li>Basic if statements allow conditional execution of code.</li>
+                        <li>The condition must evaluate to a boolean value.</li>
+                        <li>If statements are fundamental to creating decision-making logic in programs.</li>
+                        <li>Always consider the readability of your code when using if statements.</li>
+                        <li>Practice writing if statements to become comfortable with their usage.</li>
+                    </ul>
+                `
+            },
+            {
+                id: 'if-else',
+                title: 'If-Else Statements',
+                video: 'https://www.youtube.com/embed/MY03bt_0JQI',
+                description: `
+                    <h2>Understanding If-Else Statements in Java</h2>
+                    
+                    <p>If-Else statements extend the basic if statement by providing an alternative block of code to execute when the condition is false.</p>
+
+                    <h3>Syntax of If-Else Statement</h3>
+                    <div class="code-example">
+if (condition) {
+    // code to be executed if condition is true
+} else {
+    // code to be executed if condition is false
+}</div>
+
+                    <h3>How It Works</h3>
+                    <ol>
+                        <li>The condition inside the parentheses is evaluated.</li>
+                        <li>If the condition is true, the code block after the if is executed.</li>
+                        <li>If the condition is false, the code block after the else is executed.</li>
+                    </ol>
+
+                    <h3>Example</h3>
+                    <div class="code-example">
+int age = 15;
+
+if (age >= 18) {
+    System.out.println("You are eligible to vote.");
+} else {
+    System.out.println("You are not eligible to vote yet.");
+}</div>
+
+                    <p>In this example, the second message will be printed because the condition (age >= 18) is false.</p>
+
+                    <h3>Important Points</h3>
+                    <ul>
+                        <li>The else block is optional but provides a way to handle the false condition explicitly.</li>
+                        <li>Only one of the two blocks (if or else) will be executed, never both.</li>
+                        <li>You can chain multiple if-else statements for more complex conditions.</li>
+                    </ul>
+
+                    <h3>Practice</h3>
+                    <p>Try writing if-else statements for different scenarios. For example, check if a number is positive or negative, or determine if a year is a leap year.</p>
+
+                    <h3>Key Takeaways</h3>
+                    <ul>
+                        <li>If-Else statements provide two-way decision making in your code.</li>
+                        <li>They improve code readability by explicitly handling both true and false conditions.</li>
+                        <li>If-Else statements are fundamental for creating branching logic in programs.</li>
+                        <li>Consider using if-else when you have two mutually exclusive code paths.</li>
+                    </ul>
+                `
+            },
+            {
+                id: 'if-else-if',
+                title: 'If-Else If-Else Statements',
+                video: 'https://www.youtube.com/embed/MY03bt_0JQI',
+                description: `
+                    <h2>Understanding If-Else If-Else Statements in Java</h2>
+                    
+                    <p>If-Else If-Else statements allow you to check multiple conditions and execute different code blocks based on which condition is true.</p>
+
+                    <h3>Syntax of If-Else If-Else Statement</h3>
+                    <div class="code-example">
+if (condition1) {
+    // code to be executed if condition1 is true
+} else if (condition2) {
+    // code to be executed if condition2 is true
+} else if (condition3) {
+    // code to be executed if condition3 is true
+} else {
+    // code to be executed if all conditions are false
+}</div>
+
+                    <h3>How It Works</h3>
+                    <ol>
+                        <li>Each condition is evaluated in order.</li>
+                        <li>If a condition is true, its corresponding code block is executed.</li>
+                        <li>Once a true condition is found and its block executed, the rest of the conditions are skipped.</li>
+                        <li>If none of the conditions are true, the else block (if present) is executed.</li>
+                    </ol>
+
+                    <h3>Example</h3>
+                    <div class="code-example">
+int score = 85;
+
+if (score >= 90) {
+    System.out.println("Grade: A");
+} else if (score >= 80) {
+    System.out.println("Grade: B");
+} else if (score >= 70) {
+    System.out.println("Grade: C");
+} else if (score >= 60) {
+    System.out.println("Grade: D");
+} else {
+    System.out.println("Grade: F");
+}</div>
+
+                    <p>In this example, "Grade: B" will be printed because the score is 85.</p>
+
+                    <h3>Important Points</h3>
+                    <ul>
+                        <li>You can have any number of else if clauses.</li>
+                        <li>The else block is optional but provides a way to handle all other cases.</li>
+                        <li>Only one block in the entire if-else if-else chain will be executed.</li>
+                        <li>The order of conditions matters - place more specific conditions before general ones.</li>
+                    </ul>
+
+                    <h3>Practice</h3>
+                    <p>Try writing if-else if-else statements for different scenarios. For example, categorize BMI values, determine tax brackets based on income, or classify weather based on temperature.</p>
+
+                    <h3>Key Takeaways</h3>
+                    <ul>
+                        <li>If-Else If-Else statements allow for multi-way decision making in your code.</li>
+                        <li>They are useful when you have multiple conditions to check.</li>
+                        <li>The order of conditions is important for correct logic implementation.</li>
+                        <li>Consider using switch statements for cleaner code when checking multiple values of a single variable.</li>
+                    </ul>
+                `
+            }
+        ];
+
+        let currentLessonIndex = 0;
+        let completedLessons = new Set();
+
+        function showLesson(index) {
+            const lessonTitle = document.getElementById('lesson-title');
+            const lessonVideo = document.getElementById('lesson-video');
+            const videoContainer = document.querySelector('.video-container');
+            const lessonDescription = document.getElementById('lesson-description');
+
+            const lesson = lessons[index];
+            lessonTitle.textContent = lesson.title;
+            lessonDescription.innerHTML = lesson.description;
+
+            if (lesson.video) {
+                lessonVideo.src = lesson.video;
+                videoContainer.style.display = 'block';
+            } else {
+                videoContainer.style.display = 'none';
+            }
+
+            document.querySelectorAll('#lesson-list a').forEach((a, i) => {
+                a.classList.toggle('active', i === index);
+            });
+
+            currentLessonIndex = index;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = (completedLessons.size / lessons.length) * 100;
+            document.getElementById('lesson-progress').style.height = `${progress}%`;
+        }
+
+        function createLessonList() {
+            const lessonList = document.getElementById('lesson-list');
+            lessons.forEach((lesson, index) => {
+                const li = document.createElement('li');
+                const checkbox = document.createElement('div');
+                checkbox.className = 'checkbox';
+                checkbox.id = `checkbox-${lesson.id}`;
+                li.appendChild(checkbox);
+
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = lesson.title;
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    showLesson(index);
+                };
+                li.appendChild(a);
+                lessonList.appendChild(li);
+            });
+        }
+
+        function updateCheckbox(lessonId) {
+            const checkbox = document.getElementById(`checkbox-${lessonId}`);
+            checkbox.classList.add('completed');
+            checkbox.innerHTML = '✓';
+        }
+
+        createLessonList();
+        showLesson(0);
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>
+

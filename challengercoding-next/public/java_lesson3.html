@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Guided Tutorials - Week 2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #FF4081;
+            --accent: #FFC107;
+            --background: #f0f4f8;
+            --surface: #ffffff;
+            --border: #e0e7ff;
+            --text: #2d3748;
+            --text-light: #4a5568;
+            --success: #48bb78;
+            --error: #f56565;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 5px;
+            width: 100%;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 2rem auto;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .exercise-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item:hover {
+            background: var(--primary);
+            color: var(--surface);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item.active {
+            background: var(--primary);
+            color: var(--surface);
+            border-color: var(--primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .main-content {
+            flex: 1;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .tutorial-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .tutorial-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .content-box {
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .highlight-box {
+            background-color: #e6f7ff;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .step-box {
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            margin-right: 0.5rem;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+        }
+
+        .code-snippet-box {
+            background-color: #f4f4f4;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-family: 'Fira Code', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .autograder-container {
+            margin-top: 1.5rem;
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .autograder-input {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .autograder-feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .autograder-feedback.success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .autograder-feedback.error {
+            background-color: var(--error);
+            color: white;
+        }
+
+        .common-errors {
+            margin-top: 1rem;
+        }
+
+        .common-errors summary {
+            cursor: pointer;
+            padding: 0.5rem;
+            background-color: var(--background);
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .common-errors ul {
+            margin-top: 0.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .common-errors li {
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="#" target="_blank" rel="noopener noreferrer">Enroll</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="exercise-list">
+                <div class="exercise-item active" data-exercise="overview">
+                    <span>Lesson Overview</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise1">
+                    <span>1. Introduction to Conditionals</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise2">
+                    <span>2. Nested If Statements</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise3">
+                    <span>3. Logical Operators</span>
+                </div>
+                <div class="exercise-item" data-exercise="project">
+                    <span>4. Weekly Project</span>
+                </div>
+                <div class="exercise-item" onclick="window.location.href='java_tutorials.html'">
+                    <span>Return to Home</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div id="tutorial-content">
+                <!-- Content will be dynamically loaded here -->
+            </div>
+            <div id="compiler-container" style="display: none;">
+                <iframe src="https://www.jdoodle.com/online-java-compiler"></iframe>
+            </div>
+            <div id="autograder-container" class="autograder-container" style="display: none;">
+                <h3 class="text-xl font-semibold mb-2">Autograder</h3>
+                <textarea id="autograder-input" class="autograder-input" placeholder="Paste your code output here..."></textarea>
+                <button onclick="checkOutput()" class="button">Check Output</button>
+                <div id="autograder-feedback" class="autograder-feedback"></div>
+            </div>
+            <details class="common-errors">
+                <summary>Common Java Errors</summary>
+                <ul>
+                    <li><strong>Error:</strong> "else without if"
+                        <br><strong>Cause:</strong> Misplaced else statement or missing curly braces
+                        <br><strong>Fix:</strong> Ensure each else is properly paired with an if and use curly braces for multi-line blocks.
+                    </li>
+                    <li><strong>Error:</strong> "unreachable statement"
+                        <br><strong>Cause:</strong> Code after a return, break, or continue statement
+                        <br><strong>Fix:</strong> Remove or move the unreachable code.
+                    </li>
+                    <!-- Add more common errors related to conditionals -->
+                </ul>
+            </details>
+        </main>
+    </div>
+    <!-- Include Scripts -->
+    <script src="config.js"></script>
+    <script>
+        document.querySelectorAll(".enroll-button").forEach(button => {
+            button.href = enrollLink;
+        });
+    </script>
+    <script>
+        lucide.createIcons();
+
+        const exercises = [
+            {
+                title: "Lesson Overview",
+                content: `
+                    <h1 class="tutorial-title">Java Guided Tutorials - Conditionals</h1>
+                    <div class="content-box">
+                        <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
+                        <p class="tutorial-text">
+                            Welcome to our Java Conditionals Tutorial! In this lesson, you'll learn about conditional statements in Java, which allow your programs to make decisions and execute different code based on certain conditions.
+                        </p>
+                        <div class="highlight-box">
+                            <h3 class="text-xl font-semibold mb-2">Lesson Overview:</h3>
+                            <ul class="list-disc list-inside">
+                                <li>Introduction to Conditionals in Java</li>
+                                <li>Working with Nested If Statements</li>
+                                <li>Using Logical Operators in Conditions</li>
+                                <li>Weekly Project: Applying Conditionals</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">
+                            By the end of this lesson, you'll be able to use if-else statements, nested conditionals, and logical operators to create more complex and dynamic Java programs.
+                        </p>
+                    </div>
+                `,
+                showCompiler: false,
+                showAutograder: false,
+                expectedOutput: ""
+            },
+            {
+                title: "Introduction to Conditionals",
+                content: `
+                    <h1 class="tutorial-title">1. Introduction to Conditionals in Java</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">If-Else Statements</h3>
+                        <p class="tutorial-text">
+                            Conditionals in Java allow you to execute certain blocks of code depending on whether a boolean condition is true or false. The most basic form is the if-else statement.
+                        </p>
+                        <pre><code>if (condition) {
+    // code to execute if condition is true
+} else {
+    // code to execute if condition is false
+}</code></pre>
+                        <p class="tutorial-text">Let's practice with a simple grade calculator:</p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Try it Yourself</h4>
+                            <p>Complete the GradeCalculator program below. Use if-else statements to assign the correct grade based on the score.</p>
+                        </div>
+                        <div class="code-snippet-box">
+public class GradeCalculator {
+    public static void main(String[] args) {
+        int score = 70;
+        char grade;
+
+        // Your code here
+        // Use if-else statements to determine the grade
+        // A: 90-100, B: 80-89, C: 70-79, D: 60-69, F: 0-59
+
+        System.out.println(grade);
+    }
+}
+                        </div>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "C"
+            },
+            {
+                title: "Nested If Statements",
+                content: `
+                    <h1 class="tutorial-title">2. Working with Nested If Statements in Java</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Nested Conditionals</h3>
+                        <p class="tutorial-text">
+                            Nested if statements allow you to check multiple conditions in a more complex decision-making process. It's an if statement inside another if or else block.
+                        </p>
+                        <pre><code>if (outerCondition) {
+    if (innerCondition) {
+        // code to execute if both conditions are true
+    } else {
+        // code to execute if outer is true but inner is false
+    }
+} else {
+    // code to execute if outer condition is false
+}</code></pre>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Try it Yourself</h4>
+                            <p>Complete the MovieTicketPrice program. Use nested if statements to determine the ticket price based on age and whether it's a weekend.</p>
+                        </div>
+                        <div class="code-snippet-box">
+public class MovieTicketPrice {
+    public static void main(String[] args) {
+        int age = 20;
+        boolean isWeekend = true;
+        double ticketPrice;
+
+        // Your code here
+        // Use nested if statements to determine the ticket price
+        // Adult (18+) weekend price: $15, weekday price: $12
+        // Child (<18) weekend price: $10, weekday price: $8
+
+        System.out.println("Ticket Price: " + ticketPrice);
+    }
+}
+                        </div>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Ticket Price: 15.0"
+            },
+            {
+                title: "Logical Operators",
+                content: `
+                    <h1 class="tutorial-title">3. Using Logical Operators in Java</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Combining Conditions</h3>
+                        <p class="tutorial-text">
+                            Logical operators in Java allow you to combine multiple conditions in a single statement. The main logical operators are:
+                        </p>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>AND (&&): Both conditions must be true</li>
+                            <li>OR (||): At least one condition must be true</li>
+                            <li>NOT (!): Inverts the boolean value</li>
+                        </ul>
+                        <pre><code>if (condition1 && condition2) {
+    // Execute if both conditions are true
+} else if (condition3 || condition4) {
+    // Execute if either condition is true
+} else if (!condition5) {
+    // Execute if condition5 is false
+}</code></pre>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Try it Yourself</h4>
+                            <p>Complete the DiscountEligibility program. Use logical operators to determine if a person is eligible for a discount based on their age and membership status.</p>
+                        </div>
+                        <div class="code-snippet-box">
+public class DiscountEligibility {
+    public static void main(String[] args) {
+        int age = 30;
+        boolean isMember = false;
+        boolean eligibleForDiscount;
+
+        // Your code here
+        // Use logical operators to determine discount eligibility
+        // Eligible if: (age >= 60 OR isMember == true) AND age >= 18
+
+        System.out.println("Eligible for Discount: " + eligibleForDiscount);
+    }
+}
+                        </div>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Eligible for Discount: false"
+            },
+            {
+                title: "Weekly Project",
+                content: `
+                    <h1 class="tutorial-title">4. Weekly Project: Decision Maker</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Project Description</h3>
+                        <p class="tutorial-text">
+                            Create a Java program that helps a user make a decision based on multiple inputs. This project will incorporate all the conditional concepts you've learned.
+                        </p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Requirements:</h4>
+                            <ul class="list-disc list-inside mb-4">
+                                <li>Use at least one if-else statement</li>
+                                <li>Include a nested if statement</li>
+                                <li>Use logical operators to combine conditions</li>
+                                <li>Provide at least three different possible outcomes</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">
+                            Example idea: Create a program that suggests a mode of transportation based on distance, weather, and time constraints.
+                        </p>
+                        <div class="code-snippet-box">
+public class TransportationAdvisor {
+    public static void main(String[] args) {
+        int distance = 5; // in kilometers
+        boolean isRaining = true;
+        int availableTime = 30; // in minutes
+
+        String suggestedTransportation;
+
+        // Your code here
+        // Use if-else statements, nested ifs, and logical operators
+        // to determine the suggested mode of transportation
+        // Options: "Walk", "Bike", "Take the bus", "Drive a car"
+
+        System.out.println("Suggested transportation: " + suggestedTransportation);
+    }
+}
+                        </div>
+                        <p class="tutorial-text">
+                            Implement the TransportationAdvisor program. Use the online compiler below to write and test your code. Once you're satisfied with your program, paste the output in the autograder to check your work.
+                        </p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Suggested transportation: Take the bus"
+            }
+        ];
+
+        let currentExercise = 0;
+
+        function loadExercise(index) {
+            const exercise = exercises[index];
+            document.getElementById('tutorial-content').innerHTML = exercise.content;
+            document.getElementById('compiler-container').style.display = exercise.showCompiler ? 'block' : 'none';
+            document.getElementById('autograder-container').style.display = exercise.showAutograder ? 'block' : 'none';
+            if (exercise.showAutograder) {
+                document.getElementById('autograder-input').value = '';
+                document.getElementById('autograder-feedback').textContent = '';
+            }
+            document.querySelectorAll('.exercise-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+            currentExercise = index;
+        }
+
+        function checkOutput() {
+            const userOutput = document.getElementById('autograder-input').value.trim();
+            const expectedOutput = exercises[currentExercise].expectedOutput;
+            const feedback = document.getElementById('autograder-feedback');
+
+            if (expectedOutput === "") {
+                feedback.textContent = "Great job on your exercise! Your output looks good.";
+                feedback.className = 'autograder-feedback success';
+            } else if (userOutput === expectedOutput) {
+                feedback.textContent = "Success! Your output matches the expected result.";
+                feedback.className = 'autograder-feedback success';
+            } else {
+                feedback.textContent = `Not quite there yet. Expected output:\n${expectedOutput}\n\nYour output:\n${userOutput}\n\nKeep trying!`;
+                feedback.className = 'autograder-feedback error';
+            }
+        }
+
+        document.querySelectorAll('.exercise-item').forEach((item, index) => {
+            item.addEventListener('click', () => loadExercise(index));
+        });
+
+        // Load the first exercise by default
+        loadExercise(0);
+    </script>
+</body>
+</html>
