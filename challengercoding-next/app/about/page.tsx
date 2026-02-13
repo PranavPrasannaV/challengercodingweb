@@ -62,7 +62,7 @@ export default function About() {
                     <div className="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100 flex flex-col md:flex-row">
                         <div className="md:w-1/3 relative h-96 md:h-auto bg-gray-200">
                             <Image
-                                src="/assets/jaden.jpg"
+                                src="/jaden.jpg"
                                 alt="Jaden Tang"
                                 fill
                                 className="object-cover"
@@ -101,10 +101,9 @@ export default function About() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         {[
-                            { name: "Aadi Saraf", role: "VP of Education" },
-                            { name: "Ananya Denduluri", role: "VP of Outreach" },
+                            { name: "Aadi Saraf", role: "Co-Founder" },
+                            { name: "Pranav Prasanna Venkatesh", role: "VP of Education" },
                             { name: "Miheer Pandya", role: "Webmaster" },
-                            { name: "Brinda Aniga", role: "Secretary" }
                         ].map((member, i) => (
                             <div key={i} className="group p-6 rounded-2xl bg-gray-50 border border-gray-100 hover:bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                                 <div className="w-24 h-24 mx-auto bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mb-6 text-white text-2xl font-bold shadow-lg group-hover:scale-110 transition-transform">
