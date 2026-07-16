@@ -105,28 +105,26 @@ export default function Learn() {
                     <div
                         key={course.id}
                         onClick={() => router.push(`/tutorials/${course.id}`)}
-                        className="bg-surface hairline rounded-lg p-6 cursor-pointer transition-colors duration-200 hover:bg-alt-bg border-l-4"
-                        style={{ borderLeftColor: course.color }}
+                        className="bg-surface hairline rounded-lg p-6 cursor-pointer transition-all duration-200 hover:shadow-md group"
                     >
-                        <div className="mb-4">
-                            <course.icon className="w-12 h-12" style={{ color: course.color }} />
-                        </div>
-
-                        <div className="space-y-3">
-                            <div className="flex justify-between items-start">
+                        <div className="flex items-center gap-4 mb-4">
+                            <div className="w-12 h-12 rounded-lg flex items-center justify-center shrink-0 transition-colors duration-200" style={{ backgroundColor: `${course.color}18` }}>
+                                <course.icon className="w-6 h-6" style={{ color: course.color }} />
+                            </div>
+                            <div className="flex-1 min-w-0">
                                 <h2 className="text-h3 font-bold text-text">{course.title}</h2>
-                                <span className="text-xs font-medium px-2.5 py-1 bg-alt-bg text-text-secondary rounded border hairline">
+                                <span className="text-xs font-medium px-2 py-0.5 bg-alt-bg text-text-secondary rounded mt-1 inline-block">
                                     {course.level}
                                 </span>
                             </div>
+                        </div>
 
-                            <p className="text-small text-text-secondary leading-relaxed">
-                                {course.desc}
-                            </p>
+                        <p className="text-small text-text-secondary leading-relaxed">
+                            {course.desc}
+                        </p>
 
-                            <div className="pt-4 text-primary font-semibold text-small inline-flex items-center gap-1">
-                                Continue Learning <ChevronRight className="w-4 h-4" />
-                            </div>
+                        <div className="mt-4 text-primary font-semibold text-small inline-flex items-center gap-1 transition-colors duration-200 group-hover:text-primary-hover">
+                            Continue Learning <ChevronRight className="w-4 h-4" />
                         </div>
                     </div>
                 ))}

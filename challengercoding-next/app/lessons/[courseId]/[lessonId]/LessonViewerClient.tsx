@@ -213,7 +213,7 @@ export default function LessonViewerClient({ params }: { params: { courseId: str
                                                 </div>
                                             </div>
                                             <div className="hairline rounded-lg overflow-hidden">
-                                                <iframe src="https://www.jdoodle.com/embed/v0/" title="Compiler" className="w-full h-[600px]" />
+                                                <iframe src="https://onecompiler.com/embed/?hideNew=true" title="Compiler" className="w-full h-[600px]" />
                                             </div>
                                         </section>
                                     )}

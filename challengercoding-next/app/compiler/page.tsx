@@ -21,9 +21,9 @@ export default function Compiler() {
                     {/* Embedded JDoodle Compiler */}
                     <div className="rounded-lg overflow-hidden">
                         <iframe
-                            src="https://www.jdoodle.com/embed/v0/"
-                            title="JDoodle Compiler"
-                            className="w-full h-[800px] border-none bg-gray-50"
+                            src="https://onecompiler.com/embed/?hideNew=true"
+                            title="Online Compiler"
+                            className="w-full h-[800px] border-none"
                         ></iframe>
                     </div>
                 </div>

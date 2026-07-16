@@ -70,28 +70,26 @@ export default function TutorialsPage() {
                     <Link
                         key={course.id}
                         href={`/tutorials/${course.id}`}
-                        className="bg-surface hairline rounded-lg p-6 block transition-colors duration-200 hover:bg-alt-bg border-l-4"
-                        style={{ borderLeftColor: course.accent }}
+                        className="bg-surface hairline rounded-lg overflow-hidden block transition-all duration-200 hover:shadow-md group"
                     >
-                        <div className="flex items-center gap-4 mb-4">
-                            <course.icon
-                                className="w-12 h-12"
-                                style={{ color: course.accent }}
-                            />
-                            <div className="flex-1">
-                                <h2 className="text-h3 font-bold text-text">{course.title}</h2>
-                                <span className="text-xs font-medium px-2.5 py-1 bg-alt-bg text-text-secondary rounded border hairline mt-1 inline-block">
-                                    {course.level}
-                                </span>
+                        <div className="p-6">
+                            <div className="flex items-center gap-4 mb-4">
+                                <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: `${course.accent}18` }}>
+                                    <course.icon className="w-6 h-6" style={{ color: course.accent }} />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <h2 className="text-h3 font-bold text-text">{course.title}</h2>
+                                    <span className="text-xs font-medium text-text-secondary">{course.level}</span>
+                                </div>
                             </div>
-                        </div>
 
-                        <p className="text-small text-text-secondary leading-relaxed mb-4">
-                            {course.desc}
-                        </p>
+                            <p className="text-small text-text-secondary leading-relaxed">
+                                {course.desc}
+                            </p>
 
-                        <div className="text-primary font-semibold text-small inline-flex items-center gap-1">
-                            Start Course <ChevronRight className="w-4 h-4" />
+                            <div className="mt-4 text-primary font-semibold text-small inline-flex items-center gap-1 transition-colors duration-200 group-hover:text-primary-hover">
+                                Start Course <ChevronRight className="w-4 h-4" />
+                            </div>
                         </div>
                     </Link>
                 ))}
