@@ -59,7 +59,7 @@ export default function Home() {
             {/* Glowing background */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-radial from-primary/10 via-transparent to-transparent blur-2xl -z-10 pointer-events-none" />
 
-              <div className="relative w-full max-w-[420px] aspect-[16/9] flex items-center justify-center">
+              <div className="relative w-full max-w-[520px] aspect-[16/9] flex items-center justify-center">
               {/* Main Code Editor Window */}
                 <div className="relative w-full bg-white hairline rounded-2xl px-8 py-6 shadow-xl rotate-3 group-hover:rotate-1 group-hover:scale-[1.02] transition-all duration-500 ease-out z-0">
                 {/* Windows-style top dots */}
