@@ -65,12 +65,13 @@ export default function About() {
       <section className="bg-background">
         <div className="max-w-5xl mx-auto px-6 pb-24">
           <div className="bg-surface hairline rounded-lg flex flex-col md:flex-row overflow-hidden">
-            <div className="md:w-1/3 h-96 relative bg-alt-bg">
+            <div className="md:w-1/3 min-h-[400px] relative bg-alt-bg">
               <Image
                 src="/jaden.jpg"
                 alt="Jaden Tang"
                 fill
-                className="object-cover"
+                className="object-cover object-center"
+                sizes="(max-width: 768px) 100vw, 33vw"
               />
             </div>
             <div className="md:w-2/3 p-10 md:p-14 space-y-6">
