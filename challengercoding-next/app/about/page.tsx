@@ -10,7 +10,7 @@ const values = [
 ];
 
 const team = [
-  { name: 'Aadi Saraf', role: 'Co-Founder' },
+  { name: 'Aadi Saraf', role: 'Co-Founder / President' },
   { name: 'Pranav Prasanna Venkatesh', role: 'Vice President' },
   { name: 'Miheer Pandya', role: 'Webmaster' },
   { name: 'Jeswanth Battula', role: 'Head of Public Relations' },
