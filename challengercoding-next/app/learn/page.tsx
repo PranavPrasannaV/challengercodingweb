@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { Code2, Terminal, MonitorPlay, ChevronRight, LogOut, User } from "lucide-react";
 
 export default function Learn() {
@@ -37,7 +36,7 @@ export default function Learn() {
             level: "Beginner",
             desc: "Start your journey with visual block-based coding.",
             icon: MonitorPlay,
-            gradient: "from-orange-400 to-red-500"
+            color: "#E67E22"
         },
         {
             id: "python",
@@ -45,7 +44,7 @@ export default function Learn() {
             level: "Intermediate",
             desc: "Learn the world's most popular language for AI and Data.",
             icon: Terminal,
-            gradient: "from-blue-400 to-indigo-500"
+            color: "#1A5C5C"
         },
         {
             id: "java",
@@ -53,7 +52,7 @@ export default function Learn() {
             level: "Advanced",
             desc: "Master object-oriented concepts for enterprise dev.",
             icon: Code2,
-            gradient: "from-red-500 to-pink-600"
+            color: "#C6694E"
         },
         {
             id: "scratch2",
@@ -61,7 +60,7 @@ export default function Learn() {
             level: "Beginner +",
             desc: "Advanced logic and game mechanics.",
             icon: MonitorPlay,
-            gradient: "from-orange-600 to-red-700"
+            color: "#D35400"
         },
         {
             id: "python2",
@@ -69,7 +68,7 @@ export default function Learn() {
             level: "Intermediate +",
             desc: "Data structures, algorithms, and more.",
             icon: Terminal,
-            gradient: "from-blue-600 to-indigo-700"
+            color: "#144A4A"
         },
         {
             id: "java2",
@@ -77,24 +76,24 @@ export default function Learn() {
             level: "Advanced +",
             desc: "Deep dive into APIs and system design.",
             icon: Code2,
-            gradient: "from-red-600 to-pink-700"
+            color: "#B15840"
         }
     ];
 
     return (
-        <main className="min-h-screen pt-32 pb-20 px-6 max-w-7xl mx-auto">
+        <main className="min-h-screen bg-background pt-32 pb-20 px-6 max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row justify-between items-center mb-16 gap-6">
                 <div className="space-y-2">
-                    <h1 className="text-4xl font-bold font-poppins text-secondary">My Learning Dashboard</h1>
-                    <div className="flex items-center gap-2 text-text-light">
+                    <h1 className="text-h1 font-serif font-bold text-text">My Learning Dashboard</h1>
+                    <div className="flex items-center gap-2">
                         <User className="w-5 h-5 text-primary" />
-                        <p className="text-lg">Welcome back, <span className="font-semibold text-primary">{currentUser}</span>!</p>
+                        <p className="text-body">Welcome back, <span className="font-semibold text-primary">{currentUser}</span>!</p>
                     </div>
                 </div>
 
                 <button
                     onClick={handleLogout}
-                    className="flex items-center gap-2 px-6 py-2.5 bg-red-50 text-red-600 border border-red-100 rounded-xl hover:bg-red-100 transition-colors font-medium"
+                    className="flex items-center gap-2 px-5 py-2.5 border border-border text-text-secondary rounded-lg hover:bg-alt-bg transition-colors font-medium text-small"
                 >
                     <LogOut className="w-4 h-4" />
                     Log Out
@@ -106,27 +105,27 @@ export default function Learn() {
                     <div
                         key={course.id}
                         onClick={() => router.push(`/tutorials/${course.id}`)}
-                        className="group relative bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden"
+                        className="bg-surface hairline rounded-lg p-6 cursor-pointer transition-colors duration-200 hover:bg-alt-bg border-l-4"
+                        style={{ borderLeftColor: course.color }}
                     >
-                        <div className={`h-40 rounded-2xl bg-gradient-to-br ${course.gradient} flex items-center justify-center mb-6 relative overflow-hidden`}>
-                            <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                            <course.icon className="w-16 h-16 text-white drop-shadow-md group-hover:scale-110 transition-transform duration-300" />
+                        <div className="mb-4">
+                            <course.icon className="w-12 h-12" style={{ color: course.color }} />
                         </div>
 
                         <div className="space-y-3">
                             <div className="flex justify-between items-start">
-                                <h2 className="text-lg font-bold text-secondary group-hover:text-primary transition-colors">{course.title}</h2>
-                                <span className="text-xs font-semibold px-2.5 py-1 bg-gray-50 rounded-full text-text-light border border-gray-200">
+                                <h2 className="text-h3 font-bold text-text">{course.title}</h2>
+                                <span className="text-xs font-medium px-2.5 py-1 bg-alt-bg text-text-secondary rounded border hairline">
                                     {course.level}
                                 </span>
                             </div>
 
-                            <p className="text-text-light text-sm leading-relaxed h-10 overflow-hidden text-ellipsis line-clamp-2">
+                            <p className="text-small text-text-secondary leading-relaxed">
                                 {course.desc}
                             </p>
 
-                            <div className="pt-4 flex items-center text-primary font-semibold text-sm group-hover:translate-x-1 transition-transform">
-                                Continue Learning <ChevronRight className="w-4 h-4 ml-1" />
+                            <div className="pt-4 text-primary font-semibold text-small inline-flex items-center gap-1">
+                                Continue Learning <ChevronRight className="w-4 h-4" />
                             </div>
                         </div>
                     </div>

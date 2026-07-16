@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Inputs Tutorial - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #263238;
+            --accent: #FFC107;
+            --background: #F5F7FA;
+            --text: #333;
+            --text-light: #666;
+            --white: #ffffff;
+            --success: #4CAF50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 30px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: fixed;
+            top: 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            min-height: calc(100vh - 60px);
+            margin-top: 60px;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: var(--white);
+            padding: 2rem;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+
+        .progress-bar {
+            width: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-right: 1rem;
+            align-self: stretch;
+            position: relative;
+        }
+
+        .progress {
+            width: 100%;
+            background-color: var(--primary);
+            border-radius: 5px;
+            position: absolute;
+            bottom: 0;
+            transition: height 0.3s ease;
+        }
+
+        .lesson-list {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            font-size: 1rem;
+            color: var(--text);
+            display: block;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: 0.3s;
+            flex-grow: 1;
+        }
+
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 14px;
+        }
+
+        .checkbox.completed {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 2rem;
+            margin-left: 300px;
+            overflow-y: auto;
+        }
+
+        .content h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .lesson-content {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .lesson-content h2 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        .lesson-content h3 {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .lesson-content p, .lesson-content ul {
+            margin-bottom: 1rem;
+        }
+
+        .lesson-content ul {
+            padding-left: 1.5rem;
+        }
+
+        .example-box {
+            background-color: #f0f0f0;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        code {
+            background-color: #e0e0e0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .knowledge-check {
+            background-color: var(--accent);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .knowledge-check h3 {
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .knowledge-check label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .knowledge-check button {
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .knowledge-check button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .back-button {
+            display: block;
+            text-decoration: none;
+            color: var(--text);
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            background-color: var(--accent);
+            border-radius: 8px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .main-page-content {
+            padding-top: 1rem;
+        }
+
+        .main-page-content h1 {
+            margin-bottom: 1rem;
+        }
+
+        .main-page-content p {
+            margin-bottom: 1rem;
+        }
+
+        .intro-container {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .overview-container {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .overview-container h2 {
+            color: var(--primary-dark);
+            margin-bottom: 1.5rem;
+            font-size: 1.75rem;
+        }
+
+        .overview-container h3 {
+            color: var(--secondary);
+            margin: 1.5rem 0 1rem;
+            font-size: 1.25rem;
+        }
+
+        .overview-container ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .overview-container ul ul {
+            list-style-type: circle;
+            margin-top: 0.5rem;
+        }
+
+        .code-example {
+            background: #f5f7fa;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Fira Code', monospace;
+            border-radius: 0 4px 4px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .progress-bar {
+                width: 100%;
+                height: 10px;
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+
+            .progress {
+                width: 0;
+                height: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="online_compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="sidebar">
+            <a href="python_tutorials.html" class="back-button">
+                <i data-lucide="arrow-left"></i> Back to Tutorials
+            </a>
+            <div class="progress-bar">
+                <div class="progress" id="lesson-progress"></div>
+            </div>
+            <div class="lesson-list">
+                <h2>Python Inputs</h2>
+                <ul id="lesson-list"></ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h1 id="lesson-title"></h1>
+            <div class="video-container" style="display: none;">
+                <iframe id="lesson-video" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="lesson-content" id="lesson-description"></div>
+            <div class="knowledge-check" id="knowledge-check"></div>
+        </div>
+    </div>
+
+    <script>
+        const lessons = [
+            {
+                id: 'lesson0',
+                title: 'Introduction to Python Inputs',
+                video: null,
+                description: `
+                    <div class="overview-container">
+                        <h2>Overview: Understanding Python Inputs</h2>
+                        
+                        <h3>What are Inputs?</h3>
+                        <p>Inputs are simply data that the user provides to the computer. They are fundamental to creating interactive programs and can be used for numerous purposes.</p>
+
+                        <h3>Key Concepts</h3>
+                        <ul>
+                            <li>
+                                <strong>Basic Input Function</strong>
+                                <ul>
+                                    <li>The basic input function is: <code>input()</code></li>
+                                    <li>Inputs are stored in variables for easy manipulation</li>
+                                    <li>Example usage:
+                                        <div class="code-example">name = input()</div>
+                                    </li>
+                                </ul>
+                            </li>
+                            
+                            <li>
+                                <strong>Input Messages</strong>
+                                <ul>
+                                    <li>You can include a prompt message inside the input function</li>
+                                    <li>The message prints before asking for user input</li>
+                                    <li>Example:
+                                        <div class="code-example">input("Please enter your name: ")</div>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <strong>Input Type Conversion</strong>
+                                <ul>
+                                    <li>All inputs are initially stored as strings</li>
+                                    <li>To perform numerical operations, you must convert string inputs to numbers</li>
+                                    <li>Use <code>int()</code> for integers and <code>float()</code> for decimal numbers</li>
+                                    <li>Examples:
+                                        <div class="code-example">
+age = int(input("Enter your age: "))
+height = float(input("Enter your height: "))</div>
+                                    </li>
+                                    <li>Warning: Converting non-numeric strings will raise an error</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <h3>Common Use Cases</h3>
+                        <ul>
+                            <li>Collecting user information</li>
+                            <li>Getting numerical input for calculations</li>
+                            <li>Creating interactive programs</li>
+                            <li>Building command-line interfaces</li>
+                        </ul>
+                    </div>
+                    <p>Select a lesson from the sidebar to begin your learning journey!</p>
+                `,
+                quiz: null
+            },
+            {
+                id: 'lesson1',
+                title: 'Understanding Inputs',
+                video: 'https://www.youtube.com/embed/DB9Cq6TSTuQ?si=-Tr_HWhIHOLJXdfI',
+                description: `
+                    <p>This lesson introduces the concept of inputs in Python and how they are used to get data from users.</p>
+
+                    <h2>Key Topics Covered:</h2>
+                    <ul>
+                        <li>Introduction to Inputs</li>
+                        <li>Basic Input Function</li>
+                        <li>Storing Inputs in Variables</li>
+                        <li>Input Messages</li>
+                    </ul>
+
+                    <h2>Basic Input Function:</h2>
+                    <p>The basic input function in Python is simply:</p>
+                    <div class="example-box">
+                        <code>input()</code>
+                    </div>
+
+                    <h2>Storing Inputs in Variables:</h2>
+                    <p>Inputs are typically stored in variables for later use:</p>
+                    <div class="example-box">
+                        <code>variable = input()</code>
+                    </div>
+
+                    <h2>Input Messages:</h2>
+                    <p>You can provide a message to the user when asking for input:</p>
+                    <div class="example-box">
+                        <code>input("Please enter your name: ")</code>
+                    </div>
+
+                    <h2>Practice:</h2>
+                    <p>Try writing different input statements and experiment with storing and using the input data.</p>
+                `,
+                quiz: [
+                    {
+                        question: "What is the basic Python function for getting user input?",
+                        options: [
+                            "get_input()",
+                            "input()",
+                            "user_input()",
+                            "read_input()"
+                        ],
+                        correctAnswer: 1
+                    },
+                    {
+                        question: "How do you store user input in a variable called 'name'?",
+                        options: [
+                            "name = get_input()",
+                            "input(name)",
+                            "name = input()",
+                            "name == input()"
+                        ],
+                        correctAnswer: 2
+                    },
+                    {
+                        question: "Which of the following is the correct way to ask for a user's age with a message?",
+                        options: [
+                            "age = input()",
+                            "age = input('Enter your age: ')",
+                            "input(age, 'Enter your age: ')",
+                            "age = get_input('Enter your age: ')"
+                        ],
+                        correctAnswer: 1
+                    }
+                ]
+            },
+            {
+                id: 'lesson2',
+                title: 'Input Conversion',
+                video: 'https://www.youtube.com/embed/8T14Q1LDDwk?si=ozbUAATRWSp9Pu3j',
+                description: `
+                    <p>This lesson covers how to convert input data types, particularly focusing on converting string inputs to integers and floats.</p>
+
+                    <h2>Key Topics Covered:</h2>
+                    <ul>
+                        <li>Understanding Input Data Types</li>
+                        <li>Converting Strings to Integers</li>
+                        <li>Converting Strings to Floats</li>
+                        <li>Handling Conversion Errors</li>
+                    </ul>
+
+                    <h2>Understanding Input Data Types:</h2>
+                    <p>By default, the <code>input()</code> function returns a string. This means that even if a user enters a number, it's stored as a string.</p>
+
+                    <h2>Converting Strings to Integers:</h2>
+                    <p>To convert a string input to an integer, use the <code>int()</code> function:</p>
+                    <div class="example-box">
+                        <code>age = int(input("Enter your age: "))</code>
+                    </div>
+
+                    <h2>Converting Strings to Floats:</h2>
+                    <p>To convert a string input to a float (decimal number), use the <code>float()</code> function:</p>
+                    <div class="example-box">
+                        <code>height = float(input("Enter your height in meters: "))</code>
+                    </div>
+
+                    <h2>Handling Conversion Errors:</h2>
+                    <p>Be aware that trying to convert a non-numeric string to an int or float will raise a ValueError. It's good practice to use error handling when converting inputs.</p>
+
+                    <h2>Practice:</h2>
+                    <p>Try writing a program that asks for a user's name and age, converts the age to an integer, and then prints a greeting with their age next year.</p>
+                `,
+                quiz: [
+                    {
+                        question: "What is the default data type of input in Python?",
+                        options: [
+                            "Integer",
+                            "Float",
+                            "String",
+                            "Boolean"
+                        ],
+                        correctAnswer: 2
+                    },
+                    {
+                        question: "Which function is used to convert a string to an integer?",
+                        options: [
+                            "str()",
+                            "int()",
+                            "float()",
+                            "convert()"
+                        ],
+                        correctAnswer: 1
+                    },
+                    {
+                        question: "What happens if you try to convert a non-numeric string to an integer?",
+                        options: [
+                            "It returns 0",
+                            "It raises a ValueError",
+                            "It converts to NaN (Not a Number)",
+                            "It ignores the non-numeric parts"
+                        ],
+                        correctAnswer: 1
+                    }
+                ]
+            }
+        ];
+
+        let currentLessonIndex = 0;
+        let completedLessons = new Set();
+
+        function showLesson(index) {
+            const lessonTitle = document.getElementById('lesson-title');
+            const lessonVideo = document.getElementById('lesson-video');
+            const videoContainer = document.querySelector('.video-container');
+            const lessonDescription = document.getElementById('lesson-description');
+            const knowledgeCheck = document.getElementById('knowledge-check');
+
+            const lesson = lessons[index];
+            lessonTitle.textContent = lesson.title;
+            lessonDescription.innerHTML = lesson.description;
+
+            if (lesson.video) {
+                lessonVideo.src = lesson.video;
+                videoContainer.style.display = 'block';
+            } else {
+                videoContainer.style.display = 'none';
+            }
+
+            if (lesson.quiz) {
+                knowledgeCheck.style.display = 'block';
+                showKnowledgeCheck(lesson.quiz);
+            } else {
+                knowledgeCheck.style.display = 'none';
+            }
+
+            document.querySelectorAll('#lesson-list a').forEach((a, i) => {
+                a.classList.toggle('active', i === index);
+            });
+
+            currentLessonIndex = index;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = (completedLessons.size / (lessons.length - 1)) * 100;
+            document.getElementById('lesson-progress').style.height = `${progress}%`;
+        }
+
+        function createLessonList() {
+            const lessonList = document.getElementById('lesson-list');
+            lessons.forEach((lesson, index) => {
+                const li = document.createElement('li');
+                const checkbox = document.createElement('div');
+                checkbox.className = 'checkbox';
+                checkbox.id = `checkbox-${lesson.id}`;
+                li.appendChild(checkbox);
+
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = lesson.title;
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    showLesson(index);
+                };
+                li.appendChild(a);
+                lessonList.appendChild(li);
+            });
+        }
+
+        function showKnowledgeCheck(quiz) {
+            const knowledgeCheck = document.getElementById('knowledge-check');
+            knowledgeCheck.innerHTML = '';
+
+            const h3 = document.createElement('h3');
+            h3.textContent = 'Knowledge Check';
+            knowledgeCheck.appendChild(h3);
+
+            quiz.forEach((question, index) => {
+                const p = document.createElement('p');
+                p.textContent = question.question;
+                knowledgeCheck.appendChild(p);
+
+                question.options.forEach((option, optionIndex) => {
+                    const label = document.createElement('label');
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = `question-${index}`;
+                    radio.value = optionIndex;
+                    label.appendChild(radio);
+                    label.appendChild(document.createTextNode(` ${option}`));
+                    knowledgeCheck.appendChild(label);
+                });
+            });
+
+            const submitButton = document.createElement('button');
+            submitButton.textContent = 'Submit';
+            submitButton.onclick = () => checkAnswers(quiz);
+            knowledgeCheck.appendChild(submitButton);
+        }
+
+        function checkAnswers(quiz) {
+            let allCorrect = true;
+            quiz.forEach((question, index) => {
+                const selectedAnswer = document.querySelector(`input[name="question-${index}"]:checked`);
+                if (!selectedAnswer || parseInt(selectedAnswer.value) !== question.correctAnswer) {
+                    allCorrect = false;
+                }
+            });
+
+            if (allCorrect) {
+                alert('Congratulations! You have completed this lesson.');
+                completedLessons.add(lessons[currentLessonIndex].id);
+                updateCheckbox(lessons[currentLessonIndex].id);
+                updateProgress();
+            } else {
+                alert('Please try again. Review the lesson material and retake the quiz.');
+            }
+        }
+
+        function updateCheckbox(lessonId) {
+            const checkbox = document.getElementById(`checkbox-${lessonId}`);
+            checkbox.classList.add('completed');
+            checkbox.innerHTML = '✓';
+        }
+
+        createLessonList();
+        showLesson(0);
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>

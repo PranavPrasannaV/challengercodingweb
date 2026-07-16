@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Week 4: Loops - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #263238;
+            --accent: #FFC107;
+            --background: #F5F7FA;
+            --text: #333;
+            --text-light: #666;
+            --white: #ffffff;
+            --success: #4CAF50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 30px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: fixed;
+            top: 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            min-height: calc(100vh - 60px);
+            margin-top: 60px;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: var(--white);
+            padding: 2rem;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+
+        .progress-bar {
+            width: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-right: 1rem;
+            align-self: stretch;
+            position: relative;
+        }
+
+        .progress {
+            width: 100%;
+            background-color: var(--primary);
+            border-radius: 5px;
+            position: absolute;
+            bottom: 0;
+            transition: height 0.3s ease;
+        }
+
+        .lesson-list {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            font-size: 1rem;
+            color: var(--text);
+            display: block;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: 0.3s;
+            flex-grow: 1;
+        }
+
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 14px;
+        }
+
+        .checkbox.completed {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 2rem;
+            margin-left: 300px;
+            overflow-y: auto;
+        }
+
+        .content h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .lesson-content {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .lesson-content h2 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        .lesson-content h3 {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .lesson-content p, .lesson-content ul {
+            margin-bottom: 1rem;
+        }
+
+        .lesson-content ul {
+            padding-left: 1.5rem;
+        }
+
+        .code-example {
+            background-color: #f0f0f0;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0 8px 8px 0;
+            font-family: 'Fira Code', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        code {
+            display: block;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .back-button {
+            display: block;
+            text-decoration: none;
+            color: var(--text);
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            background-color: var(--accent);
+            border-radius: 8px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .progress-bar {
+                width: 100%;
+                height: 10px;
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+
+            .progress {
+                width: 0;
+                height: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="online_compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="sidebar">
+            <a href="java_tutorials.html" class="back-button">
+                <i data-lucide="arrow-left"></i> Back to Tutorials
+            </a>
+            <div class="progress-bar">
+                <div class="progress" id="lesson-progress"></div>
+            </div>
+            <div class="lesson-list">
+                <h2>Java Week 4: Loops</h2>
+                <ul id="lesson-list"></ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h1 id="lesson-title"></h1>
+            <div class="video-container" style="display: none;">
+                <iframe id="lesson-video" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="lesson-content" id="lesson-description"></div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const lessons = [
+            {
+                id: 'overview',
+                title: 'Introduction to Loops',
+                video: null,
+                description: `
+                    <h2>Overview: Understanding Loops in Java</h2>
+                    
+                    <h3>What are Loops?</h3>
+                    <p>Loops are control structures in Java that allow you to repeat a block of code multiple times. They are essential for efficient programming and automating repetitive tasks.</p>
+
+                    <h3>Key Concepts</h3>
+                    <ul>
+                        <li>
+                            <strong>For Loop</strong>
+                            <ul>
+                                <li>Used when you know how many times you want to repeat a block of code</li>
+                                <li>Example:
+                                    <div class="code-example">
+for (int i = 0; i < 5; i++) {
+    System.out.println("Iteration: " + i);
+}</div>
+                                </li>
+                            </ul>
+                        </li>
+                        
+                        <li>
+                            <strong>While Loop</strong>
+                            <ul>
+                                <li>Repeats a block of code while a condition is true</li>
+                                <li>Example:
+                                    <div class="code-example">
+int count = 0;
+while (count < 5) {
+    System.out.println("Count: " + count);
+    count++;
+}</div>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <strong>Do-While Loop</strong>
+                            <ul>
+                                <li>Similar to while loop, but guarantees at least one execution of the code block</li>
+                                <li>Example:
+                                    <div class="code-example">
+int x = 0;
+do {
+    System.out.println("x: " + x);
+    x++;
+} while (x < 5);</div>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <strong>Enhanced For Loop (For-Each)</strong>
+                            <ul>
+                                <li>Used to iterate over arrays or collections</li>
+                                <li>Example:
+                                    <div class="code-example">
+int[] numbers = {1, 2, 3, 4, 5};
+for (int num : numbers) {
+    System.out.println("Number: " + num);
+}</div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h3>Why are Loops important?</h3>
+                    <ul>
+                        <li>They allow efficient repetition of code</li>
+                        <li>Essential for iterating over collections of data</li>
+                        <li>Crucial for implementing algorithms and solving complex problems</li>
+                        <li>Help in automating tasks and reducing code redundancy</li>
+                    </ul>
+
+                    <p>Select a lesson from the sidebar to dive deeper into each of these loop types!</p>
+                `
+            },
+            {
+                id: 'for-loop',
+                title: 'For Loop',
+                video: 'https://www.youtube.com/embed/GwcisLY5avc?si=BuAzw6lZoMIuaf90',
+                description: `
+                    <h2>Understanding For Loops in Java</h2>
+                    
+                    <p>The for loop is one of the most commonly used loops in Java. It's particularly useful when you know in advance how many times you want to execute a block of code.</p>
+
+                    <h3>Syntax of For Loop</h3>
+                    <div class="code-example">
+for (initialization; condition; update) {
+    // code to be repeated
+}</div>
+
+                    <h3>Components of a For Loop</h3>
+                    <ul>
+                        <li><strong>Initialization:</strong> Executed once at the beginning. Usually used to initialize a counter variable.</li>
+                        <li><strong>Condition:</strong> Checked before each iteration. If false, the loop ends.</li>
+                        <li><strong>Update:</strong> Executed at the end of each iteration. Usually used to update the counter variable.</li>
+                    </ul>
+
+                    <h3>Example</h3>
+                    <div class="code-example">
+for (int i = 0; i < 5; i++) {
+    System.out.println("Iteration: " + i);
+}</div>
+
+                    <p>This loop will print "Iteration: " followed by the numbers 0 through 4.</p>
+
+                    <h3>Important Points</h3>
+                    <ul>
+                        <li>The initialization, condition, and update parts are optional, but the semicolons are required.</li>
+                        <li>You can declare multiple variables in the initialization and perform multiple updates.</li>
+                        <li>The scope of variables declared in the initialization is limited to the loop.</li>
+                    </ul>
+
+                    <h3>Practice</h3>
+                    <p>Try writing for loops with different conditions. For example, count backwards, skip numbers, or nest loops within each other.</p>
+
+                    <h3>Key Takeaways</h3>
+                    <ul>
+                        <li>For loops are ideal when you know the number of iterations in advance.</li>
+                        <li>They provide a compact way to write loops with clear start and end conditions.</li>
+                        <li>Understanding for loops is crucial for efficient Java programming.</li>
+                        <li>Practice writing different types of for loops to become comfortable with their usage.</li>
+                    </ul>
+                `
+            },
+            {
+                id: 'while-loop',
+                title: 'While Loop',
+                video: 'https://www.youtube.com/embed/g8GcFboF2rM?si=PqjejuogbiDsuwhQ',
+                description: `
+                    <h2>Understanding While Loops in Java</h2>
+                    
+                    <p>The while loop in Java is used to repeat a block of code as long as a specified condition is true. It's particularly useful when you don't know in advance how many times the loop should run.</p>
+
+                    <h3>Syntax of While Loop</h3>
+                    <div class="code-example">
+while (condition) {
+    // code to be repeated
+}</div>
+
+                    <h3>How It Works</h3>
+                    <ol>
+                        <li>The condition is evaluated before each iteration of the loop.</li>
+                        <li>If the condition is true, the code block is executed.</li>
+                        <li>This process repeats until the condition becomes false.</li>
+                    </ol>
+
+                    <h3>Example</h3>
+                    <div class="code-example">
+int count = 0;
+while (count < 5) {
+    System.out.println("Count: " + count);
+    count++;
+}</div>
+
+                    <p>This loop will print "Count: " followed by the numbers 0 through 4.</p>
+
+                    <h3>Important Points</h3>
+                    <ul>
+                        <li>Ensure that the condition will eventually become false, or you'll create an infinite loop.</li>
+                        <li>The condition is checked at the beginning of each iteration.</li>
+                        <li>If the condition is false initially, the loop body will never execute.</li>
+                    </ul>
+
+                    <h3>Practice</h3>
+                    <p>Try writing while loops for different scenarios. For example, implement a guessing game or process user input until a specific condition is met.</p>
+
+                    <h3>Key Takeaways</h3>
+                    <ul>
+                        <li>While loops are ideal when the number of iterations is not known in advance.</li>
+                        <li>They provide flexibility in loop execution based on dynamic conditions.</li>
+                        <li>Be cautious to avoid infinite loops by ensuring the loop condition will eventually become false.</li>
+                        <li>While loops are often used with user input or when processing data of unknown quantity.</li>
+                    </ul>
+                `
+            },
+            {
+                id: 'do-while-loop',
+                title: 'Do-While Loop',
+                video: 'https://www.youtube.com/embed/2E-UgePiOoo?si=WDQmFirbQaeB54T1',
+                description: `
+                    <h2>Understanding Do-While Loops in Java</h2>
+                    
+                    <p>The do-while loop in Java is similar to the while loop, but with one key difference: it guarantees that the code block will be executed at least once before checking the condition.</p>
+
+                    <h3>Syntax of Do-While Loop</h3>
+                    <div class="code-example">
+do {
+    // code to be repeated
+} while (condition);</div>
+
+                    <h3>How It Works</h3>
+                    <ol>
+                        <li>The code block is executed once.</li>
+                        <li>Then, the condition is evaluated.</li>
+                        <li>If the condition is true, the loop continues and repeats from step 1.</li>
+                        <li>If the condition is false, the loop ends.</li>
+                    </ol>
+
+                    <h3>Example</h3>
+                    <div class="code-example">
+int x = 0;
+do {
+    System.out.println("x: " + x);
+    x++;
+} while (x < 5);</div>
+
+                    <p>This loop will print "x: " followed by the numbers 0 through 4.</p>
+
+                    <h3>Important Points</h3>
+                    <ul>
+                        <li>The do-while loop always executes its body at least once, even if the condition is initially false.</li>
+                        <li>The condition is checked at the end of each iteration.</li>
+                        <li>Do-while loops are less common than while loops but can be very useful in certain situations.</li>
+                    </ul>
+
+                    <h3>Practice</h3>
+                    <p>Try writing do-while loops for scenarios where you need to ensure at least one execution. For example, implement a menu system where you want to display options at least once before asking if the user wants to continue.</p>
+
+                    <h3>Key Takeaways</h3>
+                    <ul>
+                        <li>Do-while loops guarantee at least one execution of the loop body.</li>
+                        <li>They are useful when you want to ensure a block of code runs before checking a condition.</li>
+                        <li>The condition is evaluated at the end of the loop, not the beginning.</li>
+                        <li>Do-while loops are often used for input validation or menu-driven programs.</li>
+                    </ul>
+                `
+            },
+        ];
+
+        let currentLessonIndex = 0;
+        let completedLessons = new Set();
+
+        function showLesson(index) {
+            const lessonTitle = document.getElementById('lesson-title');
+            const lessonVideo = document.getElementById('lesson-video');
+            const videoContainer = document.querySelector('.video-container');
+            const lessonDescription = document.getElementById('lesson-description');
+
+            const lesson = lessons[index];
+            lessonTitle.textContent = lesson.title;
+            lessonDescription.innerHTML = lesson.description;
+
+            if (lesson.video) {
+                lessonVideo.src = lesson.video;
+                videoContainer.style.display = 'block';
+            } else {
+                videoContainer.style.display = 'none';
+            }
+
+            document.querySelectorAll('#lesson-list a').forEach((a, i) => {
+                a.classList.toggle('active', i === index);
+            });
+
+            currentLessonIndex = index;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = (completedLessons.size / lessons.length) * 100;
+            document.getElementById('lesson-progress').style.height = `${progress}%`;
+        }
+
+        function createLessonList() {
+            const lessonList = document.getElementById('lesson-list');
+            lessons.forEach((lesson, index) => {
+                const li = document.createElement('li');
+                const checkbox = document.createElement('div');
+                checkbox.className = 'checkbox';
+                checkbox.id = `checkbox-${lesson.id}`;
+                li.appendChild(checkbox);
+
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = lesson.title;
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    showLesson(index);
+                };
+                li.appendChild(a);
+                lessonList.appendChild(li);
+            });
+        }
+
+        function updateCheckbox(lessonId) {
+            const checkbox = document.getElementById(`checkbox-${lessonId}`);
+            checkbox.classList.add('completed');
+            checkbox.innerHTML = '✓';
+        }
+
+        createLessonList();
+        showLesson(0);
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>
+

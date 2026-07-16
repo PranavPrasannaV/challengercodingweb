@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Guided Tutorials - Week 2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #FF4081;
+            --accent: #FFC107;
+            --background: #f0f4f8;
+            --surface: #ffffff;
+            --border: #e0e7ff;
+            --text: #2d3748;
+            --text-light: #4a5568;
+            --success: #48bb78;
+            --error: #f56565;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 5px;
+            width: 100%;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 2rem auto;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .exercise-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item:hover {
+            background: var(--primary);
+            color: var(--surface);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item.active {
+            background: var(--primary);
+            color: var(--surface);
+            border-color: var(--primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .main-content {
+            flex: 1;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .tutorial-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .tutorial-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .content-box {
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .highlight-box {
+            background-color: #e6f7ff;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .step-box {
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            margin-right: 0.5rem;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+        }
+
+        .code-snippet-box {
+            background-color: #f4f4f4;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-family: 'Fira Code', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .autograder-container {
+            margin-top: 1.5rem;
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .autograder-input {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .autograder-feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .autograder-feedback.success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .autograder-feedback.error {
+            background-color: var(--error);
+            color: white;
+        }
+
+        .common-errors {
+            margin-top: 1rem;
+        }
+
+        .common-errors summary {
+            cursor: pointer;
+            padding: 0.5rem;
+            background-color: var(--background);
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .common-errors ul {
+            margin-top: 0.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .common-errors li {
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="#" target="_blank" rel="noopener noreferrer">Enroll</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="exercise-list">
+                <div class="exercise-item active" data-exercise="overview">
+                    <span>Lesson Overview</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise1">
+                    <span>1. Data Types</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise2">
+                    <span>2. Integer and Double Operations</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise3">
+                    <span>3. String Operations</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise4">
+                    <span>4. Understanding Variables</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise5">
+                    <span>5. Printing Variables</span>
+                </div>
+                <div class="exercise-item" data-exercise="project">
+                    <span>6. Weekly Project</span>
+                </div>
+                <div class="exercise-item" onclick="window.location.href='java_tutorials.html'">
+                    <span>Return to Home</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div id="tutorial-content">
+                <!-- Content will be dynamically loaded here -->
+            </div>
+            <div id="code-snippet-container" class="code-snippet-box" style="display: none;">
+                <!-- Code snippets will be dynamically loaded here -->
+            </div>
+            <div id="compiler-container" style="display: none;">
+                <iframe src="https://www.jdoodle.com/online-java-compiler"></iframe>
+            </div>
+            <div id="autograder-container" class="autograder-container" style="display: none;">
+                <h3 class="text-xl font-semibold mb-2">Autograder</h3>
+                <textarea id="autograder-input" class="autograder-input" placeholder="Paste your code output here..."></textarea>
+                <button onclick="checkOutput()" class="button">Check Output</button>
+                <div id="autograder-feedback" class="autograder-feedback"></div>
+            </div>
+            <details class="common-errors">
+                <summary>Common Java Errors</summary>
+                <ul>
+                    <li>
+                        <strong>Error:</strong> "; expected"
+                        <br>
+                        <strong>Cause:</strong> Missing semicolon at the end of a statement
+                        <br>
+                        <strong>Fix:</strong> Add a semicolon at the end of the statement.
+                        <pre><code>System.out.println("Hello, World");</code></pre>
+                    </li>
+                    <li>
+                        <strong>Error:</strong> "reached end of file while parsing" or "')' expected"
+                        <br>
+                        <strong>Cause:</strong> Unmatched parentheses, brackets, or braces
+                        <br>
+                        <strong>Fix:</strong> Ensure all opening parentheses, brackets, and braces have matching closing ones.
+                        <pre><code>if (condition) {
+    // code
+}</code></pre>
+                    </li>
+                    <li>
+                        <strong>Error:</strong> "cannot find symbol" or "variable x is not defined"
+                        <br>
+                        <strong>Cause:</strong> Using undeclared variables
+                        <br>
+                        <strong>Fix:</strong> Declare the variable before using it.
+                        <pre><code>int x = 5;
+System.out.println(x);</code></pre>
+                    </li>
+                    <li>
+                        <strong>Error:</strong> "cannot find symbol" (for methods) or "cannot resolve symbol" (for variables)
+                        <br>
+                        <strong>Cause:</strong> Incorrect method or variable names (case-sensitive)
+                        <br>
+                        <strong>Fix:</strong> Check the spelling and capitalization of method and variable names.
+                        <pre><code>String message = "Hello";
+System.out.println(message); // Not Message or MESSAGE</code></pre>
+                    </li>
+                    <li>
+                        <strong>Error:</strong> "main method not found in class"
+                        <br>
+                        <strong>Cause:</strong> Forgetting to declare the main method
+                        <br>
+                        <strong>Fix:</strong> Include the main method in your class.
+                        <pre><code>public class MyClass {
+    public static void main(String[] args) {
+        // Your code here
+    }
+}</code></pre>
+                    </li>
+                    <li>
+                        <strong>Error:</strong> "incompatible types" or "possible lossy conversion"
+                        <br>
+                        <strong>Cause:</strong> Incorrect data type assignments
+                        <br>
+                        <strong>Fix:</strong> Ensure you're assigning values to variables of the correct type, or use explicit casting when necessary.
+                        <pre><code>int x = 5;
+double y = 2.5;
+int z = (int) y; // Explicit casting</code></pre>
+                    </li>
+                    <li>
+                        <strong>Error:</strong> "ArrayIndexOutOfBoundsException"
+                        <br>
+                        <strong>Cause:</strong> Trying to access an array index that doesn't exist
+                        <br>
+                        <strong>Fix:</strong> Ensure array indices are within the valid range (0 to length-1).
+                        <pre><code>int[] arr = {1, 2, 3};
+System.out.println(arr[2]); // Last valid index is 2</code></pre>
+                    </li>
+                    <li>
+                        <strong>Error:</strong> "NullPointerException"
+                        <br>
+                        <strong>Cause:</strong> Trying to use a reference variable that points to a null object
+                        <br>
+                        <strong>Fix:</strong> Initialize objects before using them, or check for null before accessing object methods or properties.
+                        <pre><code>String str = null;
+if (str != null) {
+    System.out.println(str.length());
+}</code></pre>
+                    </li>
+                </ul>
+            </details>
+        </main>
+    </div>
+    <!-- Include Scripts -->
+    <script src="config.js"></script>
+    <script>
+        document.querySelectorAll(".enroll-button").forEach(button => {
+            button.href = enrollLink;
+        });
+    </script>
+    <script>
+        lucide.createIcons();
+
+        const exercises = [
+            {
+                title: "Lesson Overview",
+                content: `
+                    <h1 class="tutorial-title">Java Guided Tutorials - Week 2</h1>
+                    <div class="content-box">
+                        <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
+                        <p class="tutorial-text">
+                            Welcome to Week 2 of our Java Guided Tutorials! This week, we'll dive deeper into Java programming concepts, focusing on data types, operations, and variables.
+                        </p>
+                        <div class="highlight-box">
+                            <h3 class="text-xl font-semibold mb-2">Lesson Overview:</h3>
+                            <ul class="list-disc list-inside">
+                                <li>Understanding different data types in Java</li>
+                                <li>Performing operations with integers and doubles</li>
+                                <li>Working with strings and string operations</li>
+                                <li>Creating and using variables</li>
+                                <li>Printing variable values</li>
+                                <li>Weekly project to apply what you've learned</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">
+                            By the end of this week, you'll have a solid understanding of basic Java data types and operations, setting you up for more advanced programming concepts.
+                        </p>
+                    </div>
+                `,
+                showCompiler: false,
+                showAutograder: false,
+                expectedOutput: "",
+                codeSnippet: ""
+            },
+            {
+                title: "Data Types",
+                content: `
+                    <h1 class="tutorial-title">1. Data Types</h1>
+                    <div class="content-box">
+                        <p class="tutorial-text">In Java, primitive data types are the most basic types of data. There are several different types, each serving a specific purpose.</p>
+                
+                        <h3>Primitive Types:</h3>
+                
+                        <p><strong>int:</strong> The <code>int</code> data type is used to store integers, which are whole numbers without a decimal point.</p>
+                        <pre><code>int number = 10;</code></pre>
+                        <p>This data type is used when you need to perform operations with whole numbers, such as counting or indexing.</p>
+                        <p><strong>double:</strong> The <code>double</code> data type is used to store decimal numbers. It's great for precision in calculations where fractions are involved.</p>
+                        <pre><code>double pi = 3.14159;</code></pre>
+                        <p>Use <code>double</code> when you need to store numbers with decimals, such as measurements or calculations that require accuracy.</p>
+                        <p><strong>boolean:</strong> The <code>boolean</code> data type stores only two possible values: <code>true</code> or <code>false</code>. It's typically used in conditional statements to make decisions in the code.</p>
+                        <pre><code>boolean isJavaFun = true;</code></pre>
+                        <p>Use <code>boolean</code> when you need a simple yes/no or true/false condition.</p>
+                        <p><strong>char:</strong> The <code>char</code> data type is used to store a single character, like a letter, number, or symbol. Char values are surrounded by single quotes.</p>
+                        <pre><code>char grade = 'A';</code></pre>
+                        <p>This data type is useful when you need to handle individual characters, such as a letter grade or a single digit.</p>
+                        
+                        <h3>Non-Primitive Type:</h3>
+                        
+                        <p><strong>String:</strong> Although not a primitive data type, <code>String</code> is a special kind of data in Java that is used to store text. Strings are sequences of characters enclosed in double quotes.</p>
+                        <pre><code>String greeting = "Hello, World!";</code></pre>
+                        <p>Strings can contain letters, numbers, and symbols, and they are commonly used for displaying text and handling user input.</p>
+                        
+                        <br>
+                        <p>Now fix the non-examples for each data type in the code editor below:</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "",
+                codeSnippet: `
+// Fix the following non-examples for each data type:
+
+int myNumber = "42";  // Should be an integer
+double myDecimal = 3;  // Should be a decimal number
+boolean isTrue = "yes";  // Should be true or false
+char myLetter = "A";  // Should be a single character
+String myText = 'Hello';  // Should use double quotes
+`
+            },
+            {
+                title: "Integer and Double Operations",
+                content: `
+                    <h1 class="tutorial-title">2. Integer and Double Operations</h1>
+                    <div class="content-box">
+                        <p class="tutorial-text">In Java, integers and doubles can be used in various mathematical operations. These operations include:</p>
+
+                        <p><strong>Addition (+):</strong> Adds two numbers together.</p>
+                        <pre><code>int sum = 10 + 5;  // sum is 15</code></pre>
+
+                        <p><strong>Subtraction (-):</strong> Subtracts one number from another.</p>
+                        <pre><code>int difference = 10 - 5;  // difference is 5</code></pre>
+
+                        <p><strong>Multiplication (*):</strong> Multiplies two numbers together.</p>
+                        <pre><code>int product = 10 * 5;  // product is 50</code></pre>
+
+                        <p><strong>Division (/):</strong> Divides one number by another.</p>
+                        <pre><code>int quotient = 10 / 5;  // quotient is 2</code></pre>
+
+                        <p><strong>Modulus (%):</strong> Returns the remainder of a division operation.</p>
+                        <pre><code>int remainder = 10 % 3;  // remainder is 1</code></pre>
+
+                        <p>These operations can be used with both <strong>int</strong> and <strong>double</strong> data types. When using them with different types, the result will be automatically cast to the appropriate type. For example:</p>
+                        <pre><code>int integer_variable = 10;
+double double_variable = 5.5;
+double result = integer_variable + double_variable;
+System.out.println(result);  // result is 15.5</code></pre>
+
+                        <p>Look at the text editor below, and follow the instructions.</p>
+                        <p>Write your code in the Java environment and click "Run".</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: false,
+                expectedOutput: "",
+                codeSnippet: `
+// Perform the following operations and print the results:
+
+int a = 10;
+int b = 3;
+
+// 1. Add a and b
+// 2. Subtract b from a
+// 3. Multiply a and b
+// 4. Divide a by b
+// 5. Find the remainder of a divided by b
+
+double x = 10.5;
+double y = 3.2;
+
+// 6. Add x and y
+// 7. Multiply x and y
+// 8. Divide x by y
+`
+            },
+            {
+                title: "String Operations",
+                content: `
+                    <h1 class="tutorial-title">3. String Operations</h1>
+                    <div class="content-box">
+                        <p class="tutorial-text">Strings, and other values such as int and double can be combined using the <strong>+</strong> operator. This is called string concatenation. For example:</p>
+                        <pre><code>String first_string = "Hello, ";
+String second_string = "World!";
+String full_string = first_string + second_string;
+System.out.println(full_string); // will print Hello, World!</code></pre>
+                        <p>Run the following code in the environment below.</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "",
+                codeSnippet: `
+// Perform the following string operations:
+
+String str1 = "Hello";
+String str2 = "World";
+
+// 1. Concatenate str1 and str2 with a space in between
+// 2. Print the length of the resulting string
+// 3. Convert the resulting string to uppercase
+// 4. Check if the resulting string contains the word "HELLO"
+`
+            },
+            {
+                title: "Understanding Variables",
+                content: `
+                    <h1 class="tutorial-title">4. Understanding Variables</h1>
+                    <div class="content-box">
+                        <p class="tutorial-text">Variables are where information is stored in a computer's memory. Here's an example of how to create a variable:</p>
+                        <pre><code>int num = 100;</code></pre>
+                        <p>Now, let's try creating a variable named <strong>my_variable</strong> with a value of <strong>50</strong>.</p>
+                        <p>Write your code below. Once you are done, copy the code into the Java environment.</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "",
+                codeSnippet: `
+// Create the following variables:
+
+// 1. An integer named 'age' with a value of 25
+// 2. A double named 'height' with a value of 5.9
+// 3. A boolean named 'isStudent' with a value of true
+// 4. A String named 'name' with your name as the value
+
+// Print all the variables
+`
+            },
+            {
+                title: "Printing Variables",
+                content: `
+                    <h1 class="tutorial-title">5. Printing Variables</h1>
+                    <div class="content-box">
+                        <p class="tutorial-text">To print the value of a variable, simply include the variable name in the print function:</p>
+                        <pre><code>int x = 100;
+System.out.println(x);</code></pre>
+                        <p>Let's print a variable that contains a double value.</p>
+                        <p>Write your code below and test it within the Java environment.</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "",
+                codeSnippet: `
+// Create and print the following variables:
+
+// 1. Create a double variable named 'pi' with the value 3.14159
+// 2. Create an integer variable named 'count' with the value 100
+// 3. Create a String variable named 'message' with the value "Java is fun!"
+
+// Print each variable on a new line
+// Then, print a sentence using all three variables
+`
+            },
+            {
+                title: "Weekly Project",
+                content: `
+                    <h1 class="tutorial-title">Weekly Project: Art Project</h1>
+                    <div class="content-box">
+                        <p class="tutorial-text">Use this space to create your own design using <strong>print</strong> statements.</p>
+                        <p>Remember that anything you input between the parentheses gets printed!</p><br>
+                        <p>Here is mine: \\_('_')_/ </p>
+                        <p>What's yours? Get creative with it!</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: false,
+                expectedOutput: "",
+                codeSnippet: `
+// Create your ASCII art design here using print statements
+// For example:
+System.out.println("\\_('_')_/");
+
+// Now, create your own design!
+`
+            }
+        ];
+
+        let currentExercise = 0;
+
+        function loadExercise(index) {
+            const exercise = exercises[index];
+            document.getElementById('tutorial-content').innerHTML = exercise.content;
+            
+            const codeSnippetContainer = document.getElementById('code-snippet-container');
+            if (exercise.codeSnippet) {
+                codeSnippetContainer.textContent = exercise.codeSnippet;
+                codeSnippetContainer.style.display = 'block';
+            } else {
+                codeSnippetContainer.style.display = 'none';
+            }
+            
+            document.getElementById('compiler-container').style.display = exercise.showCompiler ? 'block' : 'none';
+            document.getElementById('autograder-container').style.display = exercise.showAutograder ? 'block' : 'none';
+            if (exercise.showAutograder) {
+                document.getElementById('autograder-input').value = '';
+                document.getElementById('autograder-feedback').textContent = '';
+            }
+            document.querySelectorAll('.exercise-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+            currentExercise = index;
+        }
+
+        function checkOutput() {
+            const userOutput = document.getElementById('autograder-input').value.trim();
+            const expectedOutput = exercises[currentExercise].expectedOutput;
+            const feedback = document.getElementById('autograder-feedback');
+
+            if (expectedOutput === "") {
+                feedback.textContent = "Great job on your exercise! Your output looks good.";
+                feedback.className = 'autograder-feedback success';
+            } else if (userOutput === expectedOutput) {
+                feedback.textContent = "Success! Your output matches the expected result.";
+                feedback.className = 'autograder-feedback success';
+            } else {
+                feedback.textContent = `Not quite there yet. Expected output:
+${expectedOutput}
+
+Your output:
+${userOutput}
+
+Keep trying!`;
+                feedback.className = 'autograder-feedback error';
+            }
+        }
+
+        document.querySelectorAll('.exercise-item').forEach((item, index) => {
+            item.addEventListener('click', () => loadExercise(index));
+        });
+
+        // Load the first exercise by default
+        loadExercise(0);
+    </script>
+</body>
+</html>

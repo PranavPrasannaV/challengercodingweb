@@ -27,10 +27,10 @@ export default function TutorialsLayout({
     ];
 
     return (
-        <div className="flex min-h-screen bg-background pt-[80px]"> {/* Add padding top for fixed navbar */}
+        <div className="flex min-h-screen bg-background pt-20">
             {/* Mobile toggle */}
             <button
-                className="fixed bottom-6 right-6 z-50 p-4 bg-primary text-white rounded-full shadow-lg md:hidden hover:bg-primary-dark transition-colors"
+                className="fixed bottom-6 right-6 z-50 p-4 bg-cta hover:bg-cta-hover text-white rounded-full md:hidden transition-colors"
                 onClick={toggleSidebar}
             >
                 {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
@@ -39,31 +39,31 @@ export default function TutorialsLayout({
             {/* Backdrop for mobile */}
             {sidebarOpen && (
                 <div
-                    className="fixed inset-0 bg-black/50 z-30 md:hidden backdrop-blur-sm"
+                    className="fixed inset-0 bg-black/50 z-30 md:hidden"
                     onClick={() => setSidebarOpen(false)}
                 />
             )}
 
             {/* Sidebar */}
             <aside
-                className={`fixed top-[80px] left-0 h-[calc(100vh-80px)] w-72 bg-white border-r border-border p-6 transition-transform duration-300 z-40 overflow-y-auto
-                ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:sticky md:top-[80px]`}
+                className={`fixed top-20 left-0 h-[calc(100vh-80px)] w-72 bg-surface hairline border-r-0 p-6 transition-transform duration-300 z-40 overflow-y-auto
+                ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:sticky md:top-20`}
             >
                 <div className="mb-8">
-                    <h2 className="text-xs font-bold text-text-light uppercase tracking-wider mb-4">Learning Menu</h2>
+                    <h2 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-4">Learning Menu</h2>
                     <nav className="space-y-2">
                         {navItems.map((item) => (
                             <Link
                                 key={item.href}
                                 href={item.href}
                                 onClick={() => setSidebarOpen(false)}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group
+                                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 group
                                     ${isActive(item.href) && (item.href !== '/tutorials' || pathname === '/tutorials')
-                                        ? 'bg-primary/10 text-primary font-semibold'
-                                        : 'text-text hover:bg-gray-50'
+                                        ? 'bg-primary/10 text-primary font-semibold border-l-2 border-primary'
+                                        : 'text-text hover:bg-alt-bg'
                                     }`}
                             >
-                                <item.icon size={20} className={isActive(item.href) && (item.href !== '/tutorials' || pathname === '/tutorials') ? 'text-primary' : 'text-text-light group-hover:text-primary transition-colors'} />
+                                <item.icon size={20} className={isActive(item.href) && (item.href !== '/tutorials' || pathname === '/tutorials') ? 'text-primary' : 'text-text-secondary group-hover:text-primary transition-colors'} />
                                 <span>{item.label}</span>
                                 {isActive(item.href) && (item.href !== '/tutorials' || pathname === '/tutorials') && (
                                     <ChevronRight size={16} className="ml-auto" />
@@ -74,15 +74,15 @@ export default function TutorialsLayout({
                 </div>
 
                 <div className="pt-6 border-t border-border">
-                    <h2 className="text-xs font-bold text-text-light uppercase tracking-wider mb-4">Advanced (Coming Soon)</h2>
+                    <h2 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-4">Advanced (Coming Soon)</h2>
                     <div className="space-y-2 opacity-50">
-                        <div className="flex items-center gap-3 px-4 py-2 text-sm text-text-light">
+                        <div className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary">
                             <MonitorPlay size={16} /> Scratch Level 2
                         </div>
-                        <div className="flex items-center gap-3 px-4 py-2 text-sm text-text-light">
+                        <div className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary">
                             <Terminal size={16} /> Python Level 2
                         </div>
-                        <div className="flex items-center gap-3 px-4 py-2 text-sm text-text-light">
+                        <div className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary">
                             <Code2 size={16} /> Java Level 2
                         </div>
                     </div>
@@ -91,9 +91,7 @@ export default function TutorialsLayout({
 
             {/* Main Content */}
             <main className="flex-1 w-full max-w-7xl mx-auto p-6 md:p-12">
-                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                    {children}
-                </div>
+                {children}
             </main>
         </div>
     );

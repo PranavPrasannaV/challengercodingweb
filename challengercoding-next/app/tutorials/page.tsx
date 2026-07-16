@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Code2, Terminal, MonitorPlay, ChevronRight, GraduationCap } from "lucide-react";
+import { Code2, Terminal, MonitorPlay, ChevronRight } from "lucide-react";
 
 const courses = [
     {
@@ -10,7 +10,7 @@ const courses = [
         level: "Beginner",
         desc: "Start your journey with visual block-based coding.",
         icon: MonitorPlay,
-        gradient: "from-orange-400 to-red-500"
+        accent: "#E67E22"
     },
     {
         id: "python",
@@ -18,7 +18,7 @@ const courses = [
         level: "Intermediate",
         desc: "Learn the world's most popular language for AI and Data.",
         icon: Terminal,
-        gradient: "from-blue-400 to-indigo-500"
+        accent: "#1A5C5C"
     },
     {
         id: "java",
@@ -26,7 +26,7 @@ const courses = [
         level: "Advanced",
         desc: "Master object-oriented concepts for enterprise dev.",
         icon: Code2,
-        gradient: "from-red-500 to-pink-600"
+        accent: "#C6694E"
     },
     {
         id: "scratch2",
@@ -34,7 +34,7 @@ const courses = [
         level: "Beginner +",
         desc: "Advanced logic and game mechanics.",
         icon: MonitorPlay,
-        gradient: "from-orange-600 to-red-700"
+        accent: "#D35400"
     },
     {
         id: "python2",
@@ -42,7 +42,7 @@ const courses = [
         level: "Intermediate +",
         desc: "Data structures, algorithms, and more.",
         icon: Terminal,
-        gradient: "from-blue-600 to-indigo-700"
+        accent: "#144A4A"
     },
     {
         id: "java2",
@@ -50,7 +50,7 @@ const courses = [
         level: "Advanced +",
         desc: "Deep dive into APIs and system design.",
         icon: Code2,
-        gradient: "from-red-600 to-pink-700"
+        accent: "#B15840"
     }
 ];
 
@@ -58,8 +58,8 @@ export default function TutorialsPage() {
     return (
         <div className="space-y-12">
             <div className="text-center space-y-4 pt-8">
-                <h1 className="text-4xl font-bold font-poppins text-secondary">Course Catalog</h1>
-                <p className="text-text-light max-w-2xl mx-auto text-lg">
+                <h1 className="text-h1 font-serif font-bold text-text text-center">Course Catalog</h1>
+                <p className="text-body text-text-secondary text-center max-w-2xl mx-auto">
                     Select a course to begin your learning journey. Each course includes video tutorials,
                     interactive exercises, and quizzes.
                 </p>
@@ -70,28 +70,28 @@ export default function TutorialsPage() {
                     <Link
                         key={course.id}
                         href={`/tutorials/${course.id}`}
-                        className="group relative bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 block overflow-hidden"
+                        className="bg-surface hairline rounded-lg p-6 block transition-colors duration-200 hover:bg-alt-bg border-l-4"
+                        style={{ borderLeftColor: course.accent }}
                     >
-                        <div className={`h-48 rounded-2xl bg-gradient-to-br ${course.gradient} flex items-center justify-center mb-6 relative overflow-hidden shadow-inner`}>
-                            <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                            <course.icon className="w-20 h-20 text-white drop-shadow-md group-hover:scale-110 transition-transform duration-300" />
-                        </div>
-
-                        <div className="space-y-3 relative z-10">
-                            <div className="flex justify-between items-start">
-                                <h2 className="text-xl font-bold text-secondary group-hover:text-primary transition-colors">{course.title}</h2>
-                                <span className="text-xs font-semibold px-2.5 py-1 bg-gray-50 rounded-full text-text-light border border-gray-200">
+                        <div className="flex items-center gap-4 mb-4">
+                            <course.icon
+                                className="w-12 h-12"
+                                style={{ color: course.accent }}
+                            />
+                            <div className="flex-1">
+                                <h2 className="text-h3 font-bold text-text">{course.title}</h2>
+                                <span className="text-xs font-medium px-2.5 py-1 bg-alt-bg text-text-secondary rounded border hairline mt-1 inline-block">
                                     {course.level}
                                 </span>
                             </div>
+                        </div>
 
-                            <p className="text-text-light text-sm leading-relaxed h-10 overflow-hidden text-ellipsis line-clamp-2">
-                                {course.desc}
-                            </p>
+                        <p className="text-small text-text-secondary leading-relaxed mb-4">
+                            {course.desc}
+                        </p>
 
-                            <div className="pt-4 flex items-center text-primary font-semibold text-sm group-hover:translate-x-1 transition-transform">
-                                Start Course <ChevronRight className="w-4 h-4 ml-1" />
-                            </div>
+                        <div className="text-primary font-semibold text-small inline-flex items-center gap-1">
+                            Start Course <ChevronRight className="w-4 h-4" />
                         </div>
                     </Link>
                 ))}

@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Loops Tutorial - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #263238;
+            --accent: #FFC107;
+            --background: #F5F7FA;
+            --text: #333;
+            --text-light: #666;
+            --white: #ffffff;
+            --success: #4CAF50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 30px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: fixed;
+            top: 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            min-height: calc(100vh - 60px);
+            margin-top: 60px;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: var(--white);
+            padding: 2rem;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+
+        .progress-bar {
+            width: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-right: 1rem;
+            align-self: stretch;
+            position: relative;
+        }
+
+        .progress {
+            width: 100%;
+            background-color: var(--primary);
+            border-radius: 5px;
+            position: absolute;
+            bottom: 0;
+            transition: height 0.3s ease;
+        }
+
+        .lesson-list {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            font-size: 1rem;
+            color: var(--text);
+            display: block;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: 0.3s;
+            flex-grow: 1;
+        }
+
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 14px;
+        }
+
+        .checkbox.completed {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 2rem;
+            margin-left: 300px;
+            overflow-y: auto;
+        }
+
+        .content h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .lesson-content {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .lesson-content h2 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        .lesson-content h3 {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .lesson-content p, .lesson-content ul {
+            margin-bottom: 1rem;
+        }
+
+        .lesson-content ul {
+            padding-left: 1.5rem;
+        }
+
+        .example-box {
+            background-color: #f0f0f0;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        code {
+            background-color: #e0e0e0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .back-button {
+            display: block;
+            text-decoration: none;
+            color: var(--text);
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            background-color: var(--accent);
+            border-radius: 8px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .progress-bar {
+                width: 100%;
+                height: 10px;
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+
+            .progress {
+                width: 0;
+                height: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="online_compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="sidebar">
+            <a href="python_tutorials.html" class="back-button">
+                <i data-lucide="arrow-left"></i> Back to Tutorials
+            </a>
+            <div class="progress-bar">
+                <div class="progress" id="lesson-progress"></div>
+            </div>
+            <div class="lesson-list">
+                <h2>Python Loops</h2>
+                <ul id="lesson-list"></ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h1 id="lesson-title"></h1>
+            <div class="video-container" style="display: none;">
+                <iframe id="lesson-video" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="lesson-content" id="lesson-description"></div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const lessons = [
+            {
+                id: 'lesson0',
+                title: 'Introduction to Loops',
+                video: null,
+                description: `
+                    <h2>What are Loops in Python?</h2>
+                    <p>Loops are a fundamental concept in programming that allow you to execute a block of code repeatedly. They are essential for automating repetitive tasks and processing large amounts of data efficiently.</p>
+
+                    <h3>Why Use Loops?</h3>
+                    <ul>
+                        <li>Automate repetitive tasks</li>
+                        <li>Process large datasets</li>
+                        <li>Implement algorithms that require iteration</li>
+                        <li>Create dynamic and interactive programs</li>
+                    </ul>
+
+                    <h3>Types of Loops in Python</h3>
+                    <p>Python provides two main types of loops:</p>
+                    <ol>
+                        <li><strong>for loops:</strong> Used for iterating over a sequence (like a list, tuple, dictionary, set, or string) or other iterable objects.</li>
+                        <li><strong>while loops:</strong> Used to execute a block of code as long as a condition is true.</li>
+                    </ol>
+
+                    <h3>Basic Structure of a Loop</h3>
+                    <div class="example-box">
+                        <code>
+# For loop
+for item in sequence:
+    # Code to be executed for each item
+
+# While loop
+while condition:
+    # Code to be executed as long as the condition is true
+                        </code>
+                    </div>
+
+                    <p>In the following lessons, we'll explore each type of loop in detail and learn about their various applications in Python programming.</p>
+                `
+            },
+            {
+                id: 'lesson1',
+                title: 'For Loops',
+                video: 'https://www.youtube.com/embed/KWgYha0clzw?si=eyNS3_q9h1ZlE9NA',
+                description: `
+                    <h2>For Loops in Python</h2>
+                    <p>For loops are used to iterate over a sequence (such as a list, tuple, dictionary, set, or string) or other iterable objects. They provide a concise way to execute a block of code for each item in a sequence.</p>
+
+                    <h3>Basic Syntax</h3>
+                    <div class="example-box">
+                        <code>
+for item in sequence:
+    # Code to be executed for each item
+                        </code>
+                    </div>
+
+                    <h3>Examples of For Loops</h3>
+                    <p>1. Iterating over a list:</p>
+                    <div class="example-box">
+                        <code>
+fruits = ["apple", "banana", "cherry"]
+for fruit in fruits:
+    print(fruit)
+
+# Output:
+# apple
+# banana
+# cherry
+                        </code>
+                    </div>
+
+                    <p>2. Iterating over a string:</p>
+                    <div class="example-box">
+                        <code>
+for char in "Python":
+    print(char)
+
+# Output:
+# P
+# y
+# t
+# h
+# o
+# n
+                        </code>
+                    </div>
+
+                    <p>3. Using range() function:</p>
+                    <div class="example-box">
+                        <code>
+for i in range(5):
+    print(i)
+
+# Output:
+# 0
+# 1
+# 2
+# 3
+# 4
+                        </code>
+                    </div>
+
+                    <h3>Nested For Loops</h3>
+                    <p>You can also nest for loops inside each other:</p>
+                    <div class="example-box">
+                        <code>
+for i in range(3):
+    for j in range(2):
+        print(f"i: {i}, j: {j}")
+
+# Output:
+# i: 0, j: 0
+# i: 0, j: 1
+# i: 1, j: 0
+# i: 1, j: 1
+# i: 2, j: 0
+# i: 2, j: 1
+                        </code>
+                    </div>
+
+                    <p>For loops are versatile and can be used in many different scenarios. In the next lesson, we'll explore while loops and compare them to for loops.</p>
+                `
+            },
+            {
+                id: 'lesson2',
+                title: 'While Loops',
+                video: 'https://www.youtube.com/embed/rRTjPnVooxE?si=gdkt5nzkjMmvIV1N',
+                description: `
+                    <h2>While Loops in Python</h2>
+                    <p>While loops execute a block of code as long as a specified condition is true. They are useful when you don't know in advance how many times you need to execute a block of code.</p>
+
+                    <h3>Basic Syntax</h3>
+                    <div class="example-box">
+                        <code>
+while condition:
+    # Code to be executed as long as the condition is true
+                        </code>
+                    </div>
+
+                    <h3>Examples of While Loops</h3>
+                    <p>1. Basic while loop:</p>
+                    <div class="example-box">
+                        <code>
+count = 0
+while count < 5:
+    print(count)
+    count += 1
+
+# Output:
+# 0
+# 1
+# 2
+# 3
+# 4
+                        </code>
+                    </div>
+
+                    <p>2. Using break to exit a while loop:</p>
+                    <div class="example-box">
+                        <code>
+number = 0
+while True:
+    if number == 5:
+        break
+    print(number)
+    number += 1
+
+# Output:
+# 0
+# 1
+# 2
+# 3
+# 4
+                        </code>
+                    </div>
+
+                    <p>3. Using continue to skip an iteration:</p>
+                    <div class="example-box">
+                        <code>
+number = 0
+while number < 5:
+    number += 1
+    if number == 3:
+        continue
+    print(number)
+
+# Output:
+# 1
+# 2
+# 4
+# 5
+                        </code>
+                    </div>
+
+                    <h3>While Loop vs For Loop</h3>
+                    <p>While loops are typically used when:</p>
+                    <ul>
+                        <li>You don't know how many iterations you need in advance</li>
+                        <li>You want to repeat an action until a specific condition is met</li>
+                        <li>You need more complex loop control than what a for loop provides</li>
+                    </ul>
+
+                    <p>For loops, on the other hand, are better when:</p>
+                    <ul>
+                        <li>You want to iterate over a sequence of elements</li>
+                        <li>You know the number of iterations in advance</li>
+                        <li>You want to use the loop variable in your code</li>
+                    </ul>
+
+                    <p>Understanding when to use each type of loop is crucial for writing efficient and readable Python code.</p>
+                `
+            },
+            {
+                id: 'lesson3',
+                title: 'Loop Control Statements',
+                video: 'https://www.youtube.com/embed/97NdNoA3XUQ?si=PnEOmwtJabSt8pj8',
+                description: `
+                    <h2>Loop Control Statements in Python</h2>
+                    <p>Loop control statements change the execution from its normal sequence. Python supports the following loop control statements:</p>
+
+                    <h3>1. break statement</h3>
+                    <p>The break statement terminates the loop containing it. Control of the program flows to the statement immediately after the body of the loop.</p>
+                    <div class="example-box">
+                        <code>
+for letter in 'Python':
+    if letter == 'h':
+        break
+    print(letter)
+
+# Output:
+# P
+# y
+# t
+                        </code>
+                    </div>
+
+                    <h3>2. continue statement</h3>
+                    <p>The continue statement is used to skip the rest of the code inside a loop for the current iteration only. Loop does not terminate but continues on with the next iteration.</p>
+                    <div class="example-box">
+                        <code>
+for letter in 'Python':
+    if letter == 'h':
+        continue
+    print(letter)
+
+# Output:
+# P
+# y
+# t
+# o
+# n
+                        </code>
+                    </div>
+
+                    <h3>3. pass statement</h3>
+                    <p>The pass statement is a null operation; nothing happens when it executes. It's useful as a placeholder when a statement is required syntactically, but no code needs to be executed.</p>
+                    <div class="example-box">
+                        <code>
+for letter in 'Python':
+    if letter == 'h':
+        pass
+    print(letter)
+
+# Output:
+# P
+# y
+# t
+# h
+# o
+# n
+                        </code>
+                    </div>
+
+                    <h3>Using else with Loops</h3>
+                    <p>Python allows the use of else with both for and while loops. The else block is executed when the loop condition becomes false:</p>
+                    <div class="example-box">
+                        <code>
+for i in range(5):
+    print(i)
+else:
+    print("Loop completed normally")
+
+# Output:
+# 0
+# 1
+# 2
+# 3
+# 4
+# Loop completed normally
+                        </code>
+                    </div>
+
+                    <p>Note that if a loop is exited with a break statement, the else block is not executed.</p>
+
+                    <p>Understanding these loop control statements allows you to have finer control over your loops and create more complex and efficient algorithms.</p>
+                `
+            }
+        ];
+
+        let currentLessonIndex = 0;
+        let completedLessons = new Set();
+
+        function showLesson(index) {
+            const lessonTitle = document.getElementById('lesson-title');
+            const lessonVideo = document.getElementById('lesson-video');
+            const videoContainer = document.querySelector('.video-container');
+            const lessonDescription = document.getElementById('lesson-description');
+
+            const lesson = lessons[index];
+            lessonTitle.textContent = lesson.title;
+            lessonDescription.innerHTML = lesson.description;
+
+            if (lesson.video) {
+                lessonVideo.src = lesson.video;
+                videoContainer.style.display = 'block';
+            } else {
+                videoContainer.style.display = 'none';
+            }
+
+            document.querySelectorAll('#lesson-list a').forEach((a, i) => {
+                a.classList.toggle('active', i === index);
+            });
+
+            currentLessonIndex = index;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = (completedLessons.size / lessons.length) * 100;
+            document.getElementById('lesson-progress').style.height = `${progress}%`;
+        }
+
+        function createLessonList() {
+            const lessonList = document.getElementById('lesson-list');
+            lessons.forEach((lesson, index) => {
+                const li = document.createElement('li');
+                const checkbox = document.createElement('div');
+                checkbox.className = 'checkbox';
+                checkbox.id = `checkbox-${lesson.id}`;
+                li.appendChild(checkbox);
+
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = lesson.title;
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    showLesson(index);
+                };
+                li.appendChild(a);
+                lessonList.appendChild(li);
+            });
+        }
+
+        function updateCheckbox(lessonId) {
+            const checkbox = document.getElementById(`checkbox-${lessonId}`);
+            checkbox.classList.add('completed');
+            checkbox.innerHTML = '✓';
+        }
+
+        createLessonList();
+        showLesson(0);
+    </script>
+</body>
+</html>
+

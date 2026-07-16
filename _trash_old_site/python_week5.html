@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Lists Tutorial - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #263238;
+            --accent: #FFC107;
+            --background: #F5F7FA;
+            --text: #333;
+            --text-light: #666;
+            --white: #ffffff;
+            --success: #4CAF50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 30px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: fixed;
+            top: 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            min-height: calc(100vh - 60px);
+            margin-top: 60px;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: var(--white);
+            padding: 2rem;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+
+        .progress-bar {
+            width: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-right: 1rem;
+            align-self: stretch;
+            position: relative;
+        }
+
+        .progress {
+            width: 100%;
+            background-color: var(--primary);
+            border-radius: 5px;
+            position: absolute;
+            bottom: 0;
+            transition: height 0.3s ease;
+        }
+
+        .lesson-list {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            font-size: 1rem;
+            color: var(--text);
+            display: block;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: 0.3s;
+            flex-grow: 1;
+        }
+
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 14px;
+        }
+
+        .checkbox.completed {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 2rem;
+            margin-left: 300px;
+            overflow-y: auto;
+        }
+
+        .content h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .lesson-content {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .lesson-content h2 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        .lesson-content h3 {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .lesson-content p, .lesson-content ul {
+            margin-bottom: 1rem;
+        }
+
+        .lesson-content ul {
+            padding-left: 1.5rem;
+        }
+
+        .example-box {
+            background-color: #f0f0f0;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        code {
+            background-color: #e0e0e0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .back-button {
+            display: block;
+            text-decoration: none;
+            color: var(--text);
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            background-color: var(--accent);
+            border-radius: 8px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .progress-bar {
+                width: 100%;
+                height: 10px;
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+
+            .progress {
+                width: 0;
+                height: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="online_compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="sidebar">
+            <a href="python_tutorials.html" class="back-button">
+                <i data-lucide="arrow-left"></i> Back to Tutorials
+            </a>
+            <div class="progress-bar">
+                <div class="progress" id="lesson-progress"></div>
+            </div>
+            <div class="lesson-list">
+                <h2>Python Lists</h2>
+                <ul id="lesson-list"></ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h1 id="lesson-title"></h1>
+            <div class="video-container" style="display: none;">
+                <iframe id="lesson-video" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="lesson-content" id="lesson-description"></div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const lessons = [
+            {
+                id: 'lesson0',
+                title: 'Introduction to Lists',
+                video: null,
+                description: `
+                    <h2>What are Lists in Python?</h2>
+                    <p>Lists are one of the most versatile and commonly used data structures in Python. They allow you to store multiple items in a single variable.</p>
+
+                    <h3>Key Characteristics of Lists:</h3>
+                    <ul>
+                        <li>Lists are ordered: The items have a defined order, and that order will not change.</li>
+                        <li>Lists are mutable: You can change, add, and remove items in a list after it is created.</li>
+                        <li>Lists allow duplicate values: Since lists are indexed, they can have items with the same value.</li>
+                        <li>Lists can contain different data types: A single list can contain items of different types (integers, strings, other lists, etc.).</li>
+                    </ul>
+
+                    <h3>Creating a List</h3>
+                    <p>In Python, you create a list by placing all the items (elements) inside square brackets [ ], separated by commas.</p>
+                    <div class="example-box">
+                        <code>
+                        # An empty list
+                        empty_list = []
+
+                        # A list of integers
+                        numbers = [1, 2, 3, 4, 5]
+
+                        # A list with mixed data types
+                        mixed_list = [1, "Hello", 3.14, True]
+
+                        # A nested list
+                        nested_list = [1, [2, 3], 4]
+                        </code>
+                    </div>
+
+                    <h3>Accessing List Elements</h3>
+                    <p>You can access list elements by referring to the index number. In Python, indices start at 0.</p>
+                    <div class="example-box">
+                        <code>
+                        fruits = ["apple", "banana", "cherry"]
+                        print(fruits[0])  # Output: apple
+                        print(fruits[1])  # Output: banana
+                        print(fruits[-1])  # Output: cherry (negative indexing starts from the end)
+                        </code>
+                    </div>
+
+                    <p>Lists are fundamental to Python programming and are used in various applications. In the following lessons, we'll explore more operations and methods you can use with lists.</p>
+                `
+            },
+            {
+                id: 'lesson1',
+                title: 'List Basics',
+                video: 'https://www.youtube.com/embed/1KLgcBcWCsE?si=vsA0cIV7w1jOdd4g',
+                description: `
+                    <h2>Common List Operations</h2>
+                    <p>Python provides a variety of operations that you can perform on lists. Let's explore some of the most common ones.</p>
+
+                    <h3>1. Adding Elements to a List</h3>
+                    <p>You can add elements to a list using several methods:</p>
+                    <div class="example-box">
+                        <code>
+                        # Using append() to add an element to the end of the list
+                        fruits = ["apple", "banana"]
+                        fruits.append("cherry")
+                        print(fruits)  # Output: ["apple", "banana", "cherry"]
+
+                        # Using insert() to add an element at a specific position
+                        fruits.insert(1, "orange")
+                        print(fruits)  # Output: ["apple", "orange", "banana", "cherry"]
+
+                        # Using extend() to add multiple elements
+                        more_fruits = ["grape", "kiwi"]
+                        fruits.extend(more_fruits)
+                        print(fruits)  # Output: ["apple", "orange", "banana", "cherry", "grape", "kiwi"]
+                        </code>
+                    </div>
+
+                    <h3>2. Removing Elements from a List</h3>
+                    <p>There are also several ways to remove elements from a list:</p>
+                    <div class="example-box">
+                        <code>
+                        # Using remove() to remove a specific element
+                        fruits.remove("banana")
+                        print(fruits)  # Output: ["apple", "orange", "cherry", "grape", "kiwi"]
+
+                        # Using pop() to remove and return an element at a specific index
+                        removed_fruit = fruits.pop(1)
+                        print(removed_fruit)  # Output: orange
+                        print(fruits)  # Output: ["apple", "cherry", "grape", "kiwi"]
+
+                        # Using del to remove an element or slice
+                        del fruits[0]
+                        print(fruits)  # Output: ["cherry", "grape", "kiwi"]
+                        </code>
+                    </div>
+
+                    <h3>3. Modifying Elements</h3>
+                    <p>You can change the value of a specific item by referring to its index number:</p>
+                    <div class="example-box">
+                        <code>
+                        fruits[1] = "blueberry"
+                        print(fruits)  # Output: ["cherry", "blueberry", "kiwi"]
+                        </code>
+                    </div>
+
+                    <h3>4. List Slicing</h3>
+                    <p>List slicing allows you to access a specific range of elements in a list:</p>
+                    <div class="example-box">
+                        <code>
+                        numbers = [0, 1, 2, 3, 4, 5]
+                        print(numbers[2:5])  # Output: [2, 3, 4]
+                        print(numbers[:3])   # Output: [0, 1, 2]
+                        print(numbers[3:])   # Output: [3, 4, 5]
+                        print(numbers[::2])  # Output: [0, 2, 4] (step of 2)
+                        </code>
+                    </div>
+
+                    <p>These operations form the foundation of working with lists in Python. In the next lesson, we'll explore more advanced list methods and techniques.</p>
+                `
+            },
+            {
+                id: 'lesson2',
+                title: 'List Methods',
+                video: 'https://www.youtube.com/embed/0yySumZTxJ0?si=w4TBIJ8ZytXa5VFY',
+                description: `
+                    <h2>Advanced List Methods and Techniques</h2>
+                    <p>Python provides a rich set of built-in methods for working with lists. Let's explore some of the most useful ones.</p>
+
+                    <h3>1. Sorting Lists</h3>
+                    <p>You can sort lists using the <code>sort()</code> method or the <code>sorted()</code> function:</p>
+                    <div class="example-box">
+                        <code>
+                        numbers = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5]
+                        numbers.sort()
+                        print(numbers)  # Output: [1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 9]
+
+                        fruits = ["banana", "apple", "cherry", "date"]
+                        sorted_fruits = sorted(fruits)
+                        print(sorted_fruits)  # Output: ["apple", "banana", "cherry", "date"]
+                        </code>
+                    </div>
+
+                    <h3>2. Reversing Lists</h3>
+                    <p>You can reverse a list using the <code>reverse()</code> method:</p>
+                    <div class="example-box">
+                        <code>
+                        numbers = [1, 2, 3, 4, 5]
+                        numbers.reverse()
+                        print(numbers)  # Output: [5, 4, 3, 2, 1]
+                        </code>
+                    </div>
+
+                    <h3>3. Finding Elements</h3>
+                    <p>Use the <code>index()</code> method to find the position of an element:</p>
+                    <div class="example-box">
+                        <code>
+                        fruits = ["apple", "banana", "cherry"]
+                        print(fruits.index("banana"))  # Output: 1
+                        </code>
+                    </div>
+
+                    <h3>4. Counting Elements</h3>
+                    <p>The <code>count()</code> method returns the number of times an element appears in the list:</p>
+                    <div class="example-box">
+                        <code>
+                        numbers = [1, 2, 2, 3, 3, 3, 4, 4, 4, 4]
+                        print(numbers.count(3))  # Output: 3
+                        </code>
+                    </div>
+
+                    <h3>5. List Comprehensions</h3>
+                    <p>List comprehensions provide a concise way to create lists:</p>
+                    <div class="example-box">
+                        <code>
+                        squares = [x**2 for x in range(10)]
+                        print(squares)  # Output: [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+                        even_numbers = [x for x in range(20) if x % 2 == 0]
+                        print(even_numbers)  # Output: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
+                        </code>
+                    </div>
+
+                    <p>These advanced techniques will help you manipulate lists more efficiently in your Python programs.</p>
+                `
+            },
+        ];
+
+        let currentLessonIndex = 0;
+        let completedLessons = new Set();
+
+        function showLesson(index) {
+            const lessonTitle = document.getElementById('lesson-title');
+            const lessonVideo = document.getElementById('lesson-video');
+            const videoContainer = document.querySelector('.video-container');
+            const lessonDescription = document.getElementById('lesson-description');
+
+            const lesson = lessons[index];
+            lessonTitle.textContent = lesson.title;
+            lessonDescription.innerHTML = lesson.description;
+
+            if (lesson.video) {
+                lessonVideo.src = lesson.video;
+                videoContainer.style.display = 'block';
+            } else {
+                videoContainer.style.display = 'none';
+            }
+
+            document.querySelectorAll('#lesson-list a').forEach((a, i) => {
+                a.classList.toggle('active', i === index);
+            });
+
+            currentLessonIndex = index;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = (completedLessons.size / lessons.length) * 100;
+            document.getElementById('lesson-progress').style.height = `${progress}%`;
+        }
+
+        function createLessonList() {
+            const lessonList = document.getElementById('lesson-list');
+            lessons.forEach((lesson, index) => {
+                const li = document.createElement('li');
+                const checkbox = document.createElement('div');
+                checkbox.className = 'checkbox';
+                checkbox.id = `checkbox-${lesson.id}`;
+                li.appendChild(checkbox);
+
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = lesson.title;
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    showLesson(index);
+                };
+                li.appendChild(a);
+                lessonList.appendChild(li);
+            });
+        }
+
+        function updateCheckbox(lessonId) {
+            const checkbox = document.getElementById(`checkbox-${lessonId}`);
+            checkbox.classList.add('completed');
+            checkbox.innerHTML = '✓';
+        }
+
+        createLessonList();
+        showLesson(0);
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Tutorial - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/skulpt@1.2.0/dist/skulpt.min.js"></script>
+    <script src="https://unpkg.com/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --background: #ffffff;
+            --surface: #f8f9fa;
+            --border: #e9ecef;
+            --text: #2d3436;
+            --text-light: #636e72;
+            --success: #2ecc71;
+            --error: #e74c3c;
+        }
+        .top-strip {
+            background-color: var(--primary);
+            height: 30px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: fixed;
+            top: 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            gap: 2rem;
+        }
+        .sidebar {
+            width: 250px;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+        }
+        .exercise-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--background);
+            border: 1px solid var(--border);
+        }
+        .exercise-item:hover {
+            background: var(--surface);
+            transform: translateY(-1px);
+        }
+        .exercise-item.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .main-content {
+            flex: 1;
+        }
+        .tutorial-section {
+            background: var(--background);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+        .tutorial-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        .tutorial-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+        .code-block {
+            background: var(--surface);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Fira Code', monospace;
+            border: 1px solid var(--border);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .compiler-section {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .compiler-left {
+            flex: 6;
+        }
+        .compiler-right {
+            flex: 4;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .editor {
+            background: var(--surface);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .editor-header {
+            background: var(--primary);
+            color: var(--background);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            border: none;
+            resize: vertical;
+            line-height: 1.5;
+            background-color: var(--background);
+        }
+        textarea:focus {
+            outline: none;
+        }
+        .run-button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s ease;
+        }
+        .run-button:hover {
+            background: var(--accent);
+            opacity: 0.9;
+        }
+        .output-container {
+            background: var(--surface);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            height: calc(50% - 0.5rem);
+        }
+        .output-header {
+            background: var(--primary);
+            color: var(--background);
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+        }
+        .output, .result {
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            height: calc(100% - 40px);
+            overflow-y: auto;
+            background-color: var(--background);
+        }
+        .hint-box {
+            background-color: #e3f2fd;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        .challenge-box {
+            background-color: #fff3e0;
+            border-left: 4px solid var(--secondary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+            .compiler-section {
+                flex-direction: column;
+            }
+            .compiler-left, .compiler-right {
+                flex: 1;
+            }
+            .output-container {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="#" target="_blank" class="enroll-button">Enroll</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="exercise-list">
+                <a href="python_tutorials.html" class="exercise-item">
+                    <span>Return Home</span>
+                </a>
+                <div class="exercise-item" data-exercise="1">
+                    <span>1. Say hello</span>
+                </div>
+                <div class="exercise-item" data-exercise="2">
+                    <span>2. Print your name</span>
+                </div>
+                <div class="exercise-item" data-exercise="3">
+                    <span>3. Debugging</span>
+                </div>
+                <div class="exercise-item" data-exercise="4">
+                    <span>4. Printing Art</span>
+                </div>
+                <div class="exercise-item" data-exercise="5">
+                    <span>5. Weekly Project</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <br>
+            <br>
+            <br>
+            <div id="tutorial-content"></div>
+
+            <div class="compiler-section">
+                <div class="compiler-left">
+                    <div class="editor">
+                        <div class="editor-header">
+                            <span>Python Code</span>
+                            <button class="run-button" onclick="runCode()">
+                                <i data-lucide="play"></i> Run
+                            </button>
+                        </div>
+                        <textarea id="code-editor" spellcheck="false"></textarea>
+                    </div>
+                </div>
+                <div class="compiler-right">
+                    <div class="output-container">
+                        <div class="output-header">Output</div>
+                        <div id="output" class="output"></div>
+                    </div>
+                    <div class="output-container">
+                        <div class="output-header">Autograder</div>
+                        <div id="result" class="result"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Include Scripts -->
+    <script src="config.js"></script>
+    <script>
+        document.querySelectorAll(".enroll-button").forEach(button => {
+            button.href = enrollLink;
+        });
+    </script>
+    <script>
+        lucide.createIcons();
+
+        const exercises = [
+            {
+                title: "Say hello",
+                content: `
+                    <h1 class="tutorial-title">Exercise 1: Say hello</h1>
+                    <p class="tutorial-text">
+                        Welcome to your first Python programming exercise! Let's start with the classic "Hello, World" program.
+                    </p>
+                    <p class="tutorial-text">
+                        In Python, we use the <code>print()</code> function to display text on the screen. Here's how you can print "Hello, World!":
+                    </p>
+                    <div class="code-block">print('Hello, World!')</div>
+                    <p class="tutorial-text">
+                        Let's break this down:
+                    </p>
+                    <ul class="tutorial-text">
+                        <li><code>print</code> is the function that tells Python to display something.</li>
+                        <li>The parentheses <code>()</code> contain what we want to print.</li>
+                        <li>The text we want to print is enclosed in single quotes <code>''</code>.</li>
+                    </ul>
+                    <p class="tutorial-text">
+                        Now it's your turn! Try printing the following statement:
+                    </p>
+                    <div class="code-block">hello, world</div>
+                    <p class="tutorial-text">
+                        Type your code in the editor below, then hit the <strong>Run</strong> button to see if it works!
+                    </p>
+                `,
+                initialCode: "# Write your code here to print 'hello, world'\n",
+                expectedOutput: "hello, world"
+            },
+            {
+                title: "Print your name",
+                content: `
+                    <h1 class="tutorial-title">Exercise 2: Print your name</h1>
+                    <p class="tutorial-text">
+                        Great job on your first program! Now, let's personalize things a bit by printing your name.
+                    </p>
+                    <p class="tutorial-text">
+                        Remember, we use the <code>print()</code> function to display text. If your name is John, you would write:
+                    </p>
+                    <div class="code-block">print('John')</div>
+                    <p class="tutorial-text">
+                        You can print anything as long as it's enclosed in quotes. Try these examples:
+                    </p>
+                    <div class="code-block">print('Hello, I am John!')
+print('I love Python!')
+print('2023')</div>
+                    <p class="tutorial-text">
+                        Now it's your turn! Write a Python program to print your own name:
+                    </p>
+                    <div class="code-block">Your Name</div>
+                    <p class="tutorial-text">
+                        Type your code in the editor below, then click the <strong>Run</strong> button to see your name in lights!
+                    </p>
+                `,
+                initialCode: "# Write code to print your name\n",
+                expectedOutput: null
+            },
+            {
+                title: "Debugging",
+                content: `
+                    <h1 class="tutorial-title">Exercise 3: Debugging</h1>
+                    <p class="tutorial-text">
+                        Welcome to the world of debugging! As a programmer, you'll spend a lot of time fixing errors in code. Let's start with a simple example.
+                    </p>
+                    <p class="tutorial-text">
+                        First, let's understand what syntax is:
+                    </p>
+                    <div class="hint-box">
+                        <h3>What is Syntax?</h3>
+                        <p>In programming, syntax refers to the set of rules that define how programs must be written to be valid. It's like the grammar of a programming language. When we violate these rules, we get a syntax error.</p>
+                    </div>
+                    <p class="tutorial-text">
+                        Here's a piece of Python code with a syntax error:
+                    </p>
+                    <div class="code-block">print("Hello, World!)</div>
+                    <p class="tutorial-text">
+                        Can you spot the problem? This code has a syntax error because it's missing a closing quotation mark.
+                    </p>
+                    <p class="tutorial-text">
+                        Your task is to fix this error. Here are the steps:
+                    </p>
+                    <ol class="tutorial-text">
+                        <li>Look at the code carefully.</li>
+                        <li>Find the missing quotation mark.</li>
+                        <li>Add the missing quotation mark in the correct place.</li>
+                        <li>Run the corrected code to make sure it works.</li>
+                    </ol>
+                    <p class="tutorial-text">
+                        Type the corrected code in the editor below, then click <strong>Run</strong> to check if you've fixed the bug!
+                    </p>
+                `,
+                initialCode: "# Fix the error in the code below\nprint(\"Hello, World!)",
+                expectedOutput: "Hello, World!"
+            },
+            {
+                title: "Printing Art",
+                content: `
+                    <h1 class="tutorial-title">Exercise 4: Printing Art</h1>
+                    <p class="tutorial-text">
+                        Let's get creative with Python! In this exercise, you'll create ASCII art using print statements.
+                    </p>
+                    <div class="hint-box">
+                        <h3>What is ASCII Art?</h3>
+                        <p>ASCII art is a graphic design technique that uses computers for presentation and consists of pictures pieced together from printable characters defined by the ASCII Standard.</p>
+                    </div>
+                    <p class="tutorial-text">
+                        You can create simple drawings or patterns using characters. Here's an example:
+                    </p>
+                    <div class="code-block">
+print(" /\\_/\\")
+print("( o.o )")
+print(" > ^ <")</div>
+                    <p class="tutorial-text">
+                        This code will print a simple cat face:
+                    </p>
+                    <div class="code-block">
+ /\\_/\\
+( o.o )
+ > ^ <</div>
+                    <p class="tutorial-text">
+                        Now it's your turn! Use the editor below to create your own ASCII art. Be creative - you could draw an animal, a plant, a building, or anything else you can imagine!
+                    </p>
+                    <p class="tutorial-text">
+                        Remember to use multiple <code>print()</code> statements to create multiple lines in your art.
+                    </p>
+                `,
+                initialCode: "# Create your ASCII art here\n# Use multiple print() statements\n",
+                expectedOutput: null
+            },
+            {
+                title: "Weekly Project",
+                content: `
+                    <h1 class="tutorial-title">Weekly Project: Star Pattern</h1>
+                    <p class="tutorial-text">
+                        Welcome to your weekly project! This week, you'll create a program that prints a specific star pattern. This project will help you practice using multiple print statements to create a shape.
+                    </p>
+                    <p class="tutorial-text">
+                        Your task is to write a Python program that prints the following pattern:
+                    </p>
+                    <div class="code-block">
+*
+**
+***
+****
+*****</div>
+                    <p class="tutorial-text">
+                        This pattern is a right-angled triangle made of asterisks (*). Each line has one more asterisk than the line above it.
+                    </p>
+                    <p class="tutorial-text">
+                        Here are the steps to create this pattern:
+                    </p>
+                    <ol class="tutorial-text">
+                        <li>Use five separate <code>print()</code> statements, one for each line of the triangle.</li>
+                        <li>In each <code>print()</code> statement, include the correct number of asterisks for that line.</li>
+                        <li>Make sure each line prints on a new line (this happens automatically with <code>print()</code>).</li>
+                    </ol>
+                    <p class="tutorial-text">
+                        Write your code in the editor below. Use five <code>print()</code> statements to create each line of the pattern. When you're done, click the "Run" button to see if your pattern matches the one above!
+                    </p>
+                    <div class="challenge-box">
+                        <h3>Extra Challenge:</h3>
+                        <p>If you've successfully created the pattern, try to modify your code to print the pattern in reverse, like this:</p>
+                        <pre>
+*****
+****
+***
+**
+*
+                        </pre>
+                    </div>
+                `,
+                initialCode: "# Write your code here to print the star pattern\n# Use five print() statements\n",
+                expectedOutput: "*\n**\n***\n****\n*****"
+            }
+        ];
+
+        let currentExercise = 0;
+
+        function loadExercise(index) {
+            const exercise = exercises[index];
+            document.getElementById('tutorial-content').innerHTML = exercise.content;
+            document.getElementById('code-editor').value = exercise.initialCode;
+            document.querySelectorAll('.exercise-item').forEach((item, i) => {
+                if (i === 0) return; // Skip the "Return Home" button
+                item.classList.toggle('active', i - 1 === index);
+            });
+            document.getElementById('output').textContent = '';
+            document.getElementById('result').textContent = '';
+            currentExercise = index;
+        }
+
+        function builtinRead(x) {
+            if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined) {
+                throw "File not found: '" + x + "'";
+            }
+            return Sk.builtinFiles["files"][x];
+        }
+
+        async function runCode() {
+            const code = document.getElementById('code-editor').value;
+            const outputElement = document.getElementById('output');
+            const resultElement = document.getElementById('result');
+            outputElement.textContent = "";
+            resultElement.textContent = "";
+
+            try {
+                Sk.configure({ 
+                    output: function(text) {
+                        outputElement.textContent += text;
+                    },
+                    read: builtinRead
+                });
+                
+                const promise = Sk.misceval.asyncToPromise(() => 
+                    Sk.importMainWithBody("<stdin>", false, code, true)
+                );
+                
+                await promise;
+                const actualOutput = outputElement.textContent.trim();
+                const expectedOutput = exercises[currentExercise].expectedOutput;
+                
+                if (expectedOutput === null) {
+                    resultElement.textContent = "Great job on your exercise! Your output looks good.";
+                    resultElement.style.color = "var(--success)";
+                } else if (actualOutput === expectedOutput) {
+                    resultElement.textContent = "Success! Your code produced the expected output.";
+                    resultElement.style.color = "var(--success)";
+                } else {
+                    resultElement.textContent = "Not quite there yet. Expected output:\n" + expectedOutput + "\n\nYour output:\n" + actualOutput + "\n\nKeep trying!";
+                    resultElement.style.color = "var(--error)";
+                }
+            } catch (error) {
+                resultElement.textContent = "Oops! There's an error in your code: " + error.toString() + "\nTry to fix it and run again!";
+                resultElement.style.color = "var(--error)";
+            }
+        }
+
+        document.querySelectorAll('.exercise-item').forEach((item, index) => {
+            if (index === 0) return; // Skip the "Return Home" button
+            item.addEventListener('click', () => loadExercise(index - 1));
+        });
+
+        loadExercise(0);
+    </script>
+</body>
+</html>

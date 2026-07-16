@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scratch 2 - Lesson 5: Space Invaders - Challenger Coding</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+      :root {
+          --primary: #2196F3;
+          --primary-dark: #1976D2;
+          --secondary: #FF4081;
+          --accent: #FFC107;
+          --background: #f0f4f8;
+          --surface: #ffffff;
+          --border: #e0e7ff;
+          --text: #2d3748;
+          --text-light: #4a5568;
+          --success: #48bb78;
+          --error: #f56565;
+          --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+
+      body {
+          font-family: 'Inter', sans-serif;
+          background-color: var(--background);
+          color: var(--text);
+          line-height: 1.6;
+      }
+
+      .top-strip {
+          background-color: var(--primary);
+          height: 5px;
+          width: 100%;
+      }
+
+      nav {
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(10px);
+          width: 100%;
+          position: sticky;
+          top: 0;
+          z-index: 1000;
+          box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+          padding: 1rem 0;
+      }
+
+      .navbar {
+          display: flex;
+          justify-content: center;
+          list-style: none;
+          padding: 0.5rem 1rem;
+          gap: 1rem;
+      }
+
+      .navbar li a {
+          color: var(--text);
+          text-decoration: none;
+          padding: 0.8rem 1.2rem;
+          border-radius: 8px;
+          transition: all 0.3s ease;
+          font-weight: 500;
+      }
+
+      .navbar li a:hover {
+          background: var(--primary);
+          color: white;
+          transform: translateY(-2px);
+      }
+
+      .container {
+          display: flex;
+          max-width: 1200px;
+          margin: 2rem auto;
+          gap: 2rem;
+      }
+
+      .sidebar {
+          width: 250px;
+          background: var(--surface);
+          border-radius: 12px;
+          padding: 1.5rem;
+          height: calc(100vh - 120px);
+          position: sticky;
+          top: 80px;
+          display: flex;
+          flex-direction: column;
+          border: 1px solid var(--border);
+          box-shadow: var(--shadow);
+      }
+
+      .exercise-list {
+          flex: 1;
+          overflow-y: auto;
+      }
+
+      .exercise-item {
+          display: flex;
+          align-items: center;
+          padding: 0.75rem;
+          margin-bottom: 0.5rem;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      }
+
+      .exercise-item:hover {
+          background: var(--primary);
+          color: var(--surface);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+
+      .exercise-item.active {
+          background: var(--primary);
+          color: var(--surface);
+          border-color: var(--primary);
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+
+      .main-content {
+          flex: 1;
+          background: var(--surface);
+          border-radius: 12px;
+          padding: 2rem;
+          box-shadow: var(--shadow);
+      }
+
+      .tutorial-title {
+          font-size: 2.5rem;
+          font-weight: 700;
+          margin-bottom: 1.5rem;
+          color: var(--primary);
+          border-bottom: 2px solid var(--primary);
+          padding-bottom: 0.5rem;
+      }
+
+      .tutorial-text {
+          font-size: 1.1rem;
+          line-height: 1.8;
+          color: var(--text);
+          margin-bottom: 1.5rem;
+      }
+
+      .content-box {
+          background-color: var(--surface);
+          border-radius: 12px;
+          padding: 1.5rem;
+          margin-bottom: 1.5rem;
+          box-shadow: var(--shadow);
+          border: 1px solid var(--border);
+      }
+
+      .highlight-box {
+          background-color: #e6f7ff;
+          border-left: 4px solid var(--primary);
+          padding: 1rem;
+          margin: 1rem 0;
+          border-radius: 0 8px 8px 0;
+      }
+
+      .step-box {
+          background-color: #f0f4f8;
+          border-radius: 8px;
+          padding: 1rem;
+          margin: 1rem 0;
+          border: 1px solid var(--border);
+      }
+
+      .step-number {
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          background-color: var(--primary);
+          color: white;
+          border-radius: 50%;
+          text-align: center;
+          line-height: 24px;
+          margin-right: 0.5rem;
+      }
+
+      .image-block {
+          max-width: 100%;
+          height: auto;
+          border-radius: 8px;
+          margin: 1.5rem 0;
+          box-shadow: var(--shadow);
+      }
+
+      .image-caption {
+          text-align: center;
+          font-style: italic;
+          color: var(--text-light);
+          margin-top: 0.5rem;
+      }
+
+      .interactive-demo {
+          border: 2px solid var(--primary);
+          border-radius: 8px;
+          padding: 1rem;
+          margin: 1rem 0;
+          background-color: #f8f9fa;
+      }
+
+      .demo-controls {
+          display: flex;
+          justify-content: center;
+          gap: 1rem;
+          margin-top: 1rem;
+      }
+
+      .demo-button {
+          padding: 0.5rem 1rem;
+          background-color: var(--primary);
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+      }
+
+      .demo-button:hover {
+          background-color: var(--primary-dark);
+      }
+
+      @media (max-width: 1024px) {
+          .container {
+              flex-direction: column;
+          }
+
+          .sidebar {
+              width: 100%;
+              height: auto;
+              position: static;
+          }
+      }
+  </style>
+</head>
+<body>
+  <div class="top-strip"></div>
+  <nav>
+      <ul class="navbar">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="learn.html">Learn</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="compiler.html">Online Compiler</a></li>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="#" target="_blank" rel="noopener noreferrer">Enroll</a></li>
+      </ul>
+  </nav>
+
+  <div class="container">
+      <aside class="sidebar">
+          <div class="exercise-list">
+              <div class="exercise-item" data-exercise="overview">
+                  <span>Lesson Overview</span>
+              </div>
+              <div class="exercise-item" data-exercise="exercise1">
+                  <span>1. Player Movement</span>
+              </div>
+              <div class="exercise-item" data-exercise="exercise2">
+                  <span>2. Enemy Movement and Cloning</span>
+              </div>
+              <div class="exercise-item" data-exercise="exercise3">
+                  <span>3. Collision Detection</span>
+              </div>
+              <div class="exercise-item" data-exercise="exercise4">
+                  <span>4. Scoring and Game Over</span>
+              </div>
+              <div class="exercise-item" data-exercise="homework">
+                  <span>Homework</span>
+              </div>
+              <div class="exercise-item" onclick="window.location.href='scratch2_tutorials.html'">
+                  <span>Return to Home</span>
+              </div>
+          </div>
+      </aside>
+
+      <main class="main-content">
+          <div id="tutorial-content"></div>
+      </main>
+  </div>
+
+  <script>
+    document.querySelectorAll(".enroll-button").forEach(button => {
+        button.href = enrollLink;
+    });
+</script>
+  <script>
+      const exercises = [
+          {
+              title: "Lesson Overview",
+              content: `
+                  <h1 class="tutorial-title">Scratch 2 Class - Guided Exercise</h1>
+                  <h2 class="text-2xl font-semibold mb-4">Lesson 5: Space Invaders - Foundational Components</h2>
+                  <div class="content-box">
+                      <p class="tutorial-text">
+                          In this lesson, we will focus on teaching foundational components needed to create a Space Invaders-style game. You will learn key elements like player movement, enemy cloning and movement, collision detection, scoring, and game over mechanics. Each exercise builds toward understanding the game mechanics, but you won't be making the entire game just yet!
+                      </p>
+                  </div>
+
+                  <div class="interactive-demo">
+                      <h3 class="text-xl font-semibold mb-2">Space Invaders Demo</h3>
+                      <canvas id="gameCanvas" width="400" height="400"></canvas>
+                      <div class="demo-controls">
+                          <button class="demo-button" onclick="startGame()">Start Game</button>
+                          <button class="demo-button" onclick="stopGame()">Stop Game</button>
+                      </div>
+                  </div>
+              `
+          },
+          {
+              title: "Player Movement",
+              content: `
+                  <h1 class="tutorial-title">Exercise 1: Player Movement</h1>
+                  <div class="content-box">
+                      <p class="tutorial-text">In this exercise, you will learn how to implement player movement for the spaceship in Space Invaders. We'll use the left and right arrow keys to control the spaceship's horizontal movement.</p>
+
+                      <h3 class="text-xl font-semibold mb-2">Step 1: Creating the Player Sprite</h3>
+                      <div class="step-box">
+                          <p><span class="step-number">1</span> Create a new sprite for your spaceship.</p>
+                          <p><span class="step-number">2</span> Position the spaceship at the bottom of the screen.</p>
+                      </div>
+
+                      <h3 class="text-xl font-semibold mb-2">Step 2: Implementing Movement</h3>
+                      <div class="step-box">
+                          <p><span class="step-number">1</span> Add the following script to your spaceship sprite:</p>
+                      </div>
+
+                      <div class="highlight-box">
+                          <pre><code>
+when green flag clicked
+forever
+  if &lt;key [left arrow v] pressed?&gt; then
+    change x by (-5)
+  end
+  if &lt;key [right arrow v] pressed?&gt; then
+    change x by (5)
+  end
+end
+                          </code></pre>
+                      </div>
+
+                      <p class="tutorial-text">
+                          This script continuously checks if the left or right arrow keys are pressed and moves the spaceship accordingly.
+                      </p>
+
+                      <h3 class="text-xl font-semibold mb-2">Step 3: Limiting Movement</h3>
+                      <p class="tutorial-text">
+                          To prevent the spaceship from moving off-screen, we need to add boundary checks.
+                      </p>
+
+                      <div class="highlight-box">
+                          <pre><code>
+when green flag clicked
+forever
+  if &lt;key [left arrow v] pressed?&gt; and &lt;(x position) > (-230)&gt; then
+    change x by (-5)
+  end
+  if &lt;key [right arrow v] pressed?&gt; and &lt;(x position) < (230)&gt; then
+    change x by (5)
+  end
+end
+                          </code></pre>
+                      </div>
+
+                      <p class="tutorial-text">
+                          This updated script checks the spaceship's position before moving, ensuring it stays within the screen boundaries.
+                      </p>
+                  </div>
+
+                  <div class="interactive-demo">
+                      <h3 class="text-xl font-semibold mb-2">Player Movement Demo</h3>
+                      <canvas id="playerMovementDemo" width="400" height="300"></canvas>
+                      <div class="demo-controls">
+                          <button class="demo-button" onmousedown="moveLeft()" onmouseup="stopMoving()" ontouchstart="moveLeft()" ontouchend="stopMoving()">Move Left</button>
+                          <button class="demo-button" onmousedown="moveRight()" onmouseup="stopMoving()" ontouchstart="moveRight()" ontouchend="stopMoving()">Move Right</button>
+                      </div>
+                  </div>
+              `
+          },
+          {
+              title: "Enemy Movement and Cloning",
+              content: `
+                  <h1 class="tutorial-title">Exercise 2: Enemy Movement and Cloning</h1>
+                  <div class="content-box">
+                      <p class="tutorial-text">In this exercise, we'll create multiple enemy invaders using cloning and implement their movement pattern.</p>
+
+                      <h3 class="text-xl font-semibold mb-2">Step 1: Creating the Enemy Sprite</h3>
+                      <div class="step-box">
+                          <p><span class="step-number">1</span> Create a new sprite for your enemy invader.</p>
+                          <p><span class="step-number">2</span> Position the enemy at the top-left of the screen.</p>
+                      </div>
+
+                      <h3 class="text-xl font-semibold mb-2">Step 2: Cloning Enemies</h3>
+                      <div class="step-box">
+                          <p><span class="step-number">1</span> Add the following script to your enemy sprite:</p>
+                      </div>
+
+                      <div class="highlight-box">
+                          <pre><code>
+when green flag clicked
+hide
+repeat (5)
+  create clone of [myself v]
+  change x by (50)
+end
+                          </code></pre>
+                      </div>
+
+                      <p class="tutorial-text">
+                          This script creates 5 clones of the enemy, spacing them out horizontally.
+                      </p>
+
+                      <h3 class="text-xl font-semibold mb-2">Step 3: Enemy Movement</h3>
+                      <div class="step-box">
+                          <p><span class="step-number">1</span> Add another script to the enemy sprite:</p>
+                      </div>
+
+                      <div class="highlight-box">
+                          <pre><code>
+when I start as a clone
+show
+forever
+  move (2) steps
+  if &lt;touching [edge v]?&gt; then
+    turn (180) degrees
+    change y by (-10)
+  end
+end
+                          </code></pre>
+                      </div>
+
+                      <p class="tutorial-text">
+                          This script makes each enemy clone move back and forth, dropping down a level when it reaches the edge of the screen.
+                      </p>
+                  </div>
+
+                  <div class="interactive-demo">
+                      <h3 class="text-xl font-semibold mb-2">Enemy Movement Demo</h3>
+                      <canvas id="enemyMovementDemo" width="400" height="300"></canvas>
+                      <div class="demo-controls">
+                          <button class="demo-button" onclick="startEnemyMovement()">Start Movement</button>
+                          <button class="demo-button" onclick="stopEnemyMovement()">Stop Movement</button>
+                      </div>
+                  </div>
+              `
+          },
+          {
+              title: "Collision Detection",
+              content: `
+                  <h1 class="tutorial-title">Exercise 3: Collision Detection</h1>
+                  <div class="content-box">
+                      <p class="tutorial-text">In this exercise, we'll implement collision detection between the player's bullets and the enemy invaders.</p>
+
+                      <h3 class="text-xl font-semibold mb-2">Step 1: Creating Bullets</h3>
+                      <div class="step-box">
+                          <p><span class="step-number">1</span> Create a new sprite for the bullet.</p>
+                          <p><span class="step-number">2</span> Add the following script to the bullet sprite:</p>
+                      </div>
+
+                      <div class="highlight-box">
+                          <pre><code>
+when green flag clicked
+hide
+
+when [space v] key pressed
+create clone of [myself v]
+
+when I start as a clone
+go to [Spaceship v]
+show
+repeat until &lt;&lt;touching [edge v]?&gt; or &lt;touching [Enemy v]?&gt;&gt;
+  change y by (10)
+end
+if &lt;touching [Enemy v]?&gt; then
+  broadcast [hit v]
+end
+delete this clone
+                          </code></pre>
+                      </div>
+
+                      <h3 class="text-xl font-semibold mb-2">Step 2: Handling Enemy Hits</h3>
+                      <div class="step-box">
+                          <p><span class="step-number">1</span> Add this script to the enemy sprite:</p>
+                      </div>
+
+                      <div class="highlight-box">
+                          <pre><code>
+when I receive [hit v]
+if &lt;touching [Bullet v]?&gt; then
+  delete this clone
+end
+                          </code></pre>
+                      </div>
+
+                      <p class="tutorial-text">
+                          This script deletes the enemy clone when it's hit by a bullet.
+                      </p>
+                  </div>
+
+                  <div class="interactive-demo">
+                      <h3 class="text-xl font-semibold mb-2">Collision Detection Demo</h3>
+                      <canvas id="collisionDemo" width="400" height="300"></canvas>
+                      <div class="demo-controls">
+                          <button class="demo-button" onclick="fireBullet()">Fire Bullet</button>
+                      </div>
+                  </div>
+              `
+          },
+          {
+              title: "Scoring and Game Over",
+              content: `
+                  <h1 class="tutorial-title">Exercise 4: Scoring and Game Over</h1>
+                  <div class="content-box">
+                      <p class="tutorial-text">In this final exercise, we'll implement a scoring system and game over conditions.</p>
+
+                      <h3 class="text-xl font-semibold mb-2">Step 1: Setting Up the Score</h3>
+                      <div class="step-box">
+                          <p><span class="step-number">1</span> Create a variable called "Score".</p>
+                          <p><span class="step-number">2</span> Add this script to the stage:</p>
+                      </div>
+
+                      <div class="highlight-box">
+                          <pre><code>
+when green flag clicked
+set [Score v] to (0)
+                          </code></pre>
+                      </div>
+
+                      <h3 class="text-xl font-semibold mb-2">Step 2: Increasing the Score</h3>
+                      <div class="step-box">
+                          <p><span class="step-number">1</span> Modify the enemy's "hit" script:</p>
+                      </div>
+
+                      <div class="highlight-box">
+                          <pre><code>
+when I receive [hit v]
+if &lt;touching [Bullet v]?&gt; then
+  change [Score v] by (1)
+  delete this clone
+end
+                          </code></pre>
+                      </div>
+
+                      <h3 class="text-xl font-semibold mb-2">Step 3: Game Over Condition</h3>
+                      <div class="step-box">
+                          <p><span class="step-number">1</span> Add this script to the spaceship sprite:</p>
+                      </div>
+
+                      <div class="highlight-box">
+                          <pre><code>
+when green flag clicked
+forever
+  if &lt;touching [Enemy v]?&gt; then
+    broadcast [game over v]
+    stop [all v]
+  end
+end
+                          </code></pre>
+                      </div>
+
+                      <p class="tutorial-text">
+                          This script ends the game if an enemy reaches the spaceship.
+                      </p>
+                  </div>
+
+                  <div class="interactive-demo">
+                      <h3 class="text-xl font-semibold mb-2">Scoring Demo</h3>
+                      <canvas id="scoringDemo" width="400" height="300"></canvas>
+                      <div class="demo-controls">
+                          <button class="demo-button" onclick="incrementScore()">Increase Score</button>
+                          <button class="demo-button" onclick="triggerGameOver()">Game Over</button>
+                      </div>
+                  </div>
+              `
+          },
+          {
+              title: "Homework",
+              content: `
+                  <h1 class="tutorial-title">Homework</h1>
+                  <div class="content-box">
+                      <h3 class="text-xl font-semibold mb-2">Homework: Complete Your Space Invaders Game!</h3>
+                      <p class="tutorial-text">
+                          Now that you've learned the foundational components of Space Invaders, your homework is to complete the game! Here are some tasks to guide you:
+                      </p>
+                      <ul class="list-disc list-inside mt-4">
+                          <li>Implement all the components we've covered in class.</li>
+                          <li>Add a start screen with instructions.</li>
+                          <li>Create multiple levels with increasing difficulty.</li>
+                          <li>Add sound effects for shooting and enemy destruction.</li>
+                          <li>Implement a high score system.</li>
+                          <li>Be creative! Add your own unique features to make the game more exciting.</li>
+                      </ul>
+                      <p class="tutorial-text mt-4">
+                          Remember to test your game thoroughly and have fun creating it!
+                      </p>
+                  </div>
+              `
+          }
+      ];
+
+      let currentExercise = 0;
+
+      function loadExercise(index) {
+          const exercise = exercises[index];
+          document.getElementById('tutorial-content').innerHTML = exercise.content;
+          document.querySelectorAll('.exercise-item').forEach((item, i) => {
+              item.classList.toggle('active', i === index);
+          });
+          currentExercise = index;
+          initializeInteractiveDemos();
+      }
+
+      document.querySelectorAll('.exercise-item').forEach((item, index) => {
+          item.addEventListener('click', () => loadExercise(index));
+      });
+
+      function toggleVisibility(id, btn) {
+          const element = document.getElementById(id);
+          if (element.style.display === "none" || element.style.display === "") {
+              element.style.display = "block";
+              btn.textContent = "Hide Steps";
+          } else {
+              element.style.display = "none";
+              btn.textContent = "Click to Reveal";
+          }
+      }
+
+      function initializeInteractiveDemos() {
+          // Space Invaders Demo
+          const gameCanvas = document.getElementById('gameCanvas');
+          if (gameCanvas) {
+              const ctx = gameCanvas.getContext('2d');
+              let gameLoop;
+              let player = { x: 200, y: 380, width: 30, height: 20 };
+              let enemies = [];
+              let bullets = [];
+
+              function drawPlayer() {
+                  ctx.fillStyle = 'green';
+                  ctx.fillRect(player.x, player.y, player.width, player.height);
+              }
+
+              function drawEnemies() {
+                  ctx.fillStyle = 'red';
+                  enemies.forEach(enemy => ctx.fillRect(enemy.x, enemy.y, 20, 20));
+              }
+
+              function drawBullets() {
+                  ctx.fillStyle = 'white';
+                  bullets.forEach(bullet => ctx.fillRect(bullet.x, bullet.y, 2, 10));
+              }
+
+              function updateGame() {
+                  ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+                  drawPlayer();
+                  drawEnemies();
+                  drawBullets();
+
+                  // Move enemies
+                  enemies.forEach(enemy => {
+                      enemy.y += 0.5;
+                      if (enemy.y > gameCanvas.height) {
+                          enemy.y = 0;
+                          enemy.x = Math.random() * (gameCanvas.width - 20);
+                      }
+                  });
+
+                  // Move bullets
+                  bullets.forEach((bullet, index) => {
+                      bullet.y -= 5;
+                      if (bullet.y < 0) bullets.splice(index, 1);
+                  });
+
+                  // Check collisions
+                  bullets.forEach((bullet, bIndex) => {
+                      enemies.forEach((enemy, eIndex) => {
+                          if (bullet.x < enemy.x + 20 && bullet.x + 2 > enemy.x &&
+                              bullet.y < enemy.y + 20 && bullet.y + 10 > enemy.y) {
+                              bullets.splice(bIndex, 1);
+                              enemies.splice(eIndex, 1);
+                          }
+                      });
+                  });
+              }
+
+              window.startGame = function() {
+                  if (!gameLoop) {
+                      enemies = Array(5).fill().map(() => ({
+                          x: Math.random() * (gameCanvas.width - 20),
+                          y: Math.random() * 100
+                      }));
+                      gameLoop = setInterval(updateGame, 1000 / 60);
+                      window.addEventListener('keydown', (e) => {
+                          if (e.key === 'ArrowLeft') player.x = Math.max(0, player.x - 5);
+                          if (e.key === 'ArrowRight') player.x = Math.min(gameCanvas.width - player.width, player.x + 5);
+                          if (e.key === ' ') bullets.push({ x: player.x + player.width / 2, y: player.y });
+                      });
+                  }
+              };
+
+              window.stopGame = function() {
+                  if (gameLoop) {
+                      clearInterval(gameLoop);
+                      gameLoop = null;
+                      ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+                  }
+              };
+          }
+
+          // Player Movement Demo
+          const playerMovementDemo = document.getElementById('playerMovementDemo');
+          if (playerMovementDemo) {
+              const ctx = playerMovementDemo.getContext('2d');
+              let playerX = 200;
+              let moveInterval;
+
+              function drawPlayer() {
+                  ctx.clearRect(0, 0, 400, 300);
+                  ctx.fillStyle = 'green';
+                  ctx.fillRect(playerX, 270, 30, 20);
+              }
+
+              window.moveLeft = function() {
+                  moveInterval = setInterval(() => {
+                      playerX = Math.max(0, playerX - 5);
+                      drawPlayer();
+                  }, 50);
+              };
+
+              window.moveRight = function() {
+                  moveInterval = setInterval(() => {
+                      playerX = Math.min(370, playerX + 5);
+                      drawPlayer();
+                  }, 50);
+              };
+
+              window.stopMoving = function() {
+                  clearInterval(moveInterval);
+              };
+
+              drawPlayer();
+          }
+
+          // Enemy Movement Demo
+          const enemyMovementDemo = document.getElementById('enemyMovementDemo');
+          if (enemyMovementDemo) {
+              const ctx = enemyMovementDemo.getContext('2d');
+              let enemies = Array(5).fill().map((_, i) => ({ x: i * 50 + 50, y: 50, dx: 2 }));
+              let enemyInterval;
+
+              function drawEnemies() {
+                  ctx.clearRect(0, 0, 400, 300);
+                  ctx.fillStyle = 'red';
+                  enemies.forEach(enemy => ctx.fillRect(enemy.x, enemy.y, 20, 20));
+              }
+
+              function moveEnemies() {
+                  enemies.forEach(enemy => {
+                      enemy.x += enemy.dx;
+                      if (enemy.x <= 0 || enemy.x >= 380) {
+                          enemy.dx *= -1;
+                          enemy.y += 20;
+                      }
+                  });
+                  drawEnemies();
+              }
+
+              window.startEnemyMovement = function() {
+                  if (!enemyInterval) {
+                      enemyInterval = setInterval(moveEnemies, 50);
+                  }
+              };
+
+              window.stopEnemyMovement = function() {
+                  clearInterval(enemyInterval);
+                  enemyInterval = null;
+              };
+
+              drawEnemies();
+          }
+
+          // Collision Detection Demo
+          const collisionDemo = document.getElementById('collisionDemo');
+          if (collisionDemo) {
+              const ctx = collisionDemo.getContext('2d');
+              let player = { x: 185, y: 270, width: 30, height: 20 };
+              let enemy = { x: 185, y: 50, width: 20, height: 20 };
+              let bullet = { x: 200, y: 260, width: 2, height: 10, visible: false };
+
+              function drawScene() {
+                  ctx.clearRect(0, 0, 400, 300);
+                  ctx.fillStyle = 'green';
+                  ctx.fillRect(player.x, player.y, player.width, player.height);
+                  ctx.fillStyle = 'red';
+                  ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+                  if (bullet.visible) {
+                      ctx.fillStyle = 'white';
+                      ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                  }
+              }
+
+              window.fireBullet = function() {
+                  bullet.visible = true;
+                  bullet.y = 260;
+                  let bulletInterval = setInterval(() => {
+                      bullet.y -= 5;
+                      if (bullet.y < 0 || (bullet.x < enemy.x + enemy.width &&
+                          bullet.x + bullet.width > enemy.x &&
+                          bullet.y < enemy.y + enemy.height &&
+                          bullet.y + bullet.height > enemy.y)) {
+                          clearInterval(bulletInterval);
+                          bullet.visible = false;
+                          if (bullet.y >= 0) {
+                              enemy.x = Math.random() * 380;
+                          }
+                      }
+                      drawScene();
+                  }, 50);
+              };
+
+              drawScene();
+          }
+
+          // Scoring Demo
+          const scoringDemo = document.getElementById('scoringDemo');
+          if (scoringDemo) {
+              const ctx = scoringDemo.getContext('2d');
+              let score = 0;
+              let gameOver = false;
+
+              function drawScene() {
+                  ctx.clearRect(0, 0, 400, 300);
+                  ctx.fillStyle = 'white';
+                  ctx.font = '20px Arial';
+                  ctx.fillText(`Score: ${score}`, 10, 30);
+                  if (gameOver) {
+                      ctx.fillStyle = 'red';
+                      ctx.font = '40px Arial';
+                      ctx.fillText('GAME OVER', 100, 150);
+                  }
+              }
+
+              window.incrementScore = function() {
+                  if (!gameOver) {
+                      score++;
+                      drawScene();
+                  }
+              };
+
+              window.triggerGameOver = function() {
+                  gameOver = true;
+                  drawScene();
+              };
+
+              drawScene();
+          }
+      }
+
+      // Load the first exercise by default
+      loadExercise(0);
+  </script>
+</body>
+</html>

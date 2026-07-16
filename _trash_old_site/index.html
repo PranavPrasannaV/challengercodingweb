@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>Challenger Coding</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #263238;
+            --accent: #FFC107;
+            --background: #F5F7FA;
+            --text: #333;
+            --text-light: #666;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        /* Blue Top Strip */
+        .top-strip {
+            background-color: var(--primary);
+            height: 30px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+
+        /* Navigation Bar Styling */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: fixed;
+            top: 30px; /* Positioned right below the top strip */
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 6rem 1.5rem 1rem; /* Keep top padding at 6rem, reduce bottom padding to 1rem */
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark) 60%, #4da6ff 100%);
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem; /* Slightly smaller font size */
+            margin-bottom: 0.8rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1rem; /* Reduced font size for paragraphs */
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            margin-bottom: 1rem;
+        }
+
+        /* Centering the Button in the Hero */
+        .hero-button {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .hero-button button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-button button:hover {
+            background: #e0a306; /* Slightly darker shade for hover effect */
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        .btn {
+            background: var(--accent);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #e0a800;
+        }
+
+        .impact-section {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 4rem auto;
+            max-width: 1200px;
+        }
+
+        .impact-box {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+
+        .impact-box i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .impact-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .carousel {
+            width: 90%;
+            max-width: 1200px;
+            margin: 4rem auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .carousel-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-item {
+            flex: 0 0 100%;
+            position: relative;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .carousel-description {
+            position: absolute;
+            top: 0; /* Position at the top of the image */
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+            color: white;
+            padding: 1rem;
+            transform: translateY(-100%); /* Hide above the image initially */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .carousel-item:hover .carousel-description {
+            transform: translateY(0); /* Slide down into view on hover */
+        }
+
+
+        .carousel-description h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .carousel-description p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        /* Navigation Buttons */
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 1rem;
+        }
+
+        .carousel-nav button {
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .carousel-nav button:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Carousel Indicators */
+        .carousel-indicators {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .carousel-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ccc; /* Light grey for inactive dots */
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .carousel-indicator.active {
+            background: #333; /* Darker grey for the active dot */
+        }
+
+
+        /* Testimonials Carousel */
+        .testimonials-carousel {
+            width: 90%;
+            max-width: 1200px;
+            margin: 4rem auto;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .testimonials-content {
+            display: flex;
+            width: 300%;
+            animation: slideTestimonials 20s infinite;
+        }
+
+        .testimonial-item {
+            width: 33.33%;
+            padding: 20px;
+            background: var(--white);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        @keyframes slideTestimonials {
+            0%, 25% { transform: translateX(0); }
+            33%, 58% { transform: translateX(-33.33%); }
+            66%, 92% { transform: translateX(-66.66%); }
+            100% { transform: translateX(0); }
+        }
+
+        /* Main Content Grid Layout */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            width: 90%;
+            max-width: 1200px;
+            margin: 4rem auto;
+        }
+
+        /* Box Styling (applied to both Mission and Statistics) */
+        .mission-statement, .statistics-box {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .main-content {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 4rem auto;
+        }
+
+        .mission-statement.full-width {
+            width: 100%;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+
+        .mission-statement strong, .statistics-box strong {
+            color: var(--primary);
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .mission-statement p, .statistics-box p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+        }
+
+        /* Statistics Font and Italics */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap'); /* Import a monospaced font for numbers */
+
+        .statistics-box .stat-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-style: italic;
+            color: var(--text);
+        }
+
+        /* Responsive Design for Smaller Screens */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr; /* Stacks the boxes on smaller screens */
+            }
+        }
+
+        /* Centered Button Container */
+        .center-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 3rem auto;
+        }
+
+        /* Button Styling */
+        .center-button button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+        }
+
+        .center-button button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
+            background: var(--primary-dark);
+        }
+
+
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            color: var(--white);
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .contact-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        /* Course Button Styling */
+        .course-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .course-button {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: default;
+            transition: transform 0.3s ease;
+        }
+
+        .course-button:hover {
+            transform: translateY(-3px);
+        }
+
+        .course-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .course-description {
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+
+        .enroll-button {
+            background-color: var(--accent);
+            color: white;
+            font-weight: 600;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .enroll-button:hover {
+            background-color: #d8a106;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Blue Strip at the Top -->
+    <div class="top-strip"></div>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="#" target="_blank" class="enroll-button">Enroll</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero">
+        <h1>Welcome to <span style="color: #FFC107;">Challenger Coding!</span></h1>
+        <p>Code with Confidence.</p>
+        <p>Interactive tutorials, projects, and real learning – all in one place.</p>
+        <div class="hero-button">
+            <button onclick="window.location.href='signup.html'">Start Learning Today, For Free!</button>
+        </div>
+    </div>
+
+        <div class="impact-section">
+        <div class="impact-box">
+            <i data-lucide="users"></i>
+            <h3>1000+</h3>
+            <p>Students Taught</p>
+        </div>
+        <div class="impact-box">
+            <i data-lucide="hourglass"></i>
+            <h3>50+</h3>
+            <p>Hours of Course Content</p>
+        </div>
+        <div class="impact-box">
+            <i data-lucide="school"></i>
+            <h3>6</h3>
+            <p>Unique Courses</p>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!-- Mission Statement Box (Now Full Width) -->
+        <div class="mission-statement full-width">
+            <strong>Our Mission</strong>
+            <p>At Challenger Coding, we empower students of all ages to embrace coding, equipping them with skills for a digital world.</p>
+            <p>Coding is valuable for everyone, and we make it accessible and fun through interactive tutorials.</p>
+        </div>
+    </div>
+    
+    <div class="carousel">
+        <div class="carousel-container">
+            <div class="carousel-item">
+                <img src="lesson preview.png" alt="Hands-on Coding Exercise">
+                <div class="carousel-description">
+                    <h3>Video Tutorials</h3>
+                    <p>Quality video tutorials to learn and enhance your understanding.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="autograder.png" alt="Expert Instructors">
+                <div class="carousel-description">
+                    <h3>Autograder</h3>
+                    <p>Built in autograder and code compiler provides instant feedback.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="sample exercise.png" alt="Interactive Lesson Preview">
+                <div class="carousel-description">
+                    <h3>Interactive Lessons</h3>
+                    <p>Engage with our interactive coding lessons and exercises designed for all skill levels.</p>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-nav">
+            <button class="prev">&lt;</button>
+            <button class="next">&gt;</button>
+        </div>
+        <div class="carousel-indicators"></div>
+    </div>
+    
+
+        <!-- Course Offerings Section -->
+        <section class="course-offerings">
+            <h2>Course Offerings</h2>
+            <br>
+            <div class="course-container">
+                <div class="course-button">
+                    <div class="course-title">Scratch Programming</div>
+                    <div class="course-description">An introductory course on visual programming for beginners.</div>
+                </div>
+                <div class="course-button">
+                    <div class="course-title">Python Programming</div>
+                    <div class="course-description">Learn the basics of Python programming with hands-on projects.</div>
+                </div>
+                <div class="course-button">
+                    <div class="course-title">Java Programming</div>
+                    <div class="course-description">Get started with Java, one of the most popular programming languages.</div>
+                </div>
+                <div class="course-button">
+                    <div class="course-title">Scratch Programming 2</div>
+                    <div class="course-description">Advanced Scratch concepts for building interactive projects.</div>
+                </div>
+                <div class="course-button">
+                    <div class="course-title">Python Programming 2</div>
+                    <div class="course-description">Intermediate Python programming, including data structures and more.</div>
+                </div>
+                <div class="course-button">
+                    <div class="course-title">Java Programming 2</div>
+                    <div class="course-description">Deep dive into Java with object-oriented programming and algorithms.</div>
+                </div>
+            </div>
+        </section>
+
+    <div class="testimonials-carousel">
+        <div class="testimonials-content">
+            <div class="testimonial-item">
+                <p>"My child has learned so much through Challenger Coding. The patience and creativity of the instructors are unmatched!"</p>
+                <span>- Current Parent</span>
+            </div>
+            <div class="testimonial-item">
+                <p>"Jaden was very easygoing and patient. The study materials were simple and self-explanatory!"</p>
+                <span>- Current Parent</span>
+            </div>
+            <div class="testimonial-item">
+                <p>"Jaden is an amazing instructor, he brings such good energy and positivity. The kids really appreciate that!"</p>
+                <span>- Current Parent</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="center-button">
+        <button onclick="window.location.href='signup.html'">Interested? Sign up to learn NOW, FOR FREE!</button>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="contact-box">
+                <div class="footer-links">
+                    <a href="https://www.linkedin.com/in/jaden-tang-0924b6279/" target="_blank">LinkedIn</a>
+                    <a href="mailto:contact@challengercoding.com">Email</a>
+                    <a href="contact.html">Contact Us</a>
+                </div>
+            </div>
+            <p>&copy; 2024 Challenger Coding. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Retrieve the user count from localStorage
+        const userCount = localStorage.getItem('userCount') || 0;
+        document.getElementById('userCount').innerText = userCount;
+    </script>
+
+
+    <script>
+        lucide.createIcons();
+    </script>
+    <!-- Include Scripts -->
+    <script src="config.js"></script>
+    <script>
+        document.querySelectorAll(".enroll-button").forEach(button => {
+            button.href = enrollLink;
+        });
+    </script>
+
+    <script>
+        // Carousel functionality
+        const carousel = document.querySelector('.carousel-container');
+        const items = carousel.querySelectorAll('.carousel-item');
+        const prevBtn = document.querySelector('.carousel-nav .prev');
+        const nextBtn = document.querySelector('.carousel-nav .next');
+        const indicators = document.querySelector('.carousel-indicators');
+
+        let currentIndex = 0;
+
+        // Create indicators
+        items.forEach((_, index) => {
+            const indicator = document.createElement('div');
+            indicator.classList.add('carousel-indicator');
+            if (index === 0) indicator.classList.add('active');
+            indicator.addEventListener('click', () => goToSlide(index));
+            indicators.appendChild(indicator);
+        });
+
+        function updateCarousel() {
+            carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+            updateIndicators();
+        }
+
+        function updateIndicators() {
+            document.querySelectorAll('.carousel-indicator').forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentIndex);
+            });
+        }
+
+        function goToSlide(index) {
+            currentIndex = index;
+            updateCarousel();
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % items.length;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + items.length) % items.length;
+            updateCarousel();
+        }
+
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+
+        // Auto-advance carousel
+        setInterval(nextSlide, 5000); // 5 seconds interval
+    </script>
+
+</body>
+</html>

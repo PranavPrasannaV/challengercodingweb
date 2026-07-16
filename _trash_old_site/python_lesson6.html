@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 6: Loops Practice - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.22.1/full/pyodide.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --background: #ffffff;
+            --surface: #f8f9fa;
+            --border: #e9ecef;
+            --text: #2d3436;
+            --text-light: #636e72;
+            --success: #2ecc71;
+            --error: #e74c3c;
+            --highlight: #ffeaa7;
+        }
+        .top-strip {
+            background-color: var(--primary);
+            height: 30px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: fixed;
+            top: 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            gap: 2rem;
+        }
+        .sidebar {
+            width: 250px;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+        }
+        .exercise-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--background);
+            border: 1px solid var(--border);
+        }
+        .exercise-item:hover {
+            background: var(--surface);
+            transform: translateY(-1px);
+        }
+        .exercise-item.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .main-content {
+            flex: 1;
+        }
+        .tutorial-section {
+            background: var(--background);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+        .tutorial-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        .tutorial-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+        .code-block {
+            background: var(--surface);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Fira Code', monospace;
+            border: 1px solid var(--border);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .compiler-section {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .compiler-left {
+            flex: 6;
+        }
+        .compiler-right {
+            flex: 4;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .editor {
+            background: var(--surface);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .editor-header {
+            background: var(--primary);
+            color: var(--background);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            border: none;
+            resize: vertical;
+            line-height: 1.5;
+            background-color: var(--background);
+        }
+        textarea:focus {
+            outline: none;
+        }
+        .run-button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s ease;
+        }
+        .run-button:hover {
+            background: var(--accent);
+            opacity: 0.9;
+        }
+        .output-container {
+            background: var(--surface);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            height: calc(50% - 0.5rem);
+        }
+        .output-header {
+            background: var(--primary);
+            color: var(--background);
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+        }
+        .output, .result {
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            height: calc(100% - 40px);
+            overflow-y: auto;
+            background-color: var(--background);
+        }
+        .hint {
+            background-color: var(--highlight);
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .key-point {
+            background-color: var(--surface);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .key-point h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+            .compiler-section {
+                flex-direction: column;
+            }
+            .compiler-left, .compiler-right {
+                flex: 1;
+            }
+            .output-container {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="#" target="_blank" class="enroll-button">Enroll</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="exercise-list">
+                <a href="python_tutorials.html" class="exercise-item">
+                    <span>Return Home</span>
+                </a>
+                <div class="exercise-item" data-exercise="1">
+                    <span>1. Introduction to Loops</span>
+                </div>
+                <div class="exercise-item" data-exercise="2">
+                    <span>2. While Loops</span>
+                </div>
+                <div class="exercise-item" data-exercise="3">
+                    <span>3. For Loops</span>
+                </div>
+                <div class="exercise-item" data-exercise="4">
+                    <span>4. How For Loops Work</span>
+                </div>
+                <div class="exercise-item" data-exercise="5">
+                    <span>5. Loop Project: Number Guessing Game</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <br>
+            <br>
+            <br>
+            <h1 class="tutorial-title">Lesson 6: Loops Practice</h1>
+            <div id="tutorial-content"></div>
+
+            <div class="compiler-section">
+                <div class="compiler-left">
+                    <div class="editor">
+                        <div class="editor-header">
+                            <span>Python Code</span>
+                            <button class="run-button" onclick="runCode()">
+                                <i data-lucide="play"></i> Run
+                            </button>
+                        </div>
+                        <textarea id="code-editor" spellcheck="false"></textarea>
+                    </div>
+                </div>
+                <div class="compiler-right">
+                    <div class="output-container">
+                        <div class="output-header">Output</div>
+                        <div id="output" class="output"></div>
+                    </div>
+                    <div class="output-container">
+                        <div class="output-header">Result</div>
+                        <div id="result" class="result"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Include Scripts -->
+    <script src="config.js"></script>
+    <script>
+        document.querySelectorAll(".enroll-button").forEach(button => {
+            button.href = enrollLink;
+        });
+    </script>
+    <script>
+        lucide.createIcons();
+
+        const exercises = [
+            {
+                title: "Introduction to Loops",
+                content: `
+                    <p class="tutorial-text">
+                        Loops are powerful constructs in programming that allow you to repeat a block of code multiple times. They are essential for automating repetitive tasks and processing collections of data efficiently.
+                    </p>
+                    <div class="key-point">
+                        <h4>Key Concept: Loops</h4>
+                        <p>Loops help you avoid writing the same code multiple times, making your programs more efficient and easier to maintain.</p>
+                    </div>
+                    <p class="tutorial-text">
+                        In Python, there are two main types of loops:
+                        <ul>
+                            <li><strong>While Loops:</strong> Execute a block of code as long as a condition is true.</li>
+                            <li><strong>For Loops:</strong> Iterate over a sequence (like a list, tuple, or string) or other iterable objects.</li>
+                        </ul>
+                    </p>
+                    <h3>Comparing While and For Loops</h3>
+                    <p class="tutorial-text">
+                        Let's look at an example that demonstrates both types of loops achieving the same result:
+                    </p>
+                    <div class="code-block">
+# For loop
+print("For loop:")
+for x in range(6):
+    print(x)
+
+print("\\nWhile loop:")
+# While loop
+y = 0
+while y < 6:
+    print(y)
+    y += 1
+                    </div>
+                    <p class="tutorial-text">
+                        Both loops print numbers from 0 to 5, but they do so in slightly different ways:
+                        <ul>
+                            <li>The for loop uses the range() function to generate a sequence of numbers.</li>
+                            <li>The while loop uses a counter variable that we manually increment.</li>
+                        </ul>
+                    </p>
+                    <h3>Guided Exercise: Modifying Loops</h3>
+                    <p class="tutorial-text">
+                        Now, let's practice by modifying these loops. Follow these steps:
+                        <ol>
+                            <li>Change both loops to print numbers from 1 to 5 instead of 0 to 5.</li>
+                            <li>Add a print statement after each loop to separate their outputs.</li>
+                            <li>For the while loop, add a condition to print "Halfway there!" when the counter reaches 3.</li>
+                        </ol>
+                    </p>
+                    <div class="hint">
+                        <strong>Hint:</strong> For the for loop, use range(1, 6). For the while loop, start y at 1 and change the condition to y <= 5. Use an if statement inside the while loop to check if y == 3.
+                    </div>
+                `,
+                initialCode: `# Modify these loops to print numbers from 1 to 5
+
+# For loop
+print("For loop:")
+for x in range(1, 6):
+    print(x)
+
+print("\\nWhile loop:")
+# While loop
+y = 1
+while y <= 5:
+    print(y)
+    if y == 3:
+        print("Halfway there!")
+    y += 1
+
+print("\\nBoth loops completed!")
+`
+            },
+            {
+                title: "While Loops",
+                content: `
+                    <p class="tutorial-text">
+                        While loops in Python continue to execute a block of code as long as a given condition is true. They are particularly useful when you don't know in advance how many times you need to repeat a block of code.
+                    </p>
+                    <div class="key-point">
+                        <h4>Key Concept: While Loops</h4>
+                        <p>While loops are ideal for situations where you need to repeat an action until a specific condition is met, rather than for a predetermined number of times.</p>
+                    </div>
+                    <h3>While Loop Syntax:</h3>
+                    <div class="code-block">
+while condition:
+    # code to be executed
+    if some_condition:
+        break  # optional
+                    </div>
+                    <p class="tutorial-text">
+                        Key points about while loops:
+                        <ul>
+                            <li>The condition is checked at the beginning of each iteration.</li>
+                            <li>If the condition is initially false, the loop body will not execute at all.</li>
+                            <li>You need to make sure the loop condition eventually becomes false, or you'll create an infinite loop.</li>
+                            <li>You can use 'break' to exit the loop prematurely.</li>
+                            <li>You can use 'continue' to skip the rest of the current iteration and move to the next one.</li>
+                        </ul>
+                    </p>
+                    <h3>Example: Using break and continue</h3>
+                    <div class="code-block">
+count = 0
+while count < 5:
+    count += 1
+    if count == 2:
+        print("Skipping 2")
+        continue
+    if count == 4:
+        print("Found 4, breaking the loop")
+        break
+    print(f"Current count: {count}")
+print("Loop ended")
+                    </div>
+                    <h3>Guided Exercise: Countdown Timer</h3>
+                    <p class="tutorial-text">
+                        Let's create a countdown timer using a while loop. Follow these steps:
+                        <ol>
+                            <li>Start with a counter set to 10.</li>
+                            <li>Use a while loop to count down from 10 to 1.</li>
+                            <li>Print the current counter value in each iteration.</li>
+                            <li>When the counter reaches 5, print "Halfway there!"</li>
+                            <li>After the loop ends, print "Countdown finished!"</li>
+                        </ol>
+                    </p>
+                    <div class="hint">
+                        <strong>Hint:</strong> Use a while loop with the condition 'counter > 0'. Don't forget to decrement the counter in each iteration!
+                    </div>
+                `,
+                initialCode: `# Create your countdown timer here
+counter = 10
+
+while counter > 0:
+    print(counter)
+    if counter == 5:
+        print("Halfway there!")
+    counter -= 1
+
+print("Countdown finished!")
+`
+            },
+            {
+                title: "For Loops",
+                content: `
+                    <p class="tutorial-text">
+                        For loops in Python are used to iterate over a sequence (such as a list, tuple, string, or range) or other iterable objects. They provide a concise way to repeat a block of code a specific number of times or for each item in a collection.
+                    </p>
+                    <div class="key-point">
+                        <h4>Key Concept: For Loops</h4>
+                        <p>For loops are excellent for iterating over known sequences or when you need to perform an action a specific number of times.</p>
+                    </div>
+                    <h3>For Loop Syntax:</h3>
+                    <div class="code-block">
+for item in iterable:
+    # code to be executed for each item
+                    </div>
+                    <p class="tutorial-text">
+                        The range() function is often used with for loops to generate a sequence of numbers. It can take up to three arguments:
+                        <ul>
+                            <li>range(stop): Generates numbers from 0 to stop-1</li>
+                            <li>range(start, stop): Generates numbers from start to stop-1</li>
+                            <li>range(start, stop, step): Generates numbers from start to stop-1, incrementing by step</li>
+                        </ul>
+                    </p>
+                    <h3>Example: Different ways to use range()</h3>
+                    <div class="code-block">
+# Using range with one argument
+print("Range with one argument:")
+for i in range(5):
+    print(i)
+
+# Using range with two arguments
+print("\\nRange with two arguments:")
+for i in range(2, 7):
+    print(i)
+
+# Using range with three arguments
+print("\\nRange with three arguments:")
+for i in range(1, 10, 2):
+    print(i)
+                    </div>
+                    <h3>Guided Exercise: Multiplication Table</h3>
+                    <p class="tutorial-text">
+                        Let's create a multiplication table using nested for loops. Follow these steps:
+                        <ol>
+                            <li>Create an outer loop that iterates from 1 to 5.</li>
+                            <li>Create an inner loop that also iterates from 1 to 5.</li>
+                            <li>Inside the inner loop, multiply the outer loop variable by the inner loop variable.</li>
+                            <li>Print the result of each multiplication.</li>
+                            <li>Add a blank line after each row of the table for better readability.</li>
+                        </ol>
+                    </p>
+                    <div class="hint">
+                        <strong>Hint:</strong> Use two for loops with range(1, 6). Use print() with end=" " to print on the same line, and an empty print() to move to the next line.
+                    </div>
+                `,
+                initialCode: `# Create your multiplication table here
+
+for i in range(1, 6):
+    for j in range(1, 6):
+        print(f"{i * j:2d}", end=" ")
+    print()  # Move to the next line after each row
+`
+            },
+            {
+                title: "How For Loops Work",
+                content: `
+                    <p class="tutorial-text">
+                        Understanding how for loops work internally can help you use them more effectively. In Python, a for loop works by iterating over an iterable object (like a list, tuple, or range).
+                    </p>
+                    <div class="key-point">
+                        <h4>Key Concept: Iteration</h4>
+                        <p>Iteration is the process of going through each item in a sequence, one at a time. For loops automate this process, making it easy to perform actions on each item.</p>
+                    </div>
+                    <p class="tutorial-text">
+                        Here's what happens in each iteration of a for loop:
+                        <ol>
+                            <li>The next item from the iterable is assigned to the loop variable.</li>
+                            <li>The code block inside the loop is executed.</li>
+                            <li>Steps 1 and 2 are repeated until there are no more items in the iterable.</li>
+                        </ol>
+                    </p>
+                    <h3>Example: Iterating over different data types</h3>
+                    <div class="code-block">
+# Iterating over a list
+fruits = ["apple", "banana", "cherry"]
+print("Iterating over a list:")
+for fruit in fruits:
+    print(f"Current fruit: {fruit}")
+
+# Iterating over a string
+print("\\nIterating over a string:")
+for char in "Python":
+    print(f"Current character: {char}")
+
+# Iterating over a dictionary
+print("\\nIterating over a dictionary:")
+person = {"name": "Alice", "age": 30, "city": "New York"}
+for key, value in person.items():
+    print(f"{key}: {value}")
+                    </div>
+                    <h3>Guided Exercise: Analyzing Student Scores</h3>
+                    <p class="tutorial-text">
+                        Let's create a program that analyzes student scores. Follow these steps:
+                        <ol>
+                            <li>Create a list of dictionaries, where each dictionary represents a student with 'name' and 'score' keys.</li>
+                            <li>Use a for loop to iterate over this list.</li>
+                            <li>Calculate and print the average score.</li>
+                            <li>Find and print the name of the student with the highest score.</li>
+                            <li>Count and print the number of students who scored above 80.</li>
+                        </ol>
+                    </p>
+                    <div class="hint">
+                        <strong>Hint:</strong> Use a list comprehension to extract all scores. Use the sum() and len() functions to calculate the average. Use max() with a key function to find the highest score.
+                    </div>
+                `,
+                initialCode: `# Analyze student scores here
+students = [
+    {"name": "Alice", "score": 85},
+    {"name": "Bob", "score": 92},
+    {"name": "Charlie", "score": 78},
+    {"name": "David", "score": 95},
+    {"name": "Eve", "score": 88}
+]
+
+# Calculate average score
+scores = [student["score"] for student in students]
+average_score = sum(scores) / len(scores)
+print(f"Average score: {average_score:.2f}")
+
+# Find student with highest score
+top_student = max(students, key=lambda x: x["score"])
+print(f"Top student: {top_student['name']} with score {top_student['score']}")
+
+# Count students scoring above 80
+high_scorers = sum(1 for student in students if student["score"] > 80)
+print(f"Number of students scoring above 80: {high_scorers}")
+`
+            },
+            {
+                title: "Loop Project: Number Guessing Game",
+                content: `
+                    <p class="tutorial-text">
+                        Now that we've learned about loops, let's put our knowledge into practice by creating a simple number guessing game. This project will help reinforce the concepts we've covered and show how loops can be used in a real-world scenario.
+                    </p>
+                    <div class="key-point">
+                        <h4>Project Goal</h4>
+                        <p>Create a game where the computer generates a random number, and the player tries to guess it. The game will provide hints and keep track of the number of attempts.</p>
+                    </div>
+                    <h3>Project Requirements:</h3>
+                    <p class="tutorial-text">
+                        Your Number Guessing Game should:
+                        <ol>
+                            <li>Generate a random number between 1 and 100.</li>
+                            <li>Ask the player to guess the number.</li>
+                            <li>Provide feedback on whether the guess is too high, too low, or correct.</li>
+                            <li>Keep track of the number of attempts.</li>
+                            <li>Allow the player to play again if they want to.</li>
+                        </ol>
+                    </p>
+                    <h3>Implementation Steps:</h3>
+                    <ol>
+                        <li>Import the random module to generate random numbers.</li>
+                        <li>Create a function to generate a random number.</li>
+                        <li>Use a while loop to keep the game running until the player guesses correctly.</li>
+                        <li>Use conditional statements to provide feedback on the player's guess.</li>
+                        <li>Implement a counter to keep track of the number of attempts.</li>
+                        <li>Use another while loop to allow multiple games if the player wants to continue.</li>
+                    </ol>
+                    <div class="hint">
+                        <strong>Hint:</strong> Use random.randint(1, 100) to generate a random number. Use input() to get the player's guess, and don't forget to convert it to an integer!
+                    </div>
+                    <p class="tutorial-text">
+                        The template below provides a starting point for your Number Guessing Game. Fill in the functions and add any additional functionality you think would make the game more engaging!
+                    </p>
+                `,
+                initialCode: `import random
+
+def generate_number():
+    return random.randint(1, 100)
+
+def play_game():
+    number_to_guess = generate_number()
+    attempts = 0
+    
+    print("Welcome to the Number Guessing Game!")
+    print("I'm thinking of a number between 1 and 100.")
+    
+    while True:
+        guess = int(input("Enter your guess: "))
+        attempts += 1
+        
+        if guess < number_to_guess:
+            print("Too low! Try again.")
+        elif guess > number_to_guess:
+            print("Too high! Try again.")
+        else:
+            print(f"Congratulations! You guessed the number in {attempts} attempts!")
+            return attempts
+
+def main():
+    while True:
+        play_game()
+        play_again = input("Do you want to play again? (yes/no): ").lower()
+        if play_again != 'yes':
+            print("Thanks for playing! Goodbye!")
+            break
+
+main()
+`
+            }
+        ];
+
+        let currentExercise = 0;
+
+        function loadExercise(index) {
+            const exercise = exercises[index];
+            document.getElementById('tutorial-content').innerHTML = exercise.content;
+            document.getElementById('code-editor').value = exercise.initialCode;
+            document.querySelectorAll('.exercise-item').forEach((item, i) => {
+                if (i === 0) return; // Skip the "Return Home" button
+                item.classList.toggle('active', i - 1 === index);
+            });
+            document.getElementById('output').textContent = '';
+            document.getElementById('result').textContent = '';
+            currentExercise = index;
+        }
+
+        async function runCode() {
+            const code = document.getElementById('code-editor').value;
+            const outputElement = document.getElementById('output');
+            const resultElement = document.getElementById('result');
+            outputElement.textContent = "Running...";
+            resultElement.textContent = "";
+
+            try {
+                let pyodide = await loadPyodide();
+                await pyodide.loadPackage("numpy");
+                pyodide.runPython(`
+                    import sys
+                    import io
+                    sys.stdout = io.StringIO()
+                `);
+                await pyodide.runPythonAsync(code);
+                let stdout = pyodide.runPython("sys.stdout.getvalue()");
+                outputElement.textContent = stdout;
+                resultElement.textContent = "Success!";
+                resultElement.style.color = "var(--success)";
+            } catch (error) {
+                outputElement.textContent = "";
+                resultElement.textContent = `Error: ${error.message}`;
+                resultElement.style.color = "var(--error)";
+            }
+        }
+
+        document.querySelectorAll('.exercise-item').forEach((item, index) => {
+            if (index === 0) return; // Skip the "Return Home" button
+            item.addEventListener('click', () => loadExercise(index - 1));
+        });
+
+        loadExercise(0);
+    </script>
+</body>
+</html>

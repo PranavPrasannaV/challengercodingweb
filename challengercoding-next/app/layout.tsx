@@ -1,28 +1,30 @@
 import type { Metadata } from "next";
-import { Poppins, Roboto_Mono, Playfair_Display } from "next/font/google";
+import { Merriweather, Lato, JetBrains_Mono } from "next/font/google";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import "./globals.css";
 
-const poppins = Poppins({
+const merriweather = Merriweather({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-poppins",
+  weight: ["300", "400", "700", "900"],
+  variable: "--font-merriweather",
 });
 
-const robotoMono = Roboto_Mono({
+const lato = Lato({
   subsets: ["latin"],
-  variable: "--font-roboto-mono",
+  weight: ["400", "700", "300"],
+  variable: "--font-lato",
 });
 
-const playfair = Playfair_Display({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-playfair",
+  variable: "--font-jetbrains-mono",
 });
 
 export const metadata: Metadata = {
   title: "Challenger Coding",
-  description: "Code with Confidence. Interactive tutorials, projects, and real learning.",
+  description:
+    "Free coding education for every student. Interactive tutorials in Scratch, Python, and Java — designed to make programming accessible for all ages.",
 };
 
 export default function RootLayout({
@@ -31,11 +33,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${poppins.variable} ${robotoMono.variable} ${playfair.variable}`}>
-      <head>
-        <script src="https://unpkg.com/lucide@latest" crossOrigin="anonymous"></script>
-      </head>
-      <body className="font-poppins bg-background text-text antialiased">
+    <html
+      lang="en"
+      className={`${merriweather.variable} ${lato.variable} ${jetbrainsMono.variable}`}
+    >
+      <body className="font-sans bg-background text-text antialiased">
         <Navbar />
         {children}
         <Footer />

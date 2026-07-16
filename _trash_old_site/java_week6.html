@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Week 5: Methods - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #263238;
+            --accent: #FFC107;
+            --background: #F5F7FA;
+            --text: #333;
+            --text-light: #666;
+            --white: #ffffff;
+            --success: #4CAF50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 30px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: fixed;
+            top: 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            min-height: calc(100vh - 60px);
+            margin-top: 60px;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: var(--white);
+            padding: 2rem;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+
+        .progress-bar {
+            width: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-right: 1rem;
+            align-self: stretch;
+            position: relative;
+        }
+
+        .progress {
+            width: 100%;
+            background-color: var(--primary);
+            border-radius: 5px;
+            position: absolute;
+            bottom: 0;
+            transition: height 0.3s ease;
+        }
+
+        .lesson-list {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            font-size: 1rem;
+            color: var(--text);
+            display: block;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: 0.3s;
+            flex-grow: 1;
+        }
+
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 14px;
+        }
+
+        .checkbox.completed {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 2rem;
+            margin-left: 300px;
+            overflow-y: auto;
+        }
+
+        .content h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .lesson-content {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .lesson-content h2 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        .lesson-content h3 {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .lesson-content p, .lesson-content ul {
+            margin-bottom: 1rem;
+        }
+
+        .lesson-content ul {
+            padding-left: 1.5rem;
+        }
+
+        .code-example {
+            background-color: #f0f0f0;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0 8px 8px 0;
+            font-family: 'Fira Code', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        code {
+            display: block;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .back-button {
+            display: block;
+            text-decoration: none;
+            color: var(--text);
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            background-color: var(--accent);
+            border-radius: 8px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .progress-bar {
+                width: 100%;
+                height: 10px;
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+
+            .progress {
+                width: 0;
+                height: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="online_compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="sidebar">
+            <a href="java_tutorials.html" class="back-button">
+                <i data-lucide="arrow-left"></i> Back to Tutorials
+            </a>
+            <div class="progress-bar">
+                <div class="progress" id="lesson-progress"></div>
+            </div>
+            <div class="lesson-list">
+                <h2>Java Week 6: Objects and Wrapper Classes</h2>
+                <ul id="lesson-list"></ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h1 id="lesson-title"></h1>
+            <div class="video-container" style="display: none;">
+                <iframe id="lesson-video" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="lesson-content" id="lesson-description"></div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const lessons = [
+            {
+                id: 'overview',
+                title: 'Introduction to Objects and Wrapper Classes',
+                video: null,
+                description: `
+                    <h2>Overview: Understanding Objects and Wrapper Classes in Java</h2>
+                    
+                    <h3>What are Objects?</h3>
+                    <p>Objects in Java are instances of classes. They represent real-world entities and contain both data (attributes) and code (methods).</p>
+
+                    <h3>What are Wrapper Classes?</h3>
+                    <p>Wrapper classes in Java provide a way to use primitive data types as objects. They "wrap" primitive types into objects, allowing them to be used in contexts that require objects.</p>
+
+                    <h3>Key Concepts</h3>
+                    <ul>
+                        <li>
+                            <strong>Object Creation</strong>
+                            <ul>
+                                <li>Objects are created using the 'new' keyword</li>
+                                <li>Example:
+                                    <div class="code-example">
+String str = new String("Hello, World!");
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        
+                        <li>
+                            <strong>Wrapper Classes</strong>
+                            <ul>
+                                <li>Java provides wrapper classes for each primitive type</li>
+                                <li>Example:
+                                    <div class="code-example">
+Integer num = new Integer(42);
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <strong>Autoboxing and Unboxing</strong>
+                            <ul>
+                                <li>Autoboxing: Automatic conversion of primitive types to wrapper objects</li>
+                                <li>Unboxing: Automatic conversion of wrapper objects to primitive types</li>
+                                <li>Example:
+                                    <div class="code-example">
+Integer num = 42; // Autoboxing
+int value = num;  // Unboxing
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h3>Why are Objects and Wrapper Classes important?</h3>
+                    <ul>
+                        <li>Objects allow for more complex and organized code structures</li>
+                        <li>Wrapper classes enable the use of primitive types in object-oriented contexts</li>
+                        <li>They provide useful methods for data manipulation and conversion</li>
+                        <li>Essential for working with Java collections and generics</li>
+                    </ul>
+
+                    <p>Select a lesson from the sidebar to dive deeper into objects and wrapper classes in Java!</p>
+                `
+            },
+            {
+                id: 'objects-basics',
+                title: 'Object Basics',
+                video: 'https://www.youtube.com/embed/YvKnA5Bt0vc',
+                description: `
+                    <h2>Understanding Object Basics in Java</h2>
+                    
+                    <p>Objects are fundamental to Java programming. They are instances of classes and represent real-world entities in code.</p>
+
+                    <h3>Creating Objects</h3>
+                    <div class="code-example">
+ClassName objectName = new ClassName();
+                    </div>
+
+                    <h3>Components of an Object</h3>
+                    <ul>
+                        <li><strong>State:</strong> Represented by instance variables (attributes)</li>
+                        <li><strong>Behavior:</strong> Represented by methods</li>
+                    </ul>
+
+                    <h3>Example</h3>
+                    <div class="code-example">
+public class Car {
+    // State (attributes)
+    String brand;
+    String model;
+    int year;
+
+    // Constructor
+    public Car(String brand, String model, int year) {
+        this.brand = brand;
+        this.model = model;
+        this.year = year;
+    }
+
+    // Behavior (method)
+    public void startEngine() {
+        System.out.println("The " + brand + " " + model + " is starting...");
+    }
+
+    public static void main(String[] args) {
+        Car myCar = new Car("Toyota", "Corolla", 2022);
+        myCar.startEngine();  // Outputs: The Toyota Corolla is starting...
+    }
+}
+                    </div>
+
+                    <h3>Key Points</h3>
+                    <ul>
+                        <li>Objects are created from classes using the 'new' keyword</li>
+                        <li>They encapsulate data and behavior</li>
+                        <li>Objects interact with each other through method calls</li>
+                        <li>The 'this' keyword refers to the current object</li>
+                    </ul>
+
+                    <h3>Practice</h3>
+                    <p>Try creating a class for a simple object like a Book or a Person, with attributes and methods. Then create instances of these objects and interact with them.</p>
+                `
+            },
+            {
+                id: 'wrapper-classes',
+                title: 'Wrapper Classes',
+                video: 'https://www.youtube.com/embed/aPMPyVLRgxw',
+                description: `
+                    <h2>Understanding Wrapper Classes in Java</h2>
+                    
+                    <p>Wrapper classes provide a way to use primitive data types as objects. Java provides a wrapper class for each primitive type.</p>
+
+                    <h3>Primitive Types and Their Wrapper Classes</h3>
+                    <ul>
+                        <li>byte - Byte</li>
+                        <li>short - Short</li>
+                        <li>int - Integer</li>
+                        <li>long - Long</li>
+                        <li>float - Float</li>
+                        <li>double - Double</li>
+                        <li>boolean - Boolean</li>
+                        <li>char - Character</li>
+                    </ul>
+
+                    <h3>Creating Wrapper Objects</h3>
+                    <div class="code-example">
+Integer num = new Integer(42);
+Double pi = new Double(3.14);
+                    </div>
+
+                    <h3>Autoboxing and Unboxing</h3>
+                    <p>Java provides automatic conversion between primitive types and their wrapper classes.</p>
+                    <div class="code-example">
+// Autoboxing
+Integer num = 42;
+
+// Unboxing
+int value = num;
+                    </div>
+
+                    <h3>Useful Methods in Wrapper Classes</h3>
+                    <ul>
+                        <li>parseInt() in Integer class</li>
+                        <li>valueOf() in all wrapper classes</li>
+                        <li>toString() to convert to String</li>
+                    </ul>
+
+                    <h3>Example</h3>
+                    <div class="code-example">
+public class WrapperExample {
+    public static void main(String[] args) {
+        // Creating wrapper objects
+        Integer num1 = new Integer(42);
+        Integer num2 = Integer.valueOf(42);
+
+        // Autoboxing
+        Integer num3 = 42;
+
+        // Unboxing
+        int value = num3;
+
+        // Using methods of wrapper classes
+        String numStr = "123";
+        int parsedNum = Integer.parseInt(numStr);
+
+        System.out.println("Parsed number: " + parsedNum);
+        System.out.println("Maximum value of Integer: " + Integer.MAX_VALUE);
+    }
+}
+                    </div>
+
+                    <h3>Key Points</h3>
+                    <ul>
+                        <li>Wrapper classes allow primitive types to be used as objects</li>
+                        <li>They provide useful methods for data manipulation</li>
+                        <li>Autoboxing and unboxing make it easy to convert between primitives and objects</li>
+                        <li>Wrapper classes are crucial for working with Java collections</li>
+                    </ul>
+
+                    <h3>Practice</h3>
+                    <p>Experiment with different wrapper classes. Try parsing strings to numbers, converting between different numeric types, and explore the utility methods provided by wrapper classes.</p>
+                `
+            },
+            {
+                id: 'object-methods',
+                title: 'Object Methods',
+                video: 'https://www.youtube.com/embed/7WhnYwoBY24',
+                description: `
+                    <h2>Understanding Object Methods in Java</h2>
+                    
+                    <p>Object methods are functions that belong to a class and operate on objects of that class. They define the behavior of objects.</p>
+
+                    <h3>Key Concepts of Object Methods</h3>
+                    <ul>
+                        <li>Methods are defined within a class</li>
+                        <li>They can access and modify object state (instance variables)</li>
+                        <li>Methods can take parameters and return values</li>
+                        <li>They encapsulate behavior and promote code reuse</li>
+                    </ul>
+
+                    <h3>Example of Object Methods</h3>
+                    <div class="code-example">
+public class Rectangle {
+    private double length;
+    private double width;
+
+    public Rectangle(double length, double width) {
+        this.length = length;
+        this.width = width;
+    }
+
+    // Method to calculate area
+    public double calculateArea() {
+        return length * width;
+    }
+
+    // Method to calculate perimeter
+    public double calculatePerimeter() {
+        return 2 * (length + width);
+    }
+
+    // Method to check if it's a square
+    public boolean isSquare() {
+        return length == width;
+    }
+
+    public static void main(String[] args) {
+        Rectangle rect = new Rectangle(5, 3);
+        System.out.println("Area: " + rect.calculateArea());
+        System.out.println("Perimeter: " + rect.calculatePerimeter());
+        System.out.println("Is Square? " + rect.isSquare());
+    }
+}
+                    </div>
+
+                    <h3>Types of Methods</h3>
+                    <ul>
+                        <li>Instance Methods: Operate on object instances</li>
+                        <li>Static Methods: Belong to the class itself, not instances</li>
+                        <li>Accessor Methods (Getters): Retrieve object state</li>
+                        <li>Mutator Methods (Setters): Modify object state</li>
+                    </ul>
+
+                    <h3>Method Overriding</h3>
+                    <p>Subclasses can override methods from their superclass to provide specific implementations.</p>
+
+                    <h3>The 'toString()' Method</h3>
+                    <p>A special method that returns a string representation of an object. It's often overridden to provide meaningful object descriptions.</p>
+
+                    <h3>Practice</h3>
+                    <p>Create a class with various methods, including getters, setters, and methods that perform calculations or actions based on the object's state. Override the toString() method to provide a custom string representation of your objects.</p>
+
+                    <h3>Key Takeaways</h3>
+                    <ul>
+                        <li>Methods define object behavior and encapsulate functionality</li>
+                        <li>They can access and modify object state</li>
+                        <li>Proper use of methods improves code organization and reusability</li>
+                        <li>Understanding different types of methods and when to use them is crucial for effective Java programming</li>
+                    </ul>
+                `
+            },
+            {
+                id: 'object-comparison',
+                title: 'Object Comparison',
+                video: 'https://www.youtube.com/embed/Vy_Z6IXNF9Y',
+                description: `
+                    <h2>Understanding Object Comparison in Java</h2>
+                    
+                    <p>Comparing objects in Java is more complex than comparing primitive types. It involves understanding the difference between reference equality and content equality.</p>
+
+                    <h3>Key Concepts of Object Comparison</h3>
+                    <ul>
+                        <li>Reference Equality (==): Compares if two references point to the same object in memory</li>
+                        <li>Content Equality (.equals()): Compares the content or state of two objects</li>
+                        <li>The hashCode() method: Used in conjunction with equals() for consistent object comparison</li>
+                    </ul>
+
+                    <h3>Example of Object Comparison</h3>
+                    <div class="code-example">
+public class Person {
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Person person = (Person) obj;
+        return age == person.age && Objects.equals(name, person.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age);
+    }
+
+    public static void main(String[] args) {
+        Person p1 = new Person("Alice", 30);
+        Person p2 = new Person("Alice", 30);
+        Person p3 = p1;
+
+        System.out.println("p1 == p2: " + (p1 == p2));           // false
+        System.out.println("p1.equals(p2): " + p1.equals(p2));   // true
+        System.out.println("p1 == p3: " + (p1 == p3));           // true
+    }
+}
+                    </div>
+
+                    <h3>The equals() Method</h3>
+                    <ul>
+                        <li>By default, it compares object references (same as ==)</li>
+                        <li>Should be overridden in classes where logical equality is needed</li>
+                        <li>Must be consistent (if x.equals(y) is true, then y.equals(x) should also be true)</li>
+                        <li>Must be transitive (if x.equals(y) and y.equals(z), then x.equals(z) should be true)</li>
+                    </ul>
+
+                    <h3>The hashCode() Method</h3>
+                    <ul>
+                        <li>Returns an integer hash value for an object</li>
+                        <li>If two objects are equal according to equals(), they must have the same hash code</li>
+                        <li>Should be overridden whenever equals() is overridden</li>
+                    </ul>
+
+                    <h3>Best Practices</h3>
+                    <ul>
+                        <li>Always override both equals() and hashCode() methods together</li>
+                        <li>Use Objects.equals() and Objects.hash() for convenient and correct implementations</li>
+                        <li>Consider using IDE-generated equals() and hashCode() methods for complex classes</li>
+                    </ul>
+
+                    <h3>Practice</h3>
+                    <p>Create a custom class (e.g., Book, Car) and implement equals() and hashCode() methods. Test these methods with different scenarios to ensure they work correctly.</p>
+
+                    <h3>Key Takeaways</h3>
+                    <ul>
+                        <li>Understanding the difference between == and equals() is crucial for object comparison</li>
+                        <li>Proper implementation of equals() and hashCode() is essential for consistent object behavior</li>
+                        <li>These concepts are fundamental when working with collections and comparing complex objects</li>
+                    </ul>
+                `
+            }
+        ];
+
+        let currentLessonIndex = 0;
+        let completedLessons = new Set();
+
+        function showLesson(index) {
+            const lessonTitle = document.getElementById('lesson-title');
+            const lessonVideo = document.getElementById('lesson-video');
+            const videoContainer = document.querySelector('.video-container');
+            const lessonDescription = document.getElementById('lesson-description');
+
+            const lesson = lessons[index];
+            lessonTitle.textContent = lesson.title;
+            lessonDescription.innerHTML = lesson.description;
+
+            if (lesson.video) {
+                lessonVideo.src = lesson.video;
+                videoContainer.style.display = 'block';
+            } else {
+                videoContainer.style.display = 'none';
+            }
+
+            document.querySelectorAll('#lesson-list a').forEach((a, i) => {
+                a.classList.toggle('active', i === index);
+            });
+
+            currentLessonIndex = index;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = (completedLessons.size / lessons.length) * 100;
+            document.getElementById('lesson-progress').style.height = `${progress}%`;
+        }
+
+        function createLessonList() {
+            const lessonList = document.getElementById('lesson-list');
+            lessons.forEach((lesson, index) => {
+                const li = document.createElement('li');
+                const checkbox = document.createElement('div');
+                checkbox.className = 'checkbox';
+                checkbox.id = `checkbox-${lesson.id}`;
+                li.appendChild(checkbox);
+
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = lesson.title;
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    showLesson(index);
+                };
+                li.appendChild(a);
+                lessonList.appendChild(li);
+            });
+        }
+
+        function updateCheckbox(lessonId) {
+            const checkbox = document.getElementById(`checkbox-${lessonId}`);
+            checkbox.classList.add('completed');
+            checkbox.innerHTML = '✓';
+        }
+
+        createLessonList();
+        showLesson(0);
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>

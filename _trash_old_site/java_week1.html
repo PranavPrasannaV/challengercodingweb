@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java 1 Week 1: Hello World - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #263238;
+            --accent: #FFC107;
+            --background: #F5F7FA;
+            --text: #333;
+            --text-light: #666;
+            --white: #ffffff;
+            --success: #4CAF50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 30px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: fixed;
+            top: 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            min-height: calc(100vh - 60px);
+            margin-top: 60px;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: var(--white);
+            padding: 2rem;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+
+        .progress-bar {
+            width: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-right: 1rem;
+            align-self: stretch;
+            position: relative;
+        }
+
+        .progress {
+            width: 100%;
+            background-color: var(--primary);
+            border-radius: 5px;
+            position: absolute;
+            bottom: 0;
+            transition: height 0.3s ease;
+        }
+
+        .lesson-list {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            font-size: 1rem;
+            color: var(--text);
+            display: block;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: 0.3s;
+            flex-grow: 1;
+        }
+
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 14px;
+        }
+
+        .checkbox.completed {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 2rem;
+            margin-left: 300px;
+            overflow-y: auto;
+        }
+
+        .content h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .lesson-content {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .lesson-content h2 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        .lesson-content h3 {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .lesson-content p, .lesson-content ul {
+            margin-bottom: 1rem;
+        }
+
+        .lesson-content ul {
+            padding-left: 1.5rem;
+        }
+
+        .example-box {
+            background-color: #f0f0f0;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        code {
+            background-color: #e0e0e0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .back-button {
+            display: block;
+            text-decoration: none;
+            color: var(--text);
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            background-color: var(--accent);
+            border-radius: 8px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .progress-bar {
+                width: 100%;
+                height: 10px;
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+
+            .progress {
+                width: 0;
+                height: 100%;
+            }
+        }
+
+        .pdf-container {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ccc;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="online_compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="sidebar">
+            <a href="java_tutorials.html" class="back-button">
+                <i data-lucide="arrow-left"></i> Back to Tutorials
+            </a>
+            <div class="progress-bar">
+                <div class="progress" id="lesson-progress"></div>
+            </div>
+            <div class="lesson-list">
+                <h2>Java 1 Week 1: Hello World</h2>
+                <ul id="lesson-list"></ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h1 id="lesson-title"></h1>
+            <div class="video-container" style="display: none;">
+                <iframe id="lesson-video" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="lesson-content" id="lesson-description"></div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const lessons = [
+            {
+                id: 'lesson0',
+                title: 'Introduction to Java',
+                video: null,
+                description: `
+                    <h2>What is Java?</h2>
+                    <p>Java is a popular, versatile, and object-oriented programming language used for developing a wide range of applications.</p>
+
+                    <h3>Key Features of Java</h3>
+                    <ul>
+                        <li><strong>Platform Independence:</strong> Write once, run anywhere (WORA)</li>
+                        <li><strong>Object-Oriented:</strong> Based on the concept of objects containing data and code</li>
+                        <li><strong>Simple:</strong> Easy to learn and understand</li>
+                        <li><strong>Secure:</strong> Developed with built-in security features</li>
+                        <li><strong>High Performance:</strong> Supports multithreading and is highly efficient</li>
+                    </ul>
+
+                    <h3>Java Development Kit (JDK)</h3>
+                    <p>To start programming in Java, you need to install the Java Development Kit (JDK). The JDK includes:</p>
+                    <ul>
+                        <li>Java Runtime Environment (JRE)</li>
+                        <li>Compiler (javac)</li>
+                        <li>Debugger</li>
+                        <li>Other development tools</li>
+                    </ul>
+
+                    <p>In the following lessons, we'll guide you through setting up your development environment and writing your first Java program.</p>
+                `
+            },
+            {
+                id: 'lesson1',
+                title: 'Setting Up Java Environment',
+                video: 'https://www.youtube.com/embed/placeholder_video_id',
+                description: `
+                    <h2>Setting Up Your Java Development Environment</h2>
+                    <p>Before we can start coding, we need to set up our Java development environment. Follow these steps:</p>
+
+                    <h3>1. Download and Install JDK</h3>
+                    <ol>
+                        <li>Visit the official Oracle website or adopt OpenJDK</li>
+                        <li>Download the latest version of JDK for your operating system</li>
+                        <li>Run the installer and follow the installation wizard</li>
+                    </ol>
+
+                    <h3>2. Set Up Environment Variables</h3>
+                    <p>To use Java from any directory in your command prompt or terminal:</p>
+                    <ul>
+                        <li>Add JAVA_HOME to your system variables</li>
+                        <li>Add %JAVA_HOME%\\bin to your PATH variable</li>
+                    </ul>
+
+                    <h3>3. Verify Installation</h3>
+                    <p>Open a command prompt or terminal and type:</p>
+                    <div class="example-box">
+                        <code>
+java -version
+javac -version
+                        </code>
+                    </div>
+                    <p>If you see version information, your Java environment is set up correctly!</p>
+
+                    <h3>4. Choose an Integrated Development Environment (IDE)</h3>
+                    <p>While you can write Java code in any text editor, an IDE can make development easier. Popular choices include:</p>
+                    <ul>
+                        <li>IntelliJ IDEA</li>
+                        <li>Eclipse</li>
+                        <li>NetBeans</li>
+                    </ul>
+
+                    <p>In the next lesson, we'll write our first Java program!</p>
+                `
+            },
+            {
+                id: 'lesson2',
+                title: 'Writing Your First Java Program',
+                video: 'https://www.youtube.com/embed/placeholder_video_id',
+                description: `
+                    <h2>Hello, World! in Java</h2>
+                    <p>Now that we have our environment set up, let's write our first Java program - the classic "Hello, World!"</p>
+
+                    <h3>The Code</h3>
+                    <div class="example-box">
+                        <code>
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}
+                        </code>
+                    </div>
+
+                    <h3>Understanding the Code</h3>
+                    <ul>
+                        <li><code>public class HelloWorld</code>: Defines a public class named HelloWorld</li>
+                        <li><code>public static void main(String[] args)</code>: The main method, entry point of our program</li>
+                        <li><code>System.out.println("Hello, World!");</code>: Prints the text to the console</li>
+                    </ul>
+
+                    <h3>Running the Program</h3>
+                    <ol>
+                        <li>Save the file as <code>HelloWorld.java</code></li>
+                        <li>Open a command prompt or terminal in the directory containing your file</li>
+                        <li>Compile the program: <code>javac HelloWorld.java</code></li>
+                        <li>Run the program: <code>java HelloWorld</code></li>
+                    </ol>
+
+                    <p>You should see "Hello, World!" printed in your console.</p>
+
+                    <h3>Key Points</h3>
+                    <ul>
+                        <li>Java is case-sensitive</li>
+                        <li>Every statement ends with a semicolon</li>
+                        <li>The class name should match the file name</li>
+                        <li>The main method is required for every Java program</li>
+                    </ul>
+
+                    <p>Congratulations! You've written and run your first Java program.</p>
+                `
+            },
+            {
+                id: 'lesson3',
+                title: 'Java Syntax and Structure',
+                video: 'https://www.youtube.com/embed/placeholder_video_id',
+                description: `
+                    <h2>Understanding Java Syntax and Structure</h2>
+                    <p>Now that we've written our first program, let's dive deeper into Java's syntax and structure.</p>
+
+                    <h3>Basic Syntax Rules</h3>
+                    <ul>
+                        <li>Java is case-sensitive</li>
+                        <li>Class names should start with an uppercase letter</li>
+                        <li>Method names should start with a lowercase letter</li>
+                        <li>File name must match the class name (when the class is public)</li>
+                    </ul>
+
+                    <h3>Program Structure</h3>
+                    <div class="example-box">
+                        <code>
+// Package declaration (optional)
+package com.example;
+
+// Import statements (optional)
+import java.util.Scanner;
+
+// Class declaration
+public class MyProgram {
+    // Field declarations (optional)
+    private int myField;
+
+    // Constructor (optional)
+    public MyProgram() {
+        // Constructor code
+    }
+
+    // Method declarations
+    public void myMethod() {
+        // Method code
+    }
+
+    // Main method
+    public static void main(String[] args) {
+        // Program execution starts here
+    }
+}
+                        </code>
+                    </div>
+
+                    <h3>Comments in Java</h3>
+                    <p>Java supports three types of comments:</p>
+                    <ul>
+                        <li>Single-line comments: <code>// This is a single-line comment</code></li>
+                        <li>Multi-line comments: <code>/* This is a multi-line comment */</code></li>
+                        <li>Documentation comments: <code>/** This is a documentation comment */</code></li>
+                    </ul>
+
+                    <p>Understanding these basic syntax rules and program structure will help you write clean and organized Java code.</p>
+                `
+            },
+        ];
+
+        let currentLessonIndex = 0;
+        let completedLessons = new Set();
+
+        function showLesson(index) {
+            const lessonTitle = document.getElementById('lesson-title');
+            const lessonVideo = document.getElementById('lesson-video');
+            const videoContainer = document.querySelector('.video-container');
+            const lessonDescription = document.getElementById('lesson-description');
+
+            const lesson = lessons[index];
+            lessonTitle.textContent = lesson.title;
+            lessonDescription.innerHTML = lesson.description;
+
+            if (lesson.video) {
+                lessonVideo.src = lesson.video;
+                videoContainer.style.display = 'block';
+            } else {
+                videoContainer.style.display = 'none';
+            }
+
+            document.querySelectorAll('#lesson-list a').forEach((a, i) => {
+                a.classList.toggle('active', i === index);
+            });
+
+            currentLessonIndex = index;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = (completedLessons.size / lessons.length) * 100;
+            document.getElementById('lesson-progress').style.height = `${progress}%`;
+        }
+
+        function createLessonList() {
+            const lessonList = document.getElementById('lesson-list');
+            lessons.forEach((lesson, index) => {
+                const li = document.createElement('li');
+                const checkbox = document.createElement('div');
+                checkbox.className = 'checkbox';
+                checkbox.id = `checkbox-${lesson.id}`;
+                li.appendChild(checkbox);
+
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = lesson.title;
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    showLesson(index);
+                };
+                li.appendChild(a);
+                lessonList.appendChild(li);
+            });
+        }
+
+        function updateCheckbox(lessonId) {
+            const checkbox = document.getElementById(`checkbox-${lessonId}`);
+            checkbox.classList.add('completed');
+            checkbox.innerHTML = '✓';
+        }
+
+        createLessonList();
+        showLesson(0);
+    </script>
+</body>
+</html>
+

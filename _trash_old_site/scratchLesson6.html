@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scratch Lesson 6: Boolean Statements and Operators - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #FF4081;
+            --accent: #FFC107;
+            --background: #f0f4f8;
+            --surface: #ffffff;
+            --border: #e0e7ff;
+            --text: #2d3748;
+            --text-light: #4a5568;
+            --success: #48bb78;
+            --error: #f56565;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 5px;
+            width: 100%;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 2rem auto;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .exercise-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item:hover {
+            background: var(--primary);
+            color: var(--surface);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item.active {
+            background: var(--primary);
+            color: var(--surface);
+            border-color: var(--primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .main-content {
+            flex: 1;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .tutorial-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .tutorial-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .content-box {
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .highlight-box {
+            background-color: #e6f7ff;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .step-box {
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            margin-right: 0.5rem;
+        }
+
+        .image-block {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .image-caption {
+            text-align: center;
+            font-style: italic;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+
+        .interactive-demo {
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            background-color: #f8f9fa;
+        }
+
+        .demo-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .demo-button {
+            padding: 0.5rem 1rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .demo-button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+        }
+
+        .container {
+            max-width: 100%;
+            width: 100%;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            margin-left: auto;
+            margin-right: auto;
+            box-sizing: border-box;
+        }
+
+        @media (min-width: 640px) {
+            .container {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                padding-left: 4rem;
+                padding-right: 4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="#" target="_blank" class="enroll-button">Enroll</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="exercise-list">
+                <div class="exercise-item" data-exercise="overview">
+                    <span>Lesson Overview</span>
+                </div>
+                <div class="exercise-item" data-exercise="boolean-operators">
+                    <span>1. Boolean Operators</span>
+                </div>
+                <div class="exercise-item" data-exercise="numerical-operators">
+                    <span>2. Numerical Operators</span>
+                </div>
+                <div class="exercise-item" data-exercise="guided-exercise">
+                    <span>3. Guided Exercise</span>
+                </div>
+                <div class="exercise-item" data-exercise="project">
+                    <span>4. Mini-Project</span>
+                </div>
+                <div class="exercise-item" onclick="window.location.href='scratch_tutorials.html'">
+                    <span>Return to Home</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div id="tutorial-content"></div>
+        </main>
+    </div>
+
+    <!-- Include Scripts -->
+    <script src="config.js"></script>
+    <script>
+        document.querySelectorAll(".enroll-button").forEach(button => {
+            button.href = enrollLink;
+        });
+    </script>
+    <script>
+        lucide.createIcons();
+
+        const exercises = [
+            {
+                title: "Lesson Overview",
+                content: `
+                    <h1 class="tutorial-title">Lesson 6: Boolean Statements and Operators in Scratch</h1>
+                    <div class="content-box">
+                        <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
+                        <p class="tutorial-text">
+                            In this lesson, we'll explore Boolean statements and operators in Scratch. You'll learn how to 
+                            use logical operators to create complex conditions and make decisions in your code.
+                        </p>
+                    </div>
+
+                    <div class="content-box">
+                        <h2 class="text-2xl font-semibold mb-4">Key Concepts</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="highlight-box">
+                                <h3 class="text-xl font-semibold mb-2">Boolean</h3>
+                                <p>A data type that can only have two possible values: true or false.</p>
+                            </div>
+                            <div class="highlight-box">
+                                <h3 class="text-xl font-semibold mb-2">Logical Operators</h3>
+                                <p>Operators that work with Boolean values to create complex conditions.</p>
+                            </div>
+                            <div class="highlight-box">
+                                <h3 class="text-xl font-semibold mb-2">Comparison Operators</h3>
+                                <p>Operators that compare two values and return a Boolean result.</p>
+                            </div>
+                            <div class="highlight-box">
+                                <h3 class="text-xl font-semibold mb-2">Arithmetic Operators</h3>
+                                <p>Operators that perform mathematical calculations on numerical values.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <h2 class="text-2xl font-semibold mb-4">Blocks We'll Use</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="step-box">
+                                <h3 class="text-xl font-semibold mb-2">Operators Blocks</h3>
+                                <ul class="list-disc list-inside">
+                                    <li>and</li>
+                                    <li>or</li>
+                                    <li>not</li>
+                                    <li>&lt; (less than)</li>
+                                    <li>&gt; (greater than)</li>
+                                    <li>= (equal to)</li>
+                                </ul>
+                            </div>
+                            <div class="step-box">
+                                <h3 class="text-xl font-semibold mb-2">Arithmetic Blocks</h3>
+                                <ul class="list-disc list-inside">
+                                    <li>+ (addition)</li>
+                                    <li>- (subtraction)</li>
+                                    <li>* (multiplication)</li>
+                                    <li>/ (division)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Boolean Operators",
+                content: `
+                    <h1 class="tutorial-title">Boolean Operators</h1>
+                    <div class="content-box">
+                        <p class="tutorial-text">
+                            Boolean operators are used to combine or modify Boolean values (true or false). In Scratch, 
+                            we have three main Boolean operators: AND, OR, and NOT.
+                        </p>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">The "AND" Operator</h3>
+                        <p class="tutorial-text">
+                            The AND operator returns true only if both conditions are true.
+                        </p>
+                        <img src="/placeholder.svg?height=50&width=200" alt="AND Operator in Scratch" class="image-block">
+                        <p class="image-caption">The "and" block in Scratch</p>
+                        <div class="highlight-box">
+                            <p><strong>Use Case:</strong> When you want an action to occur only if multiple conditions are met.</p>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">The "OR" Operator</h3>
+                        <p class="tutorial-text">
+                            The OR operator returns true if at least one of the conditions is true.
+                        </p>
+                        <img src="/placeholder.svg?height=50&width=200" alt="OR Operator in Scratch" class="image-block">
+                        <p class="image-caption">The "or" block in Scratch</p>
+                        <div class="highlight-box">
+                            <p><strong>Use Case:</strong> When you want an action to occur if any of multiple conditions are met.</p>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">The "NOT" Operator</h3>
+                        <p class="tutorial-text">
+                            The NOT operator reverses a Boolean value. It turns true into false and false into true.
+                        </p>
+                        <img src="/placeholder.svg?height=50&width=200" alt="NOT Operator in Scratch" class="image-block">
+                        <p class="image-caption">The "not" block in Scratch</p>
+                        <div class="highlight-box">
+                            <p><strong>Use Case:</strong> When you want to check if a condition is not true.</p>
+                        </div>
+                    </div>
+
+                    <div class="interactive-demo">
+                        <h3 class="text-xl font-semibold mb-2">Interactive Demo: Boolean Operators</h3>
+                        <div id="boolean-demo">
+                            <canvas id="boolean-canvas" width="400" height="200"></canvas>
+                        </div>
+                        <div class="demo-controls">
+                            <button class="demo-button" onclick="toggleCondition('A')">Toggle A</button>
+                            <button class="demo-button" onclick="toggleCondition('B')">Toggle B</button>
+                            <button class="demo-button" onclick="changeOperator('AND')">AND</button>
+                            <button class="demo-button" onclick="changeOperator('OR')">OR</button>
+                            <button class="demo-button" onclick="changeOperator('NOT')">NOT</button>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <p class="tutorial-text">
+                            In the demo above, you can toggle two conditions (A and B) and see how different Boolean 
+                            operators affect the result. This helps visualize how these operators work in practice.
+                        </p>
+                    </div>
+                `
+            },
+            {
+                title: "Numerical Operators",
+                content: `
+                    <h1 class="tutorial-title">Numerical Operators</h1>
+                    <div class="content-box">
+                        <p class="tutorial-text">
+                            Numerical operators in Scratch allow you to perform mathematical operations and comparisons. 
+                            These include both arithmetic operators and comparison operators.
+                        </p>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Arithmetic Operators</h3>
+                        <p class="tutorial-text">
+                            Arithmetic operators perform basic mathematical calculations.
+                        </p>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>Addition (+)</li>
+                            <li>Subtraction (-)</li>
+                            <li>Multiplication (*)</li>
+                            <li>Division (/)</li>
+                        </ul>
+                        <img src="/placeholder.svg?height=100&width=200" alt="Arithmetic Operators in Scratch" class="image-block">
+                        <p class="image-caption">Arithmetic operator blocks in Scratch</p>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Comparison Operators</h3>
+                        <p class="tutorial-text">
+                            Comparison operators compare two values and return a Boolean result.
+                        </p>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>Greater than (&gt;)</li>
+                            <li>Less than (&lt;)</li>
+                            <li>Equal to (=)</li>
+                        </ul>
+                        <img src="/placeholder.svg?height=100&width=200" alt="Comparison Operators in Scratch" class="image-block">
+                        <p class="image-caption">Comparison operator blocks in Scratch</p>
+                    </div>
+
+                    <div class="interactive-demo">
+                        <h3 class="text-xl font-semibold mb-2">Interactive Demo: Numerical Operations</h3>
+                        <div id="numerical-demo">
+                            <canvas id="numerical-canvas" width="400" height="200"></canvas>
+                        </div>
+                        <div class="demo-controls">
+                            <button class="demo-button" onclick="changeValue('A', 1)">A + 1</button>
+                            <button class="demo-button" onclick="changeValue('A', -1)">A - 1</button>
+                            <button class="demo-button" onclick="changeValue('B', 1)">B + 1</button>
+                            <button class="demo-button" onclick="changeValue('B', -1)">B - 1</button>
+                            <button class="demo-button" onclick="changeOperation('+')">+</button>
+                            <button class="demo-button" onclick="changeOperation('-')">-</button>
+                            <button class="demo-button" onclick="changeOperation('*')">*</button>
+                            <button class="demo-button" onclick="changeOperation('/')">/</button>
+                            <button class="demo-button" onclick="changeOperation('>')">&gt;</button>
+                            <button class="demo-button" onclick="changeOperation('<')">&lt;</button>
+                            <button class="demo-button" onclick="changeOperation('=')">=</button>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <p class="tutorial-text">
+                            In this demo, you can change the values of A and B and apply different arithmetic and comparison 
+                            operations. This helps you understand how these operators work with actual numbers.
+                        </p>
+                    </div>
+                `
+            },
+            {
+                title: "Guided Exercise",
+                content: `
+                    <h1 class="tutorial-title">Guided Exercise: Creating a Simple Game with Boolean and Numerical Operators</h1>
+                    <div class="content-box">
+                        <p class="tutorial-text">
+                            In this exercise, we'll create a simple game that uses both Boolean and numerical operators. 
+                            The game will involve a sprite trying to collect items while avoiding obstacles.
+                        </p>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 1: Setting Up the Game</h3>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Create a new Scratch project.</p>
+                        </div>
+                        <div class="step-box">
+                            <p><span class="step-number">2</span> Choose a backdrop for your game.</p>
+                        </div>
+                        <div class="step-box">
+                            <p><span class="step-number">3</span> Add a sprite for the player, one for the collectible item, and one for the obstacle.</p>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 2: Programming the Player Movement</h3>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Add the following script to control the player's movement:</p>
+                        </div>
+                        <pre class="code-block">
+when green flag clicked
+forever
+    if &lt;key [right arrow] pressed?&gt; then
+        change x by (5)
+    end
+    if &lt;key [left arrow] pressed?&gt; then
+        change x by (-5)
+    end
+    if &lt;&lt;key [up arrow] pressed?&gt; and &lt;(y position) &lt; (170)&gt;&gt; then
+        change y by (5)
+    end
+    if &lt;&lt;key [down arrow] pressed?&gt; and &lt;(y position) &gt; (-170)&gt;&gt; then
+        change y by (-5)
+    end
+end
+                        </pre>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 3: Programming the Collectible Item</h3>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Add the following script to the collectible item sprite:</p>
+                        </div>
+                        <pre class="code-block">
+when green flag clicked
+forever
+    go to x: (pick random (-240) to (240)) y: (pick random (-180) to (180))
+    wait until &lt;touching [Player v]?&gt;
+    change [score v] by (1)
+end
+                        </pre>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 4: Programming the Obstacle</h3>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Add the following script to the obstacle sprite:</p>
+                        </div>
+                        <pre class="code-block">
+when green flag clicked
+forever
+    move (10) steps
+    if &lt;touching [edge v]?&gt; then
+        turn (180) degrees
+    end
+    if &lt;touching [Player v]?&gt; then
+        stop [all v]
+    end
+end
+                        </pre>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 5: Adding a Score and Timer</h3>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Create variables for "score" and "time".</p>
+                        </div>
+                        <div class="step-box">
+                            <p><span class="step-number">2</span> Add the following script to control the timer:</p>
+                        </div>
+                        <pre class="code-block">
+when green flag clicked
+set [time v] to (30)
+repeat until &lt;(time) = (0)&gt;
+    wait (1) seconds
+    change [time v] by (-1)
+end
+stop [all v]
+                        </pre>
+                    </div>
+
+                    <div class="interactive-demo">
+                        <h3 class="text-xl font-semibold mb-2">Interactive Demo: Simple Collection Game</h3>
+                        <div id="game-demo">
+                            <canvas id="game-canvas" width="480" height="360"></canvas>
+                        </div>
+                        <div class="demo-controls">
+                            <button class="demo-button" onclick="startGame()">Start Game</button>
+                            <button class="demo-button" onclick="movePlayer('left')">Move Left</button>
+                            <button class="demo-button" onclick="movePlayer('right')">Move Right</button>
+                            <button class="demo-button" onclick="movePlayer('up')">Move Up</button>
+                            <button class="demo-button" onclick="movePlayer('down')">Move Down</button>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <p class="tutorial-text">
+                            Congratulations! You've created a simple game using Boolean and numerical operators. The player 
+                            moves using arrow keys (Boolean operators check for key presses), collects items to increase the 
+                            score (numerical addition), and must avoid the obstacle while racing against the timer 
+                            (numerical comparison for time running out).
+                        </p>
+                        <p class="tutorial-text">
+                            Try playing the demo above to see how the game works. You can move the player using the arrow 
+                            buttons, try to collect the items, and avoid the moving obstacle!
+                        </p>
+                    </div>
+                `
+            },
+            {
+                title: "Mini-Project",
+                content: `
+                    <h1 class="tutorial-title">Mini-Project: Create a Quiz Game with Boolean and Numerical Operators</h1>
+                    <div class="content-box">
+                        <p class="tutorial-text">
+                            Now it's your turn to create a project using what you've learned about Boolean and numerical 
+                            operators. You'll be creating a simple quiz game that asks math questions and keeps track of 
+                            the player's score.
+                        </p>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Project Description</h3>
+                        <p class="tutorial-text">
+                            Create a Scratch project that presents the player with math questions. The game should generate 
+                            random numbers for each question, ask the player for an answer, and check if the answer is correct 
+                            using Boolean and numerical operators.
+                        </p>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step-by-Step Guide</h3>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Create variables for "number1", "number2", "operator", "correct_answer", and "score".</p>
+                        </div>
+                        <div class="step-box">
+                            <p><span class="step-number">2</span> Create a custom block called "generate_question" that sets random values for number1 and number2, and randomly chooses an operator (+, -, or *).</p>
+                        </div>
+                        <div class="step-box">
+                            <p><span class="step-number">3</span> Create a custom block called "calculate_answer" that computes the correct answer based on the numbers and operator.</p>
+                        </div>
+                        <div class="step-box">
+                            <p><span class="step-number">4</span> Use the "ask and wait" block to get the player's answer.</p>
+                        </div>
+                        <div class="step-box">
+                            <p><span class="step-number">5</span> Use an "if-else" statement with the "=" operator to check if the player's answer matches the correct answer.</p>
+                        </div>
+                        <div class="step-box">
+                            <p><span class="step-number">6</span> Update the score using the "change [score] by (1)" block if the answer is correct.</p>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Example Code Structure</h3>
+                        <pre class="code-block">
+when green flag clicked
+set [score v] to (0)
+repeat (5)
+    generate_question
+    calculate_answer
+    ask (join (join (number1) (operator)) (number2)) and wait
+    if &lt;(answer) = (correct_answer)&gt; then
+        change [score v] by (1)
+        say [Correct!] for (2) seconds
+    else
+        say (join [Wrong! The correct answer was ] (correct_answer)) for (2) seconds
+    end
+end
+say (join [Game over! Your score: ] (score)) for (5) seconds
+                        </pre>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Challenge</h3>
+                        <p class="tutorial-text">
+                            Can you add different difficulty levels to your quiz game? Use numerical comparisons to set 
+                            the range of random numbers based on the chosen difficulty. You might also add a timer using 
+                            a numerical countdown, and use Boolean operators to check if the player answered within the time limit.
+                        </p>
+                    </div>
+
+                    <div class="interactive-demo">
+                        <h3 class="text-xl font-semibold mb-2">Interactive Demo: Math Quiz Game</h3>
+                        <div id="quiz-demo">
+                            <canvas id="quiz-canvas" width="400" height="300"></canvas>
+                        </div>
+                        <div class="demo-controls">
+                            <button class="demo-button" onclick="startQuiz()">Start Quiz</button>
+                            <input type="number" id="answer-input" placeholder="Your answer">
+                            <button class="demo-button" onclick="submitAnswer()">Submit Answer</button>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <p class="tutorial-text">
+                            Remember, creativity is key! Feel free to add your own twists to the quiz game. Maybe add 
+                            different types of questions, or create a multiplayer version where two players compete. 
+                            Don't forget to share your project with your classmates when you're done!
+                        </p>
+                    </div>
+                `
+            }
+        ];
+
+        let currentExercise = 0;
+
+        function loadExercise(index) {
+            const exercise = exercises[index];
+            document.getElementById('tutorial-content').innerHTML = exercise.content;
+            document.querySelectorAll('.exercise-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+            currentExercise = index;
+            initializeInteractiveDemos();
+        }
+
+        document.querySelectorAll('.exercise-item').forEach((item, index) => {
+            item.addEventListener('click', () => loadExercise(index));
+        });
+
+        // Load the first exercise by default
+        loadExercise(0);
+
+        // Functions for interactive demos
+        function initializeInteractiveDemos() {
+            // Boolean Operators Demo
+            const booleanCanvas = document.getElementById('boolean-canvas');
+            if (booleanCanvas) {
+                const ctx = booleanCanvas.getContext('2d');
+                let conditionA = false;
+                let conditionB = false;
+                let currentOperator = 'AND';
+
+                function drawBooleanDemo() {
+                    ctx.clearRect(0, 0, 400, 200);
+                    ctx.font = '16px Arial';
+                    ctx.fillStyle = '#000000';
+                    ctx.fillText(`A: ${conditionA}`, 50, 50);
+                    ctx.fillText(`B: ${conditionB}`, 50, 80);
+                    ctx.fillText(`A ${currentOperator} B = ${evaluateCondition()}`, 50, 110);
+                }
+
+                function evaluateCondition() {
+                    switch (currentOperator) {
+                        case 'AND': return conditionA && conditionB;
+                        case 'OR': return conditionA || conditionB;
+                        case 'NOT': return !conditionA;
+                        default: return false;
+                    }
+                }
+
+                window.toggleCondition = function(condition) {
+                    if (condition === 'A') conditionA = !conditionA;
+                    if (condition === 'B') conditionB = !conditionB;
+                    drawBooleanDemo();
+                };
+
+                window.changeOperator = function(operator) {
+                    currentOperator = operator;
+                    drawBooleanDemo();
+                };
+
+                drawBooleanDemo();
+            }
+
+            // Numerical Operators Demo
+            const numericalCanvas = document.getElementById('numerical-canvas');
+            if (numericalCanvas) {
+                const ctx = numericalCanvas.getContext('2d');
+                let valueA = 5;
+                let valueB = 3;
+                let currentOperation = '+';
+
+                function drawNumericalDemo() {
+                    ctx.clearRect(0, 0, 400, 200);
+                    ctx.font = '16px Arial';
+                    ctx.fillStyle = '#000000';
+                    ctx.fillText(`A: ${valueA}`, 50, 50);
+                    ctx.fillText(`B: ${valueB}`, 50, 80);
+                    ctx.fillText(`A ${currentOperation} B = ${evaluateOperation()}`, 50, 110);
+                }
+
+                function evaluateOperation() {
+                    switch (currentOperation) {
+                        case '+': return valueA + valueB;
+                        case '-': return valueA - valueB;
+                        case '*': return valueA * valueB;
+                        case '/': return valueA / valueB;
+                        case '>': return valueA > valueB;
+                        case '<': return valueA < valueB;
+                        case '=': return valueA === valueB;
+                        default: return 0;
+                    }
+                }
+
+                window.changeValue = function(variable, change) {
+                    if (variable === 'A') valueA += change;
+                    if (variable === 'B') valueB += change;
+                    drawNumericalDemo();
+                };
+
+                window.changeOperation = function(operation) {
+                    currentOperation = operation;
+                    drawNumericalDemo();
+                };
+
+                drawNumericalDemo();
+            }
+
+            // Game Demo
+            const gameCanvas = document.getElementById('game-canvas');
+            if (gameCanvas) {
+                const ctx = gameCanvas.getContext('2d');
+                let playerX = 240;
+                let playerY = 180;
+                let itemX = Math.random() * 480;
+                let itemY = Math.random() * 360;
+                let obstacleX = 0;
+                let obstacleY = 180;
+                let obstacleDirection = 1;
+                let score = 0;
+                let gameLoop;
+
+                function drawGame() {
+                    ctx.clearRect(0, 0, 480, 360);
+                    
+                    // Draw player
+                    ctx.fillStyle = '#0000FF';
+                    ctx.fillRect(playerX - 10, playerY - 10, 20, 20);
+
+                    // Draw item
+                    ctx.fillStyle = '#00FF00';
+                    ctx.beginPath();
+                    ctx.arc(itemX, itemY, 5, 0, 2 * Math.PI);
+                    ctx.fill();
+
+                    // Draw obstacle
+                    ctx.fillStyle = '#FF0000';
+                    ctx.fillRect(obstacleX - 15, obstacleY - 15, 30, 30);
+
+                    // Draw score
+                    ctx.fillStyle = '#000000';
+                    ctx.font = '20px Arial';
+                    ctx.fillText(`Score: ${score}`, 10, 30);
+                }
+
+                window.startGame = function() {
+                    if (gameLoop) clearInterval(gameLoop);
+                    playerX = 240;
+                    playerY = 180;
+                    itemX = Math.random() * 480;
+                    itemY = Math.random() * 360;
+                    obstacleX = 0;
+                    obstacleY = 180;
+                    score = 0;
+                    gameLoop = setInterval(() => {
+                        // Move obstacle
+                        obstacleX += obstacleDirection * 2;
+                        if (obstacleX <= 0 || obstacleX >= 480) obstacleDirection *= -1;
+
+                        // Check for collisions
+                        if (Math.abs(playerX - itemX) < 15 && Math.abs(playerY - itemY) < 15) {
+                            score++;
+                            itemX = Math.random() * 480;
+                            itemY = Math.random() * 360;
+                        }
+
+                        if (Math.abs(playerX - obstacleX) < 25 && Math.abs(playerY - obstacleY) < 25) {
+                            clearInterval(gameLoop);
+                            alert('Game Over! Your score: ' + score);
+                        }
+
+                        drawGame();
+                    }, 20);
+                };
+
+                window.movePlayer = function(direction) {
+                    switch(direction) {
+                        case 'left': playerX = Math.max(10, playerX - 10); break;
+                        case 'right': playerX = Math.min(470, playerX + 10); break;
+                        case 'up': playerY = Math.max(10, playerY - 10); break;
+                        case 'down': playerY = Math.min(350, playerY + 10); break;
+                    }
+                };
+
+                drawGame();
+            }
+
+            // Quiz Demo
+            const quizCanvas = document.getElementById('quiz-canvas');
+            if (quizCanvas) {
+                const ctx = quizCanvas.getContext('2d');
+                let number1, number2, operator, correctAnswer;
+                let score = 0;
+                let questionCount = 0;
+
+                function drawQuiz() {
+                    ctx.clearRect(0, 0, 400, 300);
+                    ctx.font = '20px Arial';
+                    ctx.fillStyle = '#000000';
+                    ctx.fillText(`${number1} ${operator} ${number2} = ?`, 100, 100);
+                    ctx.fillText(`Score: ${score}`, 150, 200);
+                    ctx.fillText(`Question: ${questionCount}/5`, 130, 230);
+                }
+
+                function generateQuestion() {
+                    number1 = Math.floor(Math.random() * 10) + 1;
+                    number2 = Math.floor(Math.random() * 10) + 1;
+                    const operators = ['+', '-', '*'];
+                    operator = operators[Math.floor(Math.random() * operators.length)];
+                    switch (operator) {
+                        case '+': correctAnswer = number1 + number2; break;
+                        case '-': correctAnswer = number1 - number2; break;
+                        case '*': correctAnswer = number1 * number2; break;
+                    }
+                    questionCount++;
+                    drawQuiz();
+                }
+
+                window.startQuiz = function() {
+                    score = 0;
+                    questionCount = 0;
+                    generateQuestion();
+                };
+
+                window.submitAnswer = function() {
+                    const userAnswer = parseInt(document.getElementById('answer-input').value);
+                    if (userAnswer === correctAnswer) {
+                        score++;
+                        alert('Correct!');
+                    } else {
+                        alert(`Wrong! The correct answer was ${correctAnswer}`);
+                    }
+                    document.getElementById('answer-input').value = '';
+                    if (questionCount < 5) {
+                        generateQuestion();
+                    } else {
+                        alert(`Quiz finished! Your final score is ${score}/5`);
+                        startQuiz();
+                    }
+                };
+
+                drawQuiz();
+            }
+        }
+
+        // Initialize demos for the first exercise
+        initializeInteractiveDemos();
+    </script>
+</body>
+</html>

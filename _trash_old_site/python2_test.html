@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python 2 Final Test - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/skulpt@1.2.0/dist/skulpt.min.js"></script>
+    <script src="https://unpkg.com/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #FFC107;
+            --background: #FFFFFF;
+            --surface: #F5F5F5;
+            --text: #212121;
+            --text-light: #757575;
+            --success: #4CAF50;
+            --error: #F44336;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            gap: 2rem;
+        }
+        .sidebar {
+            width: 250px;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--text-light);
+        }
+        .main-content {
+            flex: 1;
+        }
+        h1 {
+            color: var(--primary);
+            margin-bottom: 2rem;
+        }
+        .question {
+            background-color: var(--surface);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .question h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+        .options {
+            display: grid;
+            gap: 0.5rem;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border: 1px solid var(--text-light);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .option:hover {
+            background-color: var(--secondary);
+        }
+        .option input {
+            margin-right: 0.5rem;
+        }
+        .code-block {
+            background: var(--surface);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Fira Code', monospace;
+            border: 1px solid var(--text-light);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .compiler-section {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .compiler-left {
+            flex: 6;
+        }
+        .compiler-right {
+            flex: 4;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .editor {
+            background: var(--surface);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--text-light);
+        }
+        .editor-header {
+            background: var(--primary);
+            color: var(--background);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            border: none;
+            resize: vertical;
+            line-height: 1.5;
+            background-color: var(--background);
+        }
+        textarea:focus {
+            outline: none;
+        }
+        .run-button {
+            background: var(--secondary);
+            color: var(--text);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s ease;
+        }
+        .run-button:hover {
+            background: #FFA000;
+        }
+        .output-container {
+            background: var(--surface);
+            border-radius: 8px;
+            border: 1px solid var(--text-light);
+            overflow: hidden;
+        }
+        .output-header {
+            background: var(--primary);
+            color: var(--background);
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+        }
+        .output, .result {
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            min-height: 100px;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: var(--background);
+        }
+        button[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button[type="submit"]:hover {
+            background-color: var(--primary-dark);
+        }
+        #result {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <a href="python2_tutorials.html" class="option">Return to Main Page</a>
+            <div class="option" onclick="showSection('multiple-choice')">Multiple Choice Questions</div>
+            <div class="option" onclick="showSection('free-response')">Free Response Questions</div>
+        </aside>
+
+        <main class="main-content">
+            <h1>Python 2 Final Test</h1>
+            <form id="quiz-form">
+                <div id="multiple-choice-section">
+                    <div class="question">
+                        <h3>1. What is the output of the following code?</h3>
+                        <div class="code-block">
+def recursive_sum(n):
+    if n <= 1:
+        return n
+    else:
+        return n + recursive_sum(n - 1)
+
+print(recursive_sum(5))
+                        </div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q1" value="a"> a) 10</label>
+                            <label class="option"><input type="radio" name="q1" value="b"> b) 15</label>
+                            <label class="option"><input type="radio" name="q1" value="c"> c) 20</label>
+                            <label class="option"><input type="radio" name="q1" value="d"> d) 25</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>2. What will be the output of the following code?</h3>
+                        <div class="code-block">
+class Animal:
+    def speak(self):
+        print("Animal speaks")
+
+class Dog(Animal):
+    def speak(self):
+        print("Dog barks")
+
+class Labrador(Dog):
+    pass
+
+lab = Labrador()
+lab.speak()
+                        </div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q2" value="a"> a) Animal speaks</label>
+                            <label class="option"><input type="radio" name="q2" value="b"> b) Dog barks</label>
+                            <label class="option"><input type="radio" name="q2" value="c"> c) Labrador barks</label>
+                            <label class="option"><input type="radio" name="q2" value="d"> d) Error</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>3. What is the output of the following code?</h3>
+                        <div class="code-block">
+def modify_list(lst):
+    lst.append(4)
+    lst = [1, 2, 3]
+    print("Inside function:", lst)
+
+my_list = [1, 2, 3]
+modify_list(my_list)
+print("Outside function:", my_list)
+                        </div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q3" value="a"> a) Inside function: [1, 2, 3], Outside function: [1, 2, 3]</label>
+                            <label class="option"><input type="radio" name="q3" value="b"> b) Inside function: [1, 2, 3], Outside function: [1, 2, 3, 4]</label>
+                            <label class="option"><input type="radio" name="q3" value="c"> c) Inside function: [1, 2, 3, 4], Outside function: [1, 2, 3, 4]</label>
+                            <label class="option"><input type="radio" name="q3" value="d"> d) Inside function: [1, 2, 3], Outside function: [1, 2, 3]</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>4. What is the purpose of the `__init__` method in Python classes?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q4" value="a"> a) To initialize class variables</label>
+                            <label class="option"><input type="radio" name="q4" value="b"> b) To define class methods</label>
+                            <label class="option"><input type="radio" name="q4" value="c"> c) To create a new instance of the class</label>
+                            <label class="option"><input type="radio" name="q4" value="d"> d) To delete the class instance</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>5. What is the output of the following code?</h3>
+                        <div class="code-block">
+x = [1, 2, 3]
+y = x
+y.append(4)
+print(x)
+                        </div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q5" value="a"> a) [1, 2, 3]</label>
+                            <label class="option"><input type="radio" name="q5" value="b"> b) [1, 2, 3, 4]</label>
+                            <label class="option"><input type="radio" name="q5" value="c"> c) [4, 1, 2, 3]</label>
+                            <label class="option"><input type="radio" name="q5" value="d"> d) Error</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>6. Which of the following is true about Python sets?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q6" value="a"> a) Sets are ordered collections</label>
+                            <label class="option"><input type="radio" name="q6" value="b"> b) Sets can contain duplicate elements</label>
+                            <label class="option"><input type="radio" name="q6" value="c"> c) Sets are mutable</label>
+                            <label class="option"><input type="radio" name="q6" value="d"> d) Sets can only contain numbers</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>7. What is the output of the following code?</h3>
+                        <div class="code-block">
+def outer():
+    x = 1
+    def inner():
+        nonlocal x
+        x = 2
+        print("Inner:", x)
+    inner()
+    print("Outer:", x)
+
+outer()
+                        </div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q7" value="a"> a) Inner: 1, Outer: 1</label>
+                            <label class="option"><input type="radio" name="q7" value="b"> b) Inner: 2, Outer: 1</label>
+                            <label class="option"><input type="radio" name="q7" value="c"> c) Inner: 2, Outer: 2</label>
+                            <label class="option"><input type="radio" name="q7" value="d"> d) Error</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>8. What is the purpose of the `super()` function in Python?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q8" value="a"> a) To call a superclass method</label>
+                            <label class="option"><input type="radio" name="q8" value="b"> b) To create a new instance of a class</label>
+                            <label class="option"><input type="radio" name="q8" value="c"> c) To define a new class</label>
+                            <label class="option"><input type="radio" name="q8" value="d"> d) To delete a class instance</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>9. What is the output of the following code?</h3>
+                        <div class="code-block">
+class A:
+    def __init__(self):
+        self.x = 1
+
+class B(A):
+    def __init__(self):
+        super().__init__()
+        self.y = 2
+
+b = B()
+print(b.x, b.y)
+                        </div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q9" value="a"> a) 1 2</label>
+                            <label class="option"><input type="radio" name="q9" value="b"> b) 1 None</label>
+                            <label class="option"><input type="radio" name="q9" value="c"> c) None 2</label>
+                            <label class="option"><input type="radio" name="q9" value="d"> d) Error</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>10. What is the time complexity of accessing an element in a dictionary by its key?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q10" value="a"> a) O(1)</label>
+                            <label class="option"><input type="radio" name="q10" value="b"> b) O(n)</label>
+                            <label class="option"><input type="radio" name="q10" value="c"> c) O(log n)</label>
+                            <label class="option"><input type="radio" name="q10" value="d"> d) O(n^2)</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>11. What is the output of the following code?</h3>
+                        <div class="code-block">
+def generator():
+    yield 1
+    yield 2
+    yield 3
+
+g = generator()
+print(next(g))
+print(next(g))
+                        </div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q11" value="a"> a) 1 1</label>
+                            <label class="option"><input type="radio" name="q11" value="b"> b) 1 2</label>
+                            <label class="option"><input type="radio" name="q11" value="c"> c) 1 3</label>
+                            <label class="option"><input type="radio" name="q11" value="d"> d) Error</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>12. Which of the following is NOT a valid way to create a set in Python?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q12" value="a"> a) set()</label>
+                            <label class="option"><input type="radio" name="q12" value="b"> b) {1, 2, 3}</label>
+                            <label class="option"><input type="radio" name="q12" value="c"> c) set([1, 2, 3])</label>
+                            <label class="option"><input type="radio" name="q12" value="d"> d) {1: 'one', 2: 'two'}</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>13. What is the output of the following code?</h3>
+                        <div class="code-block">
+class MyClass:
+    class_var = 0
+    def __init__(self):
+        self.instance_var = 0
+    def increment(self):
+        self.instance_var += 1
+        self.class_var += 1
+
+obj1 = MyClass()
+obj2 = MyClass()
+obj1.increment()
+obj2.increment()
+print(obj1.instance_var, obj1.class_var)
+print(obj2.instance_var, obj2.class_var)
+                        </div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q13" value="a"> a) 1 1, 1 1</label>
+                            <label class="option"><input type="radio" name="q13" value="b"> b) 1 2, 1 2</label>
+                            <label class="option"><input type="radio" name="q13" value="c"> c) 1 1, 1 2</label>
+                            <label class="option"><input type="radio" name="q13" value="d"> d) 1 2, 1 1</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>14. What is the purpose of the `__str__` method in Python classes?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q14" value="a"> a) To define how an object should be represented as a string</label>
+                            <label class="option"><input type="radio" name="q14" value="b"> b) To initialize class variables</label>
+                            <label class="option"><input type="radio" name="q14" value="c"> c) To compare two objects</label>
+                            <label class="option"><input type="radio" name="q14" value="d"> d) To delete an object</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>15. What is the output of the following code?</h3>
+                        <div class="code-block">
+def decorator(func):
+    def wrapper():
+        print("Before")
+        func()
+        print("After")
+    return wrapper
+
+@decorator
+def say_hello():
+    print("Hello")
+
+say_hello()
+                        </div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q15" value="a"> a) Hello</label>
+                            <label class="option"><input type="radio" name="q15" value="b"> b) Before Hello After</label>
+                            <label class="option"><input type="radio" name="q15" value="c"> c) Before After Hello</label>
+                            <label class="option"><input type="radio" name="q15" value="d"> d) Error</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>16. Which of the following is true about Python's garbage collection?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q16" value="a"> a) It uses reference counting</label>
+                            <label class="option"><input type="radio" name="q16" value="b"> b) It uses a mark-and-sweep algorithm</label>
+                            <label class="option"><input type="radio" name="q16" value="c"> c) It uses both reference counting and generational garbage collection</label>
+                            <label class="option"><input type="radio" name="q16" value="d"> d) Python doesn't have garbage collection</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>17. What is the output of the following code?</h3>
+                        <div class="code-block">
+import copy
+
+original = [[1, 2, 3], [4, 5, 6]]
+shallow = copy.copy(original)
+deep = copy.deepcopy(original)
+
+original[0][1] = 10
+print(shallow[0][1], deep[0][1])
+                        </div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q17" value="a"> a) 2 2</label>
+                            <label class="option"><input type="radio" name="q17" value="b"> b) 10 2</label>
+                            <label class="option"><input type="radio" name="q17" value="c"> c) 10 10</label>
+                            <label class="option"><input type="radio" name="q17" value="d"> d) Error</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>18. What is the purpose of the `__slots__` attribute in Python classes?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q18" value="a"> a) To define class methods</label>
+                            <label class="option"><input type="radio" name="q18" value="b"> b) To restrict the attributes that can be added to an instance</label>
+                            <label class="option"><input type="radio" name="q18" value="c"> c) To create class variables</label>
+                            <label class="option"><input type="radio" name="q18" value="d"> d) To define abstract methods</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>19. What is the output of the following code?</h3>
+                        <div class="code-block">
+class Meta(type):
+    def __new__(cls, name, bases, attrs):
+        attrs['x'] = 10
+        return super().__new__(cls, name, bases, attrs)
+
+class MyClass(metaclass=Meta):
+    pass
+
+obj = MyClass()
+print(obj.x)
+                        </div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q19" value="a"> a) 10</label>
+                            <label class="option"><input type="radio" name="q19" value="b"> b) None</label>
+                            <label class="option"><input type="radio" name="q19" value="c"> c) Error</label>
+                            <label class="option"><input type="radio" name="q19" value="d"> d) 0</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>20. Which of the following is NOT a valid magic method in Python?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q20" value="a"> a) __init__</label>
+                            <label class="option"><input type="radio" name="q20" value="b"> b) __str__</label>
+                            <label class="option"><input type="radio" name="q20" value="c"> c) __eq__</label>
+                            <label class="option"><input type="radio" name="q20" value="d"> d) __create__</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>21. What is the output of the following code?</h3>
+                        <div class="code-block">
+def func(a, b, c=3, d=4):
+    print(a, b, c, d)
+
+func(1, *(5,), **{'c': 9})
+                        </div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q21" value="a"> a) 1 5 3 4</label>
+                            <label class="option"><input type="radio" name="q21" value="b"> b) 1 5 9 4</label>
+                            <label class="option"><input type="radio" name="q21" value="c"> c) Error</label>
+                            <label class="option"><input type="radio" name="q21" value="d"> d) 1 5 3 9</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>22. What is the purpose of the `contextlib` module in Python?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q22" value="a"> a) To handle file I/O operations</label>
+                            <label class="option"><input type="radio" name="q22" value="b"> b) To create and manage context managers</label>
+                            <label class="option"><input type="radio" name="q22" value="c"> c) To handle network connections</label>
+                            <label class="option"><input type="radio" name="q22" value="d"> d) To manage database connections</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>23. What is the output of the following code?</h3>
+                        <div class="code-block">
+class A:
+    def __init__(self):
+        print("A")
+        super().__init__()
+
+class B:
+    def __init__(self):
+        print("B")
+        super().__init__()
+
+class C(A, B):
+    def __init__(self):
+        print("C")
+        super().__init__()
+
+C()
+                        </div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q23" value="a"> a) C A B</label>
+                            <label class="option"><input type="radio" name="q23" value="b"> b) C B A</label>
+                            <label class="option"><input type="radio" name="q23" value="c"> c) A B C</label>
+                            <label class="option"><input type="radio" name="q23" value="d"> d) Error</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>24. Which of the following is true about Python's Global Interpreter Lock (GIL)?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q24" value="a"> a) It allows multiple threads to execute Python bytecode at once</label>
+                            <label class="option"><input type="radio" name="q24" value="b"> b) It prevents multiple threads from executing Python bytecode at once</label>
+                            <label class="option"><input type="radio" name="q24" value="c"> c) It only affects CPython implementation</label>
+                            <label class="option"><input type="radio" name="q24" value="d"> d) Both b and c</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>25. What is the output of the following code?</h3>
+                        <div class="code-block">
+import asyncio
+
+async def foo():
+    print("start")
+    await asyncio.sleep(1)
+    print("end")
+
+asyncio.run(foo())
+                        </div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q25" value="a"> a) start</label>
+                            <label class="option"><input type="radio" name="q25" value="b"> b) end</label>
+                            <label class="option"><input type="radio" name="q25" value="c"> c) start end</label>
+                            <label class="option"><input type="radio" name="q25" value="d"> d) Error</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>26. What is the purpose of the `__all__` variable in Python modules?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q26" value="a"> a) To define all variables in a module</label>
+                            <label class="option"><input type="radio" name="q26" value="b"> b) To specify which names should be imported when using `from module import *`</label>
+                            <label class="option"><input type="radio" name="q26" value="c"> c) To create a list of all functions in a module</label>
+                            <label class="option"><input type="radio" name="q26" value="d"> d) To define abstract methods in a class</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>27. What is the output of the following code?</h3>
+                        <div class="code-block">
+class MyDict(dict):
+    def __setitem__(self, key, value):
+        super().__setitem(key, value * 2)
+
+d = MyDict()
+d['a'] = 1
+print(d['a'])
+                        </div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q27" value="a"> a) 1</label>
+                            <label class="option"><input type="radio" name="q27" value="b"> b) 2</label>
+                            <label class="option"><input type="radio" name="q27" value="c"> c) None</label>
+                            <label class="option"><input type="radio" name="q27" value="d"> d) Error</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>28. Which of the following is true about Python's memory management?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q28" value="a"> a) Python uses manual memory management</label>
+                            <label class="option"><input type="radio" name="q28" value="b"> b) Python uses automatic garbage collection</label>
+                            <label class="option"><input type="radio" name="q28" value="c"> c) Python doesn't have memory management</label>
+                            <label class="option"><input type="radio" name="q28" value="d"> d) Python uses static memory allocation</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>29. What is the output of the following code?</h3>
+                        <div class="code-block">
+from functools import lru_cache
+
+@lru_cache(maxsize=None)
+def fib(n):
+    if n < 2:
+        return n
+    return fib(n-1) + fib(n-2)
+
+print(fib(100))
+                        </div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q29" value="a"> a) 354224848179261915075</label>
+                            <label class="option"><input type="radio" name="q29" value="b"> b) Error: maximum recursion depth exceeded</label>
+                            <label class="option"><input type="radio" name="q29" value="c"> c) 100</label>
+                            <label class="option"><input type="radio" name="q29" value="d"> d) 0</label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>30. What is the purpose of the `__slots__` attribute in Python classes?</h3>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q30" value="a"> a) To define class methods</label>
+                            <label class="option"><input type="radio" name="q30" value="b"> b) To restrict the attributes that can be added to an instance</label>
+                            <label class="option"><input type="radio" name="q30" value="c"> c) To create class variables</label>
+                            <label class="option"><input type="radio" name="q30" value="d"> d) To define abstract methods</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="free-response-section" style="display: none;">
+                    <div class="question">
+                        <h3>Free Response Question 1: Implement a recursive function to calculate the factorial of a number.</h3>
+                        <div class="compiler-section">
+                            <div class="compiler-left">
+                                <div class="editor">
+                                    <div class="editor-header">
+                                        <span>Python Code</span>
+                                        <button class="run-button" onclick="runCode('code-editor-1', 'output-1', 'result-1')">
+                                            <i data-lucide="play"></i> Run
+                                        </button>
+                                    </div>
+                                    <textarea id="code-editor-1" spellcheck="false">
+def factorial(n):
+    # Your code here
+    pass
+
+# Test your function
+print(factorial(5))  # Should output 120
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="compiler-right">
+                                <div class="output-container">
+                                    <div class="output-header">Output</div>
+                                    <div id="output-1" class="output"></div>
+                                </div>
+                                <div class="output-container">
+                                    <div class="output-header">Autograder</div>
+                                    <div id="result-1" class="result"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h3>Free Response Question 2: Implement a class hierarchy for shapes (Circle and Rectangle) with a method to calculate area.</h3>
+                        <div class="compiler-section">
+                            <div class="compiler-left">
+                                <div class="editor">
+                                    <div class="editor-header">
+                                        <span>Python Code</span>
+                                        <button class="run-button" onclick="runCode('code-editor-2', 'output-2', 'result-2')">
+                                            <i data-lucide="play"></i> Run
+                                        </button>
+                                    </div>
+                                    <textarea id="code-editor-2" spellcheck="false">
+class Shape:
+    # Your code here
+    pass
+
+class Circle(Shape):
+    # Your code here
+    pass
+
+class Rectangle(Shape):
+    # Your code here
+    pass
+
+# Test your classes
+circle = Circle(5)
+rectangle = Rectangle(4, 6)
+print(f"Circle area: {circle.area()}")
+print(f"Rectangle area: {rectangle.area()}")
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="compiler-right">
+                                <div class="output-container">
+                                    <div class="output-header">Output</div>
+                                    <div id="output-2" class="output"></div>
+                                </div>
+                                <div class="output-container">
+                                    <div class="output-header">Autograder</div>
+                                    <div id="result-2" class="result"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add more free response questions here -->
+
+                </div>
+
+                <button type="submit">Submit Test</button>
+            </form>
+            <div id="result"></div>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function showSection(sectionId) {
+            document.getElementById('multiple-choice-section').style.display = sectionId === 'multiple-choice' ? 'block' : 'none';
+            document.getElementById('free-response-section').style.display = sectionId === 'free-response' ? 'block' : 'none';
+        }
+
+        function builtinRead(x) {
+            if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+                throw "File not found: '" + x + "'";
+            return Sk.builtinFiles["files"][x];
+        }
+
+        function runCode(editorId, outputId, resultId) {
+            const code = document.getElementById(editorId).value;
+            const outputElement = document.getElementById(outputId);
+            const resultElement = document.getElementById(resultId);
+            outputElement.textContent = "";
+            resultElement.textContent = "";
+
+            Sk.configure({
+                output: function(text) { outputElement.textContent += text; },
+                read: builtinRead,
+                __future__: Sk.python3
+            });
+
+            Sk.misceval.asyncToPromise(function() {
+                return Sk.importMainWithBody("<stdin>", false, code, true);
+            }).then(function() {
+                console.log("Success");
+                resultElement.textContent = "Code executed successfully!";
+                resultElement.style.color = "var(--success)";
+            }, function(error) {
+                console.log("Error: ", error);
+                resultElement.textContent = "Error: " + error.toString();
+                resultElement.style.color = "var(--error)";
+            });
+        }
+
+        document.getElementById('quiz-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let score = 0;
+            const answers = {
+                q1: 'b', q2: 'b', q3: 'b', q4: 'a', q5: 'b',
+                q6: 'c', q7: 'c', q8: 'a', q9: 'a', q10: 'a',
+                q11: 'b', q12: 'd', q13: 'b', q14: 'a', q15: 'b',
+                q16: 'c', q17: 'b', q18: 'b', q19: 'a', q20: 'd',
+                q21: 'b', q22: 'b', q23: 'a', q24: 'd', q25: 'c',
+                q26: 'b', q27: 'b', q28: 'b', q29: 'a', q30: 'b'
+            };
+
+            for (let question in answers) {
+                const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedAnswer && selectedAnswer.value === answers[question]) {
+                    score++;
+                }
+            }
+
+            // You may want to add logic here to evaluate free response questions
+
+            const resultElement = document.getElementById('result');
+            resultElement.textContent = `Your score: ${score} out of ${Object.keys(answers).length}`;
+            resultElement.style.color = score >= Object.keys(answers).length / 2 ? 'var(--success)' : 'var(--error)';
+        });
+    </script>
+</body>
+</html>
+

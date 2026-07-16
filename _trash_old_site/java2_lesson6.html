@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java 2 Guided Tutorials - Week 5: Lists</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #FF4081;
+            --accent: #FFC107;
+            --background: #f0f4f8;
+            --surface: #ffffff;
+            --border: #e0e7ff;
+            --text: #2d3748;
+            --text-light: #4a5568;
+            --success: #48bb78;
+            --error: #f56565;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 5px;
+            width: 100%;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 2rem auto;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .exercise-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item:hover {
+            background: var(--primary);
+            color: var(--surface);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item.active {
+            background: var(--primary);
+            color: var(--surface);
+            border-color: var(--primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .main-content {
+            flex: 1;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .tutorial-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .tutorial-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .content-box {
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .highlight-box {
+            background-color: #e6f7ff;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .step-box {
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            margin-right: 0.5rem;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+        }
+
+        iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .quiz-container {
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .quiz-question {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-options {
+            list-style-type: none;
+        }
+
+        .quiz-option {
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-feedback {
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+
+        .button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .autograder-container {
+            margin-top: 1.5rem;
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .autograder-input {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .autograder-feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .autograder-feedback.success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .autograder-feedback.error {
+            background-color: var(--error);
+            color: white;
+        }
+
+        .common-errors {
+            margin-top: 1rem;
+        }
+
+        .common-errors summary {
+            cursor: pointer;
+            padding: 0.5rem;
+            background-color: var(--background);
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .common-errors ul {
+            margin-top: 0.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .common-errors li {
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="#" target="_blank" rel="noopener noreferrer">Enroll</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="exercise-list">
+                <div class="exercise-item active" data-exercise="overview">
+                    <span>Lesson Overview</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise1">
+                    <span>1. Introduction to Lists</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise2">
+                    <span>2. ArrayList</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise4">
+                    <span>3. List Operations</span>
+                </div>
+                <div class="exercise-item" data-exercise="exercise5">
+                    <span>4. Iterating Through Lists</span>
+                </div>
+                <div class="exercise-item" data-exercise="quiz">
+                    <span>5. Quiz</span>
+                </div>
+                <div class="exercise-item" data-exercise="project">
+                    <span>6. Weekly Project</span>
+                </div>
+                <div class="exercise-item" onclick="window.location.href='java_tutorials.html'">
+                    <span>Return to Home</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div id="tutorial-content">
+                <!-- Content will be dynamically loaded here -->
+            </div>
+            <div id="compiler-container" style="display: none;">
+                <iframe src="https://www.jdoodle.com/online-java-compiler"></iframe>
+            </div>
+            <div id="autograder-container" class="autograder-container" style="display: none;">
+                <h3 class="text-xl font-semibold mb-2">Autograder</h3>
+                <textarea id="autograder-input" class="autograder-input" placeholder="Paste your code output here..."></textarea>
+                <button onclick="checkOutput()" class="button">Check Output</button>
+                <div id="autograder-feedback" class="autograder-feedback"></div>
+            </div>
+            <details class="common-errors">
+                <summary>Common Java Errors</summary>
+                <ul>
+                    <li>
+                        <strong>Error:</strong> "java.util.ConcurrentModificationException"
+                        <br>
+                        <strong>Cause:</strong> Modifying a list while iterating over it using an enhanced for loop or iterator
+                        <br>
+                        <strong>Fix:</strong> Use an iterator's remove() method or a traditional for loop with index
+                    </li>
+                    <li>
+                        <strong>Error:</strong> "java.lang.IndexOutOfBoundsException"
+                        <br>
+                        <strong>Cause:</strong> Trying to access a list element at an invalid index
+                        <br>
+                        <strong>Fix:</strong> Ensure that the index is within the bounds of the list (0 to size-1)
+                    </li>
+                </ul>
+            </details>
+        </main>
+    </div>
+    <!-- Include Scripts -->
+    <script src="config.js"></script>
+    <script>
+        document.querySelectorAll(".enroll-button").forEach(button => {
+            button.href = enrollLink;
+        });
+    </script>
+    <script>
+        lucide.createIcons();
+
+        const exercises = [
+            {
+                title: "Lesson Overview",
+                content: `
+                    <h1 class="tutorial-title">Java 2 Guided Tutorials - Week 5: Lists</h1>
+                    <div class="content-box">
+                        <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
+                        <p class="tutorial-text">
+                            Welcome to Week 5 of Java 2! This week, we'll dive into Lists, a fundamental data structure in Java. Lists are ordered collections that allow duplicate elements and provide powerful ways to store and manipulate data.
+                        </p>
+                        <div class="highlight-box">
+                            <h3 class="text-xl font-semibold mb-2">Lesson Overview:</h3>
+                            <ul class="list-disc list-inside">
+                                <li>Introduction to Lists</li>
+                                <li>ArrayList</li>
+                                <li>LinkedList</li>
+                                <li>List Operations</li>
+                                <li>Iterating Through Lists</li>
+                                <li>Quiz to test your knowledge</li>
+                                <li>Weekly project to apply what you've learned</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">
+                            By the end of this week, you'll have a solid understanding of Lists in Java and how to use them effectively in your programs. Let's get started!
+                        </p>
+                    </div>
+                `,
+                showCompiler: false,
+                showAutograder: false,
+                expectedOutput: ""
+            },
+            {
+                title: "Introduction to Lists",
+                content: `
+                    <h1 class="tutorial-title">1. Introduction to Lists</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">What are Lists?</h3>
+                        <p class="tutorial-text">
+                            In Java, a List is an ordered collection (also known as a sequence) that allows duplicate elements. It is part of the Java Collections Framework and is defined in the java.util package.
+                        </p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Key Characteristics of Lists:</h4>
+                            <ul class="list-disc list-inside">
+                                <li>Ordered collection (elements have a specific order)</li>
+                                <li>Allow duplicate elements</li>
+                                <li>Elements can be accessed by their index</li>
+                                <li>Dynamic size (can grow or shrink as needed)</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">The List interface in Java has several implementations, including ArrayList and LinkedList, which we'll explore in detail.</p>
+                        <pre><code>import java.util.List;
+import java.util.ArrayList;
+
+public class ListExample {
+    public static void main(String[] args) {
+        // Creating a List of Strings
+        List<String> fruits = new ArrayList<>();
+
+        // Adding elements to the List
+        fruits.add("Apple");
+        fruits.add("Banana");
+        fruits.add("Orange");
+
+        // Printing the List
+        System.out.println("Fruits: " + fruits);
+
+        // Accessing elements by index
+        System.out.println("First fruit: " + fruits.get(0));
+
+        // Checking if an element exists
+        System.out.println("Contains 'Banana': " + fruits.contains("Banana"));
+
+        // Getting the size of the List
+        System.out.println("Number of fruits: " + fruits.size());
+    }
+}</code></pre>
+                        <p class="tutorial-text">This example demonstrates creating a List, adding elements, accessing elements, and performing basic operations. Try running this code in the compiler below and experiment with different List operations.</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Fruits: [Apple, Banana, Orange]\nFirst fruit: Apple\nContains 'Banana': true\nNumber of fruits: 3"
+            },
+            {
+                title: "ArrayList",
+                content: `
+                    <h1 class="tutorial-title">2. ArrayList</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Understanding ArrayList</h3>
+                        <p class="tutorial-text">
+                            ArrayList is one of the most commonly used List implementations in Java. It's backed by a dynamic array, which means it can grow or shrink as needed.
+                        </p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Key Features of ArrayList:</h4>
+                            <ul class="list-disc list-inside">
+                                <li>Fast random access (constant-time complexity)</li>
+                                <li>Good for storing and accessing data</li>
+                                <li>Inefficient for inserting and removing elements (except at the end)</li>
+                                <li>Not synchronized (not thread-safe)</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Here's an example demonstrating the use of ArrayList:</p>
+                        <pre><code>import java.util.ArrayList;
+
+public class ArrayListExample {
+    public static void main(String[] args) {
+        ArrayList<Integer> numbers = new ArrayList<>();
+
+        // Adding elements
+        numbers.add(10);
+        numbers.add(20);
+        numbers.add(30);
+
+        System.out.println("ArrayList: " + numbers);
+
+        // Adding an element at a specific index
+        numbers.add(1, 15);
+        System.out.println("After adding 15 at index 1: " + numbers);
+
+        // Removing an element
+        numbers.remove(2);
+        System.out.println("After removing element at index 2: " + numbers);
+
+        // Updating an element
+        numbers.set(0, 5);
+        System.out.println("After updating element at index 0: " + numbers);
+
+        // Checking if an element exists
+        System.out.println("Contains 20? " + numbers.contains(20));
+
+        // Getting the size
+        System.out.println("Size of ArrayList: " + numbers.size());
+    }
+}</code></pre>
+                        <p class="tutorial-text">Try running this code in the compiler and experiment with different ArrayList operations. Can you add more elements or perform other operations on the ArrayList?</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "ArrayList: [10, 20, 30]\nAfter adding 15 at index 1: [10, 15, 20, 30]\nAfter removing element at index 2: [10, 15, 30]\nAfter updating element at index 0: [5, 15, 30]\nContains 20? false\nSize of ArrayList: 3"
+            },
+            {
+                title: "List Operations",
+                content: `
+                    <h1 class="tutorial-title">4. List Operations</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Common List Operations</h3>
+                        <p class="tutorial-text">
+                            Lists in Java provide a rich set of operations for manipulating and accessing data. Let's explore some common operations that can be performed on both ArrayList and LinkedList.
+                        </p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Key List Operations:</h4>
+                            <ul class="list-disc list-inside">
+                                <li>Adding elements</li>
+                                <li>Removing elements</li>
+                                <li>Accessing elements</li>
+                                <li>Searching for elements</li>
+                                <li>Sublist operations</li>
+                                <li>Sorting</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Here's an example demonstrating various List operations:</p>
+                        <pre><code>import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class ListOperationsExample {
+    public static void main(String[] args) {
+        List<String> colors = new ArrayList<>();
+
+        // Adding elements
+        colors.add("Red");
+        colors.add("Green");
+        colors.add("Blue");
+        colors.add("Yellow");
+        System.out.println("Original list: " + colors);
+
+        // Adding at a specific index
+        colors.add(2, "Purple");
+        System.out.println("After adding Purple at index 2: " + colors);
+
+        // Removing an element
+        colors.remove("Green");
+        System.out.println("After removing Green: " + colors);
+
+        // Removing by index
+        colors.remove(1);
+        System.out.println("After removing element at index 1: " + colors);
+
+        // Checking if an element exists
+        System.out.println("Contains Blue? " + colors.contains("Blue"));
+
+        // Getting the index of an element
+        System.out.println("Index of Yellow: " + colors.indexOf("Yellow"));
+
+        // Getting a sublist
+        List<String> subList = colors.subList(0, 2);
+        System.out.println("Sublist (0 to 2): " + subList);
+
+        // Sorting the list
+        Collections.sort(colors);
+        System.out.println("Sorted list: " + colors);
+
+        // Reversing the list
+        Collections.reverse(colors);
+        System.out.println("Reversed list: " + colors);
+
+        // Clearing the list
+        colors.clear();
+        System.out.println("After clearing: " + colors);
+        System.out.println("Is the list empty? " + colors.isEmpty());
+    }
+}</code></pre>
+                        <p class="tutorial-text">Run this code in the compiler and observe how different List operations affect the collection. Try modifying the code to perform additional operations or use different data types.</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Original list: [Red, Green, Blue, Yellow]\nAfter adding Purple at index 2: [Red, Green, Purple, Blue, Yellow]\nAfter removing Green: [Red, Purple, Blue, Yellow]\nAfter removing element at index 1: [Red, Blue, Yellow]\nContains Blue? true\nIndex of Yellow: 2\nSublist (0 to 2): [Red, Blue]\nSorted list: [Blue, Red, Yellow]\nReversed list: [Yellow, Red, Blue]\nAfter clearing: []\nIs the list empty? true"
+            },
+            {
+                title: "Iterating Through Lists",
+                content: `
+                    <h1 class="tutorial-title">5. Iterating Through Lists</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Ways to Iterate Through Lists</h3>
+                        <p class="tutorial-text">
+                            Iterating through a List is a common operation in Java. There are several ways to do this, each with its own advantages and use cases.
+                        </p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Common Iteration Methods:</h4>
+                            <ul class="list-disc list-inside">
+                                <li>For-each loop (enhanced for loop)</li>
+                                <li>Traditional for loop</li>
+                                <li>Iterator</li>
+                                <li>ListIterator</li>
+                                <li>Java 8 forEach() method with lambda expressions</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Here's an example demonstrating different ways to iterate through a List:</p>
+                        <pre><code>import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+public class ListIterationExample {
+    public static void main(String[] args) {
+        List<String> fruits = new ArrayList<>();
+        fruits.add("Apple");
+        fruits.add("Banana");
+        fruits.add("Cherry");
+        fruits.add("Date");
+
+        // 1. For-each loop
+        System.out.println("Using for-each loop:");
+        for (String fruit : fruits) {
+            System.out.println(fruit);
+        }
+
+        // 2. Traditional for loop
+        System.out.println("\nUsing traditional for loop:");
+        for (int i = 0; i < fruits.size(); i++) {
+            System.out.println(fruits.get(i));
+        }
+
+        // 3. Iterator
+        System.out.println("\nUsing Iterator:");
+        Iterator<String> iterator = fruits.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+
+        // 4. ListIterator (allows backward iteration)
+        System.out.println("\nUsing ListIterator (backward):");
+        ListIterator<String> listIterator = fruits.listIterator(fruits.size());
+        while (listIterator.hasPrevious()) {
+            System.out.println(listIterator.previous());
+        }
+
+        // 5. Java 8 forEach() method with lambda
+        System.out.println("\nUsing forEach() with lambda:");
+        fruits.forEach(fruit -> System.out.println(fruit));
+
+        // or more concisely:
+        // fruits.forEach(System.out::println);
+    }
+}</code></pre>
+                        <p class="tutorial-text">Run this code in the compiler and observe the<cut_off_point>
+pre>
+                        <p class="tutorial-text">Run this code in the compiler and observe the
+</cut_off_point>
+
+ different ways of iterating through the List. Each method has its own advantages:
+
+- For-each loop is concise and easy to read.
+- Traditional for loop allows you to use the index if needed.
+- Iterator is useful when you need to remove elements while iterating.
+- ListIterator allows bidirectional traversal and modification.
+- forEach() with lambda is a more functional approach introduced in Java 8.
+
+Try modifying the code to perform operations on the elements while iterating, such as filtering or transforming the data.</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "Using for-each loop:\nApple\nBanana\nCherry\nDate\n\nUsing traditional for loop:\nApple\nBanana\nCherry\nDate\n\nUsing Iterator:\nApple\nBanana\nCherry\nDate\n\nUsing ListIterator (backward):\nDate\nCherry\nBanana\nApple\n\nUsing forEach() with lambda:\nApple\nBanana\nCherry\nDate"
+            },
+            {
+                title: "Quiz",
+                content: `
+                    <h1 class="tutorial-title">6. Lists Quiz</h1>
+                    <div class="quiz-container">
+                        <form id="quizForm">
+                            <div class="question">
+                                <p class="quiz-question">1. Which of the following is NOT a characteristic of Java Lists?</p>
+                                <ul class="quiz-options">
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q1" value="a" id="q1a">
+                                        <label for="q1a">Ordered collection</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q1" value="b" id="q1b">
+                                        <label for="q1b">Allow duplicate elements</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q1" value="c" id="q1c">
+                                        <label for="q1c">Elements must be unique</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="question">
+                                <p class="quiz-question">2. Which List implementation is better for frequent insertions and deletions in the middle of the list?</p>
+                                <ul class="quiz-options">
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q2" value="a" id="q2a">
+                                        <label for="q2a">ArrayList</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q2" value="b" id="q2b">
+                                        <label for="q2b">LinkedList</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q2" value="c" id="q2c">
+                                        <label for="q2c">Both perform equally</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="question">
+                                <p class="quiz-question">3. Which method is used to add an element at a specific index in a List?</p>
+                                <ul class="quiz-options">
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q3" value="a" id="q3a">
+                                        <label for="q3a">list.add(element)</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q3" value="b" id="q3b">
+                                        <label for="q3b">list.add(index, element)</label>
+                                    </li>
+                                    <li class="quiz-option">
+                                        <input type="radio" name="q3" value="c" id="q3c">
+                                        <label for="q3c">list.set(index, element)</label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                        <button onclick="submitQuiz()" class="button mt-4">Submit Quiz</button>
+                        <p id="quizResult" class="quiz-feedback"></p>
+                    </div>
+                `,
+                showCompiler: false,
+                showAutograder: false,
+                expectedOutput: ""
+            },
+            {
+                title: "Weekly Project",
+                content: `
+                    <h1 class="tutorial-title">7. Weekly Project: Task Manager</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Project Description</h3>
+                        <p class="tutorial-text">For this week's project, you'll create a simple Task Manager application using Lists. This project will help you apply the concepts you've learned about Lists and practice working with user input.</p>
+                        <div class="highlight-box">
+                            <h4 class="text-lg font-semibold mb-2">Requirements:</h4>
+                            <ul class="list-disc list-inside mb-4">
+                                <li>Create a Task class with properties like title, description, and status (completed or not)</li>
+                                <li>Implement a TaskManager class that uses a List to store Task objects</li>
+                                <li>Include methods to add tasks, mark tasks as completed, remove tasks, and list all tasks</li>
+                                <li>Create a simple menu-driven interface for user interaction</li>
+                                <li>Use appropriate List methods for managing the tasks</li>
+                                <li>Implement error handling for invalid inputs</li>
+                            </ul>
+                        </div>
+                        <p class="tutorial-text">Here's a template to get you started:</p>
+                        <pre><code>import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Task {
+    // Implement Task class
+}
+
+class TaskManager {
+    private List<Task> tasks;
+
+    public TaskManager() {
+        tasks = new ArrayList<>();
+    }
+
+    // Implement methods for managing tasks
+}
+
+public class TaskManagerApp {
+    public static void main(String[] args) {
+        TaskManager manager = new TaskManager();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\n1. Add Task");
+            System.out.println("2. Mark Task as Completed");
+            System.out.println("3. Remove Task");
+            System.out.println("4. List All Tasks");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    // Implement add task
+                    break;
+                case 2:
+                    // Implement mark task as completed
+                    break;
+                case 3:
+                    // Implement remove task
+                    break;
+                case 4:
+                    // Implement list all tasks
+                    break;
+                case 5:
+                    System.out.println("Exiting Task Manager. Goodbye!");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+}</code></pre>
+                        <p class="tutorial-text">Implement the Task class and the methods in the TaskManager class. Use the List operations we've learned to manage the tasks effectively. Once you've completed the implementation, use the compiler to test your Task Manager application. Make sure to handle different scenarios, such as adding multiple tasks, marking them as completed, and removing tasks.</p>
+                    </div>
+                `,
+                showCompiler: true,
+                showAutograder: true,
+                expectedOutput: "1. Add Task\n2. Mark Task as Completed\n3. Remove Task\n4. List All Tasks\n5. Exit\nEnter your choice: 1\nTask added: Buy groceries\n1. Add Task\n2. Mark Task as Completed\n3. Remove Task\n4. List All Tasks\n5. Exit\nEnter your choice: 4\nTasks:\n1. Buy groceries (Not Completed)\n1. Add Task\n2. Mark Task as Completed\n3. Remove Task\n4. List All Tasks\n5. Exit\nEnter your choice: 2\nTask marked as completed: Buy groceries\n1. Add Task\n2. Mark Task as Completed\n3. Remove Task\n4. List All Tasks\n5. Exit\nEnter your choice: 4\nTasks:\n1. Buy groceries (Completed)\n1. Add Task\n2. Mark Task as Completed\n3. Remove Task\n4. List All Tasks\n5. Exit\nEnter your choice: 5\nExiting Task Manager. Goodbye!"
+            }
+        ];
+
+        let currentExercise = 0;
+
+        function loadExercise(index) {
+            const exercise = exercises[index];
+            document.getElementById('tutorial-content').innerHTML = exercise.content;
+            document.getElementById('compiler-container').style.display = exercise.showCompiler ? 'block' : 'none';
+            document.getElementById('autograder-container').style.display = exercise.showAutograder ? 'block' : 'none';
+            if (exercise.showAutograder) {
+                document.getElementById('autograder-input').value = '';
+                document.getElementById('autograder-feedback').textContent = '';
+            }
+            document.querySelectorAll('.exercise-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+            currentExercise = index;
+        }
+
+        function checkOutput() {
+            const userOutput = document.getElementById('autograder-input').value.trim();
+            const expectedOutput = exercises[currentExercise].expectedOutput;
+            const feedback = document.getElementById('autograder-feedback');
+
+            if (expectedOutput === "") {
+                feedback.textContent = "Great job on your exercise! Your output looks good.";
+                feedback.className = 'autograder-feedback success';
+            } else if (userOutput === expectedOutput) {
+                feedback.textContent = "Success! Your output matches the expected result.";
+                feedback.className = 'autograder-feedback success';
+            } else {
+                feedback.textContent = `Not quite there yet. Expected output:\n${expectedOutput}\n\nYour output:\n${userOutput}\n\nKeep trying!`;
+                feedback.className = 'autograder-feedback error';
+            }
+        }
+
+        document.querySelectorAll('.exercise-item').forEach((item, index) => {
+            item.addEventListener('click', () => loadExercise(index));
+        });
+
+        function submitQuiz() {
+            const answers = {
+                q1: 'c',
+                q2: 'b',
+                q3: 'b'
+            };
+            let score = 0;
+            let feedback = '';
+
+            for (let i = 1; i <= 3; i++) {
+                const selectedAnswer = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selectedAnswer) {
+                    if (selectedAnswer.value === answers[`q${i}`]) {
+                        score++;
+                        feedback += `Question ${i}: Correct\n`;
+                    } else {
+                        feedback += `Question ${i}: Incorrect\n`;
+                    }
+                } else {
+                    feedback += `Question ${i}: Not answered\n`;
+                }
+            }
+
+            const result = document.getElementById('quizResult');
+            result.textContent = `You scored ${score} out of 3.\n\n${feedback}`;
+        }
+
+        // Load the first exercise by default
+        loadExercise(0);
+    </script>
+</body>
+</html>
+

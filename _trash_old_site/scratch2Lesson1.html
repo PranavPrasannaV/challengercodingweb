@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scratch 2 - Lesson 1: Pong Game (1 Player) - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #FF4081;
+            --accent: #FFC107;
+            --background: #f0f4f8;
+            --surface: #ffffff;
+            --border: #e0e7ff;
+            --text: #2d3748;
+            --text-light: #4a5568;
+            --success: #48bb78;
+            --error: #f56565;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 5px;
+            width: 100%;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 2rem auto;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .exercise-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item:hover {
+            background: var(--primary);
+            color: var(--surface);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-item.active {
+            background: var(--primary);
+            color: var(--surface);
+            border-color: var(--primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .main-content {
+            flex: 1;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .tutorial-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .tutorial-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .content-box {
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .highlight-box {
+            background-color: #e6f7ff;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .step-box {
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            margin-right: 0.5rem;
+        }
+
+        .image-block {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .image-caption {
+            text-align: center;
+            font-style: italic;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+
+        .interactive-demo {
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            background-color: #f8f9fa;
+        }
+
+        .demo-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .demo-button {
+            padding: 0.5rem 1rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .demo-button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+        }
+        .container {
+            max-width: 100%;
+            width: 100%;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            margin-left: auto;
+            margin-right: auto;
+            box-sizing: border-box;
+        }
+
+        @media (min-width: 640px) {
+            .container {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                padding-left: 4rem;
+                padding-right: 4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="#" target="_blank" rel="noopener noreferrer">Enroll</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="exercise-list">
+                <div class="exercise-item" data-exercise="overview">
+                    <span>Lesson Overview</span>
+                </div>
+                <div class="exercise-item" data-exercise="setup">
+                    <span>1. Setting Up the Game</span>
+                </div>
+                <div class="exercise-item" data-exercise="paddle">
+                    <span>2. Creating the Paddle</span>
+                </div>
+                <div class="exercise-item" data-exercise="ball">
+                    <span>3. Adding the Ball</span>
+                </div>
+                <div class="exercise-item" data-exercise="scoring">
+                    <span>4. Scoring and Game Over</span>
+                </div>
+                <div class="exercise-item" data-exercise="project">
+                    <span>5. Mini-Project</span>
+                </div>
+                <div class="exercise-item" onclick="window.location.href='scratch2_tutorials.html'">
+                    <span>Return to Home</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div id="tutorial-content"></div>
+        </main>
+    </div>
+
+    <!-- Include Scripts -->
+    <script src="config.js"></script>
+    <script>
+        document.querySelectorAll(".enroll-button").forEach(button => {
+            button.href = enrollLink;
+        });
+    </script>
+    <script>
+        lucide.createIcons();
+
+        const exercises = [
+            {
+                title: "Lesson Overview",
+                content: `
+                    <h1 class="tutorial-title">Scratch 2 - Lesson 1: Pong Game (1 Player)</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Check out the final project below!</h3>
+                        <iframe src="https://scratch.mit.edu/projects/10128515/embed" allowtransparency="true" width="485" height="402" frameborder="0" scrolling="no" allowfullscreen></iframe>
+                        <p class="image-caption">Interactive Pong Game Preview</p>
+                    </div>
+                    <div class="content-box">
+                        <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
+                        <p class="tutorial-text">
+                            In this lesson, you'll create a classic 1-player Pong game using Scratch. You'll learn about sprite creation, user input, game physics, score tracking, and game state management.
+                        </p>
+                        <div class="highlight-box">
+                            <h3 class="text-xl font-semibold mb-2">Game Overview:</h3>
+                            <ul class="list-disc list-inside">
+                                <li>Control a paddle on the left side of the screen using your mouse.</li>
+                                <li>Keep the bouncing ball in play by hitting it with your paddle.</li>
+                                <li>Score points for each successful hit.</li>
+                                <li>The game ends if the ball passes your paddle.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="quiz-container">
+                        <h3 class="text-xl font-semibold mb-2">Quick Quiz</h3>
+                        <p class="quiz-question">What is the main goal of the player in our Pong game?</p>
+                        <ul class="quiz-options">
+                            <li class="quiz-option">
+                                <input type="radio" id="q1a" name="q1" value="a">
+                                <label for="q1a">To catch the ball with the paddle</label>
+                            </li>
+                            <li class="quiz-option">
+                                <input type="radio" id="q1b" name="q1" value="b">
+                                <label for="q1b">To keep the ball in play by bouncing it off the paddle</label>
+                            </li>
+                            <li class="quiz-option">
+                                <input type="radio" id="q1c" name="q1" value="c">
+                                <label for="q1c">To move the paddle as fast as possible</label>
+                            </li>
+                        </ul>
+                        <button onclick="checkQuiz('q1', 'b')" class="mt-4 bg-primary text-white px-4 py-2 rounded">Check Answer</button>
+                        <p id="q1-feedback" class="quiz-feedback"></p>
+                    </div>
+                `
+            },
+            {
+                title: "Setting Up the Game",
+                content: `
+                    <h1 class="tutorial-title">1. Setting Up the Game</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Creating the Backdrop</h3>
+                        <p class="tutorial-text">Let's set up our game's playing field by creating a simple backdrop.</p>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Click on the "Stage" pane in the bottom-right corner.</p>
+                            <p><span class="step-number">2</span> Click the "Backdrops" tab at the top of the middle pane.</p>
+                            <p><span class="step-number">3</span> Choose "Paint" to create a new backdrop.</p>
+                            <p><span class="step-number">4</span> Use the fill tool to color the entire backdrop with a dark color.</p>
+                        </div>
+                        <div class="highlight-box">
+                            <p><strong>Tip:</strong> A dark backdrop helps the ball and paddle stand out, making the game easier to play.</p>
+                        </div>
+                    </div>
+
+                `
+            },
+            {
+                title: "Creating the Paddle",
+                content: `
+                    <h1 class="tutorial-title">2. Creating the Paddle</h1>
+                    <div class="interactive-demo">
+                        <h3 class="text-xl font-semibold mb-2">Interactive Paddle Demo</h3>
+                        <p>Move your mouse up and down over this area to see how the paddle would move:</p>
+                        <div id="paddleDemo" style="width: 300px; height: 400px; background-color: #000; position: relative;">
+                            <div id="paddle" style="width: 20px; height: 100px; background-color: #fff; position: absolute; left: 20px;"></div>
+                        </div>
+                    </div>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 1: Drawing the Paddle</h3>
+                        <p class="tutorial-text">Now, let's create the player's paddle. In Pong, the paddle is usually a simple rectangle.</p>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Click the "Choose a Sprite" button at the bottom of the Sprite list.</p>
+                            <p><span class="step-number">2</span> Select "Paint" to create a new sprite.</p>
+                            <p><span class="step-number">3</span> Use the Rectangle tool to draw a tall, thin rectangle.</p>
+                            <p><span class="step-number">4</span> Color it white or any color that contrasts with your backdrop.</p>
+                            <p><span class="step-number">5</span> Name your sprite "Paddle" in the sprite info pane.</p>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 2: Positioning the Paddle</h3>
+                        <p class="tutorial-text">Let's position our paddle on the left side of the screen.</p>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> In the Sprite info pane, set the x position to a negative number (like -200) to move it to the left.</p>
+                            <p><span class="step-number">2</span> Set the y position to 0 to center it vertically.</p>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 3: Moving the Paddle</h3>
+                        <p class="tutorial-text">Now, let's make the paddle follow the mouse's vertical movement.</p>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Go to the "Scripts" tab for your Paddle sprite.</p>
+                            <p><span class="step-number">2</span> Drag out a "when green flag clicked" block.</p>
+                            <p><span class="step-number">3</span> Attach a "forever" block underneath it.</p>
+                            <p><span class="step-number">4</span> Inside the forever block, add a "go to x: [] y: []" block.</p>
+                            <p><span class="step-number">5</span> Set the x value to your paddle's x position (like -200).</p>
+                            <p><span class="step-number">6</span> For the y value, use the "mouse y" block.</p>
+                        </div>
+                        <div class="highlight-box">
+                            <p><strong>Explanation:</strong> This script continuously updates the paddle's position to match the mouse's y-coordinate, creating smooth vertical movement.</p>
+                        </div>
+                    </div>
+
+                    <div class="quiz-container">
+                        <h3 class="text-xl font-semibold mb-2">Quick Quiz</h3>
+                        <p class="quiz-question">Which Scratch block would you use to make the paddle follow the mouse continuously?</p>
+                        <ul class="quiz-options">
+                            <li class="quiz-option">
+                                <input type="radio" id="q3a" name="q3" value="a">
+                                <label for="q3a">When space key pressed</label>
+                            </li>
+                            <li class="quiz-option">
+                                <input type="radio" id="q3b" name="q3" value="b">
+                                <label for="q3b">Repeat 10 times</label>
+                            </li>
+                            <li class="quiz-option">
+                                <input type="radio" id="q3c" name="q3" value="c">
+                                <label for="q3c">Forever</label>
+                            </li>
+                        </ul>
+                        <button onclick="checkQuiz('q3', 'c')" class="mt-4 bg-primary text-white px-4 py-2 rounded">Check Answer</button>
+                        <p id="q3-feedback" class="quiz-feedback"></p>
+                    </div>
+                `
+            },
+            {
+                title: "Adding the Ball",
+                content: `
+                    <h1 class="tutorial-title">3. Adding the Ball</h1>
+                    <div class="interactive-demo">
+                        <h3 class="text-xl font-semibold mb-2">Interactive Ball Movement Demo</h3>
+                        <p>Click "Start" to see how the ball would move and bounce:</p>
+                        <div id="ballDemo" style="width: 300px; height: 400px; background-color: #000; position: relative;">
+                            <div id="ball" style="width: 20px; height: 20px; background-color: #fff; border-radius: 50%; position: absolute;"></div>
+                        </div>
+                        <button id="startBallDemo" class="mt-4 bg-primary text-white px-4 py-2 rounded">Start</button>
+                        <button id="stopBallDemo" class="mt-4 bg-secondary text-white px-4 py-2 rounded">Stop</button>
+                    </div>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 1: Creating the Ball</h3>
+                        <p class="tutorial-text">Let's create the ball that will bounce around our game.</p>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Click the "Choose a Sprite" button and select "Paint".</p>
+                            <p><span class="step-number">2</span> Use the Circle tool to draw a small circle.</p>
+                            <p><span class="step-number">3</span> Color it white or any color that contrasts with the backdrop.</p>
+                            <p><span class="step-number">4</span> Name your sprite "Ball" in the sprite info pane.</p>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 2: Making the Ball Move</h3>
+                        <p class="tutorial-text">Now, let's make our ball move around the screen.</p>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Go to the "Scripts" tab for your Ball sprite.</p>
+                            <p><span class="step-number">2</span> Add a "when green flag clicked" block.</p>
+                            <p><span class="step-number">3</span> Attach a "forever" block.</p>
+                            <p><span class="step-number">4</span> Inside the forever block, add a "move 10 steps" block.</p>
+                            <p><span class="step-number">5</span> Add an "if on edge, bounce" block after the move block.</p>
+                        </div>
+                        <div class="highlight-box">
+                            <p><strong>Explanation:</strong> This script makes the ball move continuously and bounce off the edges of the screen.</p>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 3: Ball and Paddle Interaction</h3>
+                        <p class="tutorial-text">Let's make the ball bounce off the paddle.</p>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Inside your forever loop, after the "if on edge, bounce" block, add an "if then" block.</p>
+                            <p><span class="step-number">2</span> In the condition of the if block, add a "touching (Paddle)?" block.</p>
+                            <p><span class="step-number">3</span> Inside the if block, add a "point in direction (pick random (-90) to (90))" block.</p>
+                        </div>
+                        <div class="highlight-box">
+                            <p><strong>Explanation:</strong> This makes the ball change to a random direction between straight up and straight down whenever it touches the paddle, creating a bounce effect.</p>
+                        </div>
+                    </div>
+
+                    <div class="quiz-container">
+                        <h3 class="text-xl font-semibold mb-2">Quick Quiz</h3>
+                        <p class="quiz-question">What Scratch block would you use to make the ball bounce off the edges of the screen?</p>
+                        <ul class="quiz-options">
+                            <li class="quiz-option">
+                                <input type="radio" id="q4a" name="q4" value="a">
+                                <label for="q4a">Move 10 steps</label>
+                            </li>
+                            <li class="quiz-option">
+                                <input type="radio" id="q4b" name="q4" value="b">
+                                <label for="q4b">If on edge, bounce</label>
+                            </li>
+                            <li class="quiz-option">
+                                <input type="radio" id="q4c" name="q4" value="c">
+                                <label for="q4c">Turn 15 degrees</label>
+                            </li>
+                        </ul>
+                        <button onclick="checkQuiz('q4', 'b')" class="mt-4 bg-primary text-white px-4 py-2 rounded">Check Answer</button>
+                        <p id="q4-feedback" class="quiz-feedback"></p>
+                    </div>
+                `
+            },
+            {
+                title: "Scoring and Game Over",
+                content: `
+                    <h1 class="tutorial-title">4. Scoring and Game Over</h1>
+                    <div class="interactive-demo">
+                        <h3 class="text-xl font-semibold mb-2">Interactive Scoring Demo</h3>
+                        <p>Click the ball to simulate scoring points:</p>
+                        <div id="scoreDemo" style="width: 300px; height: 200px; background-color: #000; position: relative;">
+                            <div id="scoreBall" style="width: 50px; height: 50px; background-color: #fff; border-radius: 50%; position: absolute; top: 75px; left: 125px; cursor: pointer;"></div>
+                            <div id="scoreDisplay" style="position: absolute; top: 10px; left: 10px; color: #fff; font-size: 24px;">Score: 0</div>
+                        </div>
+                    </div>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 1: Creating a Score Variable</h3>
+                        <p class="tutorial-text">Let's add a scoring system to our game.</p>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Go to the "Variables" section and click "Make a Variable".</p>
+                            <p><span class="step-number">2</span> Name it "Score" and click OK.</p>
+                            <p><span class="step-number">3</span> In the Ball sprite's script, add a "set Score to 0" block at the beginning of your script (after the green flag block).</p>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 2: Increasing the Score</h3>
+                        <p class="tutorial-text">We'll increase the score each time the ball hits the paddle.</p>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> In the Ball sprite's script, find your "if touching (Paddle)" block.</p>
+                            <p><span class="step-number">2</span> Inside this block, after the "point in direction" block, add a "change Score by 1" block.</p>
+                        </div>
+                        <div class="highlight-box">
+                            <p><strong>Explanation:</strong> This increases the score by 1 every time the ball bounces off the paddle.</p>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 3: Implementing Game Over</h3>
+                        <p class="tutorial-text">Let's end the game when the ball passes the paddle.</p>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> In the Ball sprite's script, add an "if then" block after your "if touching (Paddle)" block.</p>
+                            <p><span class="step-number">2</span> In the condition, use a "&lt; [] &gt;" block and fill it with "x position" and "-240".</p>
+                            <p><span class="step-number">3</span> Inside this if block, add a "broadcast (message1)" block and create a new message called "Game Over".</p>
+                            <p><span class="step-number">4</span> Add a "stop all" block after the broadcast block.</p>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step 4: Creating a Game Over Screen</h3>
+                        <p class="tutorial-text">Let's create a game over message.</p>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Create a new sprite and use the text tool to write "Game Over".</p>
+                            <p><span class="step-number">2</span> In this new sprite's script tab, add a "when I receive (Game Over)" block.</p>
+                            <p><span class="step-number">3</span> Attach a "show" block to make the message appear.</p>
+                            <p><span class="step-number">4</span> At the start of your game (in a "when green flag clicked" script), add a "hide" block to ensure the message is hidden initially.</p>
+                        </div>
+                    </div>
+
+                    <div class="quiz-container">
+                        <h3 class="text-xl font-semibold mb-2">Quick Quiz</h3>
+                        <p class="quiz-question">When should the "Game Over" message be displayed?</p>
+                        <ul class="quiz-options">
+                            <li class="quiz-option">
+                                <input type="radio" id="q5a" name="q5" value="a">
+                                <label for="q5a">When the ball hits the paddle</label>
+                            </li>
+                            <li class="quiz-option">
+                                <input type="radio" id="q5b" name="q5" value="b">
+                                <label for="q5b">When the score reaches 10</label>
+                            </li>
+                            <li class="quiz-option">
+                                <input type="radio" id="q5c" name="q5" value="c">
+                                <label for="q5c">When the ball passes the paddle on the left side</label>
+                            </li>
+                        </ul>
+                        <button onclick="checkQuiz('q5', 'c')" class="mt-4 bg-primary text-white px-4 py-2 rounded">Check Answer</button>
+                        <p id="q5-feedback" class="quiz-feedback"></p>
+                    </div>
+                `
+            },
+            {
+                title: "Mini-Project",
+                content: `
+                    <h1 class="tutorial-title">5. Mini-Project: Extend Your Pong Game</h1>
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Challenge: Enhance Your Pong Game</h3>
+                        <p class="tutorial-text">Now that you've created a basic Pong game, let's make it even better! Here are some ideas to extend your game:</p>
+                        <ul class="list-disc list-inside mt-2">
+                            <li>Add sound effects for when the ball hits the paddle or when the player scores.</li>
+                            <li>Create a win condition by setting a score limit (e.g., first to 10 points wins).</li>
+                            <li>Add a second paddle for a 2-player version of the game.</li>
+                            <li>Increase the ball's speed as the game progresses to make it more challenging.</li>
+                            <li>Add power-ups that occasionally appear and give special abilities when collected.</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Step-by-Step Guide: Adding Sound Effects</h3>
+                        <p class="tutorial-text">Let's walk through adding a sound effect when the ball hits the paddle:</p>
+                        <div class="step-box">
+                            <p><span class="step-number">1</span> Click on the "Sounds" tab in the Ball sprite.</p>
+                            <p><span class="step-number">2</span> Click "Choose a Sound" and select a suitable sound effect (e.g., "Pop" or "Boing").</p>
+                            <p><span class="step-number">3</span> Go back to the "Scripts" tab.</p>
+                            <p><span class="step-number">4</span> In your "if touching (Paddle)" block, add a "play sound (your chosen sound)" block.</p>
+                        </div>
+                        <div class="highlight-box">
+                            <p><strong>Tip:</strong> You can create your own sounds or import sounds from external sources for a unique game experience!</p>
+                        </div>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Ideas for Further Enhancements</h3>
+                        <ul class="list-disc list-inside mt-2">
+                            <li>Create a start screen with instructions and a "Start Game" button.</li>
+                            <li>Add different levels with increasing difficulty.</li>
+                            <li>Implement a high score system that persists between games.</li>
+                            <li>Create obstacles that appear randomly on the screen.</li>
+                            <li>Add visual effects, like particle systems when the ball hits the paddle.</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-box">
+                        <h3 class="text-xl font-semibold mb-2">Share Your Creation!</h3>
+                        <p class="tutorial-text">Once you've enhanced your Pong game, don't forget to share it with others! You can:</p>
+                        <ul class="list-disc list-inside mt-2">
+                            <li>Upload it to the Scratch community and share the link with your friends.</li>
+                            <li>Record a video of your game in action and post it on social media.</li>
+                            <li>Present your game and its features to your class or coding club.</li>
+                        </ul>
+                        <p class="mt-4">Remember, the key to becoming a great programmer is practice and creativity. Keep experimenting and building new things!</p>
+                    </div>
+                `
+            }
+        ];
+
+        let currentExercise = 0;
+
+        function loadExercise(index) {
+            const exercise = exercises[index];
+            document.getElementById('tutorial-content').innerHTML = exercise.content;
+            document.querySelectorAll('.exercise-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+            currentExercise = index;
+            setupInteractiveDemos();
+        }
+
+        document.querySelectorAll('.exercise-item').forEach((item, index) => {
+            item.addEventListener('click', () => loadExercise(index));
+        });
+
+        function checkQuiz(questionId, correctAnswer) {
+            const selectedAnswer = document.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackElement = document.getElementById(`${questionId}-feedback`);
+            
+            if (selectedAnswer) {
+                if (selectedAnswer.value === correctAnswer) {
+                    feedbackElement.textContent = "Correct! Great job!";
+                    feedbackElement.className = "quiz-feedback correct";
+                } else {
+                    feedbackElement.textContent = "Not quite. Try again!";
+                    feedbackElement.className = "quiz-feedback incorrect";
+                }
+            } else {
+                feedbackElement.textContent = "Please select an answer.";
+                feedbackElement.className = "quiz-feedback";
+            }
+        }
+
+        function setupInteractiveDemos() {
+            // Paddle movement demo
+            const paddleDemo = document.getElementById('paddleDemo');
+            const paddle = document.getElementById('paddle');
+            if (paddleDemo && paddle) {
+                paddleDemo.addEventListener('mousemove', (e) => {
+                    const rect = paddleDemo.getBoundingClientRect();
+                    const y = e.clientY - rect.top - paddle.offsetHeight / 2;
+                    paddle.style.top = `${Math.max(0, Math.min(paddleDemo.offsetHeight - paddle.offsetHeight, y))}px`;
+                });
+            }
+
+            // Ball movement demo
+            const ballDemo = document.getElementById('ballDemo');
+            const ball = document.getElementById('ball');
+            const startBallDemo = document.getElementById('startBallDemo');
+            const stopBallDemo = document.getElementById('stopBallDemo');
+            let ballInterval;
+
+            if (ballDemo && ball && startBallDemo && stopBallDemo) {
+                let x = 0, y = 0, dx = 2, dy = 2;
+
+                function moveBall() {
+                    x += dx;
+                    y += dy;
+                    if (x + ball.offsetWidth > ballDemo.offsetWidth || x < 0) dx *= -1;
+                    if (y + ball.offsetHeight > ballDemo.offsetHeight || y < 0) dy *= -1;
+                    ball.style.left = `${x}px`;
+                    ball.style.top = `${y}px`;
+                }
+
+                startBallDemo.addEventListener('click', () => {
+                    clearInterval(ballInterval);
+                    ballInterval = setInterval(moveBall, 20);
+                });
+
+                stopBallDemo.addEventListener('click', () => {
+                    clearInterval(ballInterval);
+                });
+            }
+
+            // Scoring demo
+            const scoreDemo = document.getElementById('scoreDemo');
+            const scoreBall = document.getElementById('scoreBall');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            if (scoreDemo && scoreBall && scoreDisplay) {
+                let score = 0;
+                scoreBall.addEventListener('click', () => {
+                    score++;
+                    scoreDisplay.textContent = `Score: ${score}`;
+                    scoreBall.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                });
+            }
+        }
+
+        // Load the first exercise by default
+        loadExercise(0);
+    </script>
+</body>
+</html>

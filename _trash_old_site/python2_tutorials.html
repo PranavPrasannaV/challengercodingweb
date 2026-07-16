@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python 2 Programming Tutorials - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Root Variables */
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #263238;
+            --accent: #FFC107;
+            --background: #F5F7FA;
+            --text: #333;
+            --text-light: #666;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Sidebar Menu */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100vh;
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 1rem;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 2000;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+        .sidebar h2 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .toggle-button {
+            font-size: 1.2rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: block;
+            margin: 1rem auto;
+        }
+
+        .toggle-button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Remaining Content */
+        .top-strip {
+            background-color: var(--primary);
+            height: 30px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: fixed;
+            top: 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 8rem 1.5rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark) 60%, #4da6ff 100%);
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .course-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Two columns */
+            gap: 2rem;
+            width: 90%;
+            max-width: 1200px;
+            margin: 4rem auto;
+        }
+
+        .tutorial-item {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .tutorial-item img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .lesson-buttons button {
+            padding: 0.5rem 1rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .lesson-buttons button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        footer {
+            background: var(--secondary);
+            color: var(--white);
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .contact-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .enroll-button {
+            background-color: var(--accent);
+            color: white;
+            font-weight: 600;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .enroll-button:hover {
+            background-color: #d8a106;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Menu -->
+    <div class="sidebar" id="sidebar">
+        <h2>Course Catalog</h2>
+        <ul>
+            <li><a href="learn.html">Learning Menu</a></li>
+            <li><a href="scratch_tutorials.html">Scratch Programming</a></li>
+            <li><a href="python_tutorials.html">Python Programming</a></li>
+            <li><a href="java_tutorials.html">Java Programming</a></li>
+            <li><a href="scratch2_tutorials.html">Advanced Scratch</a></li>
+            <li><a href="python2_tutorials.html">Advanced Python</a></li>
+            <li><a href="java2_tutorials.html">Advanced Java</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="online_compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Links and Other Resources</a></li>
+            <li><a href="#" target="_blank" class="enroll-button">Enroll</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero">
+        <h1>Python 2 Programming Tutorials</h1>
+        <p>Expand your Python skills with advanced concepts and projects in this course.</p>
+    </div>
+
+    <!-- Toggle Button for Sidebar -->
+    <button class="toggle-button" onclick="toggleSidebar()">Course Catalog &#9660;</button>
+
+    <div class="course-container">
+        <!-- Course Boxes for Python 2 Lessons -->
+        <div class="tutorial-item">
+            <img src="python.png" alt="Python Icon">
+            <div class="lesson-title">Week 1: List Review and Algorithms</div>
+            <div class="lesson-buttons">
+                <button onclick="location.href='python2_lesson1.html'">Guided Tutorials</button>
+            </div>
+        </div>
+        <div class="tutorial-item">
+            <img src="python.png" alt="Python Icon">
+            <div class="lesson-title">Week 2: Dictionaries</div>
+            <div class="lesson-buttons">
+                <button onclick="location.href='python2_lesson2.html'">Guided Tutorials</button>
+            </div>
+        </div>
+        <div class="tutorial-item">
+            <img src="python.png" alt="Python Icon">
+            <div class="lesson-title">Week 3: Tuples</div>
+            <div class="lesson-buttons">
+                <button onclick="location.href='python2_lesson3.html'">Guided Tutorials</button>
+            </div>
+        </div>
+        <div class="tutorial-item">
+            <img src="python.png" alt="Python Icon">
+            <div class="lesson-title">Week 4: Sets</div>
+            <div class="lesson-buttons">
+                <button onclick="location.href='python2_lesson4.html'">Guided Tutorials</button>
+            </div>
+        </div>
+        <div class="tutorial-item">
+            <img src="python.png" alt="Python Icon">
+            <div class="lesson-title">Week 5: Objects/Classes</div>
+            <div class="lesson-buttons">
+                <button onclick="location.href='python2_lesson5.html'">Guided Tutorials</button>
+            </div>
+        </div>
+        <div class="tutorial-item">
+            <img src="python.png" alt="Python Icon">
+            <div class="lesson-title">Week 6: Modules and Scope</div>
+            <div class="lesson-buttons">
+                <button onclick="location.href='python2_lesson6.html'">Guided Tutorials</button>
+            </div>
+        </div>
+        <div class="tutorial-item">
+            <img src="python.png" alt="Python Icon">
+            <div class="lesson-title">Week 7: Recursion</div>
+            <div class="lesson-buttons">
+                <button onclick="location.href='python2_lesson7.html'">Guided Tutorials</button>
+            </div>
+        </div>
+        <div class="tutorial-item">
+            <img src="python.png" alt="Python Icon">
+            <div class="lesson-title">Final Project: Test</div>
+            <div class="lesson-buttons">
+                <button onclick="location.href='python2_test.html'">Test</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="contact-box">
+                <div class="footer-links">
+                    <a href="https://www.linkedin.com/in/jaden-tang" target="_blank">LinkedIn</a>
+                    <a href="mailto:contact@challengercoding.com">Email</a>
+                    <a href="contact.html">Contact Us</a>
+                </div>
+            </div>
+            <p>&copy; 2024 Challenger Coding. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <!-- Include Scripts -->
+    <script src="config.js"></script>
+    <script>
+        document.querySelectorAll(".enroll-button").forEach(button => {
+            button.href = enrollLink;
+        });
+    </script>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("open");
+        }
+    </script>
+
+</body>
+</html>

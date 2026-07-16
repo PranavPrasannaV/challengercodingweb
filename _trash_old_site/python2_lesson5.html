@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Tutorial: Sets - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/skulpt@1.2.0/dist/skulpt.min.js"></script>
+    <script src="https://unpkg.com/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #2980b9;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --background: #ffffff;
+            --surface: #f8f9fa;
+            --border: #e9ecef;
+            --text: #2d3436;
+            --text-light: #636e72;
+            --success: #2ecc71;
+            --error: #e74c3c;
+        }
+        .top-strip {
+            background-color: var(--primary);
+            height: 30px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: fixed;
+            top: 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            gap: 2rem;
+        }
+        .sidebar {
+            width: 250px;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+        }
+        .exercise-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--background);
+            border: 1px solid var(--border);
+        }
+        .exercise-item:hover {
+            background: var(--surface);
+            transform: translateY(-1px);
+        }
+        .exercise-item.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .main-content {
+            flex: 1;
+        }
+        .tutorial-section {
+            background: var(--background);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+        .tutorial-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        .tutorial-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+        .code-block {
+            background: var(--surface);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Fira Code', monospace;
+            border: 1px solid var(--border);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .compiler-section {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .compiler-left {
+            flex: 6;
+        }
+        .compiler-right {
+            flex: 4;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .editor {
+            background: var(--surface);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .editor-header {
+            background: var(--primary);
+            color: var(--background);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            border: none;
+            resize: vertical;
+            line-height: 1.5;
+            background-color: var(--background);
+        }
+        textarea:focus {
+            outline: none;
+        }
+        .run-button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s ease;
+        }
+        .run-button:hover {
+            background: var(--accent);
+            opacity: 0.9;
+        }
+        .output-container {
+            background: var(--surface);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            height: calc(50% - 0.5rem);
+        }
+        .output-header {
+            background: var(--primary);
+            color: var(--background);
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+        }
+        .output, .result {
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            height: calc(100% - 40px);
+            overflow-y: auto;
+            background-color: var(--background);
+        }
+        .hint-box {
+            background-color: #e3f2fd;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        .challenge-box {
+            background-color: #fff3e0;
+            border-left: 4px solid var(--secondary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+            .compiler-section {
+                flex-direction: column;
+            }
+            .compiler-left, .compiler-right {
+                flex: 1;
+            }
+            .output-container {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="#" target="_blank" class="enroll-button">Enroll</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="exercise-list">
+                <a href="python2_tutorials.html" class="exercise-item">
+                    <span>Return Home</span>
+                </a>
+                <div class="exercise-item" data-exercise="1">
+                    <span>1. Introduction to Objects and Classes</span>
+                </div>
+                <div class="exercise-item" data-exercise="2">
+                    <span>2. Creating Methods</span>
+                </div>
+                <div class="exercise-item" data-exercise="3">
+                    <span>3. Class and Instance Variables</span>
+                </div>
+                <div class="exercise-item" data-exercise="4">
+                    <span>4. Inheritance</span>
+                </div>
+                <div class="exercise-item" data-exercise="5">
+                    <span>5. Weekly Project: Pet Shop Simulator</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <br>
+            <br>
+            <br>
+            <div id="tutorial-content"></div>
+
+            <div class="compiler-section">
+                <div class="compiler-left">
+                    <div class="editor">
+                        <div class="editor-header">
+                            <span>Python Code</span>
+                            <button class="run-button" onclick="runCode()">
+                                <i data-lucide="play"></i> Run
+                            </button>
+                        </div>
+                        <textarea id="code-editor" spellcheck="false"></textarea>
+                    </div>
+                </div>
+                <div class="compiler-right">
+                    <div class="output-container">
+                        <div class="output-header">Output</div>
+                        <div id="output" class="output"></div>
+                    </div>
+                    <div class="output-container">
+                        <div class="output-header">Autograder</div>
+                        <div id="result" class="result"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Include Scripts -->
+    <script src="config.js"></script>
+    <script>
+        document.querySelectorAll(".enroll-button").forEach(button => {
+            button.href = enrollLink;
+        });
+    </script>
+    <script>
+        lucide.createIcons();
+
+        const exercises = [
+            {
+                title: "Introduction to Objects and Classes",
+                content: `
+                    <h1 class="tutorial-title">Exercise 1: Introduction to Objects and Classes</h1>
+                    <p class="tutorial-text">
+                        Welcome to Python Week 2, Lesson 5! Today, we'll learn about objects and classes, fundamental concepts in object-oriented programming (OOP).
+                    </p>
+                    <div class="hint-box">
+                        <h3>What are Objects and Classes?</h3>
+                        <p>A class is like a blueprint for creating objects. An object is an instance of a class, which contains its own data and behaviors.</p>
+                    </div>
+                    <p class="tutorial-text">
+                        Let's start with a simple example of a class:
+                    </p>
+                    <div class="code-block">
+class Dog:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def bark(self):
+        return f"{self.name} says Woof!"
+
+# Create a Dog object
+my_dog = Dog("Buddy", 3)
+print(f"{my_dog.name} is {my_dog.age} years old.")
+print(my_dog.bark())
+                    </div>
+                    <p class="tutorial-text">
+                        Now it's your turn! Create a class called <code>Cat</code> with the following:
+                    </p>
+                    <ol class="tutorial-text">
+                        <li>An <code>__init__</code> method that takes <code>name</code> and <code>color</code> as parameters</li>
+                        <li>A method called <code>meow</code> that returns a string like "name says Meow!"</li>
+                        <li>Create a Cat object and call its meow method</li>
+                    </ol>
+                `,
+                initialCode: "# Define your Cat class here\n\n# Create a Cat object and call its meow method\n"
+            },
+            {
+                title: "Creating Methods",
+                content: `
+                    <h1 class="tutorial-title">Exercise 2: Creating Methods</h1>
+                    <p class="tutorial-text">
+                        Methods are functions that belong to a class. They can perform actions using the object's data.
+                    </p>
+                    <div class="hint-box">
+                        <h3>Instance Methods</h3>
+                        <ul>
+                            <li>Instance methods are functions defined inside a class</li>
+                            <li>They always take 'self' as the first parameter</li>
+                            <li>They can access and modify the object's attributes</li>
+                        </ul>
+                    </div>
+                    <p class="tutorial-text">
+                        Here's an example with multiple methods:
+                    </p>
+                    <div class="code-block">
+class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+    def perimeter(self):
+        return 2 * (self.width + self.height)
+
+# Using the Rectangle class
+rect = Rectangle(5, 3)
+print(f"Area: {rect.area()}")
+print(f"Perimeter: {rect.perimeter()}")
+                    </div>
+                    <p class="tutorial-text">
+                        Your turn! Enhance the <code>Cat</code> class from the previous exercise:
+                    </p>
+                    <ol class="tutorial-text">
+                        <li>Add an <code>age</code> attribute to the <code>__init__</code> method</li>
+                        <li>Create a method called <code>birthday</code> that increases the cat's age by 1 and returns a celebratory message</li>
+                        <li>Create a method called <code>introduce</code> that returns a string introducing the cat with its name, color, and age</li>
+                        <li>Create a Cat object, call its birthday method, and then call its introduce method</li>
+                    </ol>
+                `,
+                initialCode: "# Enhance your Cat class here\n\n# Create a Cat object, celebrate its birthday, and introduce it\n"
+            },
+            {
+                title: "Class and Instance Variables",
+                content: `
+                    <h1 class="tutorial-title">Exercise 3: Class and Instance Variables</h1>
+                    <p class="tutorial-text">
+                        In Python, we can have two types of variables in a class: class variables and instance variables.
+                    </p>
+                    <div class="hint-box">
+                        <h3>Class vs Instance Variables</h3>
+                        <ul>
+                            <li>Class variables are shared by all instances of the class</li>
+                            <li>Instance variables are unique to each instance</li>
+                            <li>Class variables are defined outside any method, usually at the top of the class</li>
+                            <li>Instance variables are typically defined in the __init__ method</li>
+                        </ul>
+                    </div>
+                    <p class="tutorial-text">
+                        Here's an example illustrating both types of variables:
+                    </p>
+                    <div class="code-block">
+class Dog:
+    # Class variable
+    species = "Canis familiaris"
+
+    def __init__(self, name, age):
+        # Instance variables
+        self.name = name
+        self.age = age
+
+    def describe(self):
+        return f"{self.name} is {self.age} years old and belongs to the {self.species} species."
+
+dog1 = Dog("Buddy", 5)
+dog2 = Dog("Max", 3)
+
+print(dog1.describe())
+print(dog2.describe())
+
+# Changing the class variable
+Dog.species = "Canis lupus familiaris"
+
+print(dog1.describe())
+print(dog2.describe())
+                    </div>
+                    <p class="tutorial-text">
+                        Your task:
+                    </p>
+                    <ol class="tutorial-text">
+                        <li>Create a class called <code>Student</code> with a class variable <code>school_name</code> set to "Python High School"</li>
+                        <li>Add instance variables for <code>name</code> and <code>grade</code></li>
+                        <li>Create a method <code>introduce</code> that returns a string introducing the student and mentioning their school</li>
+                        <li>Create two Student instances and call their introduce methods</li>
+                        <li>Change the school_name class variable and call the introduce methods again to see the change</li>
+                    </ol>
+                `,
+                initialCode: "# Create the Student class and demonstrate class and instance variables\n"
+            },
+            {
+                title: "Inheritance",
+                content: `
+                    <h1 class="tutorial-title">Exercise 4: Inheritance</h1>
+                    <p class="tutorial-text">
+                        Inheritance allows us to define a class that inherits all the methods and properties from another class.
+                    </p>
+                    <div class="hint-box">
+                        <h3>Inheritance Basics</h3>
+                        <ul>
+                            <li>The class being inherited from is called the parent or base class</li>
+                            <li>The class that inherits is called the child or derived class</li>
+                            <li>Child classes can override or extend the functionality of parent classes</li>
+                        </ul>
+                    </div>
+                    <p class="tutorial-text">
+                        Here's an example demonstrating inheritance:
+                    </p>
+                    <div class="code-block">
+class Animal:
+    def __init__(self, name):
+        self.name = name
+
+    def speak(self):
+        pass
+
+class Dog(Animal):
+    def speak(self):
+        return f"{self.name} says Woof!"
+
+class Cat(Animal):
+    def speak(self):
+        return f"{self.name} says Meow!"
+
+dog = Dog("Buddy")
+cat = Cat("Whiskers")
+
+print(dog.speak())
+print(cat.speak())
+                    </div>
+                    <p class="tutorial-text">
+                        Your task:
+                    </p>
+                    <ol class="tutorial-text">
+                        <li>Create a base class called <code>Vehicle</code> with attributes <code>make</code> and <code>model</code></li>
+                        <li>Add a method <code>info</code> to the Vehicle class that returns a string with the vehicle's make and model</li>
+                        <li>Create two derived classes: <code>Car</code> and <code>Motorcycle</code></li>
+                        <li>Add a <code>num_wheels</code> attribute to each derived class (4 for Car, 2 for Motorcycle)</li>
+                        <li>Override the <code>info</code> method in both derived classes to include the number of wheels</li>
+                        <li>Create instances of Car and Motorcycle and call their info methods</li>
+                    </ol>
+                `,
+                initialCode: "# Create the Vehicle, Car, and Motorcycle classes here\n\n# Demonstrate inheritance\n"
+            },
+            {
+                title: "Weekly Project: Pet Shop Simulator",
+                content: `
+                    <h1 class="tutorial-title">Weekly Project: Pet Shop Simulator</h1>
+                    <p class="tutorial-text">
+                        Let's put everything we've learned about objects and classes into practice by creating a simple pet shop simulator.
+                    </p>
+                    <p class="tutorial-text">
+                        Your task is to create a program that:
+                    </p>
+                    <ol class="tutorial-text">
+                        <li>Defines a base <code>Animal</code> class with common attributes and methods</li>
+                        <li>Creates derived classes for different types of pets (e.g., Dog, Cat, Fish)</li>
+                        <li>Implements a <code>PetShop</code> class that can add pets, remove pets, and list all pets</li>
+                        <li>Allows users to interact with the pet shop (add pets, list pets, etc.)</li>
+                    </ol>
+                    <p class="tutorial-text">
+                        Here's a starting template:
+                    </p>
+                    <div class="code-block">
+class Animal:
+    def __init__(self, name, species):
+        self.name = name
+        self.species = species
+
+    def make_sound(self):
+        pass
+
+class Dog(Animal):
+    def make_sound(self):
+        return f"{self.name} barks!"
+
+class Cat(Animal):
+    def make_sound(self):
+        return f"{self.name} meows!"
+
+class PetShop:
+    def __init__(self):
+        self.pets = []
+
+    def add_pet(self, pet):
+        self.pets.append(pet)
+        print(f"{pet.name} has been added to the pet shop.")
+
+    def list_pets(self):
+        if not self.pets:
+            print("The pet shop is empty.")
+        else:
+            for pet in self.pets:
+                print(f"{pet.name} - {pet.species}")
+
+# Test your Pet Shop Simulator
+shop = PetShop()
+dog = Dog("Buddy", "Dog")
+cat = Cat("Whiskers", "Cat")
+
+shop.add_pet(dog)
+shop.add_pet(cat)
+shop.list_pets()
+
+print(dog.make_sound())
+print(cat.make_sound())
+                    </div>
+                    <p class="tutorial-text">
+                        Enhance the Pet Shop<cut_off_point>
+div>
+                    <p class="tutorial-text">
+                        Enhance the Pet Shop
+</cut_off_point>
+
+ Simulator by adding the following features:
+                    </p>
+                    <ol class="tutorial-text">
+                        <li>Add a <code>Fish</code> class that inherits from <code>Animal</code></li>
+                        <li>Implement a method to remove pets from the shop</li>
+                        <li>Add a method to feed all the pets in the shop</li>
+                        <li>Create a simple menu system for users to interact with the pet shop</li>
+                        <li>Add error handling for invalid inputs or actions</li>
+                    </ol>
+                    <p class="tutorial-text">
+                        This project will give you hands-on experience with classes, objects, inheritance, and basic user interaction. Have fun creating your Pet Shop Simulator!
+                    </p>
+                `,
+                initialCode: "# Implement your enhanced Pet Shop Simulator here\n"
+            }
+        ];
+
+        let currentExercise = 0;
+
+        function loadExercise(index) {
+            console.log(`Loading exercise ${index}`);
+            const exercise = exercises[index];
+            document.getElementById('tutorial-content').innerHTML = exercise.content;
+            document.getElementById('code-editor').value = exercise.initialCode;
+            document.querySelectorAll('.exercise-item').forEach((item, i) => {
+                if (i === 0) return; // Skip the "Return Home" button
+                item.classList.toggle('active', i - 1 === index);
+            });
+            document.getElementById('output').textContent = '';
+            document.getElementById('result').textContent = '';
+            currentExercise = index;
+        }
+
+        function builtinRead(x) {
+            if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined) {
+                throw "File not found: '" + x + "'";
+            }
+            return Sk.builtinFiles["files"][x];
+        }
+
+        async function runCode() {
+            const code = document.getElementById('code-editor').value;
+            const outputElement = document.getElementById('output');
+            const resultElement = document.getElementById('result');
+            outputElement.textContent = "";
+            resultElement.textContent = "";
+
+            try {
+                Sk.configure({ 
+                    output: function(text) {
+                        outputElement.textContent += text;
+                    },
+                    read: builtinRead,
+                    __future__: Sk.python3
+                });
+                
+                const promise = Sk.misceval.asyncToPromise(() => 
+                    Sk.importMainWithBody("<stdin>", false, code, true)
+                );
+                
+                await promise;
+                resultElement.textContent = "Great job on your exercise! Your output looks good.";
+                resultElement.style.color = "var(--success)";
+            } catch (error) {
+                resultElement.textContent = "Oops! There's an error in your code: " + error.toString() + "\nTry to fix it and run again!";
+                resultElement.style.color = "var(--error)";
+                console.error("Code execution error:", error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            console.log("DOM fully loaded and parsed");
+            document.querySelectorAll('.exercise-item').forEach((item, index) => {
+                if (index === 0) return; // Skip the "Return Home" button
+                item.addEventListener('click', () => {
+                    console.log(`Exercise ${index - 1} clicked`);
+                    loadExercise(index - 1);
+                });
+            });
+
+            try {
+                loadExercise(0);
+            } catch (error) {
+                console.error("Error loading initial exercise:", error);
+                alert("There was an error loading the exercise. Please check the console for more information.");
+            }
+        });
+    </script>
+</body>
+</html>

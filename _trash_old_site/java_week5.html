@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Week 5: Methods - Challenger Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #263238;
+            --accent: #FFC107;
+            --background: #F5F7FA;
+            --text: #333;
+            --text-light: #666;
+            --white: #ffffff;
+            --success: #4CAF50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .top-strip {
+            background-color: var(--primary);
+            height: 30px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: fixed;
+            top: 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .navbar li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar li a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            min-height: calc(100vh - 60px);
+            margin-top: 60px;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: var(--white);
+            padding: 2rem;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+
+        .progress-bar {
+            width: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-right: 1rem;
+            align-self: stretch;
+            position: relative;
+        }
+
+        .progress {
+            width: 100%;
+            background-color: var(--primary);
+            border-radius: 5px;
+            position: absolute;
+            bottom: 0;
+            transition: height 0.3s ease;
+        }
+
+        .lesson-list {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            font-size: 1rem;
+            color: var(--text);
+            display: block;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: 0.3s;
+            flex-grow: 1;
+        }
+
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 14px;
+        }
+
+        .checkbox.completed {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 2rem;
+            margin-left: 300px;
+            overflow-y: auto;
+        }
+
+        .content h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .lesson-content {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .lesson-content h2 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        .lesson-content h3 {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .lesson-content p, .lesson-content ul {
+            margin-bottom: 1rem;
+        }
+
+        .lesson-content ul {
+            padding-left: 1.5rem;
+        }
+
+        .code-example {
+            background-color: #f0f0f0;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0 8px 8px 0;
+            font-family: 'Fira Code', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        code {
+            display: block;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .back-button {
+            display: block;
+            text-decoration: none;
+            color: var(--text);
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            background-color: var(--accent);
+            border-radius: 8px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .progress-bar {
+                width: 100%;
+                height: 10px;
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+
+            .progress {
+                width: 0;
+                height: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-strip"></div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="online_compiler.html">Online Compiler</a></li>
+            <li><a href="resources.html">Resources</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="sidebar">
+            <a href="java_tutorials.html" class="back-button">
+                <i data-lucide="arrow-left"></i> Back to Tutorials
+            </a>
+            <div class="progress-bar">
+                <div class="progress" id="lesson-progress"></div>
+            </div>
+            <div class="lesson-list">
+                <h2>Java Week 5: Methods</h2>
+                <ul id="lesson-list"></ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <h1 id="lesson-title"></h1>
+            <div class="video-container" style="display: none;">
+                <iframe id="lesson-video" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="lesson-content" id="lesson-description"></div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const lessons = [
+            {
+                id: 'overview',
+                title: 'Introduction to Methods',
+                video: null,
+                description: `
+                    <h2>Overview: Understanding Methods in Java</h2>
+                    
+                    <h3>What are Methods?</h3>
+                    <p>Methods in Java are blocks of code that perform specific tasks. They are used to organize code, make it reusable, and break down complex problems into smaller, manageable pieces.</p>
+
+                    <h3>Key Concepts</h3>
+                    <ul>
+                        <li>
+                            <strong>Method Declaration</strong>
+                            <ul>
+                                <li>Consists of method name, return type, and parameters</li>
+                                <li>Example:
+                                    <div class="code-example">
+public static void sayHello() {
+    System.out.println("Hello, World!");
+}</div>
+                                </li>
+                            </ul>
+                        </li>
+                        
+                        <li>
+                            <strong>Method Invocation</strong>
+                            <ul>
+                                <li>Calling a method to execute its code</li>
+                                <li>Example:
+                                    <div class="code-example">
+sayHello(); // This will print "Hello, World!"</div>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <strong>Parameters and Arguments</strong>
+                            <ul>
+                                <li>Parameters: Variables in method declaration</li>
+                                <li>Arguments: Values passed when calling the method</li>
+                                <li>Example:
+                                    <div class="code-example">
+public static void greet(String name) {
+    System.out.println("Hello, " + name + "!");
+}
+
+greet("Alice"); // Argument "Alice" is passed to parameter "name"</div>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <strong>Return Values</strong>
+                            <ul>
+                                <li>Methods can send back a value to where they were called</li>
+                                <li>Example:
+                                    <div class="code-example">
+public static int add(int a, int b) {
+    return a + b;
+}
+
+int sum = add(5, 3); // sum will be 8</div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h3>Why are Methods important?</h3>
+                    <ul>
+                        <li>They promote code reusability</li>
+                        <li>They help in organizing and structuring code</li>
+                        <li>They make programs easier to understand and maintain</li>
+                        <li>They allow for better testing and debugging</li>
+                    </ul>
+
+                    <p>Select a lesson from the sidebar to dive deeper into each of these method concepts!</p>
+                `
+            },
+            {
+                id: 'method-basics',
+                title: 'Method Basics',
+                video: 'https://www.youtube.com/embed/r0SewFmbCUI',
+                description: `
+                    <h2>Understanding Method Basics in Java</h2>
+                    
+                    <p>Methods are fundamental building blocks in Java programming. They allow you to organize your code into reusable pieces, making your programs more modular and easier to understand.</p>
+
+                    <h3>Anatomy of a Method</h3>
+                    <div class="code-example">
+public static void methodName(parameter1Type parameter1, parameter2Type parameter2) {
+    // Method body
+    // Code to be executed
+}</div>
+
+                    <h3>Components of a Method</h3>
+                    <ul>
+                        <li><strong>Access Modifier:</strong> (e.g., public, private) Determines the visibility of the method.</li>
+                        <li><strong>Static Keyword:</strong> If present, indicates that the method belongs to the class rather than an instance of the class.</li>
+                        <li><strong>Return Type:</strong> Specifies the type of value the method returns (or void if it doesn't return anything).</li>
+                        <li><strong>Method Name:</strong> The name used to call the method.</li>
+                        <li><strong>Parameters:</strong> Input values the method can work with (optional).</li>
+                        <li><strong>Method Body:</strong> The actual code that gets executed when the method is called.</li>
+                    </ul>
+
+                    <h3>Example</h3>
+                    <div class="code-example">
+public class MethodExample {
+    public static void greet(String name) {
+        System.out.println("Hello, " + name + "!");
+    }
+
+    public static void main(String[] args) {
+        greet("Alice");  // Outputs: Hello, Alice!
+        greet("Bob");    // Outputs: Hello, Bob!
+    }
+}</div>
+
+                    <p>In this example, <code>greet</code> is a method that takes a <code>String</code> parameter and prints a greeting. The <code>main</code> method calls <code>greet</code> twice with different arguments.</p>
+
+                    <h3>Important Points</h3>
+                    <ul>
+                        <li>Methods must be declared within a class.</li>
+                        <li>The <code>main</code> method is a special method that serves as the entry point for Java programs.</li>
+                        <li>Method names should be descriptive and follow camelCase convention (e.g., calculateTotal, printReport).</li>
+                        <li>Methods can call other methods, including themselves (recursion).</li>
+                    </ul>
+
+                    <h3>Practice</h3>
+                    <p>Try writing simple methods that perform basic tasks, such as calculating the area of a rectangle or converting temperatures between Celsius and Fahrenheit.</p>
+
+                    <h3>Key Takeaways</h3>
+                    <ul>
+                        <li>Methods are reusable blocks of code that perform specific tasks.</li>
+                        <li>They help organize code and make it more modular.</li>
+                        <li>Understanding method structure and how to call methods is crucial for Java programming.</li>
+                        <li>Practice writing and using methods to become comfortable with their syntax and functionality.</li>
+                    </ul>
+                `
+            },
+            {
+                id: 'static-methods',
+                title: 'Static Methods',
+                video: 'https://www.youtube.com/embed/3LtIk7wFGi0?si=FPEZPNNMmLkgNDjb',
+                description: `
+                    <h2>Understanding Static Methods in Java</h2>
+                    
+                    <p>Static methods are an important concept in Java. They belong to the class rather than any specific instance (object) of the class. This means you can call a static method without creating an object of the class.</p>
+
+                    <h3>Characteristics of Static Methods</h3>
+                    <ul>
+                        <li>They are declared using the <code>static</code> keyword.</li>
+                        <li>They can be called using the class name, without creating an instance of the class.</li>
+                        <li>They can only directly access other static members (methods or variables) of the class.</li>
+                        <li>They cannot use the <code>this</code> keyword as they don't belong to any instance of the class.</li>
+                    </ul>
+
+                    <h3>Syntax of Static Methods</h3>
+                    <div class="code-example">
+public class ClassName {
+    public static returnType methodName(parameters) {
+        // Method body
+    }
+}</div>
+
+                    <h3>Example</h3>
+                    <div class="code-example">
+public class MathOperations {
+    public static int add(int a, int b) {
+        return a + b;
+    }
+
+    public static void main(String[] args) {
+        int result = MathOperations.add(5, 3);
+        System.out.println("5 + 3 = " + result);  // Outputs: 5 + 3 = 8
+    }
+}</div>
+
+                    <p>In this example, <code>add</code> is a static method. We can call it using the class name <code>MathOperations.add(5, 3)</code> without creating an instance of <code>MathOperations</code>.</p>
+
+                    <h3>When to Use Static Methods</h3>
+                    <ul>
+                        <li>For utility functions that don't require object state.</li>
+                        <li>When the method's behavior doesn't depend on instance variables.</li>
+                        <li>To create helper functions that are used across multiple instances of a class.</li>
+                    </ul>
+
+                    <h3>Common Examples of Static Methods</h3>
+                    <ul>
+                        <li>Math class methods: <code>Math.max()</code>, <code>Math.min()</code>, <code>Math.sqrt()</code></li>
+                        <li>String class methods: <code>String.valueOf()</code>, <code>String.format()</code></li>
+                        <li>Arrays class methods: <code>Arrays.sort()</code>, <code>Arrays.binarySearch()</code></li>
+                    </ul>
+
+                    <h3>Practice</h3>
+                    <p>Try creating a class with static methods for common mathematical operations like calculating the area of a circle or converting between different units of measurement.</p>
+
+                    <h3>Key Takeaways</h3>
+                    <ul>
+                        <li>Static methods belong to the class, not to any specific instance of the class.</li>
+                        <li>They can be called without creating an object of the class.</li>
+                        <li>Static methods are useful for utility functions and operations that don't depend on object state.</li>
+                        <li>Understanding when to use static methods can lead to more efficient and organized code.</li>
+                    </ul>
+                `
+            },
+            {
+                id: 'return-methods',
+                title: 'Return Methods',
+                video: 'https://www.youtube.com/embed/14Cfx3fpH-w?si=9hNHzOnJ1qZRffQ5',
+                description: `
+                    <h2>Understanding Return Methods in Java</h2>
+                    
+                    <p>Return methods are methods that send a value back to the code that called them. This returned value can be of any data type, including primitive types and objects.</p>
+
+                    <h3>Anatomy of a Return Method</h3>
+                    <div class="code-example">
+public static returnType methodName(parameters) {
+    // Method body
+    return value; // Must match the returnType
+}</div>
+
+                    <h3>Key Points About Return Methods</h3>
+                    <ul>
+                        <li>The return type is specified in the method declaration.</li>
+                        <li>The <code>return</code> statement is used to send a value back.</li>
+                        <li>The returned value must match the declared return type.</li>
+                        <li>If the return type is <code>void</code>, the method doesn't return a value.</li>
+                        <li>A method can have multiple <code>return</code> statements, but only one will be executed.</li>
+                    </ul>
+
+                    <h3>Example</h3>
+                    <div class="code-example">
+public class Calculator {
+    public static int add(int a, int b) {
+        return a + b;
+    }
+
+    public static double calculateCircleArea(double radius) {
+        return Math.PI * radius * radius;
+    }
+
+    public static String greet(String name) {
+        return "Hello, " + name + "!";
+    }
+
+    public static void main(String[] args) {
+        int sum = add(5, 3);
+        System.out.println("5 + 3 = " + sum);  // Outputs: 5 + 3 = 8
+
+        double area = calculateCircleArea(2.5);
+        System.out.println("Area of circle with radius 2.5: " + area);
+
+        String greeting = greet("Alice");
+        System.out.println(greeting);  // Outputs: Hello, Alice!
+    }
+}</div>
+
+                    <p>In this example, we have three return methods: <code>add</code> returns an <code>int</code>, <code>calculateCircleArea</code> returns a <code>double</code>, and <code>greet</code> returns a <code>String</code>.</p>
+
+                    <h3>Using Returned Values</h3>
+                    <p>When a method returns a value, you can:</p>
+                    <ul>
+                        <li>Assign it to a variable</li>
+                        <li>Use it directly in an expression or as an argument to another method</li>
+                        <li>Ignore it (though this is generally not recommended)</li>
+                    </ul>
+
+                    <h3>Practice</h3>
+                    <p>Try creating methods that return different types of values. For example, write a method that calculates the average of an array of numbers, or a method that returns the longest word in a sentence.</p>
+
+                    <h3>Key Takeaways</h3>
+                    <ul>
+                        <li>Return methods send a value back to the code that called them.</li>
+                        <li>The return type must be specified in the method declaration.</li>
+                        <li>The <code>return</code> statement is used to send the value back.</li>
+                        <li>Return methods are essential for creating functions that compute and provide results.</li>
+                        <li>Understanding return methods is crucial for writing efficient and modular Java code.</li>
+                    </ul>
+                `
+            },
+            {
+                id: 'method-overloading',
+                title: 'Method Overloading',
+                video: 'https://www.youtube.com/embed/YvKnA5Bt0vc',
+                description: `
+                    <h2>Understanding Method Overloading in Java</h2>
+                    
+                    <p>Method overloading is a feature in Java that allows a class to have multiple methods with the same name but different parameters. This can make your code more readable and flexible.</p>
+
+                    <h3>Key Concepts of Method Overloading</h3>
+                    <ul>
+                        <li>Methods must have the same name but different parameter lists.</li>
+                        <li>Return type alone is not sufficient for method overloading.</li>
+                        <li>Overloaded methods can have different return types.</li>
+                        <li>It's a form of compile-time polymorphism.</li>
+                    </ul>
+
+                    <h3>Example of Method Overloading</h3>
+                    <div class="code-example">
+public class Calculator {
+    public static int add(int a, int b) {
+        return a + b;
+    }
+
+    public static double add(double a, double b) {
+        return a + b;
+    }
+
+    public static int add(int a, int b, int c) {
+        return a + b + c;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(add(5, 3));           // Calls add(int, int)
+        System.out.println(add(4.5, 3.2));       // Calls add(double, double)
+        System.out.println(add(1, 2, 3));        // Calls add(int, int, int)
+    }
+}</div>
+
+                    <p>In this example, we have three <code>add</code> methods, each with a different parameter list. Java determines which method to call based on the arguments provided.</p>
+
+                    <h3>Benefits of Method Overloading</h3>
+                    <ul>
+                        <li>Improves code readability and reusability</li>
+                        <li>Allows methods to handle different data types</li>
+                        <li>Reduces duplicate code</li>
+                        <li>Provides flexibility in method calls</li>
+                    </ul>
+
+                    <h3>Rules for Method Overloading</h3>
+                    <ul>
+                        <li>Methods must have the same name</li>
+                        <li>Methods must have different parameter lists</li>
+                        <li>Methods can have different return types</li>
+                        <li>Methods can have different access modifiers</li>
+                        <li>Methods can throw different exceptions</li>
+                    </ul>
+
+                    <h3>Practice</h3>
+                    <p>Try creating a class with overloaded methods. For example, create a <code>print</code> method that can handle different types of arguments (int, double, String, arrays) and print them appropriately.</p>
+
+                    <h3>Key Takeaways</h3>
+                    <ul>
+                        <li>Method overloading allows multiple methods with the same name but different parameters.</li>
+                        <li>It improves code readability and flexibility.</li>
+                        <li>Java uses the method signature to determine which method to call.</li>
+                        <li>Overloading is resolved at compile-time, making it efficient.</li>
+                        <li>Understanding method overloading is important for writing clean and flexible Java code.</li>
+                    </ul>
+                `
+            }
+        ];
+
+        let currentLessonIndex = 0;
+        let completedLessons = new Set();
+
+        function showLesson(index) {
+            const lessonTitle = document.getElementById('lesson-title');
+            const lessonVideo = document.getElementById('lesson-video');
+            const videoContainer = document.querySelector('.video-container');
+            const lessonDescription = document.getElementById('lesson-description');
+
+            const lesson = lessons[index];
+            lessonTitle.textContent = lesson.title;
+            lessonDescription.innerHTML = lesson.description;
+
+            if (lesson.video) {
+                lessonVideo.src = lesson.video;
+                videoContainer.style.display = 'block';
+            } else {
+                videoContainer.style.display = 'none';
+            }
+
+            document.querySelectorAll('#lesson-list a').forEach((a, i) => {
+                a.classList.toggle('active', i === index);
+            });
+
+            currentLessonIndex = index;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = (completedLessons.size / lessons.length) * 100;
+            document.getElementById('lesson-progress').style.height = `${progress}%`;
+        }
+
+        function createLessonList() {
+            const lessonList = document.getElementById('lesson-list');
+            lessons.forEach((lesson, index) => {
+                const li = document.createElement('li');
+                const checkbox = document.createElement('div');
+                checkbox.className = 'checkbox';
+                checkbox.id = `checkbox-${lesson.id}`;
+                li.appendChild(checkbox);
+
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = lesson.title;
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    showLesson(index);
+                };
+                li.appendChild(a);
+                lessonList.appendChild(li);
+            });
+        }
+
+        function updateCheckbox(lessonId) {
+            const checkbox = document.getElementById(`checkbox-${lessonId}`);
+            checkbox.classList.add('completed');
+            checkbox.innerHTML = '✓';
+        }
+
+        createLessonList();
+        showLesson(0);
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>
+
