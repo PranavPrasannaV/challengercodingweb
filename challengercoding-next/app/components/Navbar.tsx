@@ -36,7 +36,7 @@ export default function Navbar() {
                 {/* CTA Button */}
                 <div className="hidden md:block">
                     <Link
-                        href="https://forms.office.com/r/BnXvEhKGVs"
+                        href="https://forms.office.com/Pages/ResponsePage.aspx?id=P2fUH5bfIUaGOKHYjEyF1wlFHbBEVgxGuzgdeeRRMfdUQkswR1pBTjJJMVRPSUpZUFQ4T0ZWSDNZWC4u"
                         target="_blank"
                         className="bg-accent hover:bg-accent-hover text-white px-6 py-2.5 rounded-xl font-semibold shadow-lg shadow-accent/20 transition-all hover:-translate-y-0.5"
                     >
