@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Code2, GraduationCap, Users, CheckCircle2, MonitorPlay, Terminal } from "lucide-react";
+import { ArrowRight, Code2, GraduationCap, Users, CheckCircle2, MonitorPlay } from "lucide-react";
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
@@ -55,20 +55,15 @@ export default function Home() {
           </div>
 
           {/* Visual composition — styled exactly like the provided image */}
-          <div className="flex items-center justify-center md:justify-end group relative py-12 select-none">
+            <div className="flex items-center justify-center group relative py-8 select-none">
             {/* Glowing background */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-radial from-primary/10 via-transparent to-transparent blur-2xl -z-10 pointer-events-none" />
 
-            <div className="relative w-full max-w-[400px] aspect-[4/3] flex items-center justify-center">
-              {/* Floating Code Icon Card (Left) */}
-              <div className="absolute -left-6 top-12 w-14 h-14 bg-white hairline rounded-xl shadow-lg flex items-center justify-center p-3.5 -rotate-6 group-hover:-rotate-3 group-hover:-translate-x-1 group-hover:-translate-y-1 transition-all duration-500 ease-out z-10">
-                <Code2 className="w-7 h-7 text-primary" />
-              </div>
-
+              <div className="relative w-full max-w-[420px] aspect-[16/9] flex items-center justify-center">
               {/* Main Code Editor Window */}
-              <div className="relative w-full bg-white hairline rounded-2xl p-8 shadow-xl rotate-3 group-hover:rotate-1 group-hover:scale-[1.02] transition-all duration-500 ease-out z-0">
+                <div className="relative w-full bg-white hairline rounded-2xl px-8 py-6 shadow-xl rotate-3 group-hover:rotate-1 group-hover:scale-[1.02] transition-all duration-500 ease-out z-0">
                 {/* Windows-style top dots */}
-                <div className="flex gap-1.5 mb-6">
+                  <div className="flex gap-1.5 mb-4">
                   <div className="w-3 h-3 rounded-full bg-[#FF5F56]" />
                   <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
                   <div className="w-3 h-3 rounded-full bg-[#27C93F]" />
@@ -112,11 +107,6 @@ export default function Home() {
                   <div className="text-text-secondary">{"}"}</div>
                 </div>
               </div>
-
-              {/* Floating Terminal Icon Card (Right) */}
-              <div className="absolute -right-6 bottom-12 w-14 h-14 bg-dark-bg rounded-xl shadow-lg border border-white/5 flex items-center justify-center p-3.5 rotate-6 group-hover:rotate-3 group-hover:translate-x-1 group-hover:translate-y-1 transition-all duration-500 ease-out z-10">
-                <Terminal className="w-7 h-7 text-gold" />
-              </div>
             </div>
           </div>
         </div>
@@ -130,7 +120,7 @@ export default function Home() {
               <Users className="w-7 h-7 text-primary" />
             </div>
             <div>
-              <div className="text-h2 font-bold text-text">1,000+</div>
+              <div className="text-h2 font-bold text-text">3,000+</div>
               <div className="text-text-secondary text-small">Active students learning with us</div>
             </div>
           </div>
