@@ -20,6 +20,7 @@ export async function generateStaticParams() {
     return params;
 }
 
-export default function Page({ params }: { params: { courseId: string; lessonId: string } }) {
-    return <NotesViewerClient params={params} />;
+export default async function Page({ params }: { params: Promise<{ courseId: string; lessonId: string }> }) {
+    const { courseId, lessonId } = await params;
+    return <NotesViewerClient params={{ courseId, lessonId }} />;
 }
