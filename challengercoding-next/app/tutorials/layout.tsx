@@ -19,11 +19,17 @@ export default function TutorialsLayout({
 
     const isActive = (path: string) => pathname === path || pathname?.startsWith(path + '/');
 
-    const navItems = [
+    const beginnerCourses = [
         { href: '/tutorials', label: 'All Courses', icon: BookOpen },
         { href: '/tutorials/scratch', label: 'Scratch', icon: MonitorPlay },
         { href: '/tutorials/python', label: 'Python', icon: Terminal },
         { href: '/tutorials/java', label: 'Java', icon: Code2 },
+    ];
+
+    const advancedCourses = [
+        { href: '/tutorials/scratch2', label: 'Scratch 2', icon: MonitorPlay },
+        { href: '/tutorials/python2', label: 'Python 2', icon: Terminal },
+        { href: '/tutorials/java2', label: 'Java 2', icon: Code2 },
     ];
 
     return (
@@ -52,7 +58,7 @@ export default function TutorialsLayout({
                 <div className="mb-8">
                     <h2 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-4">Learning Menu</h2>
                     <nav className="space-y-2">
-                        {navItems.map((item) => (
+                        {beginnerCourses.map((item) => (
                             <Link
                                 key={item.href}
                                 href={item.href}
@@ -74,18 +80,27 @@ export default function TutorialsLayout({
                 </div>
 
                 <div className="pt-6 border-t border-border">
-                    <h2 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-4">Advanced (Coming Soon)</h2>
-                    <div className="space-y-2 opacity-50">
-                        <div className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary">
-                            <MonitorPlay size={16} /> Scratch Level 2
-                        </div>
-                        <div className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary">
-                            <Terminal size={16} /> Python Level 2
-                        </div>
-                        <div className="flex items-center gap-3 px-4 py-2 text-sm text-text-secondary">
-                            <Code2 size={16} /> Java Level 2
-                        </div>
-                    </div>
+                    <h2 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-4">Advanced Courses</h2>
+                    <nav className="space-y-2">
+                        {advancedCourses.map((item) => (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                onClick={() => setSidebarOpen(false)}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 group
+                                    ${isActive(item.href)
+                                        ? 'bg-primary/10 text-primary font-semibold border-l-2 border-primary'
+                                        : 'text-text hover:bg-alt-bg'
+                                    }`}
+                            >
+                                <item.icon size={20} className={isActive(item.href) ? 'text-primary' : 'text-text-secondary group-hover:text-primary transition-colors'} />
+                                <span>{item.label}</span>
+                                {isActive(item.href) && (
+                                    <ChevronRight size={16} className="ml-auto" />
+                                )}
+                            </Link>
+                        ))}
+                    </nav>
                 </div>
             </aside>
 

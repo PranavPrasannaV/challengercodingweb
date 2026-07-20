@@ -1,6 +1,11 @@
+export interface QuizOption {
+    label: string;
+    value: string;
+}
+
 export interface QuizQuestion {
     question: string;
-    options?: string[];
+    options?: QuizOption[] | string[];
     correctAnswer: string | number;
     explanation?: string;
 }

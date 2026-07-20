@@ -3,9 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { courses } from '@/src/data/courses';
-import { scratchLesson1 } from '@/src/data/lessons/scratch/lesson1';
-import { javaLesson1 } from '@/src/data/lessons/java/lesson1';
-import { pythonLesson1 } from '@/src/data/lessons/python/lesson1';
+import { lessonRegistry } from '@/src/data/lessons';
 import {
     ChevronLeft,
     ChevronRight,
@@ -17,12 +15,6 @@ import {
     BookOpen,
     ArrowLeft
 } from 'lucide-react';
-
-const lessonMap: Record<string, any> = {
-    'scratch-1': scratchLesson1,
-    'java-1': javaLesson1,
-    'python-1': pythonLesson1
-};
 
 export default function LessonViewerClient({ params }: { params: { courseId: string; lessonId: string } }) {
     const router = useRouter();
@@ -42,8 +34,8 @@ export default function LessonViewerClient({ params }: { params: { courseId: str
 
     useEffect(() => {
         const key = `${courseId}-${lessonId}`;
-        if (lessonMap[key]) {
-            setLessonData(lessonMap[key]);
+        if (lessonRegistry[key]) {
+            setLessonData(lessonRegistry[key]);
         }
     }, [courseId, lessonId]);
 

@@ -3,6 +3,8 @@
 import React from 'react';
 import { Terminal } from 'lucide-react';
 
+// JDoodle embed used to match v2 repo (j-tang-59/challengercodingweb-v2)
+
 export default function Compiler() {
     return (
         <main className="min-h-screen bg-background pt-32 pb-20 px-6">
@@ -21,7 +23,7 @@ export default function Compiler() {
                     {/* Embedded JDoodle Compiler */}
                     <div className="rounded-lg overflow-hidden">
                         <iframe
-                            src="https://onecompiler.com/embed/?hideNew=true"
+                            src="https://www.jdoodle.com/online-java-compiler"
                             title="Online Compiler"
                             className="w-full h-[800px] border-none"
                         ></iframe>

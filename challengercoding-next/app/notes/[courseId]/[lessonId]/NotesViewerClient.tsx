@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { pythonNotes } from '@/src/data/notes/python';
 import { javaNotes } from '@/src/data/notes/java';
-import { SubLesson, QuizQuestion } from '@/src/data/notes/types';
+import { SubLesson, QuizQuestion, QuizOption } from '@/src/data/notes/types';
 import {
     Menu,
     X,
@@ -79,7 +79,9 @@ export default function NotesViewerClient({ params }: { params: { courseId: stri
 
         let isCorrect = false;
         if (typeof question.correctAnswer === 'number' && question.options) {
-            const selectedIndex = question.options.indexOf(String(userAnswer));
+            const selectedIndex = question.options.findIndex(opt =>
+                typeof opt === 'string' ? opt === String(userAnswer) : opt.value === String(userAnswer)
+            );
             isCorrect = selectedIndex === question.correctAnswer;
         } else {
             isCorrect = String(userAnswer).trim().toLowerCase() === String(question.correctAnswer).trim().toLowerCase();
@@ -198,12 +200,14 @@ export default function NotesViewerClient({ params }: { params: { courseId: stri
 
                                             <div className="grid grid-cols-1 gap-3">
                                                 {q.options && q.options.length > 0 ? (
-                                                    q.options.map((opt: string, optIdx: number) => {
-                                                        const isSelected = quizAnswers[qIdx] === opt;
+                                                    q.options.map((opt: string | QuizOption, optIdx: number) => {
+                                                        const displayText = typeof opt === 'string' ? opt : opt.label;
+                                                        const answerValue = typeof opt === 'string' ? opt : opt.value;
+                                                        const isSelected = quizAnswers[qIdx] === answerValue;
                                                         return (
                                                             <button
                                                                 key={optIdx}
-                                                                onClick={() => setQuizAnswers(prev => ({ ...prev, [qIdx]: opt }))}
+                                                                onClick={() => setQuizAnswers(prev => ({ ...prev, [qIdx]: answerValue }))}
                                                                 className={`p-5 rounded-lg border-2 text-left font-medium transition-colors flex items-center gap-4 ${
                                                                     isSelected
                                                                         ? 'bg-primary/5 border-primary text-primary'
@@ -215,7 +219,7 @@ export default function NotesViewerClient({ params }: { params: { courseId: stri
                                                                 }`}>
                                                                     {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-primary" />}
                                                                 </div>
-                                                                {opt}
+                                                                {displayText}
                                                             </button>
                                                         );
                                                     })

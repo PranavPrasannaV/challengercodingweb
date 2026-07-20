@@ -71,22 +71,22 @@ export const courses: Course[] = [
     {
         id: 'scratch2',
         title: 'Advanced Scratch',
-        description: 'Advanced Scratch concepts.',
+        description: 'Continue your coding journey with these advanced Scratch tutorials.',
         image: '/assets/scratchlogo.png',
         link: '/tutorials/scratch2',
         lessons: [
-            { id: '1', title: 'Week 1: Advanced Concepts', link: '/lessons/scratch2/1', type: 'guided' },
-            { id: '2', title: 'Week 2: More Advanced Concepts', link: '/lessons/scratch2/2', type: 'guided' },
-            { id: '3', title: 'Week 3: Even More Advanced Concepts', link: '/lessons/scratch2/3', type: 'guided' },
-            { id: '4', title: 'Week 4: Advanced Loops', link: '/lessons/scratch2/4', type: 'guided' },
-            { id: '5', title: 'Week 5: Advanced Conditionals', link: '/lessons/scratch2/5', type: 'guided' },
-            { id: '6', title: 'Week 6: Final Project', link: '/lessons/scratch2/6', type: 'guided' },
+            { id: '1', title: 'Week 1: Pong', link: '/lessons/scratch2/1', type: 'guided' },
+            { id: '2', title: 'Week 2: Calculator', link: '/lessons/scratch2/2', type: 'guided' },
+            { id: '3', title: 'Week 3: Platformer Part 1 - Basics', link: '/lessons/scratch2/3', type: 'guided' },
+            { id: '4', title: 'Week 4: Rock, Paper, Scissors', link: '/lessons/scratch2/4', type: 'guided' },
+            { id: '5', title: 'Week 5: Flappy Bird', link: '/lessons/scratch2/5', type: 'guided' },
+            { id: '6', title: 'Week 6: Space Invaders', link: '/lessons/scratch2/6', type: 'guided' },
         ]
     },
     {
         id: 'python2',
         title: 'Advanced Python',
-        description: 'Advanced Python programming.',
+        description: 'Expand your Python skills with advanced concepts and projects in this course.',
         image: '/assets/python.png',
         link: '/tutorials/python2',
         lessons: [
@@ -103,12 +103,18 @@ export const courses: Course[] = [
     {
         id: 'java2',
         title: 'Advanced Java',
-        description: 'Advanced Java programming.',
+        description: 'Deep dive into Java with object-oriented programming and algorithms.',
         image: '/assets/java.png',
         link: '/tutorials/java2',
         lessons: [
-            { id: '1', title: 'Week 1: Review', link: '/lessons/java2/1', type: 'guided' },
-            // Add more lessons as needed
+            { id: '1', title: 'Week 1: 2D Arrays', link: '/lessons/java2/1', type: 'guided' },
+            { id: '2', title: 'Week 2: Classes', link: '/lessons/java2/2', type: 'guided' },
+            { id: '3', title: 'Week 3: Encapsulation', link: '/lessons/java2/3', type: 'guided' },
+            { id: '4', title: 'Week 4: Inheritance', link: '/lessons/java2/4', type: 'guided' },
+            { id: '5', title: 'Week 5: Polymorphism', link: '/lessons/java2/5', type: 'guided' },
+            { id: '6', title: 'Week 6: Lists', link: '/lessons/java2/6', type: 'guided' },
+            { id: '7', title: 'Week 7: Recursion', link: '/lessons/java2/7', type: 'guided' },
+            { id: 'test', title: 'Final Project: Test', link: '/lessons/java2/test', type: 'guided' },
         ]
     }
 ];

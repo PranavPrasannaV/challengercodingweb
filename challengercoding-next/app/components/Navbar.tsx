@@ -14,7 +14,7 @@ const navLinks = [
 ];
 
 const enrollHref =
-  'https://forms.office.com/Pages/ResponsePage.aspx?id=P2fUH5bfIUaGOKHYjEyF1wlFHbBEVgxGuzgdeeRRMfdUQkswR1pBTjJJMVRPSUpZUFQ4T0ZWSDNZWC4u';
+  'https://forms.office.com/r/BnXvEhKGVs';
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
