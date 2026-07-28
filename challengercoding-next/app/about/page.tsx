@@ -11,7 +11,7 @@ const values = [
 
 const president = {
   name: 'Aadi Saraf',
-  role: 'President & Co-Founder',
+  role: 'Co-Founder and Current President',
   initials: 'AS',
   desc: 'Leads Challenger Coding\'s curriculum, strategic expansion, and partnerships, helping grow our impact while maintaining a high-quality learning experience.',
 };
