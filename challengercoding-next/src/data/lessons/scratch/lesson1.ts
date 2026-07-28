@@ -114,7 +114,7 @@ export const scratchLesson1 = [
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
                   One of the simplest ways to move a sprite is with the "move" block. It looks like this:
               </p>
-              <img src="/assets/movesteps.png" alt="Move block in Scratch" class="image-block rounded-lg shadow-md my-6 max-w-full">
+              <img src="/movesteps.png" alt="Move block in Scratch" class="image-block rounded-lg shadow-md my-6 max-w-full">
               <p class="image-caption text-center italic text-gray-500 mt-2">Figure 2: Move block in Scratch</p>
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
                   This block moves the sprite 10 steps in whatever direction it's facing. But what exactly is a "step" in Scratch? How far do you think your sprite will move?
@@ -143,7 +143,7 @@ export const scratchLesson1 = [
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
                   Now, let's make our sprite move automatically when we start our project. Can you think of a block we might use to start our project? Hint: It's green and has a flag on it!
               </p>
-              <img src="/assets/greenflag.png" alt="When green flag clicked block in Scratch" class="image-block rounded-lg shadow-md my-6 max-w-full">
+              <img src="/greenflag.png" alt="When green flag clicked block in Scratch" class="image-block rounded-lg shadow-md my-6 max-w-full">
               <p class="image-caption text-center italic text-gray-500 mt-2">Figure 3: When green flag clicked block in Scratch</p>
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
                   Try connecting the "when green flag clicked" block to your "move" block. Then click the green flag above the stage. Does your sprite move automatically now?
@@ -165,7 +165,7 @@ export const scratchLesson1 = [
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
                   One of the blocks we can use is the "turn" block. It looks like this:
               </p>
-              <img src="/assets/rotate.png" alt="Turn block in Scratch" class="image-block rounded-lg shadow-md my-6 max-w-full">
+              <img src="/rotate.png" alt="Turn block in Scratch" class="image-block rounded-lg shadow-md my-6 max-w-full">
               <p class="image-caption text-center italic text-gray-500 mt-2">Figure 4: Turn block in Scratch</p>
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
                   This block rotates the sprite clockwise by 15 degrees. But what does 15 degrees look like? How many degrees do you think it takes to make a complete circle?
@@ -213,7 +213,7 @@ export const scratchLesson1 = [
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
                   In Scratch, one of the most common loops is the "forever" block. It looks like this:
               </p>
-              <img src="/assets/forever.png" alt="Forever block in Scratch" class="image-block rounded-lg shadow-md my-6 max-w-full">
+              <img src="/forever.png" alt="Forever block in Scratch" class="image-block rounded-lg shadow-md my-6 max-w-full">
               <p class="image-caption text-center italic text-gray-500 mt-2">Figure 6: Forever block in Scratch</p>
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
                   The forever block repeats the blocks inside it... well, forever! Or at least until you stop the project. But how might this be useful? Let's find out!

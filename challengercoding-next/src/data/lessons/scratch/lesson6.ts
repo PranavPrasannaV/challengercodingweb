@@ -76,7 +76,7 @@ export const scratchLesson6 = [
                 <p class="tutorial-text">
                     The AND operator returns true only if both conditions are true.
                 </p>
-                <img src="/placeholder.svg?height=50&width=200" alt="AND Operator in Scratch" class="image-block">
+                <img src="/and.png" alt="AND Operator in Scratch" class="image-block">
                 <p class="image-caption">The "and" block in Scratch</p>
                 <div class="highlight-box">
                     <p><strong>Use Case:</strong> When you want an action to occur only if multiple conditions are met.</p>
@@ -88,7 +88,7 @@ export const scratchLesson6 = [
                 <p class="tutorial-text">
                     The OR operator returns true if at least one of the conditions is true.
                 </p>
-                <img src="/placeholder.svg?height=50&width=200" alt="OR Operator in Scratch" class="image-block">
+                <img src="/or.png" alt="OR Operator in Scratch" class="image-block">
                 <p class="image-caption">The "or" block in Scratch</p>
                 <div class="highlight-box">
                     <p><strong>Use Case:</strong> When you want an action to occur if any of multiple conditions are met.</p>
@@ -100,7 +100,7 @@ export const scratchLesson6 = [
                 <p class="tutorial-text">
                     The NOT operator reverses a Boolean value. It turns true into false and false into true.
                 </p>
-                <img src="/placeholder.svg?height=50&width=200" alt="NOT Operator in Scratch" class="image-block">
+                <img src="/not.png" alt="NOT Operator in Scratch" class="image-block">
                 <p class="image-caption">The "not" block in Scratch</p>
                 <div class="highlight-box">
                     <p><strong>Use Case:</strong> When you want to check if a condition is not true.</p>
@@ -151,7 +151,7 @@ export const scratchLesson6 = [
                     <li>Multiplication (*)</li>
                     <li>Division (/)</li>
                 </ul>
-                <img src="/placeholder.svg?height=100&width=200" alt="Arithmetic Operators in Scratch" class="image-block">
+                <img src="/placeholder.svg?height=100&width=300" alt="Arithmetic Operators in Scratch" class="image-block">
                 <p class="image-caption">Arithmetic operator blocks in Scratch</p>
             </div>
 
@@ -165,8 +165,20 @@ export const scratchLesson6 = [
                     <li>Less than (&lt;)</li>
                     <li>Equal to (=)</li>
                 </ul>
-                <img src="/placeholder.svg?height=100&width=200" alt="Comparison Operators in Scratch" class="image-block">
-                <p class="image-caption">Comparison operator blocks in Scratch</p>
+                <div class="grid grid-cols-3 gap-2 mb-4">
+                    <div>
+                        <img src="/greaterthan.png" alt="Greater-than operator block in Scratch" class="image-block">
+                        <p class="image-caption">Greater Than (&gt;)</p>
+                    </div>
+                    <div>
+                        <img src="/lessthan.png" alt="Less-than operator block in Scratch" class="image-block">
+                        <p class="image-caption">Less Than (&lt;)</p>
+                    </div>
+                    <div>
+                        <img src="/equal.png" alt="Equal-to operator block in Scratch" class="image-block">
+                        <p class="image-caption">Equal To (=)</p>
+                    </div>
+                </div>
             </div>
 
             <div class="interactive-demo">

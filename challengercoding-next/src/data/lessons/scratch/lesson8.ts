@@ -77,8 +77,20 @@ export const scratchLesson8 = [
                     <li>When [key] key pressed: Executes the code when a specific key is pressed.</li>
                     <li>When backdrop switches to [backdrop]: Triggers when the backdrop changes.</li>
                 </ul>
-                <img src="/placeholder.svg?height=150&width=300" alt="Event Blocks in Scratch" class="image-block">
-                <p class="image-caption">Common event blocks in Scratch</p>
+                <div class="grid grid-cols-3 gap-2 mb-4">
+                    <div>
+                        <img src="/clicksprite.png" alt="When sprite clicked block in Scratch" class="image-block">
+                        <p class="image-caption">When Sprite Clicked</p>
+                    </div>
+                    <div>
+                        <img src="/keypress.png" alt="When key pressed block in Scratch" class="image-block">
+                        <p class="image-caption">When Key Pressed</p>
+                    </div>
+                    <div>
+                        <img src="/backdropchange.png" alt="When backdrop switches block in Scratch" class="image-block">
+                        <p class="image-caption">When Backdrop Switches</p>
+                    </div>
+                </div>
             </div>
 
             <div class="content-box">
@@ -135,8 +147,16 @@ say [Hello, World!] for (2) seconds
                     <li>Broadcast [message] and wait: Sends a message and waits for all receivers to finish their scripts.</li>
                     <li>When I receive [message]: Starts a script when a specific message is received.</li>
                 </ul>
-                <img src="/placeholder.svg?height=100&width=300" alt="Broadcasting Blocks in Scratch" class="image-block">
-                <p class="image-caption">Broadcasting blocks in Scratch</p>
+                <div class="grid grid-cols-2 gap-2 mb-4">
+                    <div>
+                        <img src="/broadcast.png" alt="Broadcast block in Scratch" class="image-block">
+                        <p class="image-caption">Broadcast</p>
+                    </div>
+                    <div>
+                        <img src="/receive.png" alt="When I receive block in Scratch" class="image-block">
+                        <p class="image-caption">When I Receive</p>
+                    </div>
+                </div>
             </div>
 
             <div class="content-box">

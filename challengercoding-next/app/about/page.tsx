@@ -13,7 +13,7 @@ const president = {
   name: 'Aadi Saraf',
   role: 'President & Co-Founder',
   initials: 'AS',
-  desc: 'Leads Challenger Coding’s strategy, curriculum direction, and day-to-day operations, working to keep our lessons accessible to every student who wants to learn.',
+  desc: 'Leads Challenger Coding\'s curriculum, strategic expansion, and partnerships, helping grow our impact while maintaining a high-quality learning experience.',
 };
 
 const team = [
@@ -117,6 +117,17 @@ export default function About() {
                   access and hopes to inspire the next generation of coders. Outside of Challenger Coding, Jaden
                   loves playing soccer, piano, and hanging out with friends and family.
                 </p>
+              </div>
+              <div className="pt-6 border-t border-border flex items-start gap-4">
+                <div className="shrink-0 w-11 h-11 rounded-full bg-primary/10 border border-primary/25 flex items-center justify-center text-primary text-small font-serif font-bold tracking-wide">
+                  AS
+                </div>
+                <div className="space-y-0.5">
+                  <p className="text-small text-primary font-semibold uppercase tracking-[0.15em]">
+                    Co-Founder and Current President
+                  </p>
+                  <p className="text-small text-text font-semibold">Aadi Saraf</p>
+                </div>
               </div>
             </div>
           </div>

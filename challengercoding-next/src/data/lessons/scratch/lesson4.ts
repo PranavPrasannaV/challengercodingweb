@@ -115,7 +115,7 @@ export const scratchLesson4 = [
                 <p class="tutorial-text">
                     The "Repeat" loop executes a set of instructions a specific number of times.
                 </p>
-                <img src="/placeholder.svg?height=50&width=200" alt="Repeat Loop Block" class="image-block">
+                <img src="/repeat.png" alt="Repeat Loop Block" class="image-block">
                 <p class="image-caption">The "Repeat" loop block in Scratch</p>
                 <div class="highlight-box">
                     <p><strong>Use Case:</strong> When you know exactly how many times you want to repeat an action.</p>
@@ -127,7 +127,7 @@ export const scratchLesson4 = [
                 <p class="tutorial-text">
                     The "Forever" loop repeats a set of instructions indefinitely, until the script is stopped.
                 </p>
-                <img src="/placeholder.svg?height=50&width=200" alt="Forever Loop Block" class="image-block">
+                <img src="/forever.png" alt="Forever Loop Block" class="image-block">
                 <p class="image-caption">The "Forever" loop block in Scratch</p>
                 <div class="highlight-box">
                     <p><strong>Use Case:</strong> When you want an action to continue indefinitely, like constant movement or checking for user input.</p>
@@ -139,7 +139,7 @@ export const scratchLesson4 = [
                 <p class="tutorial-text">
                     The "Repeat Until" loop repeats a set of instructions until a specific condition is met.
                 </p>
-                <img src="/placeholder.svg?height=50&width=200" alt="Repeat Until Loop Block" class="image-block">
+                <img src="/repeatuntil.png" alt="Repeat Until Loop Block" class="image-block">
                 <p class="image-caption">The "Repeat Until" loop block in Scratch</p>
                 <div class="highlight-box">
                     <p><strong>Use Case:</strong> When you want to repeat an action until a specific condition is true, like reaching a goal or collecting all items.</p>

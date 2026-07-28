@@ -21,23 +21,23 @@ export const scratchLesson2 = [
             <div class="content-box">
                 <h3>New Scratch Blocks We'll Use Today:</h3>
                 <div class="step-box">
-                    <img src="/placeholder.svg?height=50&width=150" alt="Go to X: _ Y: _">
+                    <img src="/goto.png" alt="Go to X: _ Y: _" class="image-block">
                     <p>This block teleports your sprite to a specific spot on the stage.</p>
                 </div>
                 <div class="step-box">
-                    <img src="/placeholder.svg?height=50&width=150" alt="Change X by _">
+                    <img src="/changex.png" alt="Change X by _" class="image-block">
                     <p>This block moves your sprite left or right.</p>
                 </div>
                 <div class="step-box">
-                    <img src="/placeholder.svg?height=50&width=150" alt="Change Y by _">
+                    <img src="/changey.png" alt="Change Y by _" class="image-block">
                     <p>This block moves your sprite up or down.</p>
                 </div>
                 <div class="step-box">
-                    <img src="/placeholder.svg?height=50&width=150" alt="Glide _ secs to X: _ Y: _">
+                    <img src="/glide.png" alt="Glide _ secs to X: _ Y: _" class="image-block">
                     <p>This block makes your sprite smoothly move to a specific spot.</p>
                 </div>
                 <div class="step-box">
-                    <img src="/placeholder.svg?height=50&width=150" alt="Glide _ secs to random position">
+                    <img src="/glide.png" alt="Glide _ secs to random position" class="image-block">
                     <p>This block makes your sprite glide to a surprise location!</p>
                 </div>
             </div>
@@ -92,8 +92,8 @@ export const scratchLesson2 = [
                 
                 <div class="highlight-box">
                     <h3>We'll use these blocks:</h3>
-                    <img src="/placeholder.svg?height=50&width=150" alt="Change X by _">
-                    <img src="/placeholder.svg?height=50&width=150" alt="Change Y by _">
+                    <img src="/changex.png" alt="Change X by _" class="image-block">
+                    <img src="/changey.png" alt="Change Y by _" class="image-block">
                 </div>
                 
                 <div class="step-box">
@@ -123,8 +123,8 @@ export const scratchLesson2 = [
                 
                 <div class="highlight-box">
                     <h3>New Blocks:</h3>
-                    <img src="/placeholder.svg?height=50&width=150" alt="Glide _ secs to X: _ Y: _">
-                    <img src="/placeholder.svg?height=50&width=150" alt="Glide _ secs to random position">
+                    <img src="/glide.png" alt="Glide _ secs to X: _ Y: _" class="image-block">
+                    <img src="/glide.png" alt="Glide _ secs to random position" class="image-block">
                 </div>
                 
                 <div class="step-box">

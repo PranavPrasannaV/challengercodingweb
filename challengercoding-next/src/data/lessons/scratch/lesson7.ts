@@ -82,8 +82,8 @@ export const scratchLesson7 = [
                     <li>Give your variable a name (e.g., "score")</li>
                     <li>Choose whether the variable is for all sprites or just for one sprite</li>
                 </ol>
-                <img src="/placeholder.svg?height=100&width=200" alt="Creating a Variable in Scratch" class="image-block">
-                <p class="image-caption">Creating a variable in Scratch</p>
+                <img src="/var.png" alt="Variable reporter block in Scratch" class="image-block">
+                <p class="image-caption">Variable reporter block in Scratch</p>
             </div>
 
             <div class="content-box">
@@ -97,8 +97,24 @@ export const scratchLesson7 = [
                     <li>Show Variable: Displays the variable's value on the stage</li>
                     <li>Hide Variable: Hides the variable from view on the stage</li>
                 </ul>
-                <img src="/placeholder.svg?height=150&width=200" alt="Variable Blocks in Scratch" class="image-block">
-                <p class="image-caption">Variable blocks in Scratch</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
+                    <div>
+                        <img src="/setvar.png" alt="Set variable block in Scratch" class="image-block">
+                        <p class="image-caption">Set Variable</p>
+                    </div>
+                    <div>
+                        <img src="/changevar.png" alt="Change variable block in Scratch" class="image-block">
+                        <p class="image-caption">Change Variable</p>
+                    </div>
+                    <div>
+                        <img src="/showvar.png" alt="Show variable block in Scratch" class="image-block">
+                        <p class="image-caption">Show Variable</p>
+                    </div>
+                    <div>
+                        <img src="/hidevar.png" alt="Hide variable block in Scratch" class="image-block">
+                        <p class="image-caption">Hide Variable</p>
+                    </div>
+                </div>
             </div>
 
             <div class="interactive-demo">
@@ -141,7 +157,7 @@ export const scratchLesson7 = [
                     <li>Say [Message] for [2] seconds: Displays a message for a specified duration</li>
                     <li>Move [10] steps: Moves the sprite a specified number of steps</li>
                 </ul>
-                <img src="/placeholder.svg?height=150&width=200" alt="Parameter Blocks in Scratch" class="image-block">
+                <img src="/placeholder.svg?height=150&width=300" alt="Parameter Blocks in Scratch" class="image-block">
                 <p class="image-caption">Parameter blocks in Scratch</p>
             </div>
 

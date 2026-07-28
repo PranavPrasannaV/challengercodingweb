@@ -116,7 +116,7 @@ export const scratchLesson5 = [
                 <p class="tutorial-text">
                     In Scratch, the "If" block looks like this:
                 </p>
-                <img src="/placeholder.svg?height=50&width=200" alt="If Block in Scratch" class="image-block">
+                <img src="/ifstatement.png" alt="If Block in Scratch" class="image-block">
                 <p class="image-caption">The "If" block in Scratch</p>
                 <div class="highlight-box">
                     <p><strong>Use Case:</strong> When you want to perform an action only under certain conditions.</p>
@@ -177,7 +177,7 @@ export const scratchLesson5 = [
                 <p class="tutorial-text">
                     In Scratch, the "If-Else" block looks like this:
                 </p>
-                <img src="/placeholder.svg?height=100&width=200" alt="If-Else Block in Scratch" class="image-block">
+                <img src="/ifelse.png" alt="If-Else Block in Scratch" class="image-block">
                 <p class="image-caption">The "If-Else" block in Scratch</p>
                 <div class="highlight-box">
                     <p><strong>Use Case:</strong> When you want to perform one action if a condition is true, and a different action if it's false.</p>
