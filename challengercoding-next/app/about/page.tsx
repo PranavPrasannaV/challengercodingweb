@@ -9,11 +9,32 @@ const values = [
   { icon: Target, label: 'Impact', desc: 'Real-world skills' },
 ];
 
+const president = {
+  name: 'Aadi Saraf',
+  role: 'President & Co-Founder',
+  initials: 'AS',
+  desc: 'Leads Challenger Coding’s strategy, curriculum direction, and day-to-day operations, working to keep our lessons accessible to every student who wants to learn.',
+};
+
 const team = [
-  { name: 'Aadi Saraf', role: 'VP of Education' },
-  { name: 'Ananya Denduluri', role: 'VP of Outreach' },
-  { name: 'Miheer Pandya', role: 'Webmaster' },
-  { name: 'Brinda Aniga', role: 'Secretary' },
+  {
+    name: 'Pranav Prasanna Venkatesh',
+    role: 'Vice President',
+    initials: 'PV',
+    desc: 'Supports leadership across every program and helps coordinate our instructional initiatives.',
+  },
+  {
+    name: 'Jeswanth Battula',
+    role: 'Public Relations',
+    initials: 'JB',
+    desc: 'Manages outreach and communications, building partnerships with schools, families, and sponsors.',
+  },
+  {
+    name: 'Miheer Pandya',
+    role: 'Webmaster',
+    initials: 'MP',
+    desc: 'Maintains the website and the digital platforms that deliver our lessons and resources.',
+  },
 ];
 
 export default function About() {
@@ -103,25 +124,49 @@ export default function About() {
       </section>
 
       {/* Leadership Section */}
-      <section className="bg-background pb-24">
-        <div className="max-w-7xl mx-auto px-6 text-center space-y-16">
-          <h2 className="text-h2 font-serif font-bold text-text">
-            Meet Our Leadership
-          </h2>
+      <section className="bg-alt-bg py-24">
+        <div className="max-w-5xl mx-auto px-6 space-y-12">
+          <div className="text-center space-y-5">
+            <h2 className="text-h2 font-serif font-bold text-text">
+              Meet Our Leadership
+            </h2>
+            <div className="accent-line mx-auto" />
+            <p className="text-body text-text-secondary max-w-2xl mx-auto">
+              The students who plan our curriculum, run our outreach, and keep Challenger Coding
+              running week to week.
+            </p>
+          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          {/* President — featured */}
+          <div className="bg-surface hairline rounded-lg p-8 md:p-10 flex flex-col sm:flex-row items-center sm:items-start gap-8 text-center sm:text-left hover:border-primary/40 transition-colors">
+            <div className="shrink-0 w-28 h-28 rounded-full bg-primary ring-4 ring-gold/30 flex items-center justify-center text-white text-3xl font-serif font-bold tracking-wide">
+              {president.initials}
+            </div>
+            <div className="space-y-3">
+              <div className="inline-block text-small text-primary font-semibold uppercase tracking-[0.15em] border border-primary/25 rounded-full px-3 py-1">
+                {president.role}
+              </div>
+              <h3 className="text-h2 font-serif font-bold text-text">{president.name}</h3>
+              <p className="text-body text-text-secondary leading-relaxed">{president.desc}</p>
+            </div>
+          </div>
+
+          {/* Officers */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {team.map((member, i) => (
               <div
                 key={i}
-                className="bg-surface hairline rounded-lg p-8 text-center hover:bg-alt-bg transition-colors"
+                className="bg-surface hairline rounded-lg p-8 text-center flex flex-col items-center hover:border-primary/40 transition-colors"
               >
-                <div className="w-20 h-20 mx-auto rounded-full bg-primary flex items-center justify-center text-white text-2xl font-bold">
-                  {member.name.charAt(0)}
+                <div className="w-20 h-20 rounded-full bg-primary/10 border border-primary/25 flex items-center justify-center text-primary text-xl font-serif font-bold tracking-wide">
+                  {member.initials}
                 </div>
-                <h3 className="text-h3 font-bold text-text mt-4">{member.name}</h3>
-                <p className="text-small text-primary font-medium uppercase tracking-wider">
+                <h3 className="text-h3 font-serif font-bold text-text mt-5">{member.name}</h3>
+                <p className="text-small text-primary font-semibold uppercase tracking-[0.15em] mt-2">
                   {member.role}
                 </p>
+                <div className="accent-line mx-auto my-5" />
+                <p className="text-small text-text-secondary leading-relaxed">{member.desc}</p>
               </div>
             ))}
           </div>
