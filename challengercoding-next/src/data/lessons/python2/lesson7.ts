@@ -3,7 +3,7 @@ export const python2Lesson7 = [
     {
         title: "Introduction to Recursion",
         content: `
-            <h1 class="tutorial-title">Exercise 1: Introduction to Recursion</h1>
+            <h2 class="tutorial-title">Exercise 1: Introduction to Recursion</h2>
             <p class="tutorial-text">
                 Welcome to Python 2, Lesson 7! Today, we'll learn about recursion, a powerful programming concept where a function calls itself to solve a problem.
             </p>
@@ -42,7 +42,7 @@ countdown(5)
     {
         title: "Recursive Functions",
         content: `
-            <h1 class="tutorial-title">Exercise 2: Recursive Functions</h1>
+            <h2 class="tutorial-title">Exercise 2: Recursive Functions</h2>
             <p class="tutorial-text">
                 Recursive functions are functions that call themselves. They can be very powerful for solving problems that have a recursive nature.
             </p>
@@ -84,7 +84,7 @@ print(factorial(5))  # Should print 120
     {
         title: "Base Case and Recursive Case",
         content: `
-            <h1 class="tutorial-title">Exercise 3: Base Case and Recursive Case</h1>
+            <h2 class="tutorial-title">Exercise 3: Base Case and Recursive Case</h2>
             <p class="tutorial-text">
                 Understanding the base case and recursive case is crucial for writing effective recursive functions.
             </p>
@@ -129,7 +129,7 @@ print(fibonacci(7))  # Should print 13
     {
         title: "Recursion vs. Iteration",
         content: `
-            <h1 class="tutorial-title">Exercise 4: Recursion vs. Iteration</h1>
+            <h2 class="tutorial-title">Exercise 4: Recursion vs. Iteration</h2>
             <p class="tutorial-text">
                 Many problems can be solved using either recursion or iteration. It's important to understand the trade-offs between these approaches.
             </p>
@@ -179,7 +179,7 @@ print(sum_iterative(numbers))  # Should print 15
     {
         title: "Weekly Project: Fractal Tree",
         content: `
-            <h1 class="tutorial-title">Weekly Project: Fractal Tree</h1>
+            <h2 class="tutorial-title">Weekly Project: Fractal Tree</h2>
             <p class="tutorial-text">
                 Let's put everything we've learned about recursion into practice by creating a fractal tree using the turtle graphics library.
             </p>

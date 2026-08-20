@@ -1,138 +1,771 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   Challenger Coding — design tokens
+
+   Three hues, one warm neutral ramp. Teal is the institution, terracotta is
+   the invitation, ochre marks the beginner track. Everything else is paper
+   and ink. Every foreground/background pair below meets WCAG AA at its
+   intended size; the ratios are noted where they are close.
+   ========================================================================== */
+
 @theme {
-  /* Brand Colors - Launchpad Palette */
-  --color-primary: #1A5C5C;
-  --color-primary-hover: #144A4A;
-  --color-cta: #C6694E;
-  --color-cta-hover: #B15840;
-  --color-gold: #D4A059;
-  --color-background: #F5F0E8;
-  --color-dark-bg: #1B2A41;
-  --color-text: #2C2C2C;
-  --color-text-secondary: #5C5C5C;
-  --color-alt-bg: #EDE4D8;
-  --color-sage: #8FA88A;
-  --color-border: #E2DCD2;
-  --color-surface: #FFFFFF;
-  --color-error: #9E4244;
+  /* Neutrals — warm paper stock */
+  --color-paper: #FAF8F4;        /* page ground */
+  --color-paper-sunk: #F2EDE4;   /* recessed bands, quiet fills */
+  --color-card: #FFFFFF;         /* raised surfaces */
 
-  /* Typography */
-  --font-serif: var(--font-merriweather);
-  --font-sans: var(--font-lato);
-  --font-mono: var(--font-jetbrains-mono);
+  --color-ink: #1B1917;          /* 16.5:1 on paper */
+  --color-ink-muted: #5A554E;    /*  7.0:1 on paper — body copy */
+  --color-ink-meta: #6B645B;     /*  5.5:1 on paper — labels, captions */
 
-  /* Animations */
-  --animate-fade-in: fade-in 0.2s ease-out;
+  --color-rule: #E4DDD2;         /* hairlines */
+  --color-rule-strong: #D6CCBD;  /* dividers that need to read */
+  --color-field: #8C8271;        /*  3.6:1 — form borders, non-text contrast */
+
+  /* Brand — teal */
+  --color-brand: #1A5C5C;        /*  7.3:1 on paper */
+  --color-brand-deep: #124442;   /* 10.2:1 — dark bands, hover */
+  --color-brand-tint: #E8F0EE;
+
+  /* Accent — terracotta (darkened from the old #C6694E, which failed AA) */
+  --color-accent: #A9482F;       /*  5.4:1 on paper; white on it = 5.8:1 */
+  --color-accent-deep: #8E3B26;
+  --color-accent-tint: #F7ECE7;
+
+  /* Warm highlight, used only on dark grounds */
+  --color-sand: #E4C88F;         /*  6.7:1 on brand-deep */
+
+  /* Scratch is the only track that needs a hue of its own. Python and Java
+     tokens were byte-identical to --color-brand and --color-accent, so they
+     were deleted rather than left as an invitation to color-code cards. */
+  --color-track-scratch: #96601A;  /* 5.0:1 on paper */
+
+  /* Status */
+  --color-success: #2F6B4F;      /*  5.9:1 on paper, 5.4:1 on its tint */
+  --color-success-tint: #E7F0EA;
+  --color-danger: #9A3B33;       /*  6.5:1 on paper, 5.8:1 on its tint */
+  --color-danger-tint: #F7E9E6;
+
+  /* Code surfaces */
+  --color-code-bg: #17312F;
+  --color-code-fg: #E8E4DC;
+  --color-code-keyword: #F0A88A;
+  --color-code-string: #9FD6B4;
+  --color-code-comment: #8FA39F;
+
+  /* Type */
+  --font-serif: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-source-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SF Mono", monospace;
+
+  /* Radii — three steps, so a child never shares its parent's radius */
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  /* Motion. Redefining Tailwind's defaults is what makes a bare
+     `transition-colors` correct, instead of policing 46 call sites.
+     Panels that slide use duration-300 at the call site — Tailwind v4 has no
+     theme namespace for durations, so a --duration-* token here would emit
+     nothing. */
+  --default-transition-duration: 140ms;
+  --default-transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  --duration-300: 300ms;
+
+  /* The fixed header height. Reserved once, on <body>. */
+  --nav-h: 4rem;
 }
 
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
+/* ==========================================================================
+   Base
+   ========================================================================== */
 
 @layer base {
-  body {
-    background-color: var(--color-background);
-    color: var(--color-text);
-    font-family: var(--font-lato), system-ui, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--nav-h) + 1.5rem);
   }
 
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    /* The header is fixed. Reserve its height once here rather than
+       compensating with a different pt-* on every page. */
+    padding-top: var(--nav-h);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Newsreader is a variable font with an optical size axis. Large headings
+     want tighter, higher-contrast shapes; running text wants the opposite. */
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    font-optical-sizing: auto;
+    text-wrap: balance;
+  }
+
+  p, li {
+    text-wrap: pretty;
+  }
+
+  /* One focus ring for every ground. Teal-on-teal was invisible on the CTA
+     band; a sand ring inside a deep-teal halo clears 3:1 on paper, on white,
+     on brand and on brand-deep without any per-section bookkeeping. */
   :focus-visible {
-    outline: 2px solid var(--color-primary);
+    outline: 2px solid var(--color-sand);
     outline-offset: 2px;
-    border-radius: 2px;
+    box-shadow: 0 0 0 4px var(--color-brand-deep);
+  }
+
+  /* When the control is wrapped, ring the wrapper, not the bare input. */
+  .field-wrap:has(:focus-visible) {
+    outline: 2px solid var(--color-sand);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px var(--color-brand-deep);
+  }
+  .field-wrap :focus-visible {
+    outline: none;
+    box-shadow: none;
   }
 
   ::selection {
-    background-color: var(--color-primary);
-    color: white;
+    background-color: var(--color-brand);
+    color: var(--color-paper);
   }
 
-  /* Respect reduced motion */
   @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
     }
   }
 
-  /* Minimal page transition via View Transitions API */
+  /* Cross-fade between pages. The old view fades out, the new one fades in —
+     both need an animation, not a bare opacity, or the new page never
+     resolves and the navigation reads as a flash. */
   @media (prefers-reduced-motion: no-preference) {
-    @view-transition {
-      navigation: auto;
-    }
+    @view-transition { navigation: auto; }
 
     ::view-transition-old(root) {
-      opacity: 1;
-      transition: opacity 0.2s ease;
+      animation: vt-fade-out 0.18s ease both;
     }
-
     ::view-transition-new(root) {
-      opacity: 0;
-      transition: opacity 0.2s ease;
+      animation: vt-fade-in 0.22s ease both;
     }
   }
 }
 
-/* Hairline border utility - replaces box-shadow card lift */
-.hairline {
-  border: 1px solid var(--color-border);
+/* Track color is wayfinding, never action and never correctness. It reaches
+   the lesson bodies — which are raw HTML strings a Tailwind utility can never
+   touch — through a custom property set on the page root.
+
+   #FF8C1A is Scratch's own ui-dark-orange. Ink on it is 7.5:1; white would be
+   2.33:1, which is why the numeral inverts rather than staying white. The
+   orange fill against paper is 2.2:1 — it is decoration, and the numeral
+   inside it carries the information. */
+:root { --track: var(--color-brand); --track-ink: #FFFFFF; }
+[data-track="scratch"] { --track: #FF8C1A; --track-ink: #1B1917; }
+
+/* Scratch students are 8-12 and are following a procedure, not reading an
+   article. Four declarations, on the reading surfaces only — the catalogue and
+   the marketing pages stay one thing, because a parent browsing them is not
+   nine years old. */
+[data-track="scratch"] .lesson-prose { font-size: 1.1875rem; }
+[data-track="scratch"] .lesson-prose :is(p, li) { max-width: 56ch; }
+[data-track="scratch"] .eyebrow {
+  font-size: 0.875rem;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
-/* Typography clamp utilities */
-.text-hero {
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
-  line-height: 1.1;
-  letter-spacing: -0.03em;
+@keyframes vt-fade-out { to { opacity: 0; } }
+@keyframes vt-fade-in { from { opacity: 0; } }
+
+/* ==========================================================================
+   Components
+
+   Wrapped in @layer components so a Tailwind utility at the call site always
+   wins. Without this you get `hairline border-r-0` — a class fighting the
+   system it belongs to.
+   ========================================================================== */
+
+@layer components {
+
+/* --------------------------------------------------------------------------
+   Type scale
+
+   A 1.22 ratio, clamped. Line-height and tracking are bound to the size so a
+   heading never has to be tuned by hand at the call site.
+   ========================================================================== */
+
+.text-display {
+  font-size: clamp(2.75rem, 1.9rem + 3.4vw, 4.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.028em;
+  font-weight: 500;
 }
 
 .text-h1 {
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  font-size: clamp(2.1rem, 1.6rem + 2vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.022em;
+  font-weight: 500;
 }
 
 .text-h2 {
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
-  line-height: 1.3;
-  letter-spacing: -0.01em;
+  font-size: clamp(1.6rem, 1.35rem + 1.1vw, 2.15rem);
+  line-height: 1.18;
+  letter-spacing: -0.016em;
+  font-weight: 500;
 }
 
 .text-h3 {
-  font-size: clamp(1.25rem, 2vw, 1.5rem);
-  line-height: 1.35;
+  font-size: clamp(1.2rem, 1.1rem + 0.4vw, 1.4rem);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  font-weight: 600;
 }
 
-.text-body {
+.text-lead {
+  font-size: clamp(1.125rem, 1.06rem + 0.3vw, 1.3rem);
+  line-height: 1.55;
+  color: var(--color-ink-muted);
+}
+
+.text-body { font-size: 1.0625rem; line-height: 1.65; }
+/* 16px, not 15px: this size carries quiz options, the step rail, the output
+   instructions and the answer field. Below 16px iOS Safari also zooms on
+   focus, which throws the student out of the exercise. */
+.text-small { font-size: 1rem; line-height: 1.6; }
+
+/* Chrome that is not part of the task — breadcrumbs, legal lines. Never put
+   this on something a student clicks or must read to finish a step. */
+.text-meta { font-size: 0.9375rem; line-height: 1.5; }
+
+/* Small-caps label. The one decorative typographic device the site uses. */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--color-ink-meta);
+}
+
+/* Section labels a student navigates by. Same family and weight as the
+   eyebrow, but sentence case, body size and full-strength ink — these are the
+   words a child scans to find what to do, so they are not set at 12px caps. */
+.label {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-ink);
+}
+
+/* Numerals in tables and stats should line up. */
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* ==========================================================================
+   Layout rhythm
+
+   Sections are not all the same height. Weight follows importance.
+   ========================================================================== */
+
+.wrap { width: 100%; max-width: 72rem; margin-inline: auto; padding-inline: 1.5rem; }
+.wrap-narrow { width: 100%; max-width: 52rem; margin-inline: auto; padding-inline: 1.5rem; }
+
+.section-sm { padding-block: 3.5rem; }
+.section    { padding-block: 5rem; }
+.section-lg { padding-block: 6rem; }
+
+@media (min-width: 768px) {
+  .wrap, .wrap-narrow { padding-inline: 2rem; }
+  .section-sm { padding-block: 4.5rem; }
+  .section    { padding-block: 7rem; }
+  .section-lg { padding-block: 9rem; }
+}
+
+/* Measure control — prose should never run wider than the eye can track. */
+.measure { max-width: 64ch; }
+.measure-tight { max-width: 46ch; }
+
+/* ==========================================================================
+   Surfaces
+
+   Borders, not shadows. A card is a bounded region of paper, not a floating
+   object. Elevation is reserved for things that genuinely float (the mobile
+   drawer, the sticky header once it detaches).
+   ========================================================================== */
+
+.card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-md);
+}
+
+.card-quiet {
+  background-color: var(--color-paper-sunk);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+}
+
+/* Interactive cards shift their border and ground, they do not lift. */
+.card-link {
+  transition: border-color 0.18s ease, background-color 0.18s ease;
+}
+.card-link:hover { border-color: var(--color-brand); }
+
+.rule-top { border-top: 1px solid var(--color-rule); }
+.rule-bottom { border-bottom: 1px solid var(--color-rule); }
+
+/* ==========================================================================
+   Controls
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0.875rem 1.5rem;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: var(--color-accent);
+  color: #FFFFFF;
+}
+.btn-primary:hover { background-color: var(--color-accent-deep); }
+
+.btn-brand {
+  background-color: var(--color-brand);
+  color: #FFFFFF;
+}
+.btn-brand:hover { background-color: var(--color-brand-deep); }
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-ink);
+  border: 1px solid var(--color-field);
+}
+.btn-outline:hover { background-color: var(--color-paper-sunk); border-color: var(--color-ink); }
+
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-primary:disabled:hover { background-color: var(--color-accent); }
+.btn-brand:disabled:hover { background-color: var(--color-brand); }
+.btn-outline:disabled:hover { background-color: transparent; border-color: var(--color-field); }
+
+/* A text link that reads as a link without a blue underline everywhere. */
+.link-quiet {
+  color: var(--color-brand);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--color-brand) 30%, transparent);
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color 0.18s ease;
+}
+.link-quiet:hover { text-decoration-color: currentColor; }
+
+/* Form fields */
+.field {
+  width: 100%;
+  background-color: var(--color-card);
+  border: 1px solid var(--color-field);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 0.875rem;
+  font-size: 1rem;
+  color: var(--color-ink);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.field::placeholder { color: var(--color-ink-meta); }
+/* A bare field keeps the global focus ring; only the tint is added here.
+   Overriding outline/box-shadow at :focus used to cancel :focus-visible. */
+.field:focus { border-color: var(--color-brand); }
+
+.min-h-page { min-height: calc(100svh - var(--nav-h)); }
+
+}
+
+/* ==========================================================================
+   Lesson prose
+
+   The lesson bodies are stored as HTML strings carrying two generations of
+   markup: semantic class names from the original site (.content-box,
+   .code-block, .tutorial-text …) that were never given styles, and Tailwind
+   utilities from a different palette (text-gray-700, text-blue-600,
+   bg-gray-800) that fight the brand. Rather than rewrite forty data files,
+   scope both vocabularies here and give them one voice.
+   ========================================================================== */
+
+.lesson-prose {
+  color: var(--color-ink);
   font-size: 1.125rem;
+  line-height: 1.7;
+  max-width: 68ch;
+}
+/* The container stays wide so screenshots are not shrunk; the text does not. */
+.lesson-prose :is(p, li) { max-width: 62ch; }
+
+/* Vertical rhythm. The child combinator this used to use never reached
+   inside a callout, so ~1,090 paragraphs, lists and code blocks nested in
+   .content-box / .highlight-box / .step-box stacked flush against each other
+   (Tailwind preflight zeroes every margin). :where() keeps the specificity at
+   (0,1,0), so every override below still wins. */
+.lesson-prose :where(p, ul, ol, pre, table, blockquote, figure, div, h1, h2, h3, h4)
+  + :where(p, ul, ol, pre, table, blockquote, figure, div) { margin-top: 1.1em; }
+
+/* Neutralize the off-brand utility colors the lesson HTML carries.
+   These are scoped to .lesson-prose so they never leak into the app shell. */
+/* .text-gray-700/600 (282 uses) and .tutorial-text (698 uses) both outrank
+   the bare `p` selector, so these are where instruction color is really
+   decided. */
+.lesson-prose .text-gray-700,
+.lesson-prose .text-gray-600 { color: var(--color-ink); }
+.lesson-prose .text-gray-800,
+.lesson-prose .text-gray-900 { color: var(--color-ink); }
+.lesson-prose .text-gray-500 { color: var(--color-ink-meta); }
+.lesson-prose .text-blue-600,
+.lesson-prose .text-blue-700,
+.lesson-prose .text-blue-500 { color: var(--color-brand); }
+.lesson-prose .border-blue-600,
+.lesson-prose .border-blue-500 { border-color: var(--color-brand); }
+.lesson-prose .bg-blue-500,
+.lesson-prose .bg-blue-600 { background-color: var(--color-brand); }
+.lesson-prose .bg-gray-100,
+.lesson-prose .bg-gray-50 { background-color: var(--color-paper-sunk); }
+.lesson-prose .bg-white { background-color: var(--color-card); }
+.lesson-prose .border-gray-200,
+.lesson-prose .border-gray-300 { border-color: var(--color-rule); }
+
+/* A heading is ink because it is a heading, not teal because whoever wrote
+   that lesson happened to type text-blue-600. The [class] selector is here
+   only to outrank the utility above it. */
+.lesson-prose h1[class],
+.lesson-prose h2[class],
+.lesson-prose h3[class],
+.lesson-prose h4[class] { color: var(--color-ink); }
+
+.lesson-prose h1,
+.lesson-prose h2,
+.lesson-prose h3,
+.lesson-prose h4 {
+  font-family: var(--font-serif);
+  color: var(--color-ink);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+  border: 0;
+  padding: 0;
+}
+.lesson-prose > :first-child { margin-top: 0; }
+
+.lesson-prose h1 { font-size: 1.9rem; line-height: 1.2; }
+.lesson-prose h2 { font-size: 1.5rem; line-height: 1.25; }
+/* Inside a lesson, h3 is almost always procedural ("Blocks Covered",
+   "Definitions"). A heavier sans scans faster in a numbered procedure, and
+   letter-spacing: 0 undoes the serif tightening the shared block applies. */
+.lesson-prose h3 {
+  font-family: var(--font-sans);
+  font-size: 1.18rem;
+  line-height: 1.35;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.lesson-prose h4 { font-size: 1.06em; font-weight: 600; font-family: var(--font-sans); }
+
+/* Instructions are set in full-strength ink. A magazine de-emphasizes body
+   copy under a strong headline because the reader is browsing; a lesson page
+   must do the opposite, because the reader is executing. Paragraphs inherit
+   --color-ink from the container. */
+.lesson-prose strong { color: var(--color-ink); font-weight: 600; }
+.lesson-prose em { font-style: italic; }
+
+.lesson-prose a {
+  color: var(--color-brand);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.lesson-prose ul,
+.lesson-prose ol {
+  padding-left: 1.35em;
+  list-style-position: outside;
+}
+.lesson-prose ul { list-style-type: disc; }
+.lesson-prose ol { list-style-type: decimal; }
+.lesson-prose li + li { margin-top: 0.4em; }
+.lesson-prose li::marker { color: var(--color-ink-meta); }
+
+.lesson-prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-rule);
+  display: block;
+}
+
+.lesson-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+.lesson-prose th,
+.lesson-prose td {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--color-rule);
+  color: var(--color-ink-muted);
+}
+.lesson-prose th { color: var(--color-ink); font-weight: 600; }
+
+/* Inline code */
+.lesson-prose code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background-color: var(--color-paper-sunk);
+  color: var(--color-ink);
+  padding: 0.15em 0.4em;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-rule);
+}
+
+/* Code blocks — both the semantic class and the utility-styled divs */
+.lesson-prose pre,
+.lesson-prose .code-block,
+.lesson-prose .code-example,
+.lesson-prose .bg-gray-800 {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
   line-height: 1.6;
+  background-color: var(--color-code-bg);
+  color: var(--color-code-fg);
+  padding: 1.1rem 1.25rem;
+  border-radius: var(--radius-md);
+  border: 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.lesson-prose pre code,
+.lesson-prose .code-block code,
+.lesson-prose .code-example code,
+.lesson-prose .bg-gray-800 code {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font-size: 1em;
 }
 
-.text-small {
+/* .content-box and .example-box are generic wrappers — 171 of them in the
+   Scratch course against 46 real callouts. Boxing them meant a "do this now"
+   panel and a paragraph of background looked identical, so a student learned
+   to skip both. They become plain flow; only the callouts below get a shape. */
+.lesson-prose .content-box,
+.lesson-prose .example-box {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+/* Callouts. One shape, three temperatures, distinguished by the left rule. */
+.lesson-prose .highlight-box,
+.lesson-prose .hint-box,
+.lesson-prose .key-point,
+.lesson-prose .interactive-demo,
+.lesson-prose .bg-blue-50 {
+  background-color: var(--color-paper-sunk);
+  border: 1px solid var(--color-rule);
+  border-left: 3px solid var(--color-rule-strong);
+  border-radius: var(--radius-sm);
+  padding: 1.1rem 1.25rem;
+  box-shadow: none;
+}
+.lesson-prose .highlight-box,
+.lesson-prose .key-point,
+.lesson-prose .bg-blue-50 {
+  background-color: var(--color-brand-tint);
+  border-left-color: var(--color-brand);
+}
+.lesson-prose .hint-box {
+  background-color: var(--color-accent-tint);
+  border-left-color: var(--color-accent);
+}
+.lesson-prose .content-box > :first-child,
+.lesson-prose .highlight-box > :first-child,
+.lesson-prose .example-box > :first-child,
+.lesson-prose .hint-box > :first-child { margin-top: 0; }
+
+/* Numbered steps.
+   Two shapes exist in the lesson data: a .step-box that wraps a single step
+   (those carry Tailwind's own `flex`), and a .step-box that wraps several
+   numbered paragraphs. Making the container flex unconditionally turned the
+   second kind into four narrow columns, so the default is block. */
+.lesson-prose .step-box {
+  display: block;
+  background-color: transparent;
+  border: 0;
+  border-top: 1px solid var(--color-rule);
+  border-radius: 0;
+  padding: 0.9rem 0 0;
+  margin-top: 0;
+  box-shadow: none;
+}
+/* A box of numbered steps is the one thing on the page a student must act on,
+   so it gets the track rule rather than a hairline above it. */
+.lesson-prose .step-box:has(.step-number) {
+  border-top: 0;
+  border-left: 3px solid var(--track);
+  padding: 0.15rem 0 0.15rem 1.1rem;
+}
+.lesson-prose .step-box.flex {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+.lesson-prose .step-box > p { margin-top: 0.5rem; }
+.lesson-prose .step-box > p:first-child { margin-top: 0; }
+
+.lesson-prose .step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-right: 0.5rem;
+  vertical-align: -0.3em;
+  border-radius: 999px;
+  background-color: var(--track);
+  color: var(--track-ink);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.lesson-prose .image-block { margin-block: 1.5rem; }
+.lesson-prose .image-caption {
   font-size: 0.875rem;
-  line-height: 1.5;
+  color: var(--color-ink-meta);
+  text-align: center;
+  font-style: normal;
+  margin-top: 0.6rem;
 }
 
-/* Decorative accent line */
-.accent-line {
-  width: 3rem;
-  height: 3px;
-  background-color: var(--color-gold);
-  border-radius: 2px;
+.lesson-prose .tutorial-title {
+  font-family: var(--font-serif);
+  font-size: 1.9rem;
+  font-weight: 500;
+  color: var(--color-ink);
+  letter-spacing: -0.015em;
+}
+.lesson-prose .tutorial-text { color: var(--color-ink); }
+
+/* Legacy quiz markup rendered inside prose */
+.lesson-prose .quiz-container {
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  background-color: var(--color-card);
+}
+.lesson-prose .quiz-question,
+.lesson-prose .question { font-weight: 600; color: var(--color-ink); }
+.lesson-prose .quiz-options { list-style: none; padding-left: 0; }
+.lesson-prose .quiz-option {
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.8rem;
+  background-color: var(--color-paper);
+}
+.lesson-prose .quiz-feedback,
+.lesson-prose .hint { font-size: 0.9375rem; color: var(--color-ink-meta); }
+
+.lesson-prose .demo-button,
+.lesson-prose .button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: var(--color-brand);
+  color: #FFFFFF;
+  border: 0;
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-.accent-line-left {
-  width: 3px;
-  height: 2rem;
-  background-color: var(--color-gold);
-  border-radius: 2px;
+/* The lesson HTML asks for drop shadows and heavy borders in a few places.
+   The site does not use them. */
+.lesson-prose .shadow-md,
+.lesson-prose .shadow-lg,
+.lesson-prose .shadow { box-shadow: none; }
+.lesson-prose .border-b-2 { border-bottom-width: 1px; }
+
+/* Legacy classes that reach the page from the lesson data and would otherwise
+   render unstyled or off-palette. Each of these appears in src/data/lessons/**. */
+
+/* Fixed-width YouTube and Scratch embeds in the Scratch 2 lessons carry
+   width="485"/"560" attributes and would push the column sideways. */
+.lesson-prose iframe,
+.lesson-prose video,
+.lesson-prose canvas,
+.lesson-prose embed {
+  display: block;
+  max-width: 100%;
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-md);
+}
+.lesson-prose iframe { aspect-ratio: 16 / 9; height: auto; width: 100%; }
+.lesson-prose iframe[src*="scratch.mit.edu"] { aspect-ratio: 485 / 402; }
+
+/* The lesson HTML predates this palette and asks for colors that no longer
+   exist (bg-primary, bg-secondary) or that belong to a different one
+   (orange callouts). Without these the buttons render as white-on-white. */
+.lesson-prose .bg-primary { background-color: var(--color-brand); }
+.lesson-prose .bg-secondary { background-color: var(--color-ink-muted); }
+.lesson-prose .bg-orange-50 { background-color: var(--color-accent-tint); }
+.lesson-prose .border-orange-500,
+.lesson-prose .border-orange-400 { border-color: var(--color-accent); }
+.lesson-prose .text-orange-600,
+.lesson-prose .text-orange-700 { color: var(--color-accent); }
+.lesson-prose .bg-green-50 { background-color: var(--color-success-tint); }
+.lesson-prose .border-green-500 { border-color: var(--color-success); }
+.lesson-prose .text-green-600,
+.lesson-prose .text-green-700 { color: var(--color-success); }
+.lesson-prose .bg-red-50 { background-color: var(--color-danger-tint); }
+.lesson-prose .text-red-600,
+.lesson-prose .text-red-700 { color: var(--color-danger); }
+.lesson-prose .bg-yellow-50 { background-color: var(--color-paper-sunk); }
+.lesson-prose .border-yellow-400 { border-color: var(--color-sand); }
+
+/* The interactive demos were driven by inline handlers that were deleted with
+   the rest of the dead JavaScript — the functions they called never existed in
+   this app. Showing a button that cannot respond is worse than showing none. */
+.lesson-prose .interactive-demo,
+.lesson-prose .demo-controls,
+.lesson-prose .demo-button,
+.lesson-prose canvas[id] {
+  display: none;
 }

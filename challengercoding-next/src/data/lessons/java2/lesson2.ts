@@ -2,7 +2,7 @@ export const java2Lesson2 = [
     {
         title: "Lesson Overview",
         content: `
-            <h1 class="tutorial-title">Java 2 Guided Tutorials - Week 2: Classes and OOP Basics</h1>
+            <h2 class="tutorial-title">Java 2 Guided Tutorials - Week 2: Classes and OOP Basics</h2>
             <div class="content-box">
                 <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
                 <p class="tutorial-text">
@@ -31,7 +31,7 @@ export const java2Lesson2 = [
     {
         title: "Introduction to Classes",
         content: `
-            <h1 class="tutorial-title">1. Introduction to Classes</h1>
+            <h2 class="tutorial-title">1. Introduction to Classes</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">What is a Class?</h3>
                 <p class="tutorial-text">
@@ -66,7 +66,7 @@ export const java2Lesson2 = [
     {
         title: "Creating a Class",
         content: `
-            <h1 class="tutorial-title">2. Creating a Class</h1>
+            <h2 class="tutorial-title">2. Creating a Class</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">How to Create a Class</h3>
                 <p class="tutorial-text">Let's create a simple class step by step:</p>
@@ -114,7 +114,7 @@ export const java2Lesson2 = [
     {
         title: "Constructors",
         content: `
-            <h1 class="tutorial-title">3. Constructors</h1>
+            <h2 class="tutorial-title">3. Constructors</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">What are Constructors?</h3>
                 <p class="tutorial-text">
@@ -164,7 +164,7 @@ export const java2Lesson2 = [
     {
         title: "Instance vs Static Methods",
         content: `
-            <h1 class="tutorial-title">4. Instance vs Static Methods</h1>
+            <h2 class="tutorial-title">4. Instance vs Static Methods</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Understanding Method Types</h3>
                 <p class="tutorial-text">
@@ -225,7 +225,7 @@ System.out.println(MathOperations.add(3, 4));  // Outputs: 7</code></pre>
     {
         title: "OOP Basics",
         content: `
-            <h1 class="tutorial-title">5. OOP Basics</h1>
+            <h2 class="tutorial-title">5. OOP Basics</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Object-Oriented Programming Fundamentals</h3>
                 <p class="tutorial-text">
@@ -306,27 +306,8 @@ myCat.makeSound();  // Outputs: The cat meows</code></pre>
     {
         title: "Quiz",
         content: `
-            <h1 class="tutorial-title">6. Classes and OOP Quiz</h1>
-            <div class="quiz-container">
-                <form id="quizForm">
-                    <div class="question">
-                        <p class="quiz-question">1. What is the purpose of a constructor in Java?</p>
-                        <ul class="quiz-options">
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="a" id="q1a">
-                                <label for="q1a">To initialize the object's state</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="b" id="q1b">
-                                <label for="q1b">To destroy the object when it's no longer needed</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="c" id="q1c">
-                                <label for="q1c">To define the class methods</label>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="question">
+            <h2 class="tutorial-title">6. Classes and OOP Quiz</h2>
+<div class="question">
                         <p class="quiz-question">2. Which of the following is a principle of OOP?</p>
                         <ul class="quiz-options">
                             <li class="quiz-option">
@@ -361,7 +342,7 @@ myCat.makeSound();  // Outputs: The cat meows</code></pre>
                         </ul>
                     </div>
                 </form>
-                <button onclick="submitQuiz()" class="button mt-4">Submit Quiz</button>
+                <button class="button mt-4">Submit Quiz</button>
                 <p id="quizResult" class="quiz-feedback"></p>
             </div>
         `,
@@ -398,7 +379,7 @@ myCat.makeSound();  // Outputs: The cat meows</code></pre>
     {
         title: "Weekly Project",
         content: `
-            <h1 class="tutorial-title">7. Weekly Project: Library Management System</h1>
+            <h2 class="tutorial-title">7. Weekly Project: Library Management System</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Project Description</h3>
                 <p class="tutorial-text">For this week's project, you'll create a simple Library Management System using the OOP concepts we've learned.</p>

@@ -60,7 +60,7 @@ print(f"Hello, {name}! You are {age} years old.")`,
     {
         title: "Guided Exercise: Temperature Converter",
         content: `
-            <h1 class="tutorial-title">Guided Exercise: Temperature Converter</h1>
+            <h2 class="tutorial-title">Guided Exercise: Temperature Converter</h2>
             <p class="tutorial-text">
                 Let's create a simple temperature converter that converts Celsius to Fahrenheit. We'll guide you through the process step by step.
             </p>
@@ -94,7 +94,7 @@ print(f"{celsius}°C is equal to {fahrenheit}°F")
     {
         title: "Project: Personal Information Form",
         content: `
-            <h1 class="tutorial-title">Project: Personal Information Form</h1>
+            <h2 class="tutorial-title">Project: Personal Information Form</h2>
             <p class="tutorial-text">
                 For this project, you'll create a program that collects personal information from the user and then displays it in a formatted manner. This project will test your knowledge of input functions, string concatenation, and basic Python syntax.
             </p>

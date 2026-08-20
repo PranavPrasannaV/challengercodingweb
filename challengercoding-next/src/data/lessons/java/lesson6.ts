@@ -4,7 +4,7 @@ export const javaLesson6 = [
     {
         title: "Lesson Overview",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Java Guided Tutorials - Objects and Wrapper Classes</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Java Guided Tutorials - Objects and Wrapper Classes</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h2 class="text-2xl font-semibold mb-4 text-gray-800">What You'll Learn</h2>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -30,7 +30,7 @@ export const javaLesson6 = [
     {
         title: "Object Basics",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">1. Object Basics</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">1. Object Basics</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h3 class="text-xl font-semibold mb-2 text-gray-800">What is an Object?</h3>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -109,7 +109,7 @@ export const javaLesson6 = [
     {
         title: "Wrapper Classes",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">2. Wrapper Classes</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">2. Wrapper Classes</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h3 class="text-xl font-semibold mb-2 text-gray-800">What are Wrapper Classes?</h3>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -223,7 +223,7 @@ int primitive = value;  // Java auto-unboxes</code></pre>
     {
         title: "Object Methods",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">3. Object Methods</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">3. Object Methods</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h3 class="text-xl font-semibold mb-2 text-gray-800">Instance Methods vs Static Methods</h3>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -337,7 +337,7 @@ int primitive = value;  // Java auto-unboxes</code></pre>
     {
         title: "Object Comparison",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">4. Object Comparison</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">4. Object Comparison</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h3 class="text-xl font-semibold mb-2 text-gray-800">Reference Equality vs Content Equality</h3>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">

@@ -3,7 +3,7 @@ export const python2Lesson3 = [
     {
         title: "Introduction to Tuples",
         content: `
-            <h1 class="tutorial-title">Exercise 1: Introduction to Tuples</h1>
+            <h2 class="tutorial-title">Exercise 1: Introduction to Tuples</h2>
             <p class="tutorial-text">
                 Welcome to Python 2, Lesson 3! Today, we'll learn about tuples, another important data structure in Python.
             </p>
@@ -41,7 +41,7 @@ print(type(fruits))
     {
         title: "Accessing Tuple Elements",
         content: `
-            <h1 class="tutorial-title">Exercise 2: Accessing Tuple Elements</h1>
+            <h2 class="tutorial-title">Exercise 2: Accessing Tuple Elements</h2>
             <p class="tutorial-text">
                 Now that we've created a tuple, let's learn how to access its elements.
             </p>
@@ -80,7 +80,7 @@ print(fruits[1:])  # Slice: second element to the end
     {
         title: "Tuple Methods and Operations",
         content: `
-            <h1 class="tutorial-title">Exercise 3: Tuple Methods and Operations</h1>
+            <h2 class="tutorial-title">Exercise 3: Tuple Methods and Operations</h2>
             <p class="tutorial-text">
                 Tuples have fewer methods than lists because they're immutable, but there are still some useful operations we can perform.
             </p>
@@ -129,7 +129,7 @@ print(repeated)
     {
         title: "Tuples vs Lists",
         content: `
-            <h1 class="tutorial-title">Exercise 4: Tuples vs Lists</h1>
+            <h2 class="tutorial-title">Exercise 4: Tuples vs Lists</h2>
             <p class="tutorial-text">
                 Now that we've learned about tuples, let's compare them with lists to understand when to use each.
             </p>
@@ -176,7 +176,7 @@ print(scores)
     {
         title: "Weekly Project: Student Records",
         content: `
-            <h1 class="tutorial-title">Weekly Project: Student Records</h1>
+            <h2 class="tutorial-title">Weekly Project: Student Records</h2>
             <p class="tutorial-text">
                 Let's put everything we've learned about tuples into practice by creating a simple student record system.
             </p>

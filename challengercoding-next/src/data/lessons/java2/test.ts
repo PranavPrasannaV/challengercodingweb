@@ -2,7 +2,7 @@ export const java2Test = [
     {
         title: "Multiple Choice Questions",
         content: `
-            <h1 class="tutorial-title">Java 2 Final Test - Multiple Choice Questions</h1>
+            <h2 class="tutorial-title">Java 2 Final Test - Multiple Choice Questions</h2>
         `,
         quiz: [
             {
@@ -210,7 +210,7 @@ export const java2Test = [
     {
         title: "Free Response Question 1: Diagonal Sum",
         content: `
-            <h1 class="tutorial-title">Free Response Question 1: Diagonal Sum</h1>
+            <h2 class="tutorial-title">Free Response Question 1: Diagonal Sum</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Problem Statement</h3>
                 <p class="tutorial-text">Write a Java method that takes a 2D array of integers and returns the sum of all elements on the main diagonal (top-left to bottom-right).</p>
@@ -235,7 +235,7 @@ export const java2Test = [
     {
         title: "Free Response Question 2: Fibonacci",
         content: `
-            <h1 class="tutorial-title">Free Response Question 2: Fibonacci Sequence</h1>
+            <h2 class="tutorial-title">Free Response Question 2: Fibonacci Sequence</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Problem Statement</h3>
                 <p class="tutorial-text">Implement a recursive method to calculate the nth Fibonacci number.</p>

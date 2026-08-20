@@ -2,7 +2,7 @@ export const scratch2Lesson6 = [
     {
         title: "Lesson Overview",
         content: `
-                  <h1 class="tutorial-title">Scratch 2 Class - Guided Exercise</h1>
+                  <h2 class="tutorial-title">Scratch 2 Class - Guided Exercise</h2>
                   <h2 class="text-2xl font-semibold mb-4">Lesson 6: Space Invaders - Foundational Components</h2>
                   <div class="content-box">
                       <p class="tutorial-text">
@@ -14,8 +14,8 @@ export const scratch2Lesson6 = [
                       <h3 class="text-xl font-semibold mb-2">Space Invaders Demo</h3>
                       <canvas id="gameCanvas" width="400" height="400"></canvas>
                       <div class="demo-controls">
-                          <button class="demo-button" onclick="startGame()">Start Game</button>
-                          <button class="demo-button" onclick="stopGame()">Stop Game</button>
+                          <button class="demo-button">Start Game</button>
+                          <button class="demo-button">Stop Game</button>
                       </div>
                   </div>
         `
@@ -23,7 +23,7 @@ export const scratch2Lesson6 = [
     {
         title: "Player Movement",
         content: `
-                  <h1 class="tutorial-title">Exercise 1: Player Movement</h1>
+                  <h2 class="tutorial-title">Exercise 1: Player Movement</h2>
                   <div class="content-box">
                       <p class="tutorial-text">In this exercise, you will learn how to implement player movement for the spaceship in Space Invaders. We'll use the left and right arrow keys to control the spaceship's horizontal movement.</p>
 
@@ -93,7 +93,7 @@ end
     {
         title: "Enemy Movement and Cloning",
         content: `
-                  <h1 class="tutorial-title">Exercise 2: Enemy Movement and Cloning</h1>
+                  <h2 class="tutorial-title">Exercise 2: Enemy Movement and Cloning</h2>
                   <div class="content-box">
                       <p class="tutorial-text">In this exercise, we'll create multiple enemy invaders using cloning and implement their movement pattern.</p>
 
@@ -151,8 +151,8 @@ end
                       <h3 class="text-xl font-semibold mb-2">Enemy Movement Demo</h3>
                       <canvas id="enemyMovementDemo" width="400" height="300"></canvas>
                       <div class="demo-controls">
-                          <button class="demo-button" onclick="startEnemyMovement()">Start Movement</button>
-                          <button class="demo-button" onclick="stopEnemyMovement()">Stop Movement</button>
+                          <button class="demo-button">Start Movement</button>
+                          <button class="demo-button">Stop Movement</button>
                       </div>
                   </div>
         `
@@ -160,7 +160,7 @@ end
     {
         title: "Collision Detection",
         content: `
-                  <h1 class="tutorial-title">Exercise 3: Collision Detection</h1>
+                  <h2 class="tutorial-title">Exercise 3: Collision Detection</h2>
                   <div class="content-box">
                       <p class="tutorial-text">In this exercise, we'll implement collision detection between the player's bullets and the enemy invaders.</p>
 
@@ -214,7 +214,7 @@ end
                       <h3 class="text-xl font-semibold mb-2">Collision Detection Demo</h3>
                       <canvas id="collisionDemo" width="400" height="300"></canvas>
                       <div class="demo-controls">
-                          <button class="demo-button" onclick="fireBullet()">Fire Bullet</button>
+                          <button class="demo-button">Fire Bullet</button>
                       </div>
                   </div>
         `
@@ -222,7 +222,7 @@ end
     {
         title: "Scoring and Game Over",
         content: `
-                  <h1 class="tutorial-title">Exercise 4: Scoring and Game Over</h1>
+                  <h2 class="tutorial-title">Exercise 4: Scoring and Game Over</h2>
                   <div class="content-box">
                       <p class="tutorial-text">In this final exercise, we'll implement a scoring system and game over conditions.</p>
 
@@ -280,8 +280,8 @@ end
                       <h3 class="text-xl font-semibold mb-2">Scoring Demo</h3>
                       <canvas id="scoringDemo" width="400" height="300"></canvas>
                       <div class="demo-controls">
-                          <button class="demo-button" onclick="incrementScore()">Increase Score</button>
-                          <button class="demo-button" onclick="triggerGameOver()">Game Over</button>
+                          <button class="demo-button">Increase Score</button>
+                          <button class="demo-button">Game Over</button>
                       </div>
                   </div>
         `
@@ -289,7 +289,7 @@ end
     {
         title: "Homework",
         content: `
-                  <h1 class="tutorial-title">Homework</h1>
+                  <h2 class="tutorial-title">Homework</h2>
                   <div class="content-box">
                       <h3 class="text-xl font-semibold mb-2">Homework: Complete Your Space Invaders Game!</h3>
                       <p class="tutorial-text">

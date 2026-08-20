@@ -2,7 +2,7 @@ export const java2Lesson1 = [
     {
         title: "Lesson Overview",
         content: `
-            <h1 class="tutorial-title">Java 2 Guided Tutorials - Week 1: 2D Arrays</h1>
+            <h2 class="tutorial-title">Java 2 Guided Tutorials - Week 1: 2D Arrays</h2>
             <div class="content-box">
                 <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
                 <p class="tutorial-text">
@@ -31,7 +31,7 @@ export const java2Lesson1 = [
     {
         title: "Review of 1D Arrays",
         content: `
-            <h1 class="tutorial-title">1. Review of 1D Arrays</h1>
+            <h2 class="tutorial-title">1. Review of 1D Arrays</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Quick Recap: 1D Arrays</h3>
                 <p class="tutorial-text">Before we dive into 2D arrays, let's quickly review 1D arrays from Java 1:</p>
@@ -68,7 +68,7 @@ for (int i = 0; i < numbers.length; i++) {
     {
         title: "Introduction to 2D Arrays",
         content: `
-            <h1 class="tutorial-title">2. Introduction to 2D Arrays</h1>
+            <h2 class="tutorial-title">2. Introduction to 2D Arrays</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">What are 2D Arrays?</h3>
                 <p class="tutorial-text">A 2D array is an array of arrays. You can think of it as a table with rows and columns. Each element in a 2D array is accessed using two indices: one for the row and one for the column.</p>
@@ -99,7 +99,7 @@ grid[2][0] = 7; grid[2][1] = 8; grid[2][2] = 9;</code></pre>
     {
         title: "Accessing and Modifying 2D Arrays",
         content: `
-            <h1 class="tutorial-title">3. Accessing and Modifying 2D Arrays</h1>
+            <h2 class="tutorial-title">3. Accessing and Modifying 2D Arrays</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Working with 2D Arrays</h3>
                 <p class="tutorial-text">To access or modify elements in a 2D array, we use two indices: [row][column].</p>
@@ -131,27 +131,8 @@ for (int i = 0; i < matrix.length; i++) {
     {
         title: "Quiz",
         content: `
-            <h1 class="tutorial-title">4. 2D Arrays Quiz</h1>
-            <div class="quiz-container">
-                <form id="quizForm">
-                    <div class="question">
-                        <p class="quiz-question">1. How do you declare a 2D array of integers with 3 rows and 4 columns?</p>
-                        <ul class="quiz-options">
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="a" id="q1a">
-                                <label for="q1a">int[][] array = new int[3][4];</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="b" id="q1b">
-                                <label for="q1b">int array[][] = new int[4][3];</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="c" id="q1c">
-                                <label for="q1c">int[3][4] array = new int[][];</label>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="question">
+            <h2 class="tutorial-title">4. 2D Arrays Quiz</h2>
+<div class="question">
                         <p class="quiz-question">2. What does the following code print?</p>
                         <pre><code>int[][] arr = {{1, 2}, {3, 4}, {5, 6}};
 System.out.println(arr[1][1]);</code></pre>
@@ -189,7 +170,7 @@ System.out.println(arr[1][1]);</code></pre>
                         </ul>
                     </div>
                 </form>
-                <button onclick="submitQuiz()" class="button mt-4">Submit Quiz</button>
+                <button class="button mt-4">Submit Quiz</button>
                 <p id="quizResult" class="quiz-feedback"></p>
             </div>
         `,
@@ -226,7 +207,7 @@ System.out.println(arr[1][1]);</code></pre>
     {
         title: "Weekly Project",
         content: `
-            <h1 class="tutorial-title">5. Weekly Project: Tic-Tac-Toe Game</h1>
+            <h2 class="tutorial-title">5. Weekly Project: Tic-Tac-Toe Game</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Project Description</h3>
                 <p class="tutorial-text">For this week's project, you'll create a simple Tic-Tac-Toe game using a 2D array to represent the game board.</p>

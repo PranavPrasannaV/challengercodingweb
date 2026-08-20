@@ -2,7 +2,7 @@ export const java2Lesson7 = [
     {
         title: "Lesson Overview",
         content: `
-            <h1 class="tutorial-title">Java 2 Guided Tutorials - Week 7: Recursion</h1>
+            <h2 class="tutorial-title">Java 2 Guided Tutorials - Week 7: Recursion</h2>
             <div class="content-box">
                 <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
                 <p class="tutorial-text">
@@ -31,7 +31,7 @@ export const java2Lesson7 = [
     {
         title: "Understanding Recursion",
         content: `
-            <h1 class="tutorial-title">1. Understanding Recursion</h1>
+            <h2 class="tutorial-title">1. Understanding Recursion</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">What is Recursion?</h3>
                 <p class="tutorial-text">
@@ -75,7 +75,7 @@ export const java2Lesson7 = [
     {
         title: "Basic Recursive Functions",
         content: `
-            <h1 class="tutorial-title">2. Basic Recursive Functions</h1>
+            <h2 class="tutorial-title">2. Basic Recursive Functions</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Common Recursive Functions</h3>
                 <p class="tutorial-text">
@@ -129,7 +129,7 @@ export const java2Lesson7 = [
     {
         title: "Recursive vs Iterative Approaches",
         content: `
-            <h1 class="tutorial-title">3. Recursive vs Iterative Approaches</h1>
+            <h2 class="tutorial-title">3. Recursive vs Iterative Approaches</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Comparing Recursion and Iteration</h3>
                 <p class="tutorial-text">
@@ -179,7 +179,7 @@ export const java2Lesson7 = [
     {
         title: "Tail Recursion",
         content: `
-            <h1 class="tutorial-title">4. Tail Recursion</h1>
+            <h2 class="tutorial-title">4. Tail Recursion</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Understanding Tail Recursion</h3>
                 <p class="tutorial-text">
@@ -223,7 +223,7 @@ export const java2Lesson7 = [
     {
         title: "Recursion in Problem Solving",
         content: `
-            <h1 class="tutorial-title">5. Recursion in Problem Solving</h1>
+            <h2 class="tutorial-title">5. Recursion in Problem Solving</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Applying Recursion to Solve Problems</h3>
                 <p class="tutorial-text">
@@ -272,27 +272,8 @@ export const java2Lesson7 = [
     {
         title: "Quiz",
         content: `
-            <h1 class="tutorial-title">6. Recursion Quiz</h1>
-            <div class="quiz-container">
-                <form id="quizForm">
-                    <div class="question">
-                        <p class="quiz-question">1. What is the base case in a recursive function?</p>
-                        <ul class="quiz-options">
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="a" id="q1a">
-                                <label for="q1a">The case where the function calls itself</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="b" id="q1b">
-                                <label for="q1b">The condition that stops the recursion</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="c" id="q1c">
-                                <label for="q1c">The initial value passed to the function</label>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="question">
+            <h2 class="tutorial-title">6. Recursion Quiz</h2>
+<div class="question">
                         <p class="quiz-question">2. What is tail recursion?</p>
                         <ul class="quiz-options">
                             <li class="quiz-option">
@@ -327,7 +308,7 @@ export const java2Lesson7 = [
                         </ul>
                     </div>
                 </form>
-                <button onclick="submitQuiz()" class="button mt-4">Submit Quiz</button>
+                <button class="button mt-4">Submit Quiz</button>
                 <p id="quizResult" class="quiz-feedback"></p>
             </div>
         `,
@@ -364,7 +345,7 @@ export const java2Lesson7 = [
     {
         title: "Weekly Project",
         content: `
-            <h1 class="tutorial-title">7. Weekly Project: Recursive File Explorer</h1>
+            <h2 class="tutorial-title">7. Weekly Project: Recursive File Explorer</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Project Description</h3>
                 <p class="tutorial-text">For this week's project, you'll create a simple recursive file explorer that lists all files and directories in a given directory and its subdirectories.</p>

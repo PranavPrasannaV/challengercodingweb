@@ -3,7 +3,7 @@ export const pythonLesson1 = [
     {
         title: "Say hello",
         content: `
-          <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Exercise 1: Say hello</h1>
+          <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Exercise 1: Say hello</h2>
           <p class="text-lg leading-relaxed text-gray-700 mb-4">
               Welcome to your first Python programming exercise! Let's start with the classic "Hello, World" program.
           </p>
@@ -35,7 +35,7 @@ export const pythonLesson1 = [
     {
         title: "Print your name",
         content: `
-          <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Exercise 2: Print your name</h1>
+          <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Exercise 2: Print your name</h2>
           <p class="text-lg leading-relaxed text-gray-700 mb-4">
               Great job on your first program! Now, let's personalize things a bit by printing your name.
           </p>
@@ -65,7 +65,7 @@ print('2023')</div>
     {
         title: "Debugging",
         content: `
-          <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Exercise 3: Debugging</h1>
+          <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Exercise 3: Debugging</h2>
           <p class="text-lg leading-relaxed text-gray-700 mb-4">
               Welcome to the world of debugging! As a programmer, you'll spend a lot of time fixing errors in code. Let's start with a simple example.
           </p>
@@ -104,7 +104,7 @@ print('2023')</div>
     {
         title: "Printing Art",
         content: `
-          <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Exercise 4: Printing Art</h1>
+          <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Exercise 4: Printing Art</h2>
           <p class="text-lg leading-relaxed text-gray-700 mb-4">
               Let's get creative with Python! In this exercise, you'll create ASCII art using print statements.
           </p>
@@ -141,7 +141,7 @@ print(" > ^ <")</div>
     {
         title: "Weekly Project",
         content: `
-          <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Weekly Project: Star Pattern</h1>
+          <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Weekly Project: Star Pattern</h2>
           <p class="text-lg leading-relaxed text-gray-700 mb-4">
               Welcome to your weekly project! This week, you'll create a program that prints a specific star pattern. This project will help you practice using multiple print statements to create a shape.
           </p>

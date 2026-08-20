@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { SITE } from '@/src/site';
 
 export const metadata: Metadata = {
     title: 'Privacy Policy | Challenger Coding',
@@ -7,7 +8,7 @@ export const metadata: Metadata = {
         'What Challenger Coding collects and what it does not: no analytics, no advertising trackers, and no cookies of our own.',
 };
 
-const EMAIL = 'contact@challengercoding.com';
+const EMAIL = SITE.email;
 const UPDATED = 'August 14, 2026';
 
 export default function Privacy() {

@@ -305,7 +305,7 @@ export const python2Test = {
         {
             title: "Free Response Question 1: Recursive Factorial",
             content: `
-                <h1 class="tutorial-title">Free Response Question 1: Recursive Factorial</h1>
+                <h2 class="tutorial-title">Free Response Question 1: Recursive Factorial</h2>
                 <p class="tutorial-text">
                     Implement a recursive function to calculate the factorial of a number.
                 </p>
@@ -318,7 +318,7 @@ export const python2Test = {
         {
             title: "Free Response Question 2: Shape Class Hierarchy",
             content: `
-                <h1 class="tutorial-title">Free Response Question 2: Shape Class Hierarchy</h1>
+                <h2 class="tutorial-title">Free Response Question 2: Shape Class Hierarchy</h2>
                 <p class="tutorial-text">
                     Implement a class hierarchy for shapes (Circle and Rectangle) with a method to calculate area.
                 </p>

@@ -3,7 +3,7 @@ export const python2Lesson6 = [
     {
         title: "Introduction to Modules",
         content: `
-            <h1 class="tutorial-title">Exercise 1: Introduction to Modules</h1>
+            <h2 class="tutorial-title">Exercise 1: Introduction to Modules</h2>
             <p class="tutorial-text">
                 Welcome to Python 2, Lesson 6! Today, we'll learn about modules in Python. Modules are files containing Python code that can be imported and used in other Python programs.
             </p>
@@ -43,7 +43,7 @@ print(f"The circumference of a circle with radius 5 is: {circumference:.2f}")
     {
         title: "Creating and Using Custom Modules",
         content: `
-            <h1 class="tutorial-title">Exercise 2: Creating and Using Custom Modules</h1>
+            <h2 class="tutorial-title">Exercise 2: Creating and Using Custom Modules</h2>
             <p class="tutorial-text">
                 In addition to using built-in modules, you can create your own custom modules to organize your code better.
             </p>
@@ -97,7 +97,7 @@ print(greetings.say_goodbye("Bob"))
     {
         title: "Understanding Variable Scope",
         content: `
-            <h1 class="tutorial-title">Exercise 3: Understanding Variable Scope</h1>
+            <h2 class="tutorial-title">Exercise 3: Understanding Variable Scope</h2>
             <p class="tutorial-text">
                 Variable scope refers to the part of a program where a variable is accessible. Understanding scope is crucial for writing clean and bug-free code.
             </p>
@@ -142,7 +142,7 @@ print(f"Global x: {x}")
     {
         title: "Global and Local Variables",
         content: `
-            <h1 class="tutorial-title">Exercise 4: Global and Local Variables</h1>
+            <h2 class="tutorial-title">Exercise 4: Global and Local Variables</h2>
             <p class="tutorial-text">
                 Sometimes, you might want to modify a global variable from within a function. Python provides the 'global' keyword for this purpose.
             </p>
@@ -187,7 +187,7 @@ increment()
     {
         title: "Weekly Project: Weather Forecast App",
         content: `
-            <h1 class="tutorial-title">Weekly Project: Weather Forecast App</h1>
+            <h2 class="tutorial-title">Weekly Project: Weather Forecast App</h2>
             <p class="tutorial-text">
                 Let's put everything we've learned about modules and scope into practice by creating a simple weather forecast app.
             </p>

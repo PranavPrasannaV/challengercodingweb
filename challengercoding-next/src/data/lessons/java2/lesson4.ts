@@ -2,7 +2,7 @@ export const java2Lesson4 = [
     {
         title: "Lesson Overview",
         content: `
-            <h1 class="tutorial-title">Java 2 Guided Tutorials - Week 4: Inheritance</h1>
+            <h2 class="tutorial-title">Java 2 Guided Tutorials - Week 4: Inheritance</h2>
             <div class="content-box">
                 <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
                 <p class="tutorial-text">
@@ -31,7 +31,7 @@ export const java2Lesson4 = [
     {
         title: "Understanding Inheritance",
         content: `
-            <h1 class="tutorial-title">1. Understanding Inheritance</h1>
+            <h2 class="tutorial-title">1. Understanding Inheritance</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">What is Inheritance?</h3>
                 <p class="tutorial-text">
@@ -78,7 +78,7 @@ public class Main {
     {
         title: "Types of Inheritance",
         content: `
-            <h1 class="tutorial-title">2. Types of Inheritance</h1>
+            <h2 class="tutorial-title">2. Types of Inheritance</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Different Types of Inheritance</h3>
                 <p class="tutorial-text">
@@ -130,7 +130,7 @@ public class Main {
     {
         title: "The 'extends' Keyword",
         content: `
-            <h1 class="tutorial-title">3. The 'extends' Keyword</h1>
+            <h2 class="tutorial-title">3. The 'extends' Keyword</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Using 'extends' for Inheritance</h3>
                 <p class="tutorial-text">
@@ -185,7 +185,7 @@ public class Main {
     {
         title: "Method Overriding",
         content: `
-            <h1 class="tutorial-title">4. Method Overriding</h1>
+            <h2 class="tutorial-title">4. Method Overriding</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Understanding Method Overriding</h3>
                 <p class="tutorial-text">
@@ -242,7 +242,7 @@ public class Main {
     {
         title: "The 'super' Keyword",
         content: `
-            <h1 class="tutorial-title">5. The 'super' Keyword</h1>
+            <h2 class="tutorial-title">5. The 'super' Keyword</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Using the 'super' Keyword</h3>
                 <p class="tutorial-text">
@@ -306,27 +306,8 @@ public class Main {
     {
         title: "Quiz",
         content: `
-            <h1 class="tutorial-title">6. Inheritance Quiz</h1>
-            <div class="quiz-container">
-                <form id="quizForm">
-                    <div class="question">
-                        <p class="quiz-question">1. What keyword is used to inherit from a class in Java?</p>
-                        <ul class="quiz-options">
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="a" id="q1a">
-                                <label for="q1a">inherit</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="b" id="q1b">
-                                <label for="q1b">extends</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="c" id="q1c">
-                                <label for="q1c">implements</label>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="question">
+            <h2 class="tutorial-title">6. Inheritance Quiz</h2>
+<div class="question">
                         <p class="quiz-question">2. What is the purpose of the 'super' keyword in Java?</p>
                         <ul class="quiz-options">
                             <li class="quiz-option">
@@ -361,7 +342,7 @@ public class Main {
                         </ul>
                     </div>
                 </form>
-                <button onclick="submitQuiz()" class="button mt-4">Submit Quiz</button>
+                <button class="button mt-4">Submit Quiz</button>
                 <p id="quizResult" class="quiz-feedback"></p>
             </div>
         `,
@@ -398,7 +379,7 @@ public class Main {
     {
         title: "Weekly Project",
         content: `
-            <h1 class="tutorial-title">7. Weekly Project: Shape Hierarchy</h1>
+            <h2 class="tutorial-title">7. Weekly Project: Shape Hierarchy</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Project Description</h3>
                 <p class="tutorial-text">For this week's project, you'll create a shape hierarchy using inheritance. This will help reinforce the concepts of inheritance, method overriding, and the use of the <code>super</code> keyword.</p>

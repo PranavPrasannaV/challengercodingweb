@@ -3,7 +3,7 @@ export const python2Lesson2 = [
     {
         title: "Introduction to Dictionaries",
         content: `
-            <h1 class="tutorial-title">Exercise 1: Introduction to Dictionaries</h1>
+            <h2 class="tutorial-title">Exercise 1: Introduction to Dictionaries</h2>
             <p class="tutorial-text">
                 Welcome to Python 2, Lesson 2! Today, we'll learn about dictionaries, a powerful and flexible data structure in Python.
             </p>
@@ -44,7 +44,7 @@ print(fruit_colors)
     {
         title: "Accessing and Modifying Dictionaries",
         content: `
-            <h1 class="tutorial-title">Exercise 2: Accessing and Modifying Dictionaries</h1>
+            <h2 class="tutorial-title">Exercise 2: Accessing and Modifying Dictionaries</h2>
             <p class="tutorial-text">
                 Now that we've created a dictionary, let's learn how to access and modify its contents.
             </p>
@@ -91,7 +91,7 @@ print(fruit_colors)
     {
         title: "Dictionary Methods",
         content: `
-            <h1 class="tutorial-title">Exercise 3: Dictionary Methods</h1>
+            <h2 class="tutorial-title">Exercise 3: Dictionary Methods</h2>
             <p class="tutorial-text">
                 Dictionaries come with several useful methods that make working with them easier.
             </p>
@@ -133,7 +133,7 @@ print("Color of cherry:", fruit_colors.get("cherry", "unknown"))
     {
         title: "Looping Through Dictionaries",
         content: `
-            <h1 class="tutorial-title">Exercise 4: Looping Through Dictionaries</h1>
+            <h2 class="tutorial-title">Exercise 4: Looping Through Dictionaries</h2>
             <p class="tutorial-text">
                 Often, you'll need to iterate through all the key-value pairs in a dictionary. Python provides several ways to do this.
             </p>
@@ -180,7 +180,7 @@ for fruit, color in fruit_colors.items():
     {
         title: "Weekly Project: Contact Book",
         content: `
-            <h1 class="tutorial-title">Weekly Project: Contact Book</h1>
+            <h2 class="tutorial-title">Weekly Project: Contact Book</h2>
             <p class="tutorial-text">
                 Let's put everything we've learned about dictionaries into practice by creating a simple contact book application.
             </p>

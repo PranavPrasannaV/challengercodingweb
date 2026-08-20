@@ -2,7 +2,7 @@ export const scratch2Lesson3 = [
     {
         title: "Lesson Overview",
         content: `
-                    <h1 class="tutorial-title">Scratch 2 Class - Guided Exercise</h1>
+                    <h2 class="tutorial-title">Scratch 2 Class - Guided Exercise</h2>
                     <h2 class="text-2xl font-semibold mb-4">Lesson 3: Basic Platformer</h2>
                     <div class="content-box">
                         <p class="tutorial-text">
@@ -13,18 +13,13 @@ export const scratch2Lesson3 = [
                         </p>
                     </div>
 
-                    <div class="content-box">
-                        <h3 class="text-xl font-semibold mb-2">Check out the final project below!</h3>
-                        <iframe src="https://scratch.mit.edu/projects/123456789/embed" allowtransparency="true" width="485" height="402" frameborder="0" scrolling="no" allowfullscreen class="mx-auto"></iframe>
-                    </div>
-
                     <div class="interactive-demo">
                         <h3 class="text-xl font-semibold mb-2">Interactive Platformer Demo</h3>
                         <canvas id="game-canvas" width="400" height="300"></canvas>
                         <div class="demo-controls">
-                            <button class="demo-button" onclick="moveLeft()">Move Left</button>
-                            <button class="demo-button" onclick="moveRight()">Move Right</button>
-                            <button class="demo-button" onclick="jump()">Jump</button>
+                            <button class="demo-button">Move Left</button>
+                            <button class="demo-button">Move Right</button>
+                            <button class="demo-button">Jump</button>
                         </div>
                     </div>
         `
@@ -32,7 +27,7 @@ export const scratch2Lesson3 = [
     {
         title: "Creating the Platforms",
         content: `
-                    <h1 class="tutorial-title">Mini-Lesson 1: Creating the Platforms</h1>
+                    <h2 class="tutorial-title">Mini-Lesson 1: Creating the Platforms</h2>
                     <div class="content-box">
                         <h3 class="text-xl font-semibold mb-2">Step 1: Drawing the Platforms</h3>
                         <p class="tutorial-text">How do you think we should create platforms for our platformer game?</p>
@@ -53,8 +48,8 @@ export const scratch2Lesson3 = [
                         <h3 class="text-xl font-semibold mb-2">Platform Designer</h3>
                         <canvas id="platform-canvas" width="400" height="300"></canvas>
                         <div class="demo-controls">
-                            <button class="demo-button" onclick="addPlatform()">Add Platform</button>
-                            <button class="demo-button" onclick="clearPlatforms()">Clear All</button>
+                            <button class="demo-button">Add Platform</button>
+                            <button class="demo-button">Clear All</button>
                         </div>
                     </div>
         `
@@ -62,7 +57,7 @@ export const scratch2Lesson3 = [
     {
         title: "Creating the Character",
         content: `
-                    <h1 class="tutorial-title">Mini-Lesson 2: Creating the Character</h1>
+                    <h2 class="tutorial-title">Mini-Lesson 2: Creating the Character</h2>
                     <div class="content-box">
                         <h3 class="text-xl font-semibold mb-2">Step 1: Drawing the Player Character</h3>
                         <p class="tutorial-text">Next, we'll need to create a character that the player will control. How should we design the character?</p>
@@ -92,7 +87,7 @@ export const scratch2Lesson3 = [
     {
         title: "Jumping and Gravity",
         content: `
-                    <h1 class="tutorial-title">Mini-Lesson 3: Jumping and Gravity</h1>
+                    <h2 class="tutorial-title">Mini-Lesson 3: Jumping and Gravity</h2>
                     <div class="content-box">
                         <h3 class="text-xl font-semibold mb-2">Step 1: Implementing Jumping</h3>
                         <p class="tutorial-text">How do you think we can program the character to jump?</p>
@@ -113,9 +108,9 @@ export const scratch2Lesson3 = [
                         <h3 class="text-xl font-semibold mb-2">Interactive Platformer Demo</h3>
                         <canvas id="game-canvas" width="400" height="300"></canvas>
                         <div class="demo-controls">
-                            <button class="demo-button" onclick="moveLeft()">Move Left</button>
-                            <button class="demo-button" onclick="moveRight()">Move Right</button>
-                            <button class="demo-button" onclick="jump()">Jump</button>
+                            <button class="demo-button">Move Left</button>
+                            <button class="demo-button">Move Right</button>
+                            <button class="demo-button">Jump</button>
                         </div>
                     </div>
         `
@@ -123,7 +118,7 @@ export const scratch2Lesson3 = [
     {
         title: "Collisions with Platforms",
         content: `
-                    <h1 class="tutorial-title">Mini-Lesson 4: Collisions with Platforms</h1>
+                    <h2 class="tutorial-title">Mini-Lesson 4: Collisions with Platforms</h2>
                     <div class="content-box">
                         <h3 class="text-xl font-semibold mb-2">Step 1: Stopping the Character on Platforms</h3>
                         <p class="tutorial-text">How can we make sure the character stops falling when it lands on a platform using the color of the platform?</p>
@@ -146,9 +141,9 @@ export const scratch2Lesson3 = [
                         <h3 class="text-xl font-semibold mb-2">Interactive Platformer Demo</h3>
                         <canvas id="game-canvas" width="400" height="300"></canvas>
                         <div class="demo-controls">
-                            <button class="demo-button" onclick="moveLeft()">Move Left</button>
-                            <button class="demo-button" onclick="moveRight()">Move Right</button>
-                            <button class="demo-button" onclick="jump()">Jump</button>
+                            <button class="demo-button">Move Left</button>
+                            <button class="demo-button">Move Right</button>
+                            <button class="demo-button">Jump</button>
                         </div>
                     </div>
         `
@@ -156,7 +151,7 @@ export const scratch2Lesson3 = [
     {
         title: "Homework",
         content: `
-                    <h1 class="tutorial-title">Homework</h1>
+                    <h2 class="tutorial-title">Homework</h2>
                     <div class="content-box">
                         <h3 class="text-xl font-semibold mb-2">Extend Your Platformer:</h3>
                         <ul class="list-disc list-inside space-y-2">

@@ -2,7 +2,7 @@ export const pythonLesson4 = [
     {
         title: "Introduction to Conditionals",
         content: `
-            <h1 class="tutorial-title">Exercise 1: Introduction to Conditionals</h1>
+            <h2 class="tutorial-title">Exercise 1: Introduction to Conditionals</h2>
             <p class="tutorial-text">
                 Welcome to conditionals in Python! Conditionals are statements that allow your program to make decisions based on certain conditions.
             </p>
@@ -53,7 +53,7 @@ if credit_score > 600:
     {
         title: "Conditions",
         content: `
-            <h1 class="tutorial-title">Exercise 2: Conditions</h1>
+            <h2 class="tutorial-title">Exercise 2: Conditions</h2>
             <p class="tutorial-text">
                 Conditions are the part of the conditional which state what is supposed to happen. Let's explore different types of conditions we can use in Python.
             </p>
@@ -99,7 +99,7 @@ age = 25
     {
         title: "Debugging Conditionals",
         content: `
-            <h1 class="tutorial-title">Exercise 3: Debugging Conditionals</h1>
+            <h2 class="tutorial-title">Exercise 3: Debugging Conditionals</h2>
             <p class="tutorial-text">
                 Debugging is an essential skill for any programmer. Let's practice debugging some conditional statements!
             </p>
@@ -144,7 +144,7 @@ print("You are not an adult yet")
     {
         title: "Project: Grade Calculator",
         content: `
-            <h1 class="tutorial-title">Project: Grade Calculator</h1>
+            <h2 class="tutorial-title">Project: Grade Calculator</h2>
             <p class="tutorial-text">
                 Congratulations on making it to the project! Now you'll put your knowledge of conditionals to use by creating a grade calculator.
             </p>

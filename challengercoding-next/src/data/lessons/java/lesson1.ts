@@ -3,7 +3,7 @@ export const javaLesson1 = [
     {
         title: "Lesson Overview",
         content: `
-          <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Java Guided Tutorials - Week 1</h1>
+          <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Java Guided Tutorials - Week 1</h2>
           <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
               <h2 class="text-2xl font-semibold mb-4 text-gray-800">What You'll Learn</h2>
               <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -30,7 +30,7 @@ export const javaLesson1 = [
     {
         title: "My First Java Program",
         content: `
-          <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">1. My First Java Program</h1>
+          <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">1. My First Java Program</h2>
           <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
               <h3 class="text-xl font-semibold mb-2 text-gray-800">Hello, Java!</h3>
               <p class="text-lg leading-relaxed text-gray-700 mb-4">Let's start by creating a simple Java program that prints "Hello, Java!" to the console. Follow these steps:</p>
@@ -63,7 +63,7 @@ export const javaLesson1 = [
     {
         title: "Syntax and Java Basics",
         content: `
-          <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">2. Syntax and Java Basics</h1>
+          <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">2. Syntax and Java Basics</h2>
           <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
               <h3 class="text-xl font-semibold mb-2 text-gray-800">Java Program Structure</h3>
               <p class="text-lg leading-relaxed text-gray-700 mb-4">Every executable Java program consists of a <strong>class</strong> that contains a <strong>main method</strong>. Let's explore the basic structure of a Java program:</p>
@@ -101,7 +101,7 @@ four lines of output.</code></pre>
     {
         title: "Debugging",
         content: `
-          <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">3. Debugging</h1>
+          <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">3. Debugging</h2>
           <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
               <h3 class="text-xl font-semibold mb-2 text-gray-800">Finding and Fixing Errors</h3>
               <p class="text-lg leading-relaxed text-gray-700 mb-4">Debugging is an essential skill for any programmer. Let's practice by finding and fixing errors in Java code.</p>
@@ -133,7 +133,7 @@ four lines of output.</code></pre>
     {
         title: "Quiz",
         content: `
-          <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">4. Java Basics Quiz</h1>
+          <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">4. Java Basics Quiz</h2>
           <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
               <p class="text-lg leading-relaxed text-gray-700 mb-4">Test your knowledge of the concepts covered in this lesson.</p>
           </div>
@@ -189,7 +189,7 @@ four lines of output.</code></pre>
     {
         title: "Weekly Project",
         content: `
-          <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">5. Weekly Project: Personal Information Printer</h1>
+          <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">5. Weekly Project: Personal Information Printer</h2>
           <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
               <h3 class="text-xl font-semibold mb-2 text-gray-800">Project Description</h3>
               <p class="text-lg leading-relaxed text-gray-700 mb-4">For this week's project, you'll create a Java program that prints out your personal information. This will help you practice using the System.out.println() method and formatting your output.</p>

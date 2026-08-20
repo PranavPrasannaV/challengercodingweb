@@ -2,7 +2,7 @@ export const javaLesson5 = [
     {
         title: "Lesson Overview",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Java Guided Tutorials - Methods</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Java Guided Tutorials - Methods</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h2 class="text-2xl font-semibold mb-4 text-gray-800">What You'll Learn</h2>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -28,7 +28,7 @@ export const javaLesson5 = [
     {
         title: "Static Methods",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">1. Understanding Static Methods</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">1. Understanding Static Methods</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h3 class="text-xl font-semibold mb-2 text-gray-800">What is a Static Method?</h3>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -83,7 +83,7 @@ export const javaLesson5 = [
     {
         title: "Methods that Return Values",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">2. Methods that Return Values</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">2. Methods that Return Values</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h3 class="text-xl font-semibold mb-2 text-gray-800">What is a Return Method?</h3>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -145,7 +145,7 @@ public class Main {
     {
         title: "Parameters",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">3. Understanding Parameters</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">3. Understanding Parameters</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h3 class="text-xl font-semibold mb-2 text-gray-800">What are Parameters?</h3>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -202,7 +202,7 @@ public class Main {
     {
         title: "Weekly Project",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">4. Project: Create a Complex Function</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">4. Project: Create a Complex Function</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h3 class="text-xl font-semibold mb-2 text-gray-800">Project Description</h3>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">Use this space to create a more complex function that takes multiple parameters, performs some calculations or operations, and returns a result.</p>

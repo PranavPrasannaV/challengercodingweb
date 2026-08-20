@@ -2,7 +2,7 @@ export const javaLesson7 = [
     {
         title: "Lesson Overview",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Java Guided Tutorials - Arrays</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Java Guided Tutorials - Arrays</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h2 class="text-2xl font-semibold mb-4 text-gray-800">What You'll Learn</h2>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -27,7 +27,7 @@ export const javaLesson7 = [
     {
         title: "Introduction to Arrays",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">1. Introduction to Arrays</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">1. Introduction to Arrays</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h3 class="text-xl font-semibold mb-2 text-gray-800">What is an Array?</h3>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -68,7 +68,7 @@ int lastNumber = numbers[4];   // Accessing the last element</code></pre>
     {
         title: "Array Methods",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">2. Array Methods</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">2. Array Methods</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h3 class="text-xl font-semibold mb-2 text-gray-800">Array Class and Methods</h3>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -143,7 +143,7 @@ public class ArrayMethodsPractice {
     {
         title: "Traversing Arrays with Loops",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">3. Traversing Arrays with Loops</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">3. Traversing Arrays with Loops</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h3 class="text-xl font-semibold mb-2 text-gray-800">What is Array Traversing?</h3>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">

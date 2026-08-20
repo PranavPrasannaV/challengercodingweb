@@ -2,7 +2,7 @@ export const scratchLesson4 = [
     {
         title: "Lesson Overview",
         content: `
-            <h1 class="tutorial-title">Lesson 4: Loops in Scratch</h1>
+            <h2 class="tutorial-title">Lesson 4: Loops in Scratch</h2>
             <div class="content-box">
                 <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
                 <p class="tutorial-text">
@@ -58,7 +58,7 @@ export const scratchLesson4 = [
     {
         title: "Understanding Loops",
         content: `
-            <h1 class="tutorial-title">Understanding Loops</h1>
+            <h2 class="tutorial-title">Understanding Loops</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     In programming, a loop is a way to repeat a set of instructions multiple times. Instead of 
@@ -83,11 +83,10 @@ export const scratchLesson4 = [
             <div class="interactive-demo">
                 <h3 class="text-xl font-semibold mb-2">Interactive Demo: With and Without Loops</h3>
                 <div id="loop-demo">
-                    <img src="/placeholder.svg?height=200&width=400" alt="Loop Demonstration" id="loop-image">
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="showWithoutLoop()">Without Loop</button>
-                    <button class="demo-button" onclick="showWithLoop()">With Loop</button>
+                    <button class="demo-button">Without Loop</button>
+                    <button class="demo-button">With Loop</button>
                 </div>
             </div>
 
@@ -102,7 +101,7 @@ export const scratchLesson4 = [
     {
         title: "Types of Loops",
         content: `
-            <h1 class="tutorial-title">Types of Loops in Scratch</h1>
+            <h2 class="tutorial-title">Types of Loops in Scratch</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     Scratch provides several types of loops, each suited for different scenarios. Let's explore 
@@ -149,12 +148,11 @@ export const scratchLesson4 = [
             <div class="interactive-demo">
                 <h3 class="text-xl font-semibold mb-2">Interactive Demo: Loop Types</h3>
                 <div id="loop-types-demo">
-                    <img src="/placeholder.svg?height=200&width=400" alt="Loop Types Demonstration" id="loop-types-image">
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="showLoopType('repeat')">Repeat Loop</button>
-                    <button class="demo-button" onclick="showLoopType('forever')">Forever Loop</button>
-                    <button class="demo-button" onclick="showLoopType('repeatUntil')">Repeat Until Loop</button>
+                    <button class="demo-button">Repeat Loop</button>
+                    <button class="demo-button">Forever Loop</button>
+                    <button class="demo-button">Repeat Until Loop</button>
                 </div>
             </div>
         `
@@ -162,7 +160,7 @@ export const scratchLesson4 = [
     {
         title: "Guided Tutorial",
         content: `
-            <h1 class="tutorial-title">Guided Tutorial: Creating a Simple Maze Game</h1>
+            <h2 class="tutorial-title">Guided Tutorial: Creating a Simple Maze Game</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     In this tutorial, we'll create a simple automated maze game using Scratch. We'll use loops 
@@ -233,11 +231,10 @@ export const scratchLesson4 = [
             <div class="interactive-demo">
                 <h3 class="text-xl font-semibold mb-2">Interactive Demo: Maze Navigation</h3>
                 <div id="maze-demo">
-                    <img src="/placeholder.svg?height=300&width=400" alt="Maze Navigation Demonstration" id="maze-image">
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="startMazeDemo()">Start Demo</button>
-                    <button class="demo-button" onclick="stopMazeDemo()">Stop Demo</button>
+                    <button class="demo-button">Start Demo</button>
+                    <button class="demo-button">Stop Demo</button>
                 </div>
             </div>
         `
@@ -245,7 +242,7 @@ export const scratchLesson4 = [
     {
         title: "Mini-Project",
         content: `
-            <h1 class="tutorial-title">Mini-Project: Create a Spiral Drawing</h1>
+            <h2 class="tutorial-title">Mini-Project: Create a Spiral Drawing</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     Let's put everything we've learned about loops into practice by creating a program that 
@@ -314,8 +311,8 @@ repeat (100)
                     <canvas id="spiral-canvas" width="400" height="400"></canvas>
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="drawSpiral()">Draw Spiral</button>
-                    <button class="demo-button" onclick="clearSpiral()">Clear</button>
+                    <button class="demo-button">Draw Spiral</button>
+                    <button class="demo-button">Clear</button>
                 </div>
             </div>
 

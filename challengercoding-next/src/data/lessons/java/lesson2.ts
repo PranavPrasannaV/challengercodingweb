@@ -2,7 +2,7 @@ export const javaLesson2 = [
     {
         title: "Lesson Overview",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Java Guided Tutorials - Week 2</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Java Guided Tutorials - Week 2</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h2 class="text-2xl font-semibold mb-4 text-gray-800">What You'll Learn</h2>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -30,7 +30,7 @@ export const javaLesson2 = [
     {
         title: "Data Types",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">1. Data Types</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">1. Data Types</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">In Java, primitive data types are the most basic types of data. There are several different types, each serving a specific purpose.</p>
 
@@ -76,7 +76,7 @@ String myText = 'Hello';  // Should use double quotes
     {
         title: "Integer and Double Operations",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">2. Integer and Double Operations</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">2. Integer and Double Operations</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">In Java, integers and doubles can be used in various mathematical operations. These operations include:</p>
 
@@ -129,7 +129,7 @@ double y = 3.2;
     {
         title: "String Operations",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">3. String Operations</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">3. String Operations</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">Strings, and other values such as int and double can be combined using the <strong>+</strong> operator. This is called string concatenation. For example:</p>
                 <pre class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto mb-4 font-mono"><code>String first_string = "Hello, ";
@@ -156,7 +156,7 @@ String str2 = "World";
     {
         title: "Understanding Variables",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">4. Understanding Variables</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">4. Understanding Variables</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">Variables are where information is stored in a computer's memory. Here's an example of how to create a variable:</p>
                 <pre class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto mb-4 font-mono"><code>int num = 100;</code></pre>
@@ -180,7 +180,7 @@ String str2 = "World";
     {
         title: "Printing Variables",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">5. Printing Variables</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">5. Printing Variables</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">To print the value of a variable, simply include the variable name in the print function:</p>
                 <pre class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto mb-4 font-mono"><code>int x = 100;
@@ -205,7 +205,7 @@ System.out.println(x);</code></pre>
     {
         title: "Weekly Project",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">6. Weekly Project: Art Project</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">6. Weekly Project: Art Project</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">Use this space to create your own design using <strong>print</strong> statements.</p>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">Remember that anything you input between the parentheses gets printed!</p>

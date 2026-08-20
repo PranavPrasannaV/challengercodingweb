@@ -2,14 +2,7 @@ export const scratch2Lesson4 = [
     {
         title: "Lesson Overview",
         content: `
-                    <h1 class="tutorial-title">Scratch 2 - Lesson: Rock Paper Scissors Game</h1>
-                    <div class="content-box">
-                        <h3 class="text-xl font-semibold mb-2">Check out the final project below!</h3>
-                        <div style="width: 100%; height: 0; padding-bottom: 75%; position: relative;">
-                            <iframe src="https://scratch.mit.edu/projects/embed/31651654" allowtransparency="true" width="100%" height="100%" frameborder="0" scrolling="no" allowfullscreen style="position: absolute;"></iframe>
-                        </div>
-                        <p class="image-caption">Interactive Rock Paper Scissors Game Preview</p>
-                    </div>
+                    <h2 class="tutorial-title">Scratch 2 - Lesson: Rock Paper Scissors Game</h2>
                     <div class="content-box">
                         <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
                         <p class="tutorial-text">
@@ -27,32 +20,24 @@ export const scratch2Lesson4 = [
                         </div>
                     </div>
 
-                    <div class="quiz-container">
-                        <h3 class="text-xl font-semibold mb-2">Quick Quiz</h3>
-                        <p class="quiz-question">What determines the winner in Rock Paper Scissors?</p>
-                        <ul class="quiz-options">
-                            <li class="quiz-option">
-                                <input type="radio" id="q1a" name="q1" value="a">
-                                <label for="q1a">The player who chooses Rock always wins</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" id="q1b" name="q1" value="b">
-                                <label for="q1b">It's completely random</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" id="q1c" name="q1" value="c">
-                                <label for="q1c">Each choice beats one other choice and loses to the third</label>
-                            </li>
-                        </ul>
-                        <button onclick="checkQuiz('q1', 'c')" class="demo-button mt-4">Check Answer</button>
-                        <p id="q1-feedback" class="quiz-feedback"></p>
-                    </div>
-        `
+`,
+        quiz: [
+            {
+                question: 'What determines the winner in Rock Paper Scissors?',
+                options: [
+                    { label: 'The player who chooses Rock always wins', value: 'a' },
+                    { label: 'It\'s completely random', value: 'b' },
+                    { label: 'Each choice beats one other choice and loses to the third', value: 'c' },
+                ],
+                correctAnswer: 'c',
+            },
+        ]
+
     },
     {
         title: "Setting Up the Game",
         content: `
-                    <h1 class="tutorial-title">1. Setting Up the Game</h1>
+                    <h2 class="tutorial-title">1. Setting Up the Game</h2>
                     <div class="content-box">
                         <h3 class="text-xl font-semibold mb-2">Creating the Backdrop</h3>
                         <p class="tutorial-text">Let's set up our game's playing field by creating a simple backdrop.</p>
@@ -83,7 +68,7 @@ export const scratch2Lesson4 = [
                         <div class="interactive-demo">
                             <div id="random-choice"></div>
                             <div class="demo-controls">
-                                <button onclick="generateRandomChoice()" class="demo-button">Generate Random Choice</button>
+                                <button class="demo-button">Generate Random Choice</button>
                             </div>
                         </div>
                         <p class="tutorial-text">This demo shows how we can randomly select between Rock, Paper, and Scissors. In Scratch, we'll use a similar concept with the "pick random" block.</p>
@@ -93,7 +78,7 @@ export const scratch2Lesson4 = [
     {
         title: "Implementing Game Logic",
         content: `
-                    <h1 class="tutorial-title">2. Implementing Game Logic</h1>
+                    <h2 class="tutorial-title">2. Implementing Game Logic</h2>
                     <div class="content-box">
                         <h3 class="text-xl font-semibold mb-2">Step 1: Creating Variables</h3>
                         <p class="tutorial-text">Let's create variables to keep track of the game state and scores.</p>
@@ -130,32 +115,24 @@ export const scratch2Lesson4 = [
                             <p><span class="step-number">4</span> Add an "if-then-else" block to convert the random number to "Rock", "Paper", or "Scissors".</p>
                         </div>
                     </div>
-                    <div class="quiz-container">
-                        <h3 class="text-xl font-semibold mb-2">Quick Quiz</h3>
-                        <p class="quiz-question">How can we ensure the computer's choice is random?</p>
-                        <ul class="quiz-options">
-                            <li class="quiz-option">
-                                <input type="radio" id="q2a" name="q2" value="a">
-                                <label for="q2a">Always choose Rock</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" id="q2b" name="q2" value="b">
-                                <label for="q2b">Use a "pick random" block</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" id="q2c" name="q2" value="c">
-                                <label for="q2c">Let the player choose for the computer</label>
-                            </li>
-                        </ul>
-                        <button onclick="checkQuiz('q2', 'b')" class="demo-button mt-4">Check Answer</button>
-                        <p id="q2-feedback" class="quiz-feedback"></p>
-                    </div>
-        `
+`,
+        quiz: [
+            {
+                question: 'How can we ensure the computer\'s choice is random?',
+                options: [
+                    { label: 'Always choose Rock', value: 'a' },
+                    { label: 'Use a "pick random" block', value: 'b' },
+                    { label: 'Let the player choose for the computer', value: 'c' },
+                ],
+                correctAnswer: 'b',
+            },
+        ]
+
     },
     {
         title: "Determining the Winner",
         content: `
-                    <h1 class="tutorial-title">3. Determining the Winner</h1>
+                    <h2 class="tutorial-title">3. Determining the Winner</h2>
                     <div class="content-box">
                         <h3 class="text-xl font-semibold mb-2">Step 1: Creating the Win Logic</h3>
                         <p class="tutorial-text">Let's implement the logic to determine the winner of each round.</p>
@@ -198,39 +175,31 @@ export const scratch2Lesson4 = [
                         <div class="interactive-demo">
                             <div id="game-result"></div>
                             <div class="demo-controls">
-                                <button onclick="playGame('rock')" class="demo-button">Rock</button>
-                                <button onclick="playGame('paper')" class="demo-button">Paper</button>
-                                <button onclick="playGame('scissors')" class="demo-button">Scissors</button>
+                                <button class="demo-button">Rock</button>
+                                <button class="demo-button">Paper</button>
+                                <button class="demo-button">Scissors</button>
                             </div>
                         </div>
                         <p class="tutorial-text">This demo shows how the game determines the winner based on the player's and computer's choices. In your Scratch project, you'll implement similar logic using if-then-else blocks.</p>
                     </div>
-                    <div class="quiz-container">
-                        <h3 class="text-xl font-semibold mb-2">Quick Quiz</h3>
-                        <p class="quiz-question">What happens if both the player and computer choose Rock?</p>
-                        <ul class="quiz-options">
-                            <li class="quiz-option">
-                                <input type="radio" id="q3a" name="q3" value="a">
-                                <label for="q3a">The player wins</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" id="q3b" name="q3" value="b">
-                                <label for="q3b">The computer wins</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" id="q3c" name="q3" value="c">
-                                <label for="q3c">It's a tie</label>
-                            </li>
-                        </ul>
-                        <button onclick="checkQuiz('q3', 'c')" class="demo-button mt-4">Check Answer</button>
-                        <p id="q3-feedback" class="quiz-feedback"></p>
-                    </div>
-        `
+`,
+        quiz: [
+            {
+                question: 'What happens if both the player and computer choose Rock?',
+                options: [
+                    { label: 'The player wins', value: 'a' },
+                    { label: 'The computer wins', value: 'b' },
+                    { label: 'It\'s a tie', value: 'c' },
+                ],
+                correctAnswer: 'c',
+            },
+        ]
+
     },
     {
         title: "Finishing Touches",
         content: `
-                    <h1 class="tutorial-title">4. Finishing Touches</h1>
+                    <h2 class="tutorial-title">4. Finishing Touches</h2>
                     <div class="content-box">
                         <h3 class="text-xl font-semibold mb-2">Step 1: Adding Instructions</h3>
                         <p class="tutorial-text">Let's add some instructions to help players understand how to play the game.</p>
@@ -262,32 +231,24 @@ export const scratch2Lesson4 = [
                             <p><span class="step-number">4</span> Create a new sprite for the Game Over screen and show it when it receives the "Game Over" message.</p>
                         </div>
                     </div>
-                    <div class="quiz-container">
-                        <h3 class="text-xl font-semibold mb-2">Final Quiz</h3>
-                        <p class="quiz-question">What could you add to make the game more challenging or interesting?</p>
-                        <ul class="quiz-options">
-                            <li class="quiz-option">
-                                <input type="radio" id="q4a" name="q4" value="a">
-                                <label for="q4a">A timer for each choice</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" id="q4b" name="q4" value="b">
-                                <label for="q4b">More choices (like Rock, Paper, Scissors, Lizard, Spock)</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" id="q4c" name="q4" value="c">
-                                <label for="q4c">Both of the above</label>
-                            </li>
-                        </ul>
-                        <button onclick="checkQuiz('q4', 'c')" class="demo-button mt-4">Check Answer</button>
-                        <p id="q4-feedback" class="quiz-feedback"></p>
-                    </div>
-        `
+`,
+        quiz: [
+            {
+                question: 'What could you add to make the game more challenging or interesting?',
+                options: [
+                    { label: 'A timer for each choice', value: 'a' },
+                    { label: 'More choices (like Rock, Paper, Scissors, Lizard, Spock)', value: 'b' },
+                    { label: 'Both of the above', value: 'c' },
+                ],
+                correctAnswer: 'c',
+            },
+        ]
+
     },
     {
         title: "Homework Project",
         content: `
-                    <h1 class="tutorial-title">5. Homework Project</h1>
+                    <h2 class="tutorial-title">5. Homework Project</h2>
                     <div class="content-box">
                         <h3 class="text-xl font-semibold mb-2">Create a "Rock Paper Scissors Lizard Spock" Game</h3>
                         <div class="homework-project">

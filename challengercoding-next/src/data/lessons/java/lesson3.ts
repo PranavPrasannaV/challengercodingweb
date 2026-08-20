@@ -2,7 +2,7 @@ export const javaLesson3 = [
     {
         title: "Lesson Overview",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Java Guided Tutorials - Conditionals</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Java Guided Tutorials - Conditionals</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h2 class="text-2xl font-semibold mb-4 text-gray-800">What You'll Learn</h2>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -28,7 +28,7 @@ export const javaLesson3 = [
     {
         title: "Introduction to Conditionals",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">1. Introduction to Conditionals in Java</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">1. Introduction to Conditionals in Java</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h3 class="text-xl font-semibold mb-2 text-gray-800">If-Else Statements</h3>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -65,7 +65,7 @@ export const javaLesson3 = [
     {
         title: "Nested If Statements",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">2. Working with Nested If Statements in Java</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">2. Working with Nested If Statements in Java</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h3 class="text-xl font-semibold mb-2 text-gray-800">Nested Conditionals</h3>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -107,7 +107,7 @@ export const javaLesson3 = [
     {
         title: "Logical Operators",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">3. Using Logical Operators in Java</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">3. Using Logical Operators in Java</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h3 class="text-xl font-semibold mb-2 text-gray-800">Combining Conditions</h3>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -151,7 +151,7 @@ export const javaLesson3 = [
     {
         title: "Weekly Project",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">4. Weekly Project: Decision Maker</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">4. Weekly Project: Decision Maker</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h3 class="text-xl font-semibold mb-2 text-gray-800">Project Description</h3>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">

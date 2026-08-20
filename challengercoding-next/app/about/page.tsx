@@ -1,188 +1,201 @@
-import React from 'react';
+import type { Metadata } from 'next';
 import Image from 'next/image';
-import { Target, Heart, Award, Users } from 'lucide-react';
+import Link from 'next/link';
+import { courses, weekRange, totalLessons } from '@/src/data/courses';
+import { SITE, STATS } from '@/src/site';
 
-const values = [
-  { icon: Heart, label: 'Passion', desc: 'Driven by love for teaching' },
-  { icon: Users, label: 'Community', desc: 'Building a supportive network' },
-  { icon: Award, label: 'Excellence', desc: 'High-quality curriculum' },
-  { icon: Target, label: 'Impact', desc: 'Real-world skills' },
-];
-
-const president = {
-  name: 'Aadi Saraf',
-  role: 'Co-Founder and Current President',
-  initials: 'AS',
-  desc: 'Leads Challenger Coding\'s curriculum, strategic expansion, and partnerships, helping grow our impact while maintaining a high-quality learning experience.',
+export const metadata: Metadata = {
+    title: 'About',
+    description:
+        'Challenger Coding was started in the summer of 2023 by Jaden Tang in Sammamish, Washington. It is still planned, written and taught by students.',
+    alternates: { canonical: '/about/' },
 };
 
-const team = [
-  {
-    name: 'Pranav Prasanna Venkatesh',
-    role: 'Vice President',
-    initials: 'PV',
-    desc: 'Supports leadership across every program and helps coordinate our instructional initiatives.',
-  },
-  {
-    name: 'Jeswanth Battula',
-    role: 'Public Relations',
-    initials: 'JB',
-    desc: 'Manages outreach and communications, building partnerships with schools, families, and sponsors.',
-  },
-  {
-    name: 'Miheer Pandya',
-    role: 'Webmaster',
-    initials: 'MP',
-    desc: 'Maintains the website and the digital platforms that deliver our lessons and resources.',
-  },
+/* Every one of these is checkable against src/data/courses.ts or the repo
+   history. Nothing here is an aspiration. */
+const facts = [
+    { term: 'Founded', detail: `Summer ${SITE.founded}, by ${SITE.founders.join(' and ')}` },
+    { term: 'Where', detail: `${SITE.locality}, ${SITE.region}` },
+    { term: 'Students', detail: `${STATS.studentsTaught} taught since ${SITE.founded}` },
+    { term: 'Courses', detail: `${courses.length}, across Scratch, Python and Java` },
+    { term: 'Length', detail: `${weekRange} weekly lessons each` },
+    { term: 'Cost', detail: `Free. All ${totalLessons} lessons readable without an account.` },
+    { term: 'Run by', detail: 'Four students, named below' },
+];
+
+const leadership = [
+    {
+        name: 'Aadi Saraf',
+        role: 'Co-founder and President',
+        initials: 'AS',
+        desc: "Leads Challenger Coding's curriculum, strategic expansion, and partnerships, helping grow our impact while maintaining a high-quality learning experience.",
+    },
+    {
+        name: 'Pranav Prasanna Venkatesh',
+        role: 'Vice President',
+        initials: 'PV',
+        desc: 'Supports leadership across every program and helps coordinate our instructional initiatives.',
+    },
+    {
+        name: 'Jeswanth Battula',
+        role: 'Public Relations',
+        initials: 'JB',
+        desc: 'Manages outreach and communications, building partnerships with schools, families, and sponsors.',
+    },
+    {
+        name: 'Miheer Pandya',
+        role: 'Webmaster',
+        initials: 'MP',
+        desc: 'Maintains the website and the digital platforms that deliver our lessons and resources.',
+    },
 ];
 
 export default function About() {
-  return (
-    <main className="min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-dark-bg py-24 text-center">
-        <div className="max-w-7xl mx-auto px-6 space-y-6">
-          <h1 className="text-h1 font-serif font-bold text-white">
-            About Us
-          </h1>
-          <p className="text-body text-white/70 max-w-2xl mx-auto">
-            Empowering the Next Generation of Coders
-          </p>
-        </div>
-      </section>
+    return (
+        <main id="main">
+            <section className="wrap section">
+                <h1 className="text-h1 text-ink measure">
+                    Founded in {SITE.founded}. Still planned, written and taught by students.
+                </h1>
+            </section>
 
-      {/* Mission Section */}
-      <section className="bg-background py-24">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          <div className="space-y-8">
-            <div className="accent-line-left" />
-            <h2 className="text-h2 font-serif font-bold text-text">
-              Democratizing Tech Education
-            </h2>
-            <p className="text-body text-text-secondary leading-relaxed">
-              At Challenger Coding, our mission is to empower students of all ages to embrace coding and technology,
-              equipping them with the skills they need to succeed in an increasingly digital world.
-              We believe that coding is not just for computer scientists, but a valuable skill for everyone.
-              By offering accessible and engaging tutorials, we aim to make coding fun and approachable for all.
-            </p>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            {values.map((item, i) => (
-              <div
-                key={i}
-                className="bg-surface hairline rounded-lg p-6 hover:bg-alt-bg transition-colors"
-              >
-                <item.icon className="w-6 h-6 text-primary mb-3" />
-                <div className="font-bold text-text">{item.label}</div>
-                <div className="text-small text-text-secondary">{item.desc}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            <section className="border-y border-rule">
+                <div className="wrap section-sm">
+                    <div className="grid gap-12 md:grid-cols-12">
+                        <div className="md:col-span-7">
+                            <h2 className="text-h2 text-ink">Why we started</h2>
+                            <div className="measure mt-6 space-y-4 text-ink-muted">
+                                <p>
+                                    Challenger Coding started in the summer of {SITE.founded} as a
+                                    weekly Scratch class for younger students in {SITE.locality}.
+                                    It is still taught entirely by high schoolers.
+                                </p>
+                                <p>
+                                    There are now {courses.length} courses — Scratch, Python and
+                                    Java, each with a second level — running {weekRange} weeks, and
+                                    the Python and Java tracks end with a project students build
+                                    themselves. All of it is on this site, free, with no account
+                                    needed.
+                                </p>
+                            </div>
+                        </div>
 
-      {/* Founder Section */}
-      <section className="bg-background">
-        <div className="max-w-5xl mx-auto px-6 pb-24">
-          <div className="bg-surface hairline rounded-lg flex flex-col md:flex-row overflow-hidden">
-            <div className="md:w-1/3 min-h-[400px] relative bg-alt-bg">
-              <Image
-                src="/jaden.jpg"
-                alt="Jaden Tang"
-                fill
-                className="object-cover object-center"
-                sizes="(max-width: 768px) 100vw, 33vw"
-              />
-            </div>
-            <div className="md:w-2/3 p-10 md:p-14 space-y-6">
-              <div>
-                <h2 className="text-h2 font-serif font-bold text-text mb-2">
-                  Meet the Founder
-                </h2>
-                <p className="text-primary font-medium">Jaden Tang</p>
-              </div>
-              <div className="space-y-4 text-body text-text-secondary leading-relaxed">
-                <p>
-                  Jaden founded Challenger Coding in the summer of 2023 after observing the lack of tailored,
-                  engaging coding resources for young learners. With a deep passion for technology, Jaden started
-                  his coding journey in 3rd grade with Scratch.
-                </p>
-                <p>
-                  He has since learned multiple programming languages, earning the Microsoft Intro to Java Programming
-                  certification, scoring a 5 on the AP Computer Science A exam, and conducting AI research.
-                </p>
-                <p>
-                  With extensive tutoring experience, Jaden is dedicated to breaking down barriers of educational
-                  access and hopes to inspire the next generation of coders. Outside of Challenger Coding, Jaden
-                  loves playing soccer, piano, and hanging out with friends and family.
-                </p>
-              </div>
-              <div className="pt-6 border-t border-border flex items-start gap-4">
-                <div className="shrink-0 w-11 h-11 rounded-full bg-primary/10 border border-primary/25 flex items-center justify-center text-primary text-small font-serif font-bold tracking-wide">
-                  AS
+                        <dl className="md:col-span-5 md:col-start-8 border-t border-rule">
+                            {facts.map((fact) => (
+                                <div
+                                    key={fact.term}
+                                    className="flex gap-6 py-3 border-b border-rule text-small"
+                                >
+                                    <dt className="eyebrow w-24 shrink-0 pt-0.5">{fact.term}</dt>
+                                    <dd className="text-ink-muted">{fact.detail}</dd>
+                                </div>
+                            ))}
+                        </dl>
+                    </div>
                 </div>
-                <div className="space-y-0.5">
-                  <p className="text-small text-primary font-semibold uppercase tracking-[0.15em]">
-                    Co-Founder and Current President
-                  </p>
-                  <p className="text-small text-text font-semibold">Aadi Saraf</p>
+            </section>
+
+            {/* Founder --------------------------------------------------- */}
+            <section className="wrap section">
+                <div className="grid gap-10 md:grid-cols-12 md:gap-14">
+                    <div className="md:col-span-4">
+                        <div className="relative aspect-[3/4] bg-paper-sunk rounded-md overflow-hidden border border-rule">
+                            <Image
+                                src="/jaden.jpg"
+                                alt="Jaden Tang"
+                                fill
+                                className="object-cover object-center"
+                                sizes="(max-width: 768px) 100vw, 33vw"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="md:col-span-7 md:col-start-6">
+                        <p className="eyebrow">Co-founder, {SITE.founded}</p>
+                        <h2 className="text-h2 font-serif text-ink mt-2">Jaden Tang</h2>
+
+                        <div className="measure mt-6 space-y-4 text-ink-muted">
+                            <p>
+                                Jaden and Aadi Saraf started Challenger Coding in the summer of{' '}
+                                {SITE.founded}, after looking for coding lessons aimed at younger
+                                learners and finding almost nothing written for them. Jaden started
+                                coding in third grade, with Scratch.
+                            </p>
+                            <p>
+                                He has since learned several languages, earned the Microsoft Intro
+                                to Java Programming certification, scored a 5 on the AP Computer
+                                Science A exam, and worked on AI research.
+                            </p>
+                            <p>
+                                With extensive tutoring experience, Jaden is dedicated to breaking
+                                down barriers of educational access. Outside Challenger Coding he
+                                plays soccer and piano.
+                            </p>
+                        </div>
+
+                        <div className="flex items-center gap-3 mt-8 pt-6 border-t border-rule">
+                            <span
+                                aria-hidden="true"
+                                className="w-10 h-10 shrink-0 rounded-md bg-paper-sunk border border-rule flex items-center justify-center font-serif text-brand"
+                            >
+                                AS
+                            </span>
+                            <span>
+                                <span className="block text-small text-ink-meta">
+                                    Co-founder and President
+                                </span>
+                                <span className="block text-ink font-semibold">Aadi Saraf</span>
+                            </span>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+            </section>
 
-      {/* Leadership Section */}
-      <section className="bg-alt-bg py-24">
-        <div className="max-w-5xl mx-auto px-6 space-y-12">
-          <div className="text-center space-y-5">
-            <h2 className="text-h2 font-serif font-bold text-text">
-              Meet Our Leadership
-            </h2>
-            <div className="accent-line mx-auto" />
-            <p className="text-body text-text-secondary max-w-2xl mx-auto">
-              The students who plan our curriculum, run our outreach, and keep Challenger Coding
-              running week to week.
-            </p>
-          </div>
+            {/* Leadership ------------------------------------------------ */}
+            <section className="bg-paper-sunk">
+                <div className="wrap section">
+                    <h2 className="text-h2 text-ink">Who runs it now</h2>
 
-          {/* President — featured */}
-          <div className="bg-surface hairline rounded-lg p-8 md:p-10 flex flex-col sm:flex-row items-center sm:items-start gap-8 text-center sm:text-left hover:border-primary/40 transition-colors">
-            <div className="shrink-0 w-28 h-28 rounded-full bg-primary ring-4 ring-gold/30 flex items-center justify-center text-white text-3xl font-serif font-bold tracking-wide">
-              {president.initials}
-            </div>
-            <div className="space-y-3">
-              <div className="inline-block text-small text-primary font-semibold uppercase tracking-[0.15em] border border-primary/25 rounded-full px-3 py-1">
-                {president.role}
-              </div>
-              <h3 className="text-h2 font-serif font-bold text-text">{president.name}</h3>
-              <p className="text-body text-text-secondary leading-relaxed">{president.desc}</p>
-            </div>
-          </div>
+                    <ul className="mt-8 border-t border-rule">
+                        {leadership.map((person) => (
+                            <li
+                                key={person.name}
+                                className="flex gap-5 py-6 border-b border-rule"
+                            >
+                                <span
+                                    aria-hidden="true"
+                                    className="w-11 h-11 shrink-0 rounded-md bg-paper border border-rule flex items-center justify-center font-serif text-brand"
+                                >
+                                    {person.initials}
+                                </span>
+                                <div className="min-w-0">
+                                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
+                                        <h3 className="text-h3 font-serif text-ink">
+                                            {person.name}
+                                        </h3>
+                                        <p className="text-small text-ink-meta">{person.role}</p>
+                                    </div>
+                                    <p className="text-small text-ink-muted measure mt-1.5">
+                                        {person.desc}
+                                    </p>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
 
-          {/* Officers */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {team.map((member, i) => (
-              <div
-                key={i}
-                className="bg-surface hairline rounded-lg p-8 text-center flex flex-col items-center hover:border-primary/40 transition-colors"
-              >
-                <div className="w-20 h-20 rounded-full bg-primary/10 border border-primary/25 flex items-center justify-center text-primary text-xl font-serif font-bold tracking-wide">
-                  {member.initials}
+                    <p className="text-small text-ink-meta mt-8">
+                        Want to teach a section?{' '}
+                        <a href={`mailto:${SITE.email}`} className="link-quiet">
+                            Email us
+                        </a>
+                        , or{' '}
+                        <Link href="/tutorials" className="link-quiet">
+                            read a course first
+                        </Link>
+                        .
+                    </p>
                 </div>
-                <h3 className="text-h3 font-serif font-bold text-text mt-5">{member.name}</h3>
-                <p className="text-small text-primary font-semibold uppercase tracking-[0.15em] mt-2">
-                  {member.role}
-                </p>
-                <div className="accent-line mx-auto my-5" />
-                <p className="text-small text-text-secondary leading-relaxed">{member.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    </main>
-  );
+            </section>
+        </main>
+    );
 }

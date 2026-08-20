@@ -2,25 +2,25 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
+import Logo from './Logo';
+import { ENROLL_URL } from '@/src/config';
 
 const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '/learn', label: 'Learn' },
-  { href: '/tutorials', label: 'Tutorials' },
-  { href: '/about', label: 'About' },
-  { href: '/compiler', label: 'Compiler' },
+  { href: '/tutorials', label: 'Courses' },
+  { href: '/compiler', label: 'Playground' },
   { href: '/resources', label: 'Resources' },
+  { href: '/about', label: 'About' },
 ];
-
-const enrollHref =
-  'https://forms.office.com/r/BnXvEhKGVs';
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const openRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -29,57 +29,51 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
-  // Lock body scroll when mobile menu is open
+  // Scroll lock, focus handoff and Escape belong to the same moment, so they
+  // live in the same effect and can never fall out of step.
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    if (!mobileOpen) return;
+    document.body.style.overflow = 'hidden';
+    closeRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileOpen(false);
+    };
+    document.addEventListener('keydown', onKey);
     return () => {
       document.body.style.overflow = '';
+      document.removeEventListener('keydown', onKey);
+      openRef.current?.focus();
     };
   }, [mobileOpen]);
 
-  const isActive = (href: string) => {
-    if (href === '/') return pathname === '/';
-    return pathname.startsWith(href);
-  };
+  const isActive = (href: string) =>
+    href === '/' ? pathname === '/' : pathname.startsWith(href);
 
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-shadow duration-300 ${
-          scrolled
-            ? 'shadow-[0_1px_3px_0_rgb(0,0,0,0.08)] bg-background/95 backdrop-blur-sm'
-            : 'bg-background'
+        className={`fixed top-0 left-0 right-0 z-50 h-16 bg-paper border-b transition-colors ${
+          scrolled ? 'border-rule' : 'border-transparent'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <Link
-              href="/"
-              className="font-serif text-2xl font-bold text-primary cursor-pointer shrink-0"
-            >
-              Challenger Coding
-            </Link>
+        <div className="wrap h-full">
+          <div className="flex items-center justify-between h-full gap-6">
+            <Logo />
 
-            {/* Desktop Links */}
-            <ul className="hidden md:flex items-center gap-1 font-sans font-medium text-sm">
+            <ul className="hidden md:flex items-center gap-1 text-small">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className={`px-3 py-2 rounded-lg transition-colors duration-200 cursor-pointer ${
+                    aria-current={isActive(link.href) ? 'page' : undefined}
+                    className={`block px-3 py-2 rounded-sm transition-colors ${
                       isActive(link.href)
-                        ? 'bg-primary/10 text-primary font-semibold'
-                        : 'text-text hover:text-primary hover:bg-alt-bg'
+                        ? 'text-brand font-semibold'
+                        : 'text-ink-muted hover:text-ink'
                     }`}
                   >
                     {link.label}
@@ -88,84 +82,88 @@ export default function Navbar() {
               ))}
             </ul>
 
-            {/* Desktop CTA */}
-            <div className="hidden md:block">
-              <Link
-                href={enrollHref}
-                target="_blank"
-                className="bg-cta hover:bg-cta-hover text-white px-6 py-2.5 rounded-lg font-semibold cursor-pointer transition-colors duration-200"
-              >
-                Enroll Now
-              </Link>
-            </div>
-
-            {/* Mobile Hamburger */}
-            <button
-              onClick={() => setMobileOpen(true)}
-              className="md:hidden p-3 -mr-3 text-text hover:text-primary transition-colors duration-200 cursor-pointer"
-              aria-label="Open menu"
-              aria-expanded="false"
+            <Link
+              href={ENROLL_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary hidden md:inline-flex text-small py-2.5 px-5"
             >
-              <Menu className="w-6 h-6" />
+              Enroll
+            </Link>
+
+            <button
+              ref={openRef}
+              onClick={() => setMobileOpen(true)}
+              className="md:hidden -mr-2 p-2 text-ink rounded-sm"
+              aria-label="Open menu"
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-nav"
+            >
+              <Menu className="w-6 h-6" aria-hidden="true" />
             </button>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu Backdrop */}
-      {mobileOpen && (
-        <div
-          className="fixed inset-0 bg-black/40 z-50 md:hidden animate-fade-in"
-          onClick={() => setMobileOpen(false)}
-          aria-hidden="true"
-        />
-      )}
-
-      {/* Mobile Menu Sidebar */}
+      {/* The scrim stays mounted and fades on the same clock as the panel, so
+          opening and closing are symmetric. */}
       <div
+        onClick={() => setMobileOpen(false)}
+        aria-hidden="true"
+        className={`fixed inset-0 z-50 bg-ink/35 md:hidden transition-opacity duration-300 ${
+          mobileOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+      />
+
+      <div
+        id="mobile-nav"
         role="dialog"
         aria-modal="true"
-        aria-label="Navigation menu"
-        className={`fixed top-0 right-0 h-full w-72 bg-surface z-50 md:hidden transform transition-transform duration-300 ease-in-out ${
-          mobileOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        aria-label="Navigation"
+        inert={!mobileOpen}
+        className={`fixed top-0 right-0 h-full w-[19rem] max-w-[85vw] bg-card z-50 md:hidden
+          flex flex-col shadow-[-8px_0_28px_-12px_rgb(27_25_23_/_0.25)]
+          transition-transform duration-300 ${
+            mobileOpen ? 'translate-x-0' : 'translate-x-full pointer-events-none'
+          }`}
       >
-        <div className="flex items-center justify-between px-6 h-16 border-b border-border">
-          <span className="font-serif text-lg font-bold text-primary">
-            Challenger Coding
-          </span>
+        <div className="flex items-center justify-between px-6 h-16 border-b border-rule">
+          <Logo size="sm" as="text" />
           <button
+            ref={closeRef}
             onClick={() => setMobileOpen(false)}
-            className="p-3 -mr-3 text-text hover:text-primary transition-colors duration-200 cursor-pointer"
+            className="-mr-2 p-2 text-ink rounded-sm"
             aria-label="Close menu"
           >
-            <X className="w-6 h-6" />
+            <X className="w-6 h-6" aria-hidden="true" />
           </button>
         </div>
 
-        <div className="flex flex-col px-4 py-4 gap-0.5">
+        <nav className="flex flex-col px-3 py-4">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`py-3 px-4 rounded-lg font-sans font-medium transition-colors duration-200 cursor-pointer ${
+              aria-current={isActive(link.href) ? 'page' : undefined}
+              className={`py-3 px-3 rounded-sm transition-colors ${
                 isActive(link.href)
-                  ? 'bg-primary/10 text-primary font-semibold'
-                  : 'text-text hover:text-primary hover:bg-background'
+                  ? 'text-brand font-semibold'
+                  : 'text-ink hover:bg-paper-sunk'
               }`}
             >
               {link.label}
             </Link>
           ))}
-        </div>
+        </nav>
 
-        <div className="px-4 pb-8 mt-auto">
+        <div className="mt-auto px-6 pb-8">
           <Link
-            href={enrollHref}
+            href={ENROLL_URL}
             target="_blank"
-            className="block w-full text-center bg-cta hover:bg-cta-hover text-white px-6 py-3 rounded-lg font-semibold cursor-pointer transition-colors duration-200"
+            rel="noopener noreferrer"
+            className="btn btn-primary w-full"
           >
-            Enroll Now
+            Enroll
           </Link>
         </div>
       </div>

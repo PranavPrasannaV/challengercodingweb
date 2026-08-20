@@ -2,7 +2,7 @@ export const java2Lesson3 = [
     {
         title: "Lesson Overview",
         content: `
-            <h1 class="tutorial-title">Java 2 Guided Tutorials - Week 3: Encapsulation</h1>
+            <h2 class="tutorial-title">Java 2 Guided Tutorials - Week 3: Encapsulation</h2>
             <div class="content-box">
                 <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
                 <p class="tutorial-text">
@@ -30,7 +30,7 @@ export const java2Lesson3 = [
     {
         title: "Understanding Encapsulation",
         content: `
-            <h1 class="tutorial-title">1. Understanding Encapsulation</h1>
+            <h2 class="tutorial-title">1. Understanding Encapsulation</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">What is Encapsulation?</h3>
                 <p class="tutorial-text">
@@ -68,7 +68,7 @@ export const java2Lesson3 = [
     {
         title: "Access Modifiers",
         content: `
-            <h1 class="tutorial-title">2. Access Modifiers</h1>
+            <h2 class="tutorial-title">2. Access Modifiers</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Understanding Access Modifiers</h3>
                 <p class="tutorial-text">
@@ -116,7 +116,7 @@ export const java2Lesson3 = [
     {
         title: "Getters and Setters",
         content: `
-            <h1 class="tutorial-title">3. Getters and Setters</h1>
+            <h2 class="tutorial-title">3. Getters and Setters</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Understanding Getters and Setters</h3>
                 <p class="tutorial-text">
@@ -170,7 +170,7 @@ export const java2Lesson3 = [
     {
         title: "Encapsulation Best Practices",
         content: `
-            <h1 class="tutorial-title">4. Encapsulation Best Practices</h1>
+            <h2 class="tutorial-title">4. Encapsulation Best Practices</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Best Practices for Encapsulation</h3>
                 <p class="tutorial-text">
@@ -236,27 +236,8 @@ export const java2Lesson3 = [
     {
         title: "Quiz",
         content: `
-            <h1 class="tutorial-title">5. Encapsulation Quiz</h1>
-            <div class="quiz-container">
-                <form id="quizForm">
-                    <div class="question">
-                        <p class="quiz-question">1. What is the main purpose of encapsulation?</p>
-                        <ul class="quiz-options">
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="a" id="q1a">
-                                <label for="q1a">To hide the implementation details of a class</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="b" id="q1b">
-                                <label for="q1b">To create multiple instances of a class</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="c" id="q1c">
-                                <label for="q1c">To inherit properties from a parent class</label>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="question">
+            <h2 class="tutorial-title">5. Encapsulation Quiz</h2>
+<div class="question">
                         <p class="quiz-question">2. Which access modifier provides the highest level of encapsulation?</p>
                         <ul class="quiz-options">
                             <li class="quiz-option">
@@ -291,7 +272,7 @@ export const java2Lesson3 = [
                         </ul>
                     </div>
                 </form>
-                <button onclick="submitQuiz()" class="button mt-4">Submit Quiz</button>
+                <button class="button mt-4">Submit Quiz</button>
                 <p id="quizResult" class="quiz-feedback"></p>
             </div>
         `,
@@ -328,7 +309,7 @@ export const java2Lesson3 = [
     {
         title: "Weekly Project",
         content: `
-            <h1 class="tutorial-title">6. Weekly Project: Bank Account Management System</h1>
+            <h2 class="tutorial-title">6. Weekly Project: Bank Account Management System</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Project Description</h3>
                 <p class="tutorial-text">For this week's project, you'll create a simple Bank Account Management System that demonstrates the principles of encapsulation.</p>

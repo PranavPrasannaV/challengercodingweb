@@ -1,102 +1,139 @@
-
-
-import { courses } from '@/src/data/courses';
-import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
+import { notFound } from 'next/navigation';
 import {
-    PlayCircle,
-    BookOpen,
-    Clock,
-    BarChart
-} from 'lucide-react';
+    courses,
+    getCourse,
+    coursesInTrack,
+    weeksIn,
+    hasFinalProject,
+    lessonConcept,
+    TRACKS,
+} from '@/src/data/courses';
+import { SITE } from '@/src/site';
+import { ResumeButton, SyllabusList } from './CourseProgress';
 
+type Params = { courseId: string };
 
 export async function generateStaticParams() {
-    return courses.map((course) => ({
-        courseId: course.id,
-    }));
+    return courses.map((course) => ({ courseId: course.id }));
 }
 
-export default async function TutorialHub({ params }: { params: Promise<{ courseId: string }> }) {
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<Params>;
+}): Promise<Metadata> {
     const { courseId } = await params;
-    const course = courses.find((c) => c.id === courseId);
+    const course = getCourse(courseId);
+    if (!course) return { title: 'Course not found' };
+    const topics = course.lessons
+        .filter((l) => l.id !== 'test')
+        .map(lessonConcept)
+        .join(', ');
+    return {
+        title: course.title,
+        description: `${weeksIn(course)} weekly lessons: ${topics}. Free, from ${SITE.name}.`,
+        alternates: { canonical: `${course.link}/` },
+    };
+}
 
-    if (!course) {
-        notFound();
-    }
+export default async function CourseHub({ params }: { params: Promise<Params> }) {
+    const { courseId } = await params;
+    const course = getCourse(courseId);
+    if (!course) notFound();
+
+    const weeks = weeksIn(course);
+    const prereq = course.prerequisite ? getCourse(course.prerequisite) : undefined;
+    const mark = TRACKS.find((t) => t.id === course.track)?.mark;
+    const siblings = coursesInTrack(course.track).filter((c) => c.id !== course.id);
+
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'Course',
+        name: course.title,
+        description: course.description,
+        url: `${SITE.url}${course.link}/`,
+        isAccessibleForFree: true,
+        educationalLevel: course.level,
+        inLanguage: 'en',
+        teaches: course.lessons.filter((l) => l.id !== 'test').map(lessonConcept),
+        provider: { '@id': `${SITE.url}/#organization` },
+        ...(prereq ? { coursePrerequisites: prereq.title } : {}),
+        hasCourseInstance: {
+            '@type': 'CourseInstance',
+            courseMode: 'online',
+            courseWorkload: `P${weeks}W`,
+        },
+    };
 
     return (
-        <div className="space-y-12">
-            {/* Course Header */}
-            <div className="bg-primary rounded-xl p-8 md:p-12 text-white">
-                <div className="max-w-3xl">
-                    <div className="inline-block px-3 py-1 bg-white/20 rounded text-xs font-semibold mb-4 uppercase tracking-widest">
-                        Course Overview
-                    </div>
-                    <h1 className="text-h1 font-serif font-bold text-white mb-4">{course.title}</h1>
-                    <p className="text-body text-white/80 leading-relaxed max-w-2xl">{course.description}</p>
+        <main id="main" className="wrap section-sm" data-track={course.track}>
+            <nav aria-label="Breadcrumb" className="text-meta text-ink-meta">
+                <Link href="/tutorials" className="hover:text-ink transition-colors">
+                    Courses
+                </Link>
+            </nav>
 
-                    <div className="flex flex-wrap gap-6 mt-8 text-small text-white/70">
-                        <div className="flex items-center gap-2">
-                            <BookOpen className="w-5 h-5" />
-                            <span>{course.lessons.length} Lessons</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <Clock className="w-5 h-5" />
-                            <span>Self-Paced</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <BarChart className="w-5 h-5" />
-                            <span>Beginner Friendly</span>
-                        </div>
-                    </div>
+            <header className="mt-6 pb-6 border-b border-rule">
+                <div className="flex items-center gap-4">
+                    {mark && (
+                        <Image
+                            src={mark}
+                            alt=""
+                            width={48}
+                            height={48}
+                            className="h-12 w-auto object-contain"
+                        />
+                    )}
+                    <p className="eyebrow">{course.level}</p>
                 </div>
-            </div>
 
-            {/* Lessons Grid */}
-            <div>
-                <h2 className="text-h2 font-serif font-bold text-text mb-8 border-l-4 border-gold pl-4">Curriculum</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {course.lessons.map((lesson, index) => (
-                        <div key={lesson.id} className="group bg-surface hairline rounded-lg p-6 flex flex-col h-full transition-colors hover:bg-alt-bg">
-                            <div className="flex items-start justify-between mb-4">
-                                <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary font-bold flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
-                                    <span>{index + 1}</span>
-                                </div>
-                                {lesson.notesLink && (
-                                    <div className="px-2 py-0.5 bg-sage/10 text-sage text-xs font-semibold rounded">
-                                        Notes Available
-                                    </div>
-                                )}
-                            </div>
+                <h1 className="text-h1 text-ink mt-5">{course.title}</h1>
+                <p className="text-lead measure mt-5">{course.description}</p>
 
-                            <h3 className="text-h3 font-bold text-text mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                                {lesson.title}
-                            </h3>
+                {/* The length of this line varies by course. That is the point —
+                    an intro course has two facts, a continuation has three. */}
+                <p className="text-small text-ink-meta mt-6">
+                    {weeks} weekly lessons
+                    {hasFinalProject(course) && ' + a final project'}
+                    {prereq && (
+                        <>
+                            {' '}&middot; do{' '}
+                            <Link href={prereq.link} className="link-quiet">
+                                {prereq.title}
+                            </Link>{' '}
+                            first
+                        </>
+                    )}
+                </p>
 
-                            <div className="mt-auto space-y-3 pt-6">
-                                <Link
-                                    href={lesson.link}
-                                    className="w-full bg-primary hover:bg-primary-hover text-white rounded-lg py-3 font-semibold transition-colors inline-flex items-center justify-center gap-2 cursor-pointer"
-                                >
-                                    <PlayCircle className="w-5 h-5" />
-                                    Start Tutorial
+                <ResumeButton course={course} />
+            </header>
+
+            <SyllabusList course={course} />
+
+            {siblings.length > 0 && (
+                <section className="mt-14">
+                    <h2 className="label">Also in {course.track === 'java' ? 'Java' : course.track === 'python' ? 'Python' : 'Scratch'}</h2>
+                    <ul className="mt-4 space-y-3">
+                        {siblings.map((sibling) => (
+                            <li key={sibling.id}>
+                                <Link href={sibling.link} className="link-quiet">
+                                    {sibling.title}
                                 </Link>
+                                <span className="text-small text-ink-meta"> — {sibling.blurb}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </section>
+            )}
 
-                                {lesson.notesLink && (
-                                    <Link
-                                        href={lesson.notesLink}
-                                        className="w-full hairline bg-surface text-text hover:bg-alt-bg rounded-lg py-3 font-medium transition-colors inline-flex items-center justify-center gap-2 cursor-pointer"
-                                    >
-                                        <BookOpen className="w-5 h-5 text-gold" />
-                                        Reading & Notes
-                                    </Link>
-                                )}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+        </main>
     );
 }

@@ -2,7 +2,7 @@ export const pythonLesson2 = [
     {
         title: "Understanding Variables",
         content: `
-            <h1 class="tutorial-title">Understanding Variables</h1>
+            <h2 class="tutorial-title">Understanding Variables</h2>
             <p class="tutorial-text">
                 Variables are fundamental building blocks in programming. They act as containers that store information in a computer's memory, allowing us to work with data throughout our program.
             </p>
@@ -33,7 +33,7 @@ x = 100
     {
         title: "Data Types",
         content: `
-            <h1 class="tutorial-title">Data Types</h1>
+            <h2 class="tutorial-title">Data Types</h2>
             <p class="tutorial-text">
                 In Python, data types define the nature of the data we're working with. Understanding data types is crucial for effective programming. Let's explore three fundamental data types: strings, integers, and floats.
             </p>
@@ -99,7 +99,7 @@ print(string2)
     {
         title: "String Operations",
         content: `
-            <h1 class="tutorial-title">String Operations</h1>
+            <h2 class="tutorial-title">String Operations</h2>
             <p class="tutorial-text">
                 Strings in Python are versatile and come with many built-in operations. One of the most common operations is string concatenation, which allows us to combine strings.
             </p>
@@ -137,7 +137,7 @@ print(repeated_string)  # Outputs: HaHaHa
     {
         title: "Integer and Float Operations",
         content: `
-            <h1 class="tutorial-title">Integer and Float Operations</h1>
+            <h2 class="tutorial-title">Integer and Float Operations</h2>
             <p class="tutorial-text">
                 Python supports various mathematical operations on integers and floats. These operations include:
             </p>
@@ -187,7 +187,7 @@ print(10 % 3)   # Output: 1
     {
         title: "Printing Variables",
         content: `
-            <h1 class="tutorial-title">Printing Variables</h1>
+            <h2 class="tutorial-title">Printing Variables</h2>
             <p class="tutorial-text">
                 The print() function is a crucial tool in Python for displaying information. It allows us to output the values of variables, expressions, or any other data to the console.
             </p>
@@ -234,7 +234,7 @@ print("World")
     {
         title: "Art Project",
         content: `
-            <h1 class="tutorial-title">Art Project: ASCII Art</h1>
+            <h2 class="tutorial-title">Art Project: ASCII Art</h2>
             <p class="tutorial-text">
                 ASCII art is a graphic design technique that uses printable characters to create images. It's a fun way to create simple graphics using just text, and it's a great exercise for practicing with print statements and string manipulation.
             </p>

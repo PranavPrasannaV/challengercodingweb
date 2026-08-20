@@ -3,7 +3,7 @@ export const python2Lesson1 = [
     {
         title: "List Terminology Review",
         content: `
-            <h1 class="tutorial-title">Exercise 1: List Terminology Review</h1>
+            <h2 class="tutorial-title">Exercise 1: List Terminology Review</h2>
             <p class="tutorial-text">
                 Welcome to Python 2! Let's start by reviewing some important list terminology.
             </p>
@@ -52,7 +52,7 @@ print(fruits[-1])
     {
         title: "Working with 2D Arrays",
         content: `
-            <h1 class="tutorial-title">Exercise 2: Working with 2D Arrays</h1>
+            <h2 class="tutorial-title">Exercise 2: Working with 2D Arrays</h2>
             <p class="tutorial-text">
                 In Python, we can create 2D arrays (or matrices) using nested lists. Let's explore how to work with them.
             </p>
@@ -101,7 +101,7 @@ print(matrix[1][2])
     {
         title: "List Iteration Algorithms",
         content: `
-            <h1 class="tutorial-title">Exercise 3: List Iteration Algorithms</h1>
+            <h2 class="tutorial-title">Exercise 3: List Iteration Algorithms</h2>
             <p class="tutorial-text">
                 Iterating through lists is a fundamental skill in Python. Let's explore different ways to do this.
             </p>
@@ -146,7 +146,7 @@ for index, value in enumerate(numbers):
     {
         title: "List Comprehensions",
         content: `
-            <h1 class="tutorial-title">Exercise 4: List Comprehensions</h1>
+            <h2 class="tutorial-title">Exercise 4: List Comprehensions</h2>
             <p class="tutorial-text">
                 List comprehensions provide a concise way to create lists in Python. They can often replace loops and map() calls with more readable and efficient code.
             </p>
@@ -196,7 +196,7 @@ print(odd_squares)
     {
         title: "Weekly Project: Matrix Operations",
         content: `
-            <h1 class="tutorial-title">Weekly Project: Matrix Operations</h1>
+            <h2 class="tutorial-title">Weekly Project: Matrix Operations</h2>
             <p class="tutorial-text">
                 For this week's project, you'll create a set of functions to perform basic matrix operations. This will help reinforce your understanding of 2D arrays and list manipulation.
             </p>

@@ -2,7 +2,7 @@ export const java2Lesson6 = [
     {
         title: "Lesson Overview",
         content: `
-            <h1 class="tutorial-title">Java 2 Guided Tutorials - Week 6: Lists</h1>
+            <h2 class="tutorial-title">Java 2 Guided Tutorials - Week 6: Lists</h2>
             <div class="content-box">
                 <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
                 <p class="tutorial-text">
@@ -30,7 +30,7 @@ export const java2Lesson6 = [
     {
         title: "Introduction to Lists",
         content: `
-            <h1 class="tutorial-title">1. Introduction to Lists</h1>
+            <h2 class="tutorial-title">1. Introduction to Lists</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">What are Lists?</h3>
                 <p class="tutorial-text">
@@ -82,7 +82,7 @@ public class ListExample {
     {
         title: "ArrayList",
         content: `
-            <h1 class="tutorial-title">2. ArrayList</h1>
+            <h2 class="tutorial-title">2. ArrayList</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Understanding ArrayList</h3>
                 <p class="tutorial-text">
@@ -140,7 +140,7 @@ public class ArrayListExample {
     {
         title: "List Operations",
         content: `
-            <h1 class="tutorial-title">4. List Operations</h1>
+            <h2 class="tutorial-title">4. List Operations</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Common List Operations</h3>
                 <p class="tutorial-text">
@@ -219,7 +219,7 @@ public class ListOperationsExample {
     {
         title: "Iterating Through Lists",
         content: `
-            <h1 class="tutorial-title">5. Iterating Through Lists</h1>
+            <h2 class="tutorial-title">5. Iterating Through Lists</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Ways to Iterate Through Lists</h3>
                 <p class="tutorial-text">
@@ -301,27 +301,8 @@ Try modifying the code to perform operations on the elements while iterating, su
     {
         title: "Quiz",
         content: `
-            <h1 class="tutorial-title">6. Lists Quiz</h1>
-            <div class="quiz-container">
-                <form id="quizForm">
-                    <div class="question">
-                        <p class="quiz-question">1. Which of the following is NOT a characteristic of Java Lists?</p>
-                        <ul class="quiz-options">
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="a" id="q1a">
-                                <label for="q1a">Ordered collection</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="b" id="q1b">
-                                <label for="q1b">Allow duplicate elements</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="c" id="q1c">
-                                <label for="q1c">Elements must be unique</label>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="question">
+            <h2 class="tutorial-title">6. Lists Quiz</h2>
+<div class="question">
                         <p class="quiz-question">2. Which List implementation is better for frequent insertions and deletions in the middle of the list?</p>
                         <ul class="quiz-options">
                             <li class="quiz-option">
@@ -356,7 +337,7 @@ Try modifying the code to perform operations on the elements while iterating, su
                         </ul>
                     </div>
                 </form>
-                <button onclick="submitQuiz()" class="button mt-4">Submit Quiz</button>
+                <button class="button mt-4">Submit Quiz</button>
                 <p id="quizResult" class="quiz-feedback"></p>
             </div>
         `,
@@ -393,7 +374,7 @@ Try modifying the code to perform operations on the elements while iterating, su
     {
         title: "Weekly Project",
         content: `
-            <h1 class="tutorial-title">7. Weekly Project: Task Manager</h1>
+            <h2 class="tutorial-title">7. Weekly Project: Task Manager</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Project Description</h3>
                 <p class="tutorial-text">For this week's project, you'll create a simple Task Manager application using Lists. This project will help you apply the concepts you've learned about Lists and practice working with user input.</p>

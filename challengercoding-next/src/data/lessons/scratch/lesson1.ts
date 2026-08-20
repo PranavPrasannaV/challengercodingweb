@@ -3,7 +3,7 @@ export const scratchLesson1 = [
     {
         title: "Overview",
         content: `
-          <h1 class="tutorial-title text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Lesson 1 Overview</h1>
+          <h2 class="tutorial-title text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Lesson 1 Overview</h2>
           <div class="content-box bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
               <h2 class="text-2xl font-semibold mb-4 text-gray-800">What You'll Learn</h2>
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
@@ -58,7 +58,7 @@ export const scratchLesson1 = [
     {
         title: "Understanding Sprites",
         content: `
-          <h1 class="tutorial-title text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Understanding Sprites</h1>
+          <h2 class="tutorial-title text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Understanding Sprites</h2>
           <div class="content-box bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
                   In Scratch, sprites are the characters or objects that perform actions in your projects. They're a fundamental part of any Scratch program. But what exactly is a sprite?
@@ -106,7 +106,7 @@ export const scratchLesson1 = [
     {
         title: "Moving Sprites",
         content: `
-          <h1 class="tutorial-title text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Moving Sprites</h1>
+          <h2 class="tutorial-title text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Moving Sprites</h2>
           <div class="content-box bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
                   Now that we understand what sprites are, let's make them move! In Scratch, we can use motion blocks to control how our sprites move around the stage.
@@ -157,7 +157,7 @@ export const scratchLesson1 = [
     {
         title: "Changing Sprite Direction",
         content: `
-          <h1 class="tutorial-title text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Changing Sprite Direction</h1>
+          <h2 class="tutorial-title text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Changing Sprite Direction</h2>
           <div class="content-box bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
                   Moving in a straight line is fun, but what if we want our sprite to change direction? In Scratch, we can use rotation blocks to make our sprites turn.
@@ -205,7 +205,7 @@ export const scratchLesson1 = [
     {
         title: "Using Loops",
         content: `
-          <h1 class="tutorial-title text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Using Loops</h1>
+          <h2 class="tutorial-title text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Using Loops</h2>
           <div class="content-box bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
                   So far, we've been making our sprites move by repeating blocks manually. But what if we want our sprite to keep moving or turning indefinitely? This is where loops come in handy!
@@ -246,7 +246,6 @@ export const scratchLesson1 = [
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
                   Here's a hint: look for a block in the Motion category that mentions "edge". Can you add this block to your script to keep your sprite on the screen?
               </p>
-               <img src="/placeholder.svg?height=100&width=300" alt="If on edge, bounce block in Scratch" class="image-block rounded-lg shadow-md my-6 max-w-full">
               <p class="image-caption text-center italic text-gray-500 mt-2">Figure 7: If on edge, bounce block in Scratch</p>
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
                   Experiment with different combinations of blocks inside your forever loop. Can you make your sprite draw a continuous pattern? Or move in a figure-eight? Remember, in Scratch, there are many ways to achieve  the same result - don't be afraid to try new things!
@@ -257,7 +256,7 @@ export const scratchLesson1 = [
     {
         title: "Homework",
         content: `
-          <h1 class="tutorial-title text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Homework and Exercises</h1>
+          <h2 class="tutorial-title text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Homework and Exercises</h2>
            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                <div class="grid-item bg-white p-6 rounded-xl shadow-md border border-gray-200">
                   <h3 class="text-xl font-semibold mb-4 text-blue-600">Exercise 1: Race Two Sprites</h3>

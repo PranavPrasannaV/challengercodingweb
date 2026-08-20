@@ -3,7 +3,7 @@ export const python2Lesson4 = [
     {
         title: "Introduction to Sets",
         content: `
-            <h1 class="tutorial-title">Exercise 1: Introduction to Sets</h1>
+            <h2 class="tutorial-title">Exercise 1: Introduction to Sets</h2>
             <p class="tutorial-text">
                 Welcome to Python 2, Lesson 4! Today, we'll learn about sets, another useful data structure in Python.
             </p>
@@ -42,7 +42,7 @@ print(type(fruits))
     {
         title: "Adding and Removing Elements",
         content: `
-            <h1 class="tutorial-title">Exercise 2: Adding and Removing Elements</h1>
+            <h2 class="tutorial-title">Exercise 2: Adding and Removing Elements</h2>
             <p class="tutorial-text">
                 Now that we've created a set, let's learn how to add and remove elements.
             </p>
@@ -87,7 +87,7 @@ print(fruits)
     {
         title: "Set Operations",
         content: `
-            <h1 class="tutorial-title">Exercise 3: Set Operations</h1>
+            <h2 class="tutorial-title">Exercise 3: Set Operations</h2>
             <p class="tutorial-text">
                 Sets in Python support various mathematical operations that are very useful in programming.
             </p>
@@ -131,7 +131,7 @@ print("Symmetric Difference:", set1 ^ set2)
     {
         title: "Sets vs Lists and Tuples",
         content: `
-            <h1 class="tutorial-title">Exercise 4: Sets vs Lists and Tuples</h1>
+            <h2 class="tutorial-title">Exercise 4: Sets vs Lists and Tuples</h2>
             <p class="tutorial-text">
                 Now that we've learned about sets, let's compare them with lists and tuples to understand when to use each.
             </p>
@@ -184,7 +184,7 @@ print("Is 3 in set?", 3 in numbers_set)
     {
         title: "Weekly Project: Unique Word Counter",
         content: `
-            <h1 class="tutorial-title">Weekly Project: Unique Word Counter</h1>
+            <h2 class="tutorial-title">Weekly Project: Unique Word Counter</h2>
             <p class="tutorial-text">
                 Let's put everything we've learned about sets into practice by creating a unique word counter.
             </p>

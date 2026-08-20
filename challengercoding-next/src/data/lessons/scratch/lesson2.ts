@@ -2,7 +2,7 @@ export const scratchLesson2 = [
     {
         title: "Lesson Overview and Review",
         content: `
-            <h1 class="tutorial-title">Lesson 2 Overview Coordinate Planes and Sprite Movement</h1>
+            <h2 class="tutorial-title">Lesson 2 Overview Coordinate Planes and Sprite Movement</h2>
             <div class="content-box">
                 <h2>Welcome to Your Scratch Adventure!</h2>
                 <p class="tutorial-text">Today, we're going to learn how to make our Scratch sprites move around the stage like pros! We'll explore the magical world of coordinates and discover some cool new blocks that will bring our projects to life.</p>
@@ -46,7 +46,7 @@ export const scratchLesson2 = [
     {
         title: "Understanding the Coordinate Plane",
         content: `
-            <h1 class="tutorial-title">1. Understanding the Coordinate Plane</h1>
+            <h2 class="tutorial-title">1. Understanding the Coordinate Plane</h2>
             <div class="content-box">
                 <p class="tutorial-text">Imagine the Scratch stage is like a big map, and we can tell our sprites exactly where to go on this map using two numbers. These numbers are called coordinates!</p>
                 
@@ -60,8 +60,8 @@ export const scratchLesson2 = [
                 </div>
                 
                 <p class="tutorial-text">Let's explore the Scratch stage:</p>
-                <img src="/placeholder.svg?height=300&width=500" alt="Scratch Coordinate Plane" class="image-block">
-                <p class="image-caption">The Scratch stage with coordinate plane overlay</p>
+                <img src="/assets/scratch-stage-coordinates.svg" alt="The Scratch stage as a coordinate plane: x runs from -240 to 240, y from -180 to 180, and the center is (0, 0)." class="image-block" width="520" height="400">
+                <p class="image-caption">The Scratch stage, with its coordinate plane drawn on top</p>
                 
                 <div class="step-box">
                     <p class="tutorial-text"><span class="step-number">1</span> The center of the stage is (0, 0).</p>
@@ -86,7 +86,7 @@ export const scratchLesson2 = [
     {
         title: "Moving Sprites with Coordinates",
         content: `
-            <h1 class="tutorial-title">2. Moving Sprites with Coordinates</h1>
+            <h2 class="tutorial-title">2. Moving Sprites with Coordinates</h2>
             <div class="content-box">
                 <p class="tutorial-text">Now that we understand coordinates, let's make our sprites dance around the stage!</p>
                 
@@ -109,15 +109,13 @@ export const scratchLesson2 = [
             <div class="content-box">
                 <h3>Challenge: Make a Triangle!</h3>
                 <p class="tutorial-text">Using the "change x by" and "change y by" blocks, can you make your sprite move in a triangle shape? Remember, you might need to use negative numbers to move left or down!</p>
-                <img src="/placeholder.svg?height=200&width=200" alt="Sprite Triangle Movement" class="image-block">
-                <p class="image-caption">Your sprite should move in a triangle pattern</p>
             </div>
         `
     },
     {
         title: 'Exploring "Move" and "Glide"',
         content: `
-            <h1 class="tutorial-title">3. Exploring "Move" and "Glide"</h1>
+            <h2 class="tutorial-title">3. Exploring "Move" and "Glide"</h2>
             <div class="content-box">
                 <p class="tutorial-text">We've seen how to teleport our sprites and move them step by step. Now, let's make their movements smooth and fancy!</p>
                 
@@ -151,7 +149,7 @@ export const scratchLesson2 = [
     {
         title: "Fun Projects and Homework",
         content: `
-            <h1 class="tutorial-title">4. Fun Projects and Homework</h1>
+            <h2 class="tutorial-title">4. Fun Projects and Homework</h2>
             <div class="content-box">
                 <p class="tutorial-text">Great job learning about coordinates and movement! Now, let's put your skills to the test with some fun projects.</p>
                 

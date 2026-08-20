@@ -2,7 +2,7 @@ export const scratch2Lesson1 = [
     {
         title: "Lesson Overview",
         content: `
-                    <h1 class="tutorial-title">Scratch 2 - Lesson 1: Pong Game (1 Player)</h1>
+                    <h2 class="tutorial-title">Scratch 2 - Lesson 1: Pong Game (1 Player)</h2>
                     <div class="content-box">
                         <h3 class="text-xl font-semibold mb-2">Check out the final project below!</h3>
                         <iframe src="https://scratch.mit.edu/projects/10128515/embed" allowtransparency="true" width="485" height="402" frameborder="0" scrolling="no" allowfullscreen></iframe>
@@ -24,32 +24,24 @@ export const scratch2Lesson1 = [
                         </div>
                     </div>
 
-                    <div class="quiz-container">
-                        <h3 class="text-xl font-semibold mb-2">Quick Quiz</h3>
-                        <p class="quiz-question">What is the main goal of the player in our Pong game?</p>
-                        <ul class="quiz-options">
-                            <li class="quiz-option">
-                                <input type="radio" id="q1a" name="q1" value="a">
-                                <label for="q1a">To catch the ball with the paddle</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" id="q1b" name="q1" value="b">
-                                <label for="q1b">To keep the ball in play by bouncing it off the paddle</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" id="q1c" name="q1" value="c">
-                                <label for="q1c">To move the paddle as fast as possible</label>
-                            </li>
-                        </ul>
-                        <button onclick="checkQuiz('q1', 'b')" class="mt-4 bg-primary text-white px-4 py-2 rounded">Check Answer</button>
-                        <p id="q1-feedback" class="quiz-feedback"></p>
-                    </div>
-        `
+`,
+        quiz: [
+            {
+                question: 'What is the main goal of the player in our Pong game?',
+                options: [
+                    { label: 'To catch the ball with the paddle', value: 'a' },
+                    { label: 'To keep the ball in play by bouncing it off the paddle', value: 'b' },
+                    { label: 'To move the paddle as fast as possible', value: 'c' },
+                ],
+                correctAnswer: 'b',
+            },
+        ]
+
     },
     {
         title: "Setting Up the Game",
         content: `
-                    <h1 class="tutorial-title">1. Setting Up the Game</h1>
+                    <h2 class="tutorial-title">1. Setting Up the Game</h2>
                     <div class="content-box">
                         <h3 class="text-xl font-semibold mb-2">Creating the Backdrop</h3>
                         <p class="tutorial-text">Let's set up our game's playing field by creating a simple backdrop.</p>
@@ -69,7 +61,7 @@ export const scratch2Lesson1 = [
     {
         title: "Creating the Paddle",
         content: `
-                    <h1 class="tutorial-title">2. Creating the Paddle</h1>
+                    <h2 class="tutorial-title">2. Creating the Paddle</h2>
                     <div class="interactive-demo">
                         <h3 class="text-xl font-semibold mb-2">Interactive Paddle Demo</h3>
                         <p>Move your mouse up and down over this area to see how the paddle would move:</p>
@@ -102,7 +94,7 @@ export const scratch2Lesson1 = [
                         <h3 class="text-xl font-semibold mb-2">Step 3: Moving the Paddle</h3>
                         <p class="tutorial-text">Now, let's make the paddle follow the mouse's vertical movement.</p>
                         <div class="step-box">
-                            <p><span class="step-number">1</span> Go to the "Scripts" tab for your Paddle sprite.</p>
+                            <p><span class="step-number">1</span> Go to the "Code" tab for your Paddle sprite.</p>
                             <p><span class="step-number">2</span> Drag out a "when green flag clicked" block.</p>
                             <p><span class="step-number">3</span> Attach a "forever" block underneath it.</p>
                             <p><span class="step-number">4</span> Inside the forever block, add a "go to x: [] y: []" block.</p>
@@ -114,32 +106,24 @@ export const scratch2Lesson1 = [
                         </div>
                     </div>
 
-                    <div class="quiz-container">
-                        <h3 class="text-xl font-semibold mb-2">Quick Quiz</h3>
-                        <p class="quiz-question">Which Scratch block would you use to make the paddle follow the mouse continuously?</p>
-                        <ul class="quiz-options">
-                            <li class="quiz-option">
-                                <input type="radio" id="q3a" name="q3" value="a">
-                                <label for="q3a">When space key pressed</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" id="q3b" name="q3" value="b">
-                                <label for="q3b">Repeat 10 times</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" id="q3c" name="q3" value="c">
-                                <label for="q3c">Forever</label>
-                            </li>
-                        </ul>
-                        <button onclick="checkQuiz('q3', 'c')" class="mt-4 bg-primary text-white px-4 py-2 rounded">Check Answer</button>
-                        <p id="q3-feedback" class="quiz-feedback"></p>
-                    </div>
-        `
+`,
+        quiz: [
+            {
+                question: 'Which Scratch block would you use to make the paddle follow the mouse continuously?',
+                options: [
+                    { label: 'When space key pressed', value: 'a' },
+                    { label: 'Repeat 10 times', value: 'b' },
+                    { label: 'Forever', value: 'c' },
+                ],
+                correctAnswer: 'c',
+            },
+        ]
+
     },
     {
         title: "Adding the Ball",
         content: `
-                    <h1 class="tutorial-title">3. Adding the Ball</h1>
+                    <h2 class="tutorial-title">3. Adding the Ball</h2>
                     <div class="interactive-demo">
                         <h3 class="text-xl font-semibold mb-2">Interactive Ball Movement Demo</h3>
                         <p>Click "Start" to see how the ball would move and bounce:</p>
@@ -164,7 +148,7 @@ export const scratch2Lesson1 = [
                         <h3 class="text-xl font-semibold mb-2">Step 2: Making the Ball Move</h3>
                         <p class="tutorial-text">Now, let's make our ball move around the screen.</p>
                         <div class="step-box">
-                            <p><span class="step-number">1</span> Go to the "Scripts" tab for your Ball sprite.</p>
+                            <p><span class="step-number">1</span> Go to the "Code" tab for your Ball sprite.</p>
                             <p><span class="step-number">2</span> Add a "when green flag clicked" block.</p>
                             <p><span class="step-number">3</span> Attach a "forever" block.</p>
                             <p><span class="step-number">4</span> Inside the forever block, add a "move 10 steps" block.</p>
@@ -188,32 +172,24 @@ export const scratch2Lesson1 = [
                         </div>
                     </div>
 
-                    <div class="quiz-container">
-                        <h3 class="text-xl font-semibold mb-2">Quick Quiz</h3>
-                        <p class="quiz-question">What Scratch block would you use to make the ball bounce off the edges of the screen?</p>
-                        <ul class="quiz-options">
-                            <li class="quiz-option">
-                                <input type="radio" id="q4a" name="q4" value="a">
-                                <label for="q4a">Move 10 steps</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" id="q4b" name="q4" value="b">
-                                <label for="q4b">If on edge, bounce</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" id="q4c" name="q4" value="c">
-                                <label for="q4c">Turn 15 degrees</label>
-                            </li>
-                        </ul>
-                        <button onclick="checkQuiz('q4', 'b')" class="mt-4 bg-primary text-white px-4 py-2 rounded">Check Answer</button>
-                        <p id="q4-feedback" class="quiz-feedback"></p>
-                    </div>
-        `
+`,
+        quiz: [
+            {
+                question: 'What Scratch block would you use to make the ball bounce off the edges of the screen?',
+                options: [
+                    { label: 'Move 10 steps', value: 'a' },
+                    { label: 'If on edge, bounce', value: 'b' },
+                    { label: 'Turn 15 degrees', value: 'c' },
+                ],
+                correctAnswer: 'b',
+            },
+        ]
+
     },
     {
         title: "Scoring and Game Over",
         content: `
-                    <h1 class="tutorial-title">4. Scoring and Game Over</h1>
+                    <h2 class="tutorial-title">4. Scoring and Game Over</h2>
                     <div class="interactive-demo">
                         <h3 class="text-xl font-semibold mb-2">Interactive Scoring Demo</h3>
                         <p>Click the ball to simulate scoring points:</p>
@@ -266,32 +242,24 @@ export const scratch2Lesson1 = [
                         </div>
                     </div>
 
-                    <div class="quiz-container">
-                        <h3 class="text-xl font-semibold mb-2">Quick Quiz</h3>
-                        <p class="quiz-question">When should the "Game Over" message be displayed?</p>
-                        <ul class="quiz-options">
-                            <li class="quiz-option">
-                                <input type="radio" id="q5a" name="q5" value="a">
-                                <label for="q5a">When the ball hits the paddle</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" id="q5b" name="q5" value="b">
-                                <label for="q5b">When the score reaches 10</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" id="q5c" name="q5" value="c">
-                                <label for="q5c">When the ball passes the paddle on the left side</label>
-                            </li>
-                        </ul>
-                        <button onclick="checkQuiz('q5', 'c')" class="mt-4 bg-primary text-white px-4 py-2 rounded">Check Answer</button>
-                        <p id="q5-feedback" class="quiz-feedback"></p>
-                    </div>
-        `
+`,
+        quiz: [
+            {
+                question: 'When should the "Game Over" message be displayed?',
+                options: [
+                    { label: 'When the ball hits the paddle', value: 'a' },
+                    { label: 'When the score reaches 10', value: 'b' },
+                    { label: 'When the ball passes the paddle on the left side', value: 'c' },
+                ],
+                correctAnswer: 'c',
+            },
+        ]
+
     },
     {
         title: "Mini-Project",
         content: `
-                    <h1 class="tutorial-title">5. Mini-Project: Extend Your Pong Game</h1>
+                    <h2 class="tutorial-title">5. Mini-Project: Extend Your Pong Game</h2>
                     <div class="content-box">
                         <h3 class="text-xl font-semibold mb-2">Challenge: Enhance Your Pong Game</h3>
                         <p class="tutorial-text">Now that you've created a basic Pong game, let's make it even better! Here are some ideas to extend your game:</p>
@@ -310,7 +278,7 @@ export const scratch2Lesson1 = [
                         <div class="step-box">
                             <p><span class="step-number">1</span> Click on the "Sounds" tab in the Ball sprite.</p>
                             <p><span class="step-number">2</span> Click "Choose a Sound" and select a suitable sound effect (e.g., "Pop" or "Boing").</p>
-                            <p><span class="step-number">3</span> Go back to the "Scripts" tab.</p>
+                            <p><span class="step-number">3</span> Go back to the "Code" tab.</p>
                             <p><span class="step-number">4</span> In your "if touching (Paddle)" block, add a "play sound (your chosen sound)" block.</p>
                         </div>
                         <div class="highlight-box">

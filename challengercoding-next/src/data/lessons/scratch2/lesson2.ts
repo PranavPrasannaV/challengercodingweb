@@ -2,7 +2,7 @@ export const scratch2Lesson2 = [
     {
         title: "Lesson Overview",
         content: `
-                    <h1 class="tutorial-title">Scratch 2 - Lesson 2: Calculator</h1>
+                    <h2 class="tutorial-title">Scratch 2 - Lesson 2: Calculator</h2>
                     <div class="content-box">
                         <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
                         <p class="tutorial-text">
@@ -21,7 +21,7 @@ export const scratch2Lesson2 = [
                                 <option value="multiply">Multiply</option>
                                 <option value="divide">Divide</option>
                             </select>
-                            <button onclick="calculate()">Calculate</button>
+                            <button>Calculate</button>
                             <p id="result"></p>
                         </div>
                     </div>
@@ -39,12 +39,12 @@ export const scratch2Lesson2 = [
     {
         title: "Ask Function & Conditional Logic",
         content: `
-                    <h1 class="tutorial-title">1. Ask Function & Conditional Logic</h1>
+                    <h2 class="tutorial-title">1. Ask Function & Conditional Logic</h2>
                     <div class="interactive-demo">
                         <h3 class="text-xl font-semibold mb-2">Try It: Conditional Logic</h3>
                         <div id="conditional-demo">
                             <input type="text" id="user-input" placeholder="Enter 'add', 'subtract', 'multiply', or 'divide'">
-                            <button onclick="checkCondition()">Check Condition</button>
+                            <button>Check Condition</button>
                             <p id="condition-result"></p>
                         </div>
                     <p>Type your math operation</p>
@@ -59,7 +59,6 @@ export const scratch2Lesson2 = [
                             <p><span class="step-number">2</span> Type your question in the block, e.g., "What operation do you want to perform?"</p>
                             <p><span class="step-number">3</span> The user's answer is stored in the <strong>answer</strong> block.</p>
                         </div>
-                        <img src="/placeholder.svg?height=100&width=300" alt="Ask and Wait Block" class="image-block">
                     </div>
 
                     <div class="content-box">
@@ -82,13 +81,13 @@ export const scratch2Lesson2 = [
     {
         title: "Coding the Subtraction Operation",
         content: `
-                    <h1 class="tutorial-title">2. Coding the Subtraction Operation</h1>
+                    <h2 class="tutorial-title">2. Coding the Subtraction Operation</h2>
                     <div class="interactive-demo">
                         <h3 class="text-xl font-semibold mb-2">Try It: Subtraction</h3>
                         <div id="subtraction-demo">
                             <input type="number" id="sub-num1" placeholder="Enter number 1">
                             <input type="number" id="sub-num2" placeholder="Enter number 2">
-                            <button onclick="subtract()">Subtract</button>
+                            <button>Subtract</button>
                             <p id="subtraction-result"></p>
                         </div>
                     </div>
@@ -123,7 +122,7 @@ export const scratch2Lesson2 = [
     {
         title: "Homework and Exercises",
         content: `
-                    <h1 class="tutorial-title">Homework and Exercises</h1>
+                    <h2 class="tutorial-title">Homework and Exercises</h2>
                     <div class="content-box">
                         <h3 class="text-xl font-semibold mb-2">Exercise 1: Complete Calculator</h3>
                         <p class="tutorial-text">
@@ -158,7 +157,7 @@ export const scratch2Lesson2 = [
                                 <option value="modulo">Modulo</option>
                             </select>
                             <input type="number" id="adv-num2" placeholder="Enter second number (if needed)">
-                            <button onclick="advancedCalculate()">Calculate</button>
+                            <button>Calculate</button>
                             <p id="advanced-result"></p>
                         </div>
                     </div>

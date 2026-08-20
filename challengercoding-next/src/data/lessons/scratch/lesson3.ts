@@ -2,7 +2,7 @@ export const scratchLesson3 = [
     {
         title: "Lesson Overview",
         content: `
-            <h1 class="tutorial-title">Lesson 3: Animations in Scratch</h1>
+            <h2 class="tutorial-title">Lesson 3: Animations in Scratch</h2>
             <div class="content-box">
                 <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
                 <p class="tutorial-text">
@@ -58,7 +58,7 @@ export const scratchLesson3 = [
     {
         title: "Understanding Costumes",
         content: `
-            <h1 class="tutorial-title">Understanding Costumes</h1>
+            <h2 class="tutorial-title">Understanding Costumes</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     In Scratch, costumes are different appearances that a sprite can have. Think of them like 
@@ -87,11 +87,10 @@ export const scratchLesson3 = [
             <div class="interactive-demo">
                 <h3 class="text-xl font-semibold mb-2">Interactive Demo: Costume Viewer</h3>
                 <div id="costume-demo">
-                    <img src="/placeholder.svg?height=200&width=200" alt="Sprite Costume" id="costume-image">
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="changeCostume('costume1')">Costume 1</button>
-                    <button class="demo-button" onclick="changeCostume('costume2')">Costume 2</button>
+                    <button class="demo-button">Costume 1</button>
+                    <button class="demo-button">Costume 2</button>
                 </div>
             </div>
 
@@ -106,7 +105,7 @@ export const scratchLesson3 = [
     {
         title: "Switching Costumes",
         content: `
-            <h1 class="tutorial-title">Switching Costumes</h1>
+            <h2 class="tutorial-title">Switching Costumes</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     Now that we understand what costumes are, let's learn how to switch between them using Scratch blocks. 
@@ -119,8 +118,6 @@ export const scratchLesson3 = [
                 <p class="tutorial-text">
                     The main block we'll use for changing costumes is the "switch costume to [ ]" block. It looks like this:
                 </p>
-                <img src="/placeholder.svg?height=50&width=200" alt="Switch costume block in Scratch" class="image-block">
-                <p class="image-caption">The "switch costume to" block in Scratch</p>
             </div>
 
             <div class="content-box">
@@ -143,11 +140,10 @@ export const scratchLesson3 = [
             <div class="interactive-demo">
                 <h3 class="text-xl font-semibold mb-2">Interactive Demo: Costume Switcher</h3>
                 <div id="costume-switch-demo">
-                    <img src="/placeholder.svg?height=200&width=200" alt="Sprite Costume" id="switch-costume-image">
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="switchCostume('costume1')">Switch to Costume 1</button>
-                    <button class="demo-button" onclick="switchCostume('costume2')">Switch to Costume 2</button>
+                    <button class="demo-button">Switch to Costume 1</button>
+                    <button class="demo-button">Switch to Costume 2</button>
                 </div>
             </div>
 
@@ -162,7 +158,7 @@ export const scratchLesson3 = [
     {
         title: "Timing and Animation",
         content: `
-            <h1 class="tutorial-title">Timing and Animation</h1>
+            <h2 class="tutorial-title">Timing and Animation</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     Now that we can switch costumes, let's learn how to create smooth animations by controlling 
@@ -175,8 +171,6 @@ export const scratchLesson3 = [
                 <p class="tutorial-text">
                     To control the timing of our animations, we'll use the "wait" block. It looks like this:
                 </p>
-                <img src="/placeholder.svg?height=50&width=200" alt="Wait block in Scratch" class="image-block">
-                <p class="image-caption">The "wait" block in Scratch</p>
                 <p class="tutorial-text">
                     This block pauses the script for a specified number of seconds before moving to the next block.
                 </p>
@@ -205,11 +199,10 @@ export const scratchLesson3 = [
             <div class="interactive-demo">
                 <h3 class="text-xl font-semibold mb-2">Interactive Demo: Simple Animation</h3>
                 <div id="animation-demo">
-                    <img src="/placeholder.svg?height=200&width=200" alt="Animated Sprite" id="animated-sprite">
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="startAnimation()">Start Animation</button>
-                    <button class="demo-button" onclick="stopAnimation()">Stop Animation</button>
+                    <button class="demo-button">Start Animation</button>
+                    <button class="demo-button">Stop Animation</button>
                 </div>
             </div>
 
@@ -225,7 +218,7 @@ export const scratchLesson3 = [
     {
         title: "Advanced Animations",
         content: `
-            <h1 class="tutorial-title">Advanced Animations</h1>
+            <h2 class="tutorial-title">Advanced Animations</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     Now that we've mastered the basics of animation in Scratch, let's explore some more advanced techniques 
@@ -242,8 +235,9 @@ export const scratchLesson3 = [
                     <li>Repeat [ ] : This block repeats the enclosed blocks a specified number of times.</li>
                     <li>Forever : This block repeats the enclosed blocks indefinitely, until the script is stopped.</li>
                 </ul>
-                <img src="/placeholder.svg?height=100&width=200" alt="Loop blocks in Scratch" class="image-block">
-                <p class="image-caption">Repeat and Forever blocks in Scratch</p>
+                <img src="/repeat.png" alt="The repeat block in Scratch" class="image-block">
+                <img src="/forever.png" alt="The forever block in Scratch" class="image-block">
+                <p class="image-caption">The repeat and forever blocks</p>
             </div>
 
             <div class="content-box">
@@ -263,11 +257,10 @@ export const scratchLesson3 = [
             <div class="interactive-demo">
                 <h3 class="text-xl font-semibold mb-2">Interactive Demo: Looping Animation</h3>
                 <div id="looping-animation-demo">
-                    <img src="/placeholder.svg?height=200&width=200" alt="Looping Animated Sprite" id="looping-animated-sprite">
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="startLoopingAnimation()">Start Animation</button>
-                    <button class="demo-button" onclick="stopLoopingAnimation()">Stop Animation</button>
+                    <button class="demo-button">Start Animation</button>
+                    <button class="demo-button">Stop Animation</button>
                 </div>
             </div>
 
@@ -277,8 +270,6 @@ export const scratchLesson3 = [
                     Instead of manually switching to each costume, you can use the "next costume" block to automatically 
                     cycle through all available costumes. This is especially useful when you have many costumes!
                 </p>
-                <img src="/placeholder.svg?height=50&width=200" alt="Next costume block in Scratch" class="image-block">
-                <p class="image-caption">The "next costume" block in Scratch</p>
             </div>
 
             <div class="content-box">
@@ -293,7 +284,7 @@ export const scratchLesson3 = [
     {
         title: "Mini-Project",
         content: `
-            <h1 class="tutorial-title">Mini-Project: Animated Story Scene</h1>
+            <h2 class="tutorial-title">Mini-Project: Animated Story Scene</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     Let's put everything we've learned together to create an animated story scene in Scratch!

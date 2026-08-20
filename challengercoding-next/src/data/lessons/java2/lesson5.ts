@@ -2,7 +2,7 @@ export const java2Lesson5 = [
     {
         title: "Lesson Overview",
         content: `
-            <h1 class="tutorial-title">Java 2 Guided Tutorials - Week 5: Polymorphism</h1>
+            <h2 class="tutorial-title">Java 2 Guided Tutorials - Week 5: Polymorphism</h2>
             <div class="content-box">
                 <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
                 <p class="tutorial-text">
@@ -31,7 +31,7 @@ export const java2Lesson5 = [
     {
         title: "Understanding Polymorphism",
         content: `
-            <h1 class="tutorial-title">1. Understanding Polymorphism</h1>
+            <h2 class="tutorial-title">1. Understanding Polymorphism</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">What is Polymorphism?</h3>
                 <p class="tutorial-text">
@@ -89,7 +89,7 @@ public class PolymorphismExample {
     {
         title: "Method Overriding",
         content: `
-            <h1 class="tutorial-title">2. Method Overriding</h1>
+            <h2 class="tutorial-title">2. Method Overriding</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Understanding Method Overriding</h3>
                 <p class="tutorial-text">
@@ -161,7 +161,7 @@ public class MethodOverridingExample {
     {
         title: "Runtime Polymorphism",
         content: `
-            <h1 class="tutorial-title">3. Runtime Polymorphism</h1>
+            <h2 class="tutorial-title">3. Runtime Polymorphism</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Understanding Runtime Polymorphism</h3>
                 <p class="tutorial-text">
@@ -227,7 +227,7 @@ public class RuntimePolymorphismExample {
     {
         title: "Polymorphism with Interfaces",
         content: `
-            <h1 class="tutorial-title">4. Polymorphism with Interfaces</h1>
+            <h2 class="tutorial-title">4. Polymorphism with Interfaces</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Using Interfaces for Polymorphism</h3>
                 <p class="tutorial-text">
@@ -294,7 +294,7 @@ public class InterfacePolymorphismExample {
     {
         title: "Abstract Classes and Polymorphism",
         content: `
-            <h1 class="tutorial-title">5. Abstract Classes and Polymorphism</h1>
+            <h2 class="tutorial-title">5. Abstract Classes and Polymorphism</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Using Abstract Classes for Polymorphism</h3>
                 <p class="tutorial-text">
@@ -369,27 +369,8 @@ public class AbstractClassPolymorphismExample {
     {
         title: "Quiz",
         content: `
-            <h1 class="tutorial-title">6. Polymorphism Quiz</h1>
-            <div class="quiz-container">
-                <form id="quizForm">
-                    <div class="question">
-                        <p class="quiz-question">1. What is polymorphism in Java?</p>
-                        <ul class="quiz-options">
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="a" id="q1a">
-                                <label for="q1a">The ability to create multiple objects</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="b" id="q1b">
-                                <label for="q1b">The ability of an object to take on many forms</label>
-                            </li>
-                            <li class="quiz-option">
-                                <input type="radio" name="q1" value="c" id="q1c">
-                                <label for="q1c">The process of creating a new class from an existing class</label>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="question">
+            <h2 class="tutorial-title">6. Polymorphism Quiz</h2>
+<div class="question">
                         <p class="quiz-question">2. Which of the following is NOT a way to achieve polymorphism in Java?</p>
                         <ul class="quiz-options">
                             <li class="quiz-option">
@@ -424,7 +405,7 @@ public class AbstractClassPolymorphismExample {
                         </ul>
                     </div>
                 </form>
-                <button onclick="submitQuiz()" class="button mt-4">Submit Quiz</button>
+                <button class="button mt-4">Submit Quiz</button>
                 <p id="quizResult" class="quiz-feedback"></p>
             </div>
         `,
@@ -461,7 +442,7 @@ public class AbstractClassPolymorphismExample {
     {
         title: "Weekly Project",
         content: `
-            <h1 class="tutorial-title">7. Weekly Project: Shape Calculator</h1>
+            <h2 class="tutorial-title">7. Weekly Project: Shape Calculator</h2>
             <div class="content-box">
                 <h3 class="text-xl font-semibold mb-2">Project Description</h3>
                 <p class="tutorial-text">For this week's project, you'll create a Shape Calculator that demonstrates polymorphism. You'll implement various shapes and calculate their areas and perimeters using polymorphic methods.</p>

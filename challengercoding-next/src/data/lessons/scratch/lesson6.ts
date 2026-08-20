@@ -2,7 +2,7 @@ export const scratchLesson6 = [
     {
         title: "Lesson Overview",
         content: `
-            <h1 class="tutorial-title">Lesson 6: Boolean Statements and Operators in Scratch</h1>
+            <h2 class="tutorial-title">Lesson 6: Boolean Statements and Operators in Scratch</h2>
             <div class="content-box">
                 <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
                 <p class="tutorial-text">
@@ -63,7 +63,7 @@ export const scratchLesson6 = [
     {
         title: "Boolean Operators",
         content: `
-            <h1 class="tutorial-title">Boolean Operators</h1>
+            <h2 class="tutorial-title">Boolean Operators</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     Boolean operators are used to combine or modify Boolean values (true or false). In Scratch, 
@@ -113,11 +113,11 @@ export const scratchLesson6 = [
                     <canvas id="boolean-canvas" width="400" height="200"></canvas>
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="toggleCondition('A')">Toggle A</button>
-                    <button class="demo-button" onclick="toggleCondition('B')">Toggle B</button>
-                    <button class="demo-button" onclick="changeOperator('AND')">AND</button>
-                    <button class="demo-button" onclick="changeOperator('OR')">OR</button>
-                    <button class="demo-button" onclick="changeOperator('NOT')">NOT</button>
+                    <button class="demo-button">Toggle A</button>
+                    <button class="demo-button">Toggle B</button>
+                    <button class="demo-button">AND</button>
+                    <button class="demo-button">OR</button>
+                    <button class="demo-button">NOT</button>
                 </div>
             </div>
 
@@ -132,7 +132,7 @@ export const scratchLesson6 = [
     {
         title: "Numerical Operators",
         content: `
-            <h1 class="tutorial-title">Numerical Operators</h1>
+            <h2 class="tutorial-title">Numerical Operators</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     Numerical operators in Scratch allow you to perform mathematical operations and comparisons. 
@@ -151,8 +151,6 @@ export const scratchLesson6 = [
                     <li>Multiplication (*)</li>
                     <li>Division (/)</li>
                 </ul>
-                <img src="/placeholder.svg?height=100&width=300" alt="Arithmetic Operators in Scratch" class="image-block">
-                <p class="image-caption">Arithmetic operator blocks in Scratch</p>
             </div>
 
             <div class="content-box">
@@ -187,17 +185,17 @@ export const scratchLesson6 = [
                     <canvas id="numerical-canvas" width="400" height="200"></canvas>
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="changeValue('A', 1)">A + 1</button>
-                    <button class="demo-button" onclick="changeValue('A', -1)">A - 1</button>
-                    <button class="demo-button" onclick="changeValue('B', 1)">B + 1</button>
-                    <button class="demo-button" onclick="changeValue('B', -1)">B - 1</button>
-                    <button class="demo-button" onclick="changeOperation('+')">+</button>
-                    <button class="demo-button" onclick="changeOperation('-')">-</button>
-                    <button class="demo-button" onclick="changeOperation('*')">*</button>
-                    <button class="demo-button" onclick="changeOperation('/')">/</button>
-                    <button class="demo-button" onclick="changeOperation('>')">&gt;</button>
-                    <button class="demo-button" onclick="changeOperation('<')">&lt;</button>
-                    <button class="demo-button" onclick="changeOperation('=')">=</button>
+                    <button class="demo-button">A + 1</button>
+                    <button class="demo-button">A - 1</button>
+                    <button class="demo-button">B + 1</button>
+                    <button class="demo-button">B - 1</button>
+                    <button class="demo-button">+</button>
+                    <button class="demo-button">-</button>
+                    <button class="demo-button">*</button>
+                    <button class="demo-button">/</button>
+                    <button class="demo-button">&gt;</button>
+                    <button class="demo-button">&lt;</button>
+                    <button class="demo-button">=</button>
                 </div>
             </div>
 
@@ -212,7 +210,7 @@ export const scratchLesson6 = [
     {
         title: "Guided Exercise",
         content: `
-            <h1 class="tutorial-title">Guided Exercise: Creating a Simple Game with Boolean and Numerical Operators</h1>
+            <h2 class="tutorial-title">Guided Exercise: Creating a Simple Game with Boolean and Numerical Operators</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     In this exercise, we'll create a simple game that uses both Boolean and numerical operators. 
@@ -316,11 +314,11 @@ stop [all v]
                     <canvas id="game-canvas" width="480" height="360"></canvas>
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="startGame()">Start Game</button>
-                    <button class="demo-button" onclick="movePlayer('left')">Move Left</button>
-                    <button class="demo-button" onclick="movePlayer('right')">Move Right</button>
-                    <button class="demo-button" onclick="movePlayer('up')">Move Up</button>
-                    <button class="demo-button" onclick="movePlayer('down')">Move Down</button>
+                    <button class="demo-button">Start Game</button>
+                    <button class="demo-button">Move Left</button>
+                    <button class="demo-button">Move Right</button>
+                    <button class="demo-button">Move Up</button>
+                    <button class="demo-button">Move Down</button>
                 </div>
             </div>
 
@@ -341,7 +339,7 @@ stop [all v]
     {
         title: "Mini-Project",
         content: `
-            <h1 class="tutorial-title">Mini-Project: Create a Quiz Game with Boolean and Numerical Operators</h1>
+            <h2 class="tutorial-title">Mini-Project: Create a Quiz Game with Boolean and Numerical Operators</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     Now it's your turn to create a project using what you've learned about Boolean and numerical 
@@ -416,9 +414,9 @@ say (join [Game over! Your score: ] (score)) for (5) seconds
                     <canvas id="quiz-canvas" width="400" height="300"></canvas>
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="startQuiz()">Start Quiz</button>
+                    <button class="demo-button">Start Quiz</button>
                     <input type="number" id="answer-input" placeholder="Your answer">
-                    <button class="demo-button" onclick="submitAnswer()">Submit Answer</button>
+                    <button class="demo-button">Submit Answer</button>
                 </div>
             </div>
 

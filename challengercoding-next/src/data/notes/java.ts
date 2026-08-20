@@ -1,4 +1,4 @@
-import { SubLesson } from './types';
+import type { SubLesson } from './types';
 
 export const javaNotes: Record<string, SubLesson[]> = {
     '1': [
@@ -34,7 +34,7 @@ export const javaNotes: Record<string, SubLesson[]> = {
         {
             id: 'lesson1',
             title: 'Setting Up Java Environment',
-            video: 'https://www.youtube.com/embed/placeholder_video_id',
+            video: null, // TODO: no video recorded for this section yet
             description: `
                 <h2>Setting Up Your Java Development Environment</h2>
                 <p>Before we can start coding, we need to set up our Java development environment. Follow these steps:</p>
@@ -77,7 +77,7 @@ javac -version
         {
             id: 'lesson2',
             title: 'Writing Your First Java Program',
-            video: 'https://www.youtube.com/embed/placeholder_video_id',
+            video: null, // TODO: no video recorded for this section yet
             description: `
                 <h2>Hello, World! in Java</h2>
                 <p>Now that we have our environment set up, let's write our first Java program - the classic "Hello, World!"</p>
@@ -124,7 +124,7 @@ public class HelloWorld {
         {
             id: 'lesson3',
             title: 'Java Syntax and Structure',
-            video: 'https://www.youtube.com/embed/placeholder_video_id',
+            video: null, // TODO: no video recorded for this section yet
             description: `
                 <h2>Understanding Java Syntax and Structure</h2>
                 <p>Now that we've written our first program, let's dive deeper into Java's syntax and structure.</p>
@@ -1336,7 +1336,7 @@ public class Car {
         {
             id: 'wrapper-classes',
             title: 'Wrapper Classes',
-            video: 'https://www.youtube.com/embed/aPMPyVLRgxw',
+            video: null, // was aPMPyVLRgxw — video is no longer available on YouTube
             description: `
                 <h2>Understanding Wrapper Classes in Java</h2>
                 
@@ -1458,7 +1458,7 @@ public class Rectangle {
         {
             id: 'object-comparison',
             title: 'Object Comparison',
-            video: 'https://www.youtube.com/embed/Vy_Z6IXNF9Y',
+            video: null, // was Vy_Z6IXNF9Y — video is no longer available on YouTube
             description: `
                 <h2>Understanding Object Comparison in Java</h2>
                 

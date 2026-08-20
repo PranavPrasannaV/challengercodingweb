@@ -2,7 +2,7 @@ export const scratchLesson7 = [
     {
         title: "Lesson Overview",
         content: `
-            <h1 class="tutorial-title">Lesson 7: Variables and Parameters in Scratch</h1>
+            <h2 class="tutorial-title">Lesson 7: Variables and Parameters in Scratch</h2>
             <div class="content-box">
                 <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
                 <p class="tutorial-text">
@@ -62,7 +62,7 @@ export const scratchLesson7 = [
     {
         title: "Understanding Variables",
         content: `
-            <h1 class="tutorial-title">Understanding Variables</h1>
+            <h2 class="tutorial-title">Understanding Variables</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     Variables in Scratch are like containers that can hold different types of information. 
@@ -123,8 +123,8 @@ export const scratchLesson7 = [
                     <canvas id="variable-canvas" width="400" height="200"></canvas>
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="increaseScore()">Increase Score</button>
-                    <button class="demo-button" onclick="resetScore()">Reset Score</button>
+                    <button class="demo-button">Increase Score</button>
+                    <button class="demo-button">Reset Score</button>
                 </div>
             </div>
 
@@ -140,7 +140,7 @@ export const scratchLesson7 = [
     {
         title: "Exploring Parameters",
         content: `
-            <h1 class="tutorial-title">Exploring Parameters</h1>
+            <h2 class="tutorial-title">Exploring Parameters</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     Parameters in Scratch are values that you can input into blocks to customize their behavior. 
@@ -157,8 +157,6 @@ export const scratchLesson7 = [
                     <li>Say [Message] for [2] seconds: Displays a message for a specified duration</li>
                     <li>Move [10] steps: Moves the sprite a specified number of steps</li>
                 </ul>
-                <img src="/placeholder.svg?height=150&width=300" alt="Parameter Blocks in Scratch" class="image-block">
-                <p class="image-caption">Parameter blocks in Scratch</p>
             </div>
 
             <div class="content-box">
@@ -180,7 +178,7 @@ export const scratchLesson7 = [
                     <canvas id="parameter-canvas" width="400" height="400"></canvas>
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="moveRandomly()">Move Randomly</button>
+                    <button class="demo-button">Move Randomly</button>
                     <input type="number" id="min-steps" value="1" min="1" max="50">
                     <input type="number" id="max-steps" value="10" min="1" max="50">
                 </div>
@@ -199,7 +197,7 @@ export const scratchLesson7 = [
     {
         title: "Guided Exercise",
         content: `
-            <h1 class="tutorial-title">Guided Exercise: Creating a Simple Quiz Game</h1>
+            <h2 class="tutorial-title">Guided Exercise: Creating a Simple Quiz Game</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     In this exercise, we'll create a simple quiz game that uses both variables and parameters. 
@@ -295,9 +293,9 @@ say (join [Quiz complete! Your score: ] (Score)) for (5) seconds
                     <canvas id="quiz-canvas" width="400" height="300"></canvas>
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="startQuiz()">Start Quiz</button>
+                    <button class="demo-button">Start Quiz</button>
                     <input type="text" id="answer-input" placeholder="Your answer">
-                    <button class="demo-button" onclick="submitAnswer()">Submit Answer</button>
+                    <button class="demo-button">Submit Answer</button>
                 </div>
             </div>
 
@@ -313,7 +311,7 @@ say (join [Quiz complete! Your score: ] (Score)) for (5) seconds
     {
         title: "Mini-Project",
         content: `
-            <h1 class="tutorial-title">Mini-Project: Create a Customizable Story Generator</h1>
+            <h2 class="tutorial-title">Mini-Project: Create a Customizable Story Generator</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     Now it's your turn to create a project using what you've learned about variables and parameters. 
@@ -383,9 +381,9 @@ say (join [Once upon a time, ] (join (character) (join [ went to ] (join (place)
                     <canvas id="story-canvas" width="400" height="300"></canvas>
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="startStoryGenerator()">Start Story Generator</button>
+                    <button class="demo-button">Start Story Generator</button>
                     <input type="text" id="story-input" placeholder="Your input">
-                    <button class="demo-button" onclick="submitStoryInput()">Submit Input</button>
+                    <button class="demo-button">Submit Input</button>
                 </div>
             </div>
 

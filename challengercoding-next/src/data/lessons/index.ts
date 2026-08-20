@@ -50,6 +50,23 @@ import { java2Lesson6 } from './java2/lesson6';
 import { java2Lesson7 } from './java2/lesson7';
 import { java2Test } from './java2/test';
 
+/**
+ * Two final tests were authored as a bare object — `{ quiz, codingExercises }`
+ * and `{ quiz, freeResponse }` — while every other lesson is an array of steps.
+ * That mismatch is why /lessons/python/test and /lessons/python2/test used to
+ * render nothing. Expand them into steps here rather than reshaping the source:
+ * the multiple-choice section becomes step one, and the coding exercises follow
+ * as steps of their own (they already carry the right shape).
+ */
+const asSteps = (lesson: any) => {
+    if (Array.isArray(lesson)) return lesson;
+    const { quiz, codingExercises, freeResponse, ...rest } = lesson ?? {};
+    const steps = [];
+    if (quiz?.length) steps.push({ title: 'Multiple choice', content: '', quiz, ...rest });
+    steps.push(...(codingExercises ?? []), ...(freeResponse ?? []));
+    return steps.length ? steps : [lesson];
+};
+
 export const lessonRegistry: Record<string, any> = {
     'scratch-1': scratchLesson1,
     'scratch-2': scratchLesson2,
@@ -74,7 +91,7 @@ export const lessonRegistry: Record<string, any> = {
     'python-5': pythonLesson5,
     'python-6': pythonLesson6,
     'python-7': pythonLesson7,
-    'python-test': pythonTest,
+    'python-test': asSteps(pythonTest),
 
     'python2-1': python2Lesson1,
     'python2-2': python2Lesson2,
@@ -83,7 +100,7 @@ export const lessonRegistry: Record<string, any> = {
     'python2-5': python2Lesson5,
     'python2-6': python2Lesson6,
     'python2-7': python2Lesson7,
-    'python2-test': python2Test,
+    'python2-test': asSteps(python2Test),
 
     'java-1': javaLesson1,
     'java-2': javaLesson2,

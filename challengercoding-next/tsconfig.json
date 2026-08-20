@@ -34,10 +34,14 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts",
-    "**/*.mts"
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "out",
+    // Build-time generator. It runs under Node's native type stripping, which
+    // requires explicit .ts extensions on imports — a form the app's bundler
+    // resolution rejects. Typechecked on its own terms, not with the app.
+    "scripts"
   ]
 }

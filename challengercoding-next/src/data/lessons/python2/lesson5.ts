@@ -3,7 +3,7 @@ export const python2Lesson5 = [
     {
         title: "Introduction to Objects and Classes",
         content: `
-            <h1 class="tutorial-title">Exercise 1: Introduction to Objects and Classes</h1>
+            <h2 class="tutorial-title">Exercise 1: Introduction to Objects and Classes</h2>
             <p class="tutorial-text">
                 Welcome to Python 2, Lesson 5! Today, we'll learn about objects and classes, fundamental concepts in object-oriented programming (OOP).
             </p>
@@ -45,7 +45,7 @@ print(my_dog.bark())
     {
         title: "Creating Methods",
         content: `
-            <h1 class="tutorial-title">Exercise 2: Creating Methods</h1>
+            <h2 class="tutorial-title">Exercise 2: Creating Methods</h2>
             <p class="tutorial-text">
                 Methods are functions that belong to a class. They can perform actions using the object's data.
             </p>
@@ -95,7 +95,7 @@ print(f"Perimeter: {rect.perimeter()}")
     {
         title: "Class and Instance Variables",
         content: `
-            <h1 class="tutorial-title">Exercise 3: Class and Instance Variables</h1>
+            <h2 class="tutorial-title">Exercise 3: Class and Instance Variables</h2>
             <p class="tutorial-text">
                 In Python, we can have two types of variables in a class: class variables and instance variables.
             </p>
@@ -155,7 +155,7 @@ print(dog2.describe())
     {
         title: "Inheritance",
         content: `
-            <h1 class="tutorial-title">Exercise 4: Inheritance</h1>
+            <h2 class="tutorial-title">Exercise 4: Inheritance</h2>
             <p class="tutorial-text">
                 Inheritance allows us to define a class that inherits all the methods and properties from another class.
             </p>
@@ -212,7 +212,7 @@ print(cat.speak())
     {
         title: "Weekly Project: Pet Shop Simulator",
         content: `
-            <h1 class="tutorial-title">Weekly Project: Pet Shop Simulator</h1>
+            <h2 class="tutorial-title">Weekly Project: Pet Shop Simulator</h2>
             <p class="tutorial-text">
                 Let's put everything we've learned about objects and classes into practice by creating a simple pet shop simulator.
             </p>

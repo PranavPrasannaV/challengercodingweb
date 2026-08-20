@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { SITE } from '@/src/site';
 
 export const metadata: Metadata = {
     title: 'Terms of Service | Challenger Coding',
@@ -7,7 +8,7 @@ export const metadata: Metadata = {
         'The terms for using challengercoding.org and enrolling in Challenger Coding classes.',
 };
 
-const EMAIL = 'contact@challengercoding.com';
+const EMAIL = SITE.email;
 const UPDATED = 'August 14, 2026';
 
 export default function Terms() {

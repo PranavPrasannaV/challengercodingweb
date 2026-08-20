@@ -1,4 +1,4 @@
-import { SubLesson, QuizQuestion } from './types';
+import type { SubLesson, QuizQuestion } from './types';
 
 export const pythonNotes: Record<string, SubLesson[]> = {
     '1': [
@@ -26,7 +26,7 @@ export const pythonNotes: Record<string, SubLesson[]> = {
         {
             id: 'lesson1',
             title: 'Python Week 2: Overview',
-            video: 'https://www.youtube.com/embed/hC1GL4ZQYcs',
+            video: null, // was hC1GL4ZQYcs — video is no longer available on YouTube
             description: `
                 <p>This lesson introduces key concepts regarding variables and their role in storing information.</p>
                 <h2>Key Topics Covered:</h2>
@@ -88,7 +88,7 @@ export const pythonNotes: Record<string, SubLesson[]> = {
         {
             id: 'lesson2',
             title: 'Data Types',
-            video: 'https://www.youtube.com/embed/sttIbn5M5sU',
+            video: null, // was sttIbn5M5sU — video is no longer available on YouTube
             description: `
                 <h2>Understanding Data Types in Detail</h2>
                 <p>In this video, we dive deeper into the different data types in Python and how to use them effectively.</p>

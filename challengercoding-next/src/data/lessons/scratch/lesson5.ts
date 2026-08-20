@@ -2,7 +2,7 @@ export const scratchLesson5 = [
     {
         title: "Lesson Overview",
         content: `
-            <h1 class="tutorial-title">Lesson 5: Conditionals in Scratch</h1>
+            <h2 class="tutorial-title">Lesson 5: Conditionals in Scratch</h2>
             <div class="content-box">
                 <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
                 <p class="tutorial-text">
@@ -59,7 +59,7 @@ export const scratchLesson5 = [
     {
         title: "Understanding Conditionals",
         content: `
-            <h1 class="tutorial-title">Understanding Conditionals</h1>
+            <h2 class="tutorial-title">Understanding Conditionals</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     In programming, a conditional is a statement that allows your code to make decisions. It's like 
@@ -87,7 +87,7 @@ export const scratchLesson5 = [
                     <canvas id="conditional-canvas" width="400" height="200"></canvas>
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="toggleLight()">Toggle Light</button>
+                    <button class="demo-button">Toggle Light</button>
                 </div>
             </div>
 
@@ -103,7 +103,7 @@ export const scratchLesson5 = [
     {
         title: "If Statements",
         content: `
-            <h1 class="tutorial-title">If Statements</h1>
+            <h2 class="tutorial-title">If Statements</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     An "If" statement is the most basic type of conditional. It allows you to execute a block of 
@@ -164,7 +164,7 @@ export const scratchLesson5 = [
     {
         title: "If-Else Statements",
         content: `
-            <h1 class="tutorial-title">If-Else Statements</h1>
+            <h2 class="tutorial-title">If-Else Statements</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     An "If-Else" statement allows you to execute one block of code if a condition is true, and a 
@@ -213,8 +213,8 @@ export const scratchLesson5 = [
                     <canvas id="color-change-canvas" width="400" height="200"></canvas>
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="moveColorSprite('left')">Move Left</button>
-                    <button class="demo-button" onclick="moveColorSprite('right')">Move Right</button>
+                    <button class="demo-button">Move Left</button>
+                    <button class="demo-button">Move Right</button>
                 </div>
             </div>
 
@@ -230,7 +230,7 @@ export const scratchLesson5 = [
     {
         title: "Guided Tutorial",
         content: `
-            <h1 class="tutorial-title">Guided Tutorial: Creating a Simple Game with Conditionals</h1>
+            <h2 class="tutorial-title">Guided Tutorial: Creating a Simple Game with Conditionals</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     In this tutorial, we'll create a simple game where a sprite tries to catch falling objects. 
@@ -320,9 +320,9 @@ set [score v] to (0)
                     <canvas id="game-canvas" width="480" height="360"></canvas>
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="startGame()">Start Game</button>
-                    <button class="demo-button" onclick="movePlayer('left')">Move Left</button>
-                    <button class="demo-button" onclick="movePlayer('right')">Move Right</button>
+                    <button class="demo-button">Start Game</button>
+                    <button class="demo-button">Move Left</button>
+                    <button class="demo-button">Move Right</button>
                 </div>
             </div>
 
@@ -342,7 +342,7 @@ set [score v] to (0)
     {
         title: "Mini-Project",
         content: `
-            <h1 class="tutorial-title">Mini-Project: Create a Maze Game with Conditionals</h1>
+            <h2 class="tutorial-title">Mini-Project: Create a Maze Game with Conditionals</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     Now it's your turn to create a project using what you've learned about conditionals. You'll be 
@@ -428,10 +428,10 @@ end
                     <canvas id="maze-canvas" width="400" height="400"></canvas>
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="moveMazeSprite('up')">Up</button>
-                    <button class="demo-button" onclick="moveMazeSprite('down')">Down</button>
-                    <button class="demo-button" onclick="moveMazeSprite('left')">Left</button>
-                    <button class="demo-button" onclick="moveMazeSprite('right')">Right</button>
+                    <button class="demo-button">Up</button>
+                    <button class="demo-button">Down</button>
+                    <button class="demo-button">Left</button>
+                    <button class="demo-button">Right</button>
                 </div>
             </div>
 

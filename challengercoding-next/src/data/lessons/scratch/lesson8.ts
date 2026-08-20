@@ -2,7 +2,7 @@ export const scratchLesson8 = [
     {
         title: "Lesson Overview",
         content: `
-            <h1 class="tutorial-title">Lesson 8: Events and Broadcasting in Scratch</h1>
+            <h2 class="tutorial-title">Lesson 8: Events and Broadcasting in Scratch</h2>
             <div class="content-box">
                 <h2 class="text-2xl font-semibold mb-4">What You'll Learn</h2>
                 <p class="tutorial-text">
@@ -61,7 +61,7 @@ export const scratchLesson8 = [
     {
         title: "Understanding Events",
         content: `
-            <h1 class="tutorial-title">Understanding Events</h1>
+            <h2 class="tutorial-title">Understanding Events</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     Events in Scratch are like triggers that start a sequence of actions. They allow your project 
@@ -114,10 +114,10 @@ say [Hello, World!] for (2) seconds
                     <canvas id="event-canvas" width="400" height="300"></canvas>
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="triggerEvent('flag')">Green Flag</button>
-                    <button class="demo-button" onclick="triggerEvent('sprite')">Click Sprite</button>
-                    <button class="demo-button" onclick="triggerEvent('key')">Press Space</button>
-                    <button class="demo-button" onclick="triggerEvent('backdrop')">Change Backdrop</button>
+                    <button class="demo-button">Green Flag</button>
+                    <button class="demo-button">Click Sprite</button>
+                    <button class="demo-button">Press Space</button>
+                    <button class="demo-button">Change Backdrop</button>
                 </div>
             </div>
 
@@ -132,7 +132,7 @@ say [Hello, World!] for (2) seconds
     {
         title: "Broadcasting",
         content: `
-            <h1 class="tutorial-title">Broadcasting</h1>
+            <h2 class="tutorial-title">Broadcasting</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     Broadcasting in Scratch is a way for sprites to communicate with each other. It's like sending 
@@ -186,9 +186,9 @@ say [Let's play!] for (2) seconds
                     <canvas id="broadcast-canvas" width="400" height="300"></canvas>
                 </div>
                 <div class="demo-controls">
-                    <button class="demo-button" onclick="broadcast('start')">Start Game</button>
-                    <button class="demo-button" onclick="broadcast('jump')">Jump</button>
-                    <button class="demo-button" onclick="broadcast('end')">End Game</button>
+                    <button class="demo-button">Start Game</button>
+                    <button class="demo-button">Jump</button>
+                    <button class="demo-button">End Game</button>
                 </div>
             </div>
 
@@ -203,7 +203,7 @@ say [Let's play!] for (2) seconds
     {
         title: "Guided Exercise",
         content: `
-            <h1 class="tutorial-title">Guided Exercise: Creating a Simple Interactive Story</h1>
+            <h2 class="tutorial-title">Guided Exercise: Creating a Simple Interactive Story</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     In this exercise, we'll create a simple interactive story using events and broadcasting. 
@@ -274,7 +274,7 @@ say [You've entered a new area!] for (2) seconds
     {
         title: "Mini-Project",
         content: `
-            <h1 class="tutorial-title">Mini-Project: Create an Interactive Quiz Game</h1>
+            <h2 class="tutorial-title">Mini-Project: Create an Interactive Quiz Game</h2>
             <div class="content-box">
                 <p class="tutorial-text">
                     Now it's your turn to create a project using what you've learned about events and broadcasting. 

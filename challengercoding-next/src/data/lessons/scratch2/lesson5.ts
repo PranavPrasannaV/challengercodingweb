@@ -2,7 +2,7 @@ export const scratch2Lesson5 = [
     {
         title: "Lesson Overview",
         content: `
-                    <h1 class="tutorial-title">Scratch 2 Class - Guided Exercise</h1>
+                    <h2 class="tutorial-title">Scratch 2 Class - Guided Exercise</h2>
                     <h2 class="text-2xl font-semibold mb-4">Lesson 5: Flappy Bird - Foundational Components</h2>
                     <div class="content-box">
                         <p class="tutorial-text">
@@ -40,7 +40,7 @@ export const scratch2Lesson5 = [
     {
         title: "Flapping - Gravity and Costume",
         content: `
-                    <h1 class="tutorial-title">Exercise 1: Flapping - Gravity and Costume Change</h1>
+                    <h2 class="tutorial-title">Exercise 1: Flapping - Gravity and Costume Change</h2>
                     <div class="content-box">
                         <p class="tutorial-text">
                             In this exercise, we'll create the core mechanic of our Flappy Bird game: the bird's movement. We'll implement gravity to make the bird fall, add a flap mechanism to make it rise, and change its costume to simulate wing movement.
@@ -124,7 +124,7 @@ switch costume to [wings-down v]
                         <h3 class="text-xl font-semibold mb-2">Flappy Bird Gravity and Flap Demo</h3>
                         <canvas id="flappyDemo" width="400" height="300"></canvas>
                         <div class="demo-controls">
-                            <button class="demo-button" onclick="flap()">Flap (Spacebar)</button>
+                            <button class="demo-button">Flap (Spacebar)</button>
                         </div>
                     </div>
         `
@@ -132,7 +132,7 @@ switch costume to [wings-down v]
     {
         title: "Scrolling Backdrop (Intro)",
         content: `
-                    <h1 class="tutorial-title">Exercise 2: Introduction to Scrolling Backdrops</h1>
+                    <h2 class="tutorial-title">Exercise 2: Introduction to Scrolling Backdrops</h2>
                     <div class="content-box">
                         <p class="tutorial-text">
                             In Flappy Bird, the background appears to scroll while the bird stays mostly in place. This creates an illusion of movement and makes the game more engaging. Let's explore how we can achieve this effect in Scratch!
@@ -147,15 +147,6 @@ switch costume to [wings-down v]
                             <p><strong>Key Concept:</strong> In Scratch, we can use clones to create multiple copies of a background element. By moving these clones across the screen and creating new ones as needed, we can create a scrolling effect.</p>
                         </div>
 
-                        <h3 class="text-xl font-semibold mb-2">Visualizing the Concept</h3>
-                        <p class="tutorial-text">
-                            Watch this short video to understand how scrolling backgrounds work in games:
-                        </p>
-
-                        <div class="video-container">
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
-                        </div>
-
                         <p class="tutorial-text">
                             In the next exercise, we'll implement this scrolling backdrop technique in Scratch!
                         </p>
@@ -165,7 +156,7 @@ switch costume to [wings-down v]
     {
         title: "Implementing a Scrolling Backdrop",
         content: `
-                <h1 class="tutorial-title">Exercise 3: Implementing a Scrolling Backdrop with Clones</h1>
+                <h2 class="tutorial-title">Exercise 3: Implementing a Scrolling Backdrop with Clones</h2>
                     <div class="content-box">
                         <p class="tutorial-text">
                             Now that we understand the concept of scrolling backgrounds, let's implement one in Scratch using clones. This technique will create the illusion of continuous movement in our Flappy Bird game.
@@ -237,8 +228,8 @@ end
                         <h3 class="text-xl font-semibold mb-2">Scrolling Backdrop Demo</h3>
                         <canvas id="scrollingDemo" width="400" height="300"></canvas>
                         <div class="demo-controls">
-                            <button class="demo-button" onclick="startScrolling()">Start Scrolling</button>
-                            <button class="demo-button" onclick="stopScrolling()">Stop Scrolling</button>
+                            <button class="demo-button">Start Scrolling</button>
+                            <button class="demo-button">Stop Scrolling</button>
                         </div>
                     </div>
         `
@@ -246,7 +237,7 @@ end
     {
         title: "Scoring Mechanism",
         content: `
-                    <h1 class="tutorial-title">Exercise 4: Implementing a Scoring Mechanism</h1>
+                    <h2 class="tutorial-title">Exercise 4: Implementing a Scoring Mechanism</h2>
                     <div class="content-box">
                         <p class="tutorial-text">
                             A key element of any game is the scoring system. In Flappy Bird, the player earns points by successfully navigating through obstacles. Let's implement a basic scoring mechanism for our game.
@@ -306,7 +297,7 @@ end
                         <h3 class="text-xl font-semibold mb-2">Scoring Demo</h3>
                         <canvas id="scoringDemo" width="400" height="300"></canvas>
                         <div class="demo-controls">
-                            <button class="demo-button" onclick="incrementScore()">Increase Score</button>
+                            <button class="demo-button">Increase Score</button>
                         </div>
                     </div>
         `
@@ -314,7 +305,7 @@ end
     {
         title: "Homework",
         content: `
-                    <h1 class="tutorial-title">Homework: Create Your Flappy Bird Game!</h1>
+                    <h2 class="tutorial-title">Homework: Create Your Flappy Bird Game!</h2>
                     <div class="content-box">
                         <p class="tutorial-text">
                             Great job on completing the lesson! Now it's time to put everything together and create your own version of Flappy Bird. Here's your homework assignment:

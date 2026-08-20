@@ -2,7 +2,7 @@ export const javaTest = [
     {
         title: "Multiple Choice Questions",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Java 1 Final Test - Multiple Choice</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Java 1 Final Test - Multiple Choice</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">Answer the following multiple choice questions to test your knowledge of Java 1 concepts including data types, conditionals, loops, methods, and arrays.</p>
             </div>
@@ -213,7 +213,7 @@ export const javaTest = [
     {
         title: "Free Response Questions",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Java 1 Final Test - Free Response</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Java 1 Final Test - Free Response</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">Complete the following programming problems to demonstrate your understanding of Java 1 concepts.</p>
             </div>

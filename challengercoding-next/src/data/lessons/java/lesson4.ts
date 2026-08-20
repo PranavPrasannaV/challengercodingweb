@@ -2,7 +2,7 @@ export const javaLesson4 = [
     {
         title: "Lesson Overview",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Java Guided Tutorials - Loops</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">Java Guided Tutorials - Loops</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h2 class="text-2xl font-semibold mb-4 text-gray-800">What You'll Learn</h2>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -28,7 +28,7 @@ export const javaLesson4 = [
     {
         title: "Introduction to For Loops",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">1. Introduction to For Loops in Java</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">1. Introduction to For Loops in Java</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h3 class="text-xl font-semibold mb-2 text-gray-800">For Loops</h3>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -65,7 +65,7 @@ export const javaLesson4 = [
     {
         title: "While Loops",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">2. Working with While Loops in Java</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">2. Working with While Loops in Java</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h3 class="text-xl font-semibold mb-2 text-gray-800">While Loops</h3>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -104,7 +104,7 @@ while (count > 0) {
     {
         title: "Do-While Loops",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">3. Understanding Do-While Loops in Java</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">3. Understanding Do-While Loops in Java</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h3 class="text-xl font-semibold mb-2 text-gray-800">Do-While Loops</h3>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
@@ -153,7 +153,7 @@ public class PositiveNumberChecker {
     {
         title: "Weekly Project",
         content: `
-            <h1 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">4. Weekly Project: Number Guessing Game</h1>
+            <h2 class="text-3xl font-bold mb-6 text-blue-600 border-b-2 border-blue-600 pb-2">4. Weekly Project: Number Guessing Game</h2>
             <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
                 <h3 class="text-xl font-semibold mb-2 text-gray-800">Project Description</h3>
                 <p class="text-lg leading-relaxed text-gray-700 mb-4">
