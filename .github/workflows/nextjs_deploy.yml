@@ -23,7 +23,11 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          # Read from .nvmrc so CI and local development cannot drift apart.
+          # The postbuild llms.txt generator imports the .ts data modules
+          # directly and relies on Node's native type stripping, which is
+          # unflagged from 22.18 onward and absent in 20.
+          node-version-file: challengercoding-next/.nvmrc
           cache: 'npm'
           cache-dependency-path: challengercoding-next/package-lock.json
       - name: Install dependencies
