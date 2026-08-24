@@ -14,6 +14,7 @@ import {
 import type { Course, LessonSummary } from '@/src/data/courses';
 import { lessonOrdinal, lessonConcept } from '@/src/data/courses';
 import { markDone } from '@/src/lib/progress';
+import EnrollNote from '@/app/components/EnrollNote';
 
 interface QuizOption { label: string; value: string }
 interface QuizQuestion {
@@ -218,6 +219,14 @@ export default function LessonViewerClient({
                             )}
                         </div>
                     )}
+
+                    {/* The last thing on the page, under the pagination and
+                        under the prev/next cards — after the work, never
+                        across it. Rendered unconditionally rather than only
+                        on the final step so that it is in the static HTML a
+                        crawler and a reader-mode extractor see, the same
+                        reason every step is server-rendered above. */}
+                    <EnrollNote />
                 </div>
             </div>
         </main>

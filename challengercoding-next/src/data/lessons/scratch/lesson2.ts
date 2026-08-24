@@ -37,7 +37,7 @@ export const scratchLesson2 = [
                     <p>This block makes your sprite smoothly move to a specific spot.</p>
                 </div>
                 <div class="step-box">
-                    <img src="/glide.png" alt="Glide _ secs to random position" class="image-block">
+                    <img src="/assets/scratch-glide-random-position.svg" alt="The blue Motion block reading &quot;glide 1 secs to random position&quot;, with random position in a dropdown." class="image-block" width="748" height="176">
                     <p>This block makes your sprite glide to a surprise location!</p>
                 </div>
             </div>
@@ -122,7 +122,7 @@ export const scratchLesson2 = [
                 <div class="highlight-box">
                     <h3>New Blocks:</h3>
                     <img src="/glide.png" alt="Glide _ secs to X: _ Y: _" class="image-block">
-                    <img src="/glide.png" alt="Glide _ secs to random position" class="image-block">
+                    <img src="/assets/scratch-glide-random-position.svg" alt="The blue Motion block reading &quot;glide 1 secs to random position&quot;, with random position in a dropdown." class="image-block" width="748" height="176">
                 </div>
                 
                 <div class="step-box">

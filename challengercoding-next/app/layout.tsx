@@ -83,14 +83,13 @@ const organizationJsonLd = {
   founder: SITE.founders.map((name) => ({ "@type": "Person", name })),
   address: {
     "@type": "PostalAddress",
-    addressLocality: "Sammamish",
-    addressRegion: "WA",
+    addressLocality: SITE.locality,
+    addressRegion: SITE.region,
     addressCountry: "US",
   },
   areaServed: "Worldwide",
   isAccessibleForFree: true,
   knowsAbout: ["Scratch", "Python", "Java", "Introductory computer science"],
-  sameAs: [SITE.linkedin],
 };
 
 export default function RootLayout({

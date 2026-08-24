@@ -77,19 +77,19 @@ export const scratchLesson8 = [
                     <li>When [key] key pressed: Executes the code when a specific key is pressed.</li>
                     <li>When backdrop switches to [backdrop]: Triggers when the backdrop changes.</li>
                 </ul>
-                <div class="grid grid-cols-3 gap-2 mb-4">
-                    <div>
-                        <img src="/clicksprite.png" alt="When sprite clicked block in Scratch" class="image-block">
+                <div class="max-w-md border-y border-rule divide-y divide-rule mb-4">
+                    <section class="py-4">
+                        <img src="/clicksprite.png" alt="When sprite clicked block in Scratch">
                         <p class="image-caption">When Sprite Clicked</p>
-                    </div>
-                    <div>
-                        <img src="/keypress.png" alt="When key pressed block in Scratch" class="image-block">
+                    </section>
+                    <section class="py-4">
+                        <img src="/keypress.png" alt="When key pressed block in Scratch">
                         <p class="image-caption">When Key Pressed</p>
-                    </div>
-                    <div>
-                        <img src="/backdropchange.png" alt="When backdrop switches block in Scratch" class="image-block">
+                    </section>
+                    <section class="py-4">
+                        <img src="/backdropchange.png" alt="When backdrop switches block in Scratch">
                         <p class="image-caption">When Backdrop Switches</p>
-                    </div>
+                    </section>
                 </div>
             </div>
 
@@ -147,15 +147,19 @@ say [Hello, World!] for (2) seconds
                     <li>Broadcast [message] and wait: Sends a message and waits for all receivers to finish their scripts.</li>
                     <li>When I receive [message]: Starts a script when a specific message is received.</li>
                 </ul>
-                <div class="grid grid-cols-2 gap-2 mb-4">
-                    <div>
-                        <img src="/broadcast.png" alt="Broadcast block in Scratch" class="image-block">
+                <div class="max-w-md border-y border-rule divide-y divide-rule mb-4">
+                    <section class="py-4">
+                        <img src="/assets/scratch-broadcast.png" alt="The yellow Events block reading &quot;broadcast message1&quot;.">
                         <p class="image-caption">Broadcast</p>
-                    </div>
-                    <div>
-                        <img src="/receive.png" alt="When I receive block in Scratch" class="image-block">
+                    </section>
+                    <section class="py-4">
+                        <img src="/receive.png" alt="When I receive block in Scratch">
                         <p class="image-caption">When I Receive</p>
-                    </div>
+                    </section>
+                    <section class="py-4">
+                        <img src="/assets/scratch-broadcast-and-wait.png" alt="The yellow Events block reading &quot;broadcast message1 and wait&quot;.">
+                        <p class="image-caption">Broadcast and Wait</p>
+                    </section>
                 </div>
             </div>
 

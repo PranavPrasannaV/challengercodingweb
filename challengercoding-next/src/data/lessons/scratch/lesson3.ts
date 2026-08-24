@@ -118,6 +118,8 @@ export const scratchLesson3 = [
                 <p class="tutorial-text">
                     The main block we'll use for changing costumes is the "switch costume to [ ]" block. It looks like this:
                 </p>
+                <img src="/assets/scratch-switch-costume-block.svg" alt="The purple Looks block reading &quot;switch costume to costume1&quot;, where costume1 sits in a dropdown menu." class="image-block">
+                <p class="image-caption">The "switch costume to" block in Scratch</p>
             </div>
 
             <div class="content-box">
@@ -171,6 +173,8 @@ export const scratchLesson3 = [
                 <p class="tutorial-text">
                     To control the timing of our animations, we'll use the "wait" block. It looks like this:
                 </p>
+                <img src="/assets/scratch-wait-block.svg" alt="The orange Control block reading &quot;wait 1 seconds&quot;, with the number 1 in a white input slot." class="image-block">
+                <p class="image-caption">The "wait" block in Scratch</p>
                 <p class="tutorial-text">
                     This block pauses the script for a specified number of seconds before moving to the next block.
                 </p>
@@ -270,6 +274,8 @@ export const scratchLesson3 = [
                     Instead of manually switching to each costume, you can use the "next costume" block to automatically 
                     cycle through all available costumes. This is especially useful when you have many costumes!
                 </p>
+                <img src="/assets/scratch-next-costume-block.svg" alt="The purple Looks block reading &quot;next costume&quot;." class="image-block">
+                <p class="image-caption">The "next costume" block in Scratch</p>
             </div>
 
             <div class="content-box">

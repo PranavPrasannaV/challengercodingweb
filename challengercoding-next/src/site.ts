@@ -4,6 +4,12 @@
  * Anything here shows up in metadata, structured data, llms.txt and the
  * footer, so it must stay factual. Do not add a claim you cannot point to.
  */
+const locality = "Sammamish";
+/** Two-letter postal code. schema.org addressRegion expects this form. */
+const region = "WA";
+/** Spelled-out region. Every page that names the location in prose uses this. */
+const regionName = "Washington";
+
 export const SITE = {
   name: "Challenger Coding",
   url: "https://challengercoding.org",
@@ -12,10 +18,16 @@ export const SITE = {
     "Challenger Coding is a student-run nonprofit that teaches free Scratch, Python, and Java classes. Its 46 lessons are open to anyone, with no account and no cost.",
   shortDescription: "Free coding classes, taught by students, open to everyone.",
   email: "aadi.saraf@outlook.com",
-  linkedin: "https://www.linkedin.com/in/jaden-tang-0924b6279/",
   enrollUrl: "https://forms.office.com/r/BnXvEhKGVs",
-  locality: "Sammamish",
-  region: "WA",
+  locality,
+  region,
+  regionName,
+  /**
+   * Display form of the location, spelled out to match the prose on every
+   * other page. Derived so locality/regionName stay the one source. The
+   * abbreviated `region` stays available for schema.org addressRegion.
+   */
+  location: `${locality}, ${regionName}`,
   founded: "2023",
   founders: ["Jaden Tang", "Aadi Saraf"],
   president: "Aadi Saraf",

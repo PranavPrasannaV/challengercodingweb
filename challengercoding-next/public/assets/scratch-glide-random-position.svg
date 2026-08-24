@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 374 88" width="748" height="176" role="img" aria-label="A blue Motion block reading “glide 1 secs to random position”, where 1 sits in a white number slot and “random position” sits in a darker blue dropdown menu.">
+  <title>The Scratch “glide 1 secs to random position” block</title>
+  <rect width="374" height="88" fill="#FAF8F4"/>
+  <g font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="700">
+    <path d="M 16,20 a 4,4 0 0 1 4,-4 h 12 c 2,0 3,1 4,2 l 4,4 c 1,1 2,2 4,2 h 12 c 2,0 3,-1 4,-2 l 4,-4 c 1,-1 2,-2 4,-2 H 354.02400000000006 a 4,4 0 0 1 4,4 V 60 a 4,4 0 0 1 -4,4 H 68 c -2,0 -3,1 -4,2 l -4,4 c -1,1 -2,2 -4,2 h -12 c -2,0 -3,-1 -4,-2 l -4,-4 c -1,-1 -2,-2 -4,-2 H 20 a 4,4 0 0 1 -4,-4 Z" fill="#4C97FF" stroke="#3373CC" stroke-width="1"/>
+    <text x="32.0" y="45.7" fill="#FFFFFF">glide</text>
+    <rect x="75.6" y="28.0" width="32.0" height="24" rx="12.0" fill="#FFFFFF"/>
+    <text x="91.6" y="45.7" fill="#575E75" text-anchor="middle">1</text>
+    <text x="115.6" y="45.7" fill="#FFFFFF">secs to</text>
+    <rect x="177.8" y="28.0" width="164.2" height="24" rx="12.0" fill="#4280D7" stroke="#3373CC" stroke-width="1"/>
+    <text x="189.8" y="45.7" fill="#FFFFFF">random position</text>
+    <path d="M 319.0,37.0 l 11,0 l -5.5,6.5 z" fill="#FFFFFF"/>
+  </g>
+</svg>

@@ -14,7 +14,7 @@ export default function Footer() {
             </div>
             <p className="text-small text-paper/70 measure-tight">
               Free Scratch, Python and Java classes for K&#8211;12 students, taught by
-              high schoolers in Sammamish, Washington. Started {SITE.founded}.
+              high schoolers. Started {SITE.founded}.
             </p>
           </div>
 
@@ -55,16 +55,9 @@ export default function Footer() {
                   Playground
                 </Link>
               </li>
-              <li>
-                <a
-                  href={SITE.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-paper transition-colors"
-                >
-                  LinkedIn
-                </a>
-              </li>
+              {/* Not a link. Labelled as a field and set dimmer than the three
+                  links above so it does not read as a dead link. */}
+              <li className="text-paper/55">Location: {SITE.location}</li>
             </ul>
           </div>
         </div>

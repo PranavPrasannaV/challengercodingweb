@@ -13,6 +13,7 @@ import {
 } from '@/src/data/courses';
 import { SITE } from '@/src/site';
 import { ResumeButton, SyllabusList } from './CourseProgress';
+import EnrollNote from '@/app/components/EnrollNote';
 
 type Params = { courseId: string };
 
@@ -113,6 +114,11 @@ export default async function CourseHub({ params }: { params: Promise<Params> })
             </header>
 
             <SyllabusList course={course} />
+
+            {/* One line, after the syllabus — the moment a parent has seen what
+                is taught and wants to know how to join. The hairline above it is
+                the syllabus list closing itself; the note draws none of its own. */}
+            <EnrollNote variant="quiet" />
 
             {siblings.length > 0 && (
                 <section className="mt-14">

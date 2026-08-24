@@ -151,6 +151,8 @@ export const scratchLesson6 = [
                     <li>Multiplication (*)</li>
                     <li>Division (/)</li>
                 </ul>
+                <img src="/assets/scratch-arithmetic-operators.svg" alt="The four green Operators blocks for addition, subtraction, multiplication and division, each an oval with two empty white input slots." class="image-block">
+                <p class="image-caption">The four arithmetic operator blocks in Scratch</p>
             </div>
 
             <div class="content-box">

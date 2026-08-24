@@ -73,6 +73,8 @@ export const scratchLesson1 = [
 
           <div class="content-box bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
               <h3 class="text-xl font-semibold mb-2 text-gray-800">Adding a New Sprite</h3>
+              <img src="/assets/scratch-add-sprite.svg" alt="The Scratch sprite pane at the bottom right of the editor, showing the selected Sprite1 tile and the round purple Choose a Sprite button used to add a new sprite." class="image-block rounded-lg shadow-md my-6 max-w-full">
+              <p class="image-caption text-center italic text-gray-500 mt-2">Figure 1: Adding a new sprite in Scratch</p>
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">Here's how you can add a new sprite:</p>
               <div class="step-box bg-gray-50 p-4 rounded-lg border border-gray-200 mb-2 flex items-start">
                   <span class="step-number bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 flex-shrink-0">1</span>
@@ -92,8 +94,6 @@ export const scratchLesson1 = [
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
                   Now that you've added a new sprite, take a moment to explore. Can you find where your new sprite appears in the Scratch interface? How many sprites can you add to your project?
               </p>
-              
-              <p class="image-caption text-center italic text-gray-500 mt-2">Figure 1: Adding a new sprite in Scratch</p>
           </div>
 
           <div class="content-box bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
@@ -189,15 +189,15 @@ export const scratchLesson1 = [
           </div>
           <div class="content-box bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
-                  Try changing the number of degrees. What happens if you use a negative number? Can you make your sprite draw a square? A triangle?
+                  Try changing the number of degrees. What happens if you use a negative number? Can you make your sprite move in a square path? A triangle?
               </p>
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
-                  Now, let's combine our movement and rotation to create a more complex pattern. Can you make your sprite draw a spiral? Here's a hint: you might need to use more than one "move" and "turn" block.
+                  Now, let's combine our movement and rotation to create a more complex pattern. Can you make your sprite move in a spiral path? Here's a hint: you might need to use more than one "move" and "turn" block.
               </p>
-              
-              <p class="image-caption text-center italic text-gray-500 mt-2">Figure 5: Spiral pattern in Scratch</p>
+              <img src="/assets/scratch-spiral-pattern.svg" alt="The spiral path a sprite moves along when move and turn blocks repeat, each straight segment slightly longer than the one before it. The path is shown as a dashed guide line only; the sprite leaves no mark on the stage." class="image-block rounded-lg shadow-md my-6 max-w-full">
+              <p class="image-caption text-center italic text-gray-500 mt-2">Figure 5: The spiral path a sprite moves along</p>
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
-                  Remember, in Scratch, you can always experiment and try new things. What other interesting patterns can you create by combining movement and rotation?
+                  The sprite travels along this path but does not leave a line behind it, so the stage itself stays blank while it moves. Remember, in Scratch, you can always experiment and try new things. What other patterns can you create by combining movement and rotation?
               </p>
           </div>
       `
@@ -246,9 +246,10 @@ export const scratchLesson1 = [
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
                   Here's a hint: look for a block in the Motion category that mentions "edge". Can you add this block to your script to keep your sprite on the screen?
               </p>
+              <img src="/assets/scratch-if-on-edge-bounce-block.svg" alt="The blue Motion block reading &quot;if on edge, bounce&quot;." class="image-block rounded-lg shadow-md my-6 max-w-full">
               <p class="image-caption text-center italic text-gray-500 mt-2">Figure 7: If on edge, bounce block in Scratch</p>
               <p class="tutorial-text text-lg leading-relaxed text-gray-700 mb-4">
-                  Experiment with different combinations of blocks inside your forever loop. Can you make your sprite draw a continuous pattern? Or move in a figure-eight? Remember, in Scratch, there are many ways to achieve  the same result - don't be afraid to try new things!
+                  Experiment with different combinations of blocks inside your forever loop. Can you make your sprite follow a continuous pattern? Or move in a figure-eight? Remember, in Scratch, there are many ways to achieve  the same result - don't be afraid to try new things!
               </p>
           </div>
       `

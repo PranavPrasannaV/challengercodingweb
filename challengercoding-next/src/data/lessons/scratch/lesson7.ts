@@ -82,8 +82,13 @@ export const scratchLesson7 = [
                     <li>Give your variable a name (e.g., "score")</li>
                     <li>Choose whether the variable is for all sprites or just for one sprite</li>
                 </ol>
-                <img src="/var.png" alt="Variable reporter block in Scratch" class="image-block">
-                <p class="image-caption">Variable reporter block in Scratch</p>
+                <p class="tutorial-text">
+                    Once you make a variable, Scratch adds an oval block with its name to the palette.
+                    This is the reporter block: it reports the value the variable is holding right now,
+                    and you can drop it into any other block that needs that value.
+                </p>
+                <img src="/assets/scratch-variable-reporter.png" alt="An orange oval Scratch block labelled &quot;variable&quot;, the reporter block that stands for a variable's value." class="image-block" width="216" height="117">
+                <p class="image-caption">The reporter block for a variable</p>
             </div>
 
             <div class="content-box">
@@ -157,6 +162,8 @@ export const scratchLesson7 = [
                     <li>Say [Message] for [2] seconds: Displays a message for a specified duration</li>
                     <li>Move [10] steps: Moves the sprite a specified number of steps</li>
                 </ul>
+                <img src="/assets/scratch-parameter-blocks.svg" alt="Four Scratch blocks with their input slots labelled: pick random 1 to 10, ask What's your name? and wait, say Hello! for 2 seconds, and move 10 steps." class="image-block">
+                <p class="image-caption">Blocks that take parameters, with each input slot labelled</p>
             </div>
 
             <div class="content-box">

@@ -54,6 +54,8 @@ export const scratch2Lesson2 = [
                         <p class="tutorial-text">
                             The <strong>ask [ ] and wait</strong> block in Scratch is crucial for getting user input. It's like asking a question and waiting for an answer.
                         </p>
+                        <img src="/assets/scratch-ask-and-wait-block.svg" alt="The light blue Sensing block reading &quot;ask What's your name? and wait&quot;, with the oval answer block beneath it that stores whatever the user types in." class="image-block">
+                        <p class="image-caption">The "ask and wait" block, and the "answer" block that holds the reply</p>
                         <div class="step-box">
                             <p><span class="step-number">1</span> Drag the <strong>ask [ ] and wait</strong> block from the "Sensing" category.</p>
                             <p><span class="step-number">2</span> Type your question in the block, e.g., "What operation do you want to perform?"</p>

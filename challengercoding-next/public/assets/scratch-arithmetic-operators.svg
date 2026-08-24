@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 539 84" width="1079" height="168" role="img" aria-label="Four green Operators blocks side by side, each an oval with two empty white slots: plus for addition, minus for subtraction, asterisk for multiplication and slash for division.">
+  <title>The four Scratch arithmetic operator blocks</title>
+  <rect width="539" height="84" fill="#FAF8F4"/>
+  <g font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="700">
+    <rect x="16" y="16" width="113.3" height="32" rx="16.0" fill="#59C059" stroke="#389438" stroke-width="1"/>
+    <rect x="28.0" y="20.0" width="32.0" height="24" rx="12.0" fill="#FFFFFF"/>
+    <text x="68.0" y="37.7" fill="#FFFFFF">+</text>
+    <rect x="85.3" y="20.0" width="32.0" height="24" rx="12.0" fill="#FFFFFF"/>
+    <text x="72.7" y="72.0" font-size="13" font-weight="400" fill="#6B645B" text-anchor="middle">Addition (+)</text>
+    <rect x="151.344" y="16" width="109.3" height="32" rx="16.0" fill="#59C059" stroke="#389438" stroke-width="1"/>
+    <rect x="163.3" y="20.0" width="32.0" height="24" rx="12.0" fill="#FFFFFF"/>
+    <text x="203.3" y="37.7" fill="#FFFFFF">-</text>
+    <rect x="216.7" y="20.0" width="32.0" height="24" rx="12.0" fill="#FFFFFF"/>
+    <text x="206.0" y="72.0" font-size="13" font-weight="400" fill="#6B645B" text-anchor="middle">Subtraction (-)</text>
+    <rect x="282.672" y="16" width="110.2" height="32" rx="16.0" fill="#59C059" stroke="#389438" stroke-width="1"/>
+    <rect x="294.7" y="20.0" width="32.0" height="24" rx="12.0" fill="#FFFFFF"/>
+    <text x="334.7" y="37.7" fill="#FFFFFF">*</text>
+    <rect x="348.9" y="20.0" width="32.0" height="24" rx="12.0" fill="#FFFFFF"/>
+    <text x="337.8" y="72.0" font-size="13" font-weight="400" fill="#6B645B" text-anchor="middle">Multiplication (*)</text>
+    <rect x="414.896" y="16" width="108.4" height="32" rx="16.0" fill="#59C059" stroke="#389438" stroke-width="1"/>
+    <rect x="426.9" y="20.0" width="32.0" height="24" rx="12.0" fill="#FFFFFF"/>
+    <text x="466.9" y="37.7" fill="#FFFFFF">/</text>
+    <rect x="479.3" y="20.0" width="32.0" height="24" rx="12.0" fill="#FFFFFF"/>
+    <text x="469.1" y="72.0" font-size="13" font-weight="400" fill="#6B645B" text-anchor="middle">Division (/)</text>
+  </g>
+</svg>

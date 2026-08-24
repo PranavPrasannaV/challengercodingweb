@@ -430,6 +430,13 @@
 .lesson-prose :where(p, ul, ol, pre, table, blockquote, figure, div, h1, h2, h3, h4)
   + :where(p, ul, ol, pre, table, blockquote, figure, div) { margin-top: 1.1em; }
 
+/* ...but a grid or flex container already spaces its own children with gap.
+   Left alone, the rule above lands on every child after the first, offsetting
+   it inside its own cell, so the cards in a two-column "Key Concepts" block
+   sit ~21px lower than their row-mates. Same specificity (0,1,0), later in
+   source, so it wins without escalating. */
+.lesson-prose :where([class*="grid"], [class*="flex"]) > * { margin-top: 0; }
+
 /* Neutralize the off-brand utility colors the lesson HTML carries.
    These are scoped to .lesson-prose so they never leak into the app shell. */
 /* .text-gray-700/600 (282 uses) and .tutorial-text (698 uses) both outrank
@@ -664,10 +671,18 @@
 }
 
 .lesson-prose .image-block { margin-block: 1.5rem; }
+/* Captions are <p>, so they inherit the 56ch measure the paragraph rule sets.
+   Centred, that put the caption's midpoint at ~195px while its figure — a
+   block image with no auto margin — was centred on its own, much wider box:
+   126px apart at the widest. Left-aligning binds the caption to the one edge
+   the image actually has, so they agree at any figure width. Releasing the
+   caption from 56ch instead would only line up when a figure happens to fill
+   the column, and would throw short captions under narrow figures the other
+   way. Beats the .text-center some captions carry: this block is unlayered. */
 .lesson-prose .image-caption {
   font-size: 0.875rem;
   color: var(--color-ink-meta);
-  text-align: center;
+  text-align: left;
   font-style: normal;
   margin-top: 0.6rem;
 }
