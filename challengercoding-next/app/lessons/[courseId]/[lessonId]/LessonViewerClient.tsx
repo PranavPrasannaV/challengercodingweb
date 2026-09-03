@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import {
     ArrowLeft,
@@ -15,6 +15,8 @@ import type { Course, LessonSummary } from '@/src/data/courses';
 import { lessonOrdinal, lessonConcept } from '@/src/data/courses';
 import { markDone } from '@/src/lib/progress';
 import EnrollNote from '@/app/components/EnrollNote';
+import CodeRunner from '@/app/components/CodeRunner';
+import type { RunResult } from '@/src/lib/executionApi';
 
 interface QuizOption { label: string; value: string }
 interface QuizQuestion {
@@ -34,8 +36,8 @@ export interface Exercise {
     quiz?: QuizQuestion[];
 }
 
-/** OneCompiler slug for the language a course is taught in. */
-const embedFor = (courseId: string) =>
+/** Execution-engine language for the track a course is taught in. */
+const languageFor = (courseId: string) =>
     courseId.startsWith('java') ? 'java' : 'python';
 
 export default function LessonViewerClient({
@@ -156,10 +158,9 @@ export default function LessonViewerClient({
                         <ExercisePanel
                             key={i}
                             exercise={exercise}
-                            step={i + 1}
                             total={exercises.length}
                             active={i === current}
-                            embed={embedFor(course.id)}
+                            language={languageFor(course.id)}
                         />
                     ))}
 
@@ -239,48 +240,20 @@ export default function LessonViewerClient({
 
 function ExercisePanel({
     exercise,
-    step,
     total,
     active,
-    embed,
+    language,
 }: {
     exercise: Exercise;
-    step: number;
     total: number;
     active: boolean;
-    embed: string;
+    language: string;
 }) {
-    const [output, setOutput] = useState('');
     const [checked, setChecked] = useState<null | { ok: boolean; detail: string }>(null);
     const [answers, setAnswers] = useState<Record<number, string>>({});
     const [graded, setGraded] = useState(false);
     const [missing, setMissing] = useState<number[]>([]);
     const [copied, setCopied] = useState(false);
-    const frame = useRef<HTMLIFrameElement>(null);
-
-    const starter = exercise.initialCode;
-    // OneCompiler's Java runner requires the filename to match the public class.
-    // A few Java snippets are bare statements with no class; populating those
-    // would replace a runnable skeleton with code that cannot compile.
-    const javaClass = starter?.match(/public\s+class\s+(\w+)/)?.[1];
-    const canPopulate = Boolean(starter) && (embed !== 'java' || Boolean(javaClass));
-    const fileName = embed === 'java' ? `${javaClass}.java` : 'main.py';
-
-    const populate = () => {
-        if (!canPopulate) return;
-        frame.current?.contentWindow?.postMessage(
-            {
-                eventType: 'populateCode',
-                language: embed,
-                files: [{ name: fileName, content: starter }],
-            },
-            'https://onecompiler.com',
-        );
-    };
-    // Once a step's editor has been shown, keep it mounted. Unmounting it on
-    // navigation threw away whatever the student had typed.
-    const [everActive, setEverActive] = useState(active);
-    if (active && !everActive) setEverActive(true);
 
     const quiz = exercise.quiz ?? [];
     const score = quiz.filter((q, i) => answers[i] === q.correctAnswer).length;
@@ -289,7 +262,7 @@ function ExercisePanel({
        trailing whitespace, and reported all of them with the same sentence.
        Internal whitespace is preserved on purpose — some expected outputs are
        aligned grids where the runs are load-bearing. */
-    const compare = () => {
+    const compare = (output: string) => {
         const norm = (t: string) =>
             t.split(/\r\n|\r|\n/).map((l) => l.trimEnd()).filter((l, i, a) => l !== '' || i < a.length - 1);
         const mine = norm(output);
@@ -321,6 +294,13 @@ function ExercisePanel({
             ok: false,
             detail: `Line ${i + 1}: you printed "${mine[i]}", expected "${want[i]}".`,
         });
+    };
+
+    const handleRun = (result: RunResult) => {
+        setChecked(null);
+        if (exercise.expectedOutput?.trim() && result.status === 'done') {
+            compare(result.stdout ?? '');
+        }
     };
 
     const copy = (text: string) => {
@@ -364,7 +344,7 @@ function ExercisePanel({
 
             {exercise.showCompiler && (
                 <section className="mt-10">
-                    <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                    <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 mb-3">
                         <h2 className="label">Write your code here</h2>
                         {exercise.expectedOutput?.trim() && (
                             <p className="text-small text-ink-muted">
@@ -374,91 +354,24 @@ function ExercisePanel({
                                 </code>
                             </p>
                         )}
-                        {canPopulate && (
-                            <button
-                                onClick={populate}
-                                className="link-quiet text-small font-semibold"
-                            >
-                                Reset to starter code
-                            </button>
-                        )}
                     </div>
-                    <div className="mt-3 border border-rule rounded-md overflow-hidden">
-                        {/* Only the visible step mounts an editor. */}
-                        {everActive ? (
-                            <iframe
-                                ref={frame}
-                                src={`https://onecompiler.com/embed/${embed}?hideNew=true${
-                                    canPopulate ? '&listenToEvents=true' : ''
-                                }`}
-                                title="Code editor"
-                                loading="lazy"
-                                // The embed documents no ready handshake, so the
-                                // send is repeated across the boot window. The
-                                // 1.2s cap is short enough that it cannot
-                                // overwrite anything the student has typed.
-                                onLoad={() => {
-                                    populate();
-                                    setTimeout(populate, 400);
-                                    setTimeout(populate, 1200);
-                                }}
-                                className="w-full h-[clamp(380px,60vh,560px)] block"
-                            />
-                        ) : (
-                            <div className="h-[clamp(380px,60vh,560px)]" />
-                        )}
-                    </div>
-                </section>
-            )}
+                    <CodeRunner language={language} initialCode={exercise.initialCode} onFinished={handleRun} />
 
-            {exercise.showAutograder && exercise.expectedOutput?.trim() && (
-                <section className="mt-8">
-                    <h2 className="text-h3 font-sans font-bold text-ink">Did it work?</h2>
-
-                    <p className="text-small text-ink-muted mt-4">
-                        Your program should print this:
-                    </p>
-                    <pre className="bg-code-bg text-code-fg font-mono text-small px-4 py-3 rounded-md mt-2 overflow-x-auto">
-                        <code>{exercise.expectedOutput}</code>
-                    </pre>
-
-                    <label
-                        htmlFor={`output-${step}`}
-                        className="block text-small text-ink-muted mt-6"
-                    >
-                        Paste what you got:
-                    </label>
-                    <textarea
-                        id={`output-${step}`}
-                        value={output}
-                        onChange={(e) => {
-                            setOutput(e.target.value);
-                            setChecked(null);
-                        }}
-                        className="field font-mono text-small h-28 mt-2"
-                    />
-
-                    <div className="flex flex-wrap items-center gap-4 mt-4">
-                        <button onClick={compare} className="btn btn-brand">
-                            Check my output
-                        </button>
-
-                        {checked !== null && (
-                            <p
-                                role="status"
-                                className={`inline-flex items-start gap-2 text-small font-semibold ${
-                                    checked.ok ? 'text-success' : 'text-danger'
-                                }`}
-                            >
-                                {checked.ok ? (
-                                    <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" aria-hidden="true" />
-                                ) : (
-                                    <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" aria-hidden="true" />
-                                )}
-                                {checked.detail}
-                            </p>
-                        )}
-                    </div>
+                    {exercise.showAutograder && exercise.expectedOutput?.trim() && checked !== null && (
+                        <p
+                            role="status"
+                            className={`inline-flex items-start gap-2 text-small font-semibold mt-4 ${
+                                checked.ok ? 'text-success' : 'text-danger'
+                            }`}
+                        >
+                            {checked.ok ? (
+                                <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" aria-hidden="true" />
+                            ) : (
+                                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" aria-hidden="true" />
+                            )}
+                            {checked.detail}
+                        </p>
+                    )}
                 </section>
             )}
 

@@ -93,17 +93,15 @@ export default function Privacy() {
                     </li>
                     <li>
                         <strong className="font-semibold text-neutral-900">
-                            Embedded code editors
+                            Our code execution engine
                         </strong>{' '}
-                        power the{' '}
+                        runs the code you write on the{' '}
                         <A href="/compiler" internal>
                             compiler
                         </A>{' '}
-                        page and the editors inside lessons. We currently embed{' '}
-                        <A href="https://onecompiler.com/privacy">OneCompiler</A> and{' '}
-                        <A href="https://www.jdoodle.com/terms">JDoodle</A>. Code you type
-                        or run in one of those windows is sent to that provider, not to
-                        us, and they may set their own cookies.
+                        page and in lesson exercises. That code is sent to our own
+                        backend, run inside an isolated container, and the output is
+                        sent back to your browser — it is not shared with a third party.
                     </li>
                 </ul>
                 <p className="mt-4">
