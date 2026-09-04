@@ -1,0 +1,88 @@
+{
+  "defaultAction": "SCMP_ACT_ALLOW",
+  "syscalls": [
+    {
+      "comment": "Block namespace manipulation — primary container-escape vector",
+      "names": [
+        "unshare",
+        "setns",
+        "mount",
+        "umount2",
+        "pivot_root"
+      ],
+      "action": "SCMP_ACT_ERRNO",
+      "errnoRet": 1
+    },
+    {
+      "comment": "Block clone(CLONE_NEWUSER=0x10000000) — lets a process create a user namespace and remap uid 0, enabling privilege escalation even without CAP_SYS_ADMIN. SCMP_CMP_MASKED_EQ requires both value (mask) and valueTwo (comparison); without valueTwo it defaults to 0 and matches every fork. CLONE_THREAD, CLONE_VM etc. are unaffected so Python/Java threads still work.",
+      "names": ["clone"],
+      "args": [
+        {
+          "index": 0,
+          "value": 268435456,
+          "valueTwo": 268435456,
+          "op": "SCMP_CMP_MASKED_EQ"
+        }
+      ],
+      "action": "SCMP_ACT_ERRNO",
+      "errnoRet": 1
+    },
+    {
+      "comment": "Block kernel-level code execution and replacement",
+      "names": [
+        "kexec_load",
+        "kexec_file_load"
+      ],
+      "action": "SCMP_ACT_ERRNO",
+      "errnoRet": 1
+    },
+    {
+      "comment": "Block BPF — can be used to install kernel programs that filter or redirect syscalls",
+      "names": ["bpf"],
+      "action": "SCMP_ACT_ERRNO",
+      "errnoRet": 1
+    },
+    {
+      "comment": "Block cross-process memory access and kernel introspection",
+      "names": [
+        "ptrace",
+        "process_vm_readv",
+        "process_vm_writev",
+        "kcmp"
+      ],
+      "action": "SCMP_ACT_ERRNO",
+      "errnoRet": 1
+    },
+    {
+      "comment": "Block perf_event_open — can leak kernel addresses and be used in side-channel attacks",
+      "names": ["perf_event_open"],
+      "action": "SCMP_ACT_ERRNO",
+      "errnoRet": 1
+    },
+    {
+      "comment": "Block userfaultfd — can be used to pause kernel execution for exploit primitives",
+      "names": ["userfaultfd"],
+      "action": "SCMP_ACT_ERRNO",
+      "errnoRet": 1
+    },
+    {
+      "comment": "Block kernel keyring — student code has no business touching key storage",
+      "names": [
+        "add_key",
+        "request_key",
+        "keyctl"
+      ],
+      "action": "SCMP_ACT_ERRNO",
+      "errnoRet": 1
+    },
+    {
+      "comment": "Block kernel log and accounting access",
+      "names": [
+        "syslog",
+        "acct"
+      ],
+      "action": "SCMP_ACT_ERRNO",
+      "errnoRet": 1
+    }
+  ]
+}

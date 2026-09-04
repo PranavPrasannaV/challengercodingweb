@@ -217,7 +217,7 @@ System.out.println(x);</code></pre>
         showAutograder: false,
         initialCode: `// Create your ASCII art design here using print statements
 // For example:
-System.out.println("\\_('_')_/");
+System.out.println("\\\\_('_')_/");
 
 // Now, create your own design!
 `

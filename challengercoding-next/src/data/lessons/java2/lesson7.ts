@@ -68,6 +68,25 @@ export const java2Lesson7 = [
                 <p class="tutorial-text">In this example, the <code>countDown</code> function calls itself with a smaller number each time, until it reaches zero (the base case). Try running this code and observe how recursion works step by step.</p>
             </div>
         `,
+        initialCode: `public class RecursionExample {
+    public static void countDown(int n) {
+        // Base case
+        if (n == 0) {
+            System.out.println("Done!");
+            return;
+        }
+
+        // Print the current number
+        System.out.println(n);
+
+        // Recursive case
+        countDown(n - 1);
+    }
+
+    public static void main(String[] args) {
+        countDown(5);
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "5\n4\n3\n2\n1\nDone!"
@@ -122,6 +141,32 @@ export const java2Lesson7 = [
                 <p class="tutorial-text">Try running these examples and experiment with different input values. Can you trace the recursive calls for small inputs?</p>
             </div>
         `,
+        initialCode: `public class RecursiveFunctionsExample {
+    public static int factorial(int n) {
+        // Base case
+        if (n == 0 || n == 1) {
+            return 1;
+        }
+
+        // Recursive case
+        return n * factorial(n - 1);
+    }
+
+    public static int fibonacci(int n) {
+        // Base cases
+        if (n <= 1) {
+            return n;
+        }
+
+        // Recursive case
+        return fibonacci(n - 1) + fibonacci(n - 2);
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Factorial of 5: " + factorial(5));
+        System.out.println("8th Fibonacci number: " + fibonacci(8));
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Factorial of 5: 120\n8th Fibonacci number: 21"
@@ -172,6 +217,30 @@ export const java2Lesson7 = [
                 <p class="tutorial-text">Both approaches produce the same result, but they differ in how they achieve it. The recursive approach breaks down the problem into smaller subproblems, while the iterative approach uses a loop to accumulate the sum. Try implementing both approaches for other problems, like factorial or Fibonacci, and compare their performance for larger inputs.</p>
             </div>
         `,
+        initialCode: `public class SumExample {
+    // Recursive approach
+    public static int sumRecursive(int n) {
+        if (n <= 1) {
+            return n;
+        }
+        return n + sumRecursive(n - 1);
+    }
+
+    // Iterative approach
+    public static int sumIterative(int n) {
+        int sum = 0;
+        for (int i = 1; i <= n; i++) {
+            sum += i;
+        }
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        int n = 5;
+        System.out.println("Recursive sum: " + sumRecursive(n));
+        System.out.println("Iterative sum: " + sumIterative(n));
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Recursive sum: 15\nIterative sum: 15"
@@ -216,6 +285,24 @@ export const java2Lesson7 = [
                 <p class="tutorial-text">In the tail recursive version, we use an accumulator to store intermediate results. This allows the function to return immediately after the recursive call, without needing to perform any additional computations. While Java doesn't automatically optimize tail recursion, understanding this concept can help you write more efficient recursive functions.</p>
             </div>
         `,
+        initialCode: `public class TailRecursionExample {
+    // Non-tail recursive factorial
+    public static int factorial(int n) {
+        if (n <= 1) return 1;
+        return n * factorial(n - 1);
+    }
+
+    // Tail recursive factorial
+    public static int factorialTail(int n, int accumulator) {
+        if (n <= 1) return accumulator;
+        return factorialTail(n - 1, n * accumulator);
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Non-tail recursive: " + factorial(5));
+        System.out.println("Tail recursive: " + factorialTail(5, 1));
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Non-tail recursive: 120\nTail recursive: 120"
@@ -265,6 +352,29 @@ export const java2Lesson7 = [
                 <p class="tutorial-text">This recursive solution breaks down the problem into smaller subproblems, moving n-1 disks recursively. Try running this code and observe how it solves the Tower of Hanoi puzzle step by step. Can you visualize the process for a small number of disks?</p>
             </div>
         `,
+        initialCode: `public class TowerOfHanoi {
+    public static void solveTowerOfHanoi(int n, char source, char auxiliary, char destination) {
+        // Base case: If only one disk, move it directly
+        if (n == 1) {
+            System.out.println("Move disk 1 from " + source + " to " + destination);
+            return;
+        }
+
+        // Move n-1 disks from source to auxiliary using destination as auxiliary
+        solveTowerOfHanoi(n - 1, source, destination, auxiliary);
+
+        // Move the nth disk from source to destination
+        System.out.println("Move disk " + n + " from " + source + " to " + destination);
+
+        // Move n-1 disks from auxiliary to destination using source as auxiliary
+        solveTowerOfHanoi(n - 1, auxiliary, source, destination);
+    }
+
+    public static void main(String[] args) {
+        int numberOfDisks = 3;
+        solveTowerOfHanoi(numberOfDisks, 'A', 'B', 'C');
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Move disk 1 from A to C\nMove disk 2 from A to B\nMove disk 1 from C to B\nMove disk 3 from A to C\nMove disk 1 from B to A\nMove disk 2 from B to C\nMove disk 1 from A to C"
@@ -385,6 +495,28 @@ public class RecursiveFileExplorer {
                 <p class="tutorial-text">Implement the <code>exploreDirectory</code> method using recursion to list all files and subdirectories. Use proper indentation to show the directory structure. Remember to handle exceptions and edge cases. Once you've completed the implementation, test your file explorer with different directories and ensure it correctly displays the file structure.</p>
             </div>
         `,
+        initialCode: `import java.io.File;
+import java.util.Scanner;
+
+public class RecursiveFileExplorer {
+    public static void exploreDirectory(File directory, String indent) {
+        // TODO: Implement the recursive file exploration
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the directory path to explore: ");
+        String path = scanner.nextLine();
+
+        File rootDirectory = new File(path);
+        if (rootDirectory.exists() && rootDirectory.isDirectory()) {
+            System.out.println("Exploring directory: " + rootDirectory.getAbsolutePath());
+            exploreDirectory(rootDirectory, "");
+        } else {
+            System.out.println("Invalid directory path.");
+        }
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Exploring directory: /path/to/directory\n- File1.txt\n- Folder1\n  - Subfolder\n    - File2.txt\n  - File3.txt\n- File4.txt"

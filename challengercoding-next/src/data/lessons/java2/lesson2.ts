@@ -107,6 +107,23 @@ export const java2Lesson2 = [
                 </div>
             </div>
         `,
+        initialCode: `public class Book {
+    String title;
+    String author;
+    int pages;
+
+    public void displayInfo() {
+        // TODO: print "Title: <title>, Author: <author>, Pages: <pages>"
+    }
+
+    public static void main(String[] args) {
+        Book book = new Book();
+        book.title = "The Great Gatsby";
+        book.author = "F. Scott Fitzgerald";
+        book.pages = 180;
+        book.displayInfo();
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Title: The Great Gatsby, Author: F. Scott Fitzgerald, Pages: 180"
@@ -157,6 +174,24 @@ export const java2Lesson2 = [
                 </div>
             </div>
         `,
+        initialCode: `public class Book {
+    String title;
+    String author;
+    int pages;
+
+    // TODO: set title, author, and pages from the constructor's arguments
+    public Book(String title, String author, int pages) {
+    }
+
+    public void displayInfo() {
+        // TODO: print "Title: <title>, Author: <author>, Pages: <pages>"
+    }
+
+    public static void main(String[] args) {
+        Book book = new Book("To Kill a Mockingbird", "Harper Lee", 281);
+        book.displayInfo();
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Title: To Kill a Mockingbird, Author: Harper Lee, Pages: 281"
@@ -218,6 +253,35 @@ System.out.println(MathOperations.add(3, 4));  // Outputs: 7</code></pre>
                 </div>
             </div>
         `,
+        initialCode: `public class Book {
+    String title;
+    String author;
+    int pages;
+
+    public Book(String title, String author, int pages) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+    }
+
+    // TODO: instance method — assume 60 pages per hour of reading and
+    // print "Reading time: <hours> hours"
+    public void printReadingTime() {
+    }
+
+    // TODO: static method — print "The longer book is: <title>" for
+    // whichever of the two books has more pages
+    public static void printLongerBook(Book a, Book b) {
+    }
+
+    public static void main(String[] args) {
+        Book gatsby = new Book("The Great Gatsby", "F. Scott Fitzgerald", 180);
+        Book warAndPeace = new Book("War and Peace", "Leo Tolstoy", 1225);
+
+        gatsby.printReadingTime();
+        printLongerBook(gatsby, warAndPeace);
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Reading time: 3.0 hours\nThe longer book is: War and Peace"
@@ -299,6 +363,51 @@ myCat.makeSound();  // Outputs: The cat meows</code></pre>
                 </div>
             </div>
         `,
+        initialCode: `class Shape {
+    public double area() {
+        return 0;
+    }
+}
+
+class Circle extends Shape {
+    private double radius;
+
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    public double area() {
+        // TODO: return the area of the circle (Math.PI * radius * radius)
+        return 0;
+    }
+}
+
+class Rectangle extends Shape {
+    private double width;
+    private double height;
+
+    public Rectangle(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    @Override
+    public double area() {
+        // TODO: return the area of the rectangle (width * height)
+        return 0;
+    }
+}
+
+public class ShapeDemo {
+    public static void main(String[] args) {
+        Shape circle = new Circle(5);
+        Shape rectangle = new Rectangle(6, 4);
+
+        System.out.printf("Circle area: %.2f%n", circle.area());
+        System.out.printf("Rectangle area: %.2f%n", rectangle.area());
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Circle area: 78.54\nRectangle area: 24.00"
@@ -450,6 +559,59 @@ public class LibraryManagementSystem {
                 <p class="tutorial-text">Implement the missing parts of the Book and Library classes, and complete the menu system. Use the online compiler to write and test your code. Once you're satisfied with your program, paste a sample output of adding a book, checking it out, and returning it in the autograder to check your work.</p>
             </div>
         `,
+        initialCode: `import java.util.ArrayList;
+import java.util.Scanner;
+
+class Book {
+    // TODO: Implement Book class
+}
+
+class Library {
+    // TODO: Implement Library class
+}
+
+public class LibraryManagementSystem {
+    public static void main(String[] args) {
+        Library library = new Library();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\\n1. Add Book");
+            System.out.println("2. Remove Book");
+            System.out.println("3. Check Out Book");
+            System.out.println("4. Return Book");
+            System.out.println("5. Display All Books");
+            System.out.println("6. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            switch (choice) {
+                case 1:
+                    // TODO: Implement add book
+                    break;
+                case 2:
+                    // TODO: Implement remove book
+                    break;
+                case 3:
+                    // TODO: Implement check out book
+                    break;
+                case 4:
+                    // TODO: Implement return book
+                    break;
+                case 5:
+                    // TODO: Implement display all books
+                    break;
+                case 6:
+                    System.out.println("Thank you for using the Library Management System!");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Book added: The Great Gatsby\nBook checked out: The Great Gatsby\nBook returned: The Great Gatsby"

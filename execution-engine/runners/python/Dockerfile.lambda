@@ -1,0 +1,19 @@
+# Lambda container image for Python student-code execution (production).
+# Build context is the repo root (see infra/terraform/lambda.tf / Makefile).
+#
+# Uses the AWS-provided Python base image, which already bundles the Lambda
+# Runtime Interface Client — no docker socket, no warm pool: the Firecracker
+# microVM per invocation is the isolation boundary (see
+# lambda_runner/sandbox_exec.py). Local dev still uses runners/python/Dockerfile
+# via docker-compose, unchanged.
+FROM public.ecr.aws/lambda/python:3.12
+
+COPY lambda_runner/requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt -t "${LAMBDA_TASK_ROOT}"
+
+COPY shared "${LAMBDA_TASK_ROOT}/shared"
+COPY worker/assembly.py worker/grading.py "${LAMBDA_TASK_ROOT}/"
+COPY lambda_runner/handler.py lambda_runner/sandbox_exec.py "${LAMBDA_TASK_ROOT}/"
+
+ENV LANGUAGE=python
+CMD ["handler.handler"]

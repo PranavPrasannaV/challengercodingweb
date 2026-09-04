@@ -82,6 +82,37 @@ public class PolymorphismExample {
                 <p class="tutorial-text">Try running this code in the compiler below and observe how polymorphism allows different objects to respond to the same method call in different ways.</p>
             </div>
         `,
+        initialCode: `class Animal {
+    public void makeSound() {
+        System.out.println("The animal makes a sound");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("The dog barks");
+    }
+}
+
+class Cat extends Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("The cat meows");
+    }
+}
+
+public class PolymorphismExample {
+    public static void main(String[] args) {
+        Animal myAnimal = new Animal();
+        Animal myDog = new Dog();
+        Animal myCat = new Cat();
+
+        myAnimal.makeSound();
+        myDog.makeSound();
+        myCat.makeSound();
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "The animal makes a sound\nThe dog barks\nThe cat meows"
@@ -154,6 +185,51 @@ public class MethodOverridingExample {
                 <p class="tutorial-text">Try running this code in the compiler and observe how method overriding allows each shape to calculate its area differently. Can you add another shape, like a Triangle, and override its <code>calculateArea()</code> method?</p>
             </div>
         `,
+        initialCode: `class Shape {
+    public double calculateArea() {
+        return 0;
+    }
+}
+
+class Circle extends Shape {
+    private double radius;
+
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    public double calculateArea() {
+        return Math.PI * radius * radius;
+    }
+}
+
+class Rectangle extends Shape {
+    private double length;
+    private double width;
+
+    public Rectangle(double length, double width) {
+        this.length = length;
+        this.width = width;
+    }
+
+    @Override
+    public double calculateArea() {
+        return length * width;
+    }
+}
+
+public class MethodOverridingExample {
+    public static void main(String[] args) {
+        Shape shape = new Shape();
+        Shape circle = new Circle(5);
+        Shape rectangle = new Rectangle(4, 6);
+
+        System.out.println("Shape area: " + shape.calculateArea());
+        System.out.println("Circle area: " + circle.calculateArea());
+        System.out.println("Rectangle area: " + rectangle.calculateArea());
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Shape area: 0.0\nCircle area: 78.53981633974483\nRectangle area: 24.0"
@@ -220,6 +296,45 @@ public class RuntimePolymorphismExample {
                 <p class="tutorial-text">Try running this code in the compiler. Can you add another vehicle type and see how it fits into the polymorphic structure without changing the main method?</p>
             </div>
         `,
+        initialCode: `class Vehicle {
+    public void move() {
+        System.out.println("Vehicle is moving");
+    }
+}
+
+class Car extends Vehicle {
+    @Override
+    public void move() {
+        System.out.println("Car is driving");
+    }
+}
+
+class Bicycle extends Vehicle {
+    @Override
+    public void move() {
+        System.out.println("Bicycle is pedaling");
+    }
+}
+
+class Boat extends Vehicle {
+    @Override
+    public void move() {
+        System.out.println("Boat is sailing");
+    }
+}
+
+public class RuntimePolymorphismExample {
+    public static void main(String[] args) {
+        Vehicle[] vehicles = new Vehicle[3];
+        vehicles[0] = new Car();
+        vehicles[1] = new Bicycle();
+        vehicles[2] = new Boat();
+
+        for (Vehicle vehicle : vehicles) {
+            vehicle.move();
+        }
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Car is driving\nBicycle is pedaling\nBoat is sailing"
@@ -287,6 +402,46 @@ public class InterfacePolymorphismExample {
                 <p class="tutorial-text">Try running this code in the compiler. Can you add another shape that implements the <code>Drawable</code> interface? How does this approach differ from using inheritance for polymorphism?</p>
             </div>
         `,
+        initialCode: `interface Drawable {
+    void draw();
+}
+
+class Circle implements Drawable {
+    @Override
+    public void draw() {
+        System.out.println("Drawing a circle");
+    }
+}
+
+class Rectangle implements Drawable {
+    @Override
+    public void draw() {
+        System.out.println("Drawing a rectangle");
+    }
+}
+
+class Triangle implements Drawable {
+    @Override
+    public void draw() {
+        System.out.println("Drawing a triangle");
+    }
+}
+
+public class InterfacePolymorphismExample {
+    public static void drawShape(Drawable shape) {
+        shape.draw();
+    }
+
+    public static void main(String[] args) {
+        Drawable circle = new Circle();
+        Drawable rectangle = new Rectangle();
+        Drawable triangle = new Triangle();
+
+        drawShape(circle);
+        drawShape(rectangle);
+        drawShape(triangle);
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Drawing a circle\nDrawing a rectangle\nDrawing a triangle"
@@ -362,6 +517,54 @@ public class AbstractClassPolymorphismExample {
                 <p class="tutorial-text">Try running this code in the compiler. Can you add another animal type that extends the Animal class? How does using an abstract class compare to using an interface in this scenario?</p>
             </div>
         `,
+        initialCode: `abstract class Animal {
+    protected String name;
+
+    public Animal(String name) {
+        this.name = name;
+    }
+
+    public abstract void makeSound();
+
+    public void eat() {
+        System.out.println(name + " is eating");
+    }
+}
+
+class Dog extends Animal {
+    public Dog(String name) {
+        super(name);
+    }
+
+    @Override
+    public void makeSound() {
+        System.out.println(name + " barks");
+    }
+}
+
+class Cat extends Animal {
+    public Cat(String name) {
+        super(name);
+    }
+
+    @Override
+    public void makeSound() {
+        System.out.println(name + " meows");
+    }
+}
+
+public class AbstractClassPolymorphismExample {
+    public static void main(String[] args) {
+        Animal dog = new Dog("Buddy");
+        Animal cat = new Cat("Whiskers");
+
+        dog.makeSound();
+        dog.eat();
+
+        cat.makeSound();
+        cat.eat();
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Buddy barks\nBuddy is eating\nWhiskers meows\nWhiskers is eating"
@@ -525,6 +728,76 @@ public class ShapeCalculatorApp {
                 <p class="tutorial-text">Implement the missing parts of the Shape classes and the calculator logic. Use the online compiler to write and test your code. Once you're satisfied with your program, paste a sample output showing the calculations for different shapes in the autograder to check your work.</p>
             </div>
         `,
+        initialCode: `import java.util.Scanner;
+
+abstract class Shape {
+    abstract double calculateArea();
+    abstract double calculatePerimeter();
+}
+
+class Circle extends Shape {
+    // TODO: implement calculateArea() and calculatePerimeter() for a circle
+    double calculateArea() { return 0; }
+    double calculatePerimeter() { return 0; }
+}
+
+class Rectangle extends Shape {
+    // TODO: implement calculateArea() and calculatePerimeter() for a rectangle
+    double calculateArea() { return 0; }
+    double calculatePerimeter() { return 0; }
+}
+
+class Triangle extends Shape {
+    // TODO: implement calculateArea() and calculatePerimeter() for a triangle
+    double calculateArea() { return 0; }
+    double calculatePerimeter() { return 0; }
+}
+
+class ShapeCalculator {
+    public void printShapeDetails(Shape shape) {
+        System.out.println("Area: " + shape.calculateArea());
+        System.out.println("Perimeter: " + shape.calculatePerimeter());
+    }
+}
+
+public class ShapeCalculatorApp {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ShapeCalculator calculator = new ShapeCalculator();
+        Shape[] shapes = new Shape[3];
+
+        while (true) {
+            System.out.println("\\n1. Create Circle");
+            System.out.println("2. Create Rectangle");
+            System.out.println("3. Create Triangle");
+            System.out.println("4. Calculate for all shapes");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    // TODO: Create Circle
+                    break;
+                case 2:
+                    // TODO: Create Rectangle
+                    break;
+                case 3:
+                    // TODO: Create Triangle
+                    break;
+                case 4:
+                    // TODO: Calculate for all shapes
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Shape: Circle\nArea: 78.54\nPerimeter: 31.42\nShape: Rectangle\nArea: 24.00\nPerimeter: 20.00\nShape: Triangle\nArea: 6.00\nPerimeter: 12.00"

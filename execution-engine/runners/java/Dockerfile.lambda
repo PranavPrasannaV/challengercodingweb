@@ -1,0 +1,30 @@
+# Lambda container image for Java student-code execution (production).
+# Build context is the repo root (see infra/terraform/lambda.tf / Makefile).
+#
+# Built from the AWS-provided Python Lambda base (Amazon Linux 2023, Python
+# 3.12) with a JDK installed on top, rather than the other way around
+# (a JDK base with Python bolted on) — psycopg2-binary 2.9.9 has no
+# prebuilt wheel for, and doesn't compile against, the very new Python that
+# JDK-base distros' "python3" package resolves to. Starting from AWS's own
+# Python base guarantees the same known-good Python/psycopg2 combination as
+# runners/python/Dockerfile.lambda; Amazon Linux ships Corretto in its own
+# repos, so adding Java here is just a dnf install.
+#
+# handler.py itself is language-generic (LANGUAGE selects the code path in
+# lambda_runner/sandbox_exec.py) — reusing it here instead of writing a
+# second, Java-native handler avoids duplicating the assembly/grading/DB
+# logic in two languages.
+FROM public.ecr.aws/lambda/python:3.12
+
+# -devel, not just -headless: this needs javac (compile), not only the JRE.
+RUN dnf install -y java-21-amazon-corretto-devel && dnf clean all
+
+COPY lambda_runner/requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt -t "${LAMBDA_TASK_ROOT}"
+
+COPY shared "${LAMBDA_TASK_ROOT}/shared"
+COPY worker/assembly.py worker/grading.py "${LAMBDA_TASK_ROOT}/"
+COPY lambda_runner/handler.py lambda_runner/sandbox_exec.py "${LAMBDA_TASK_ROOT}/"
+
+ENV LANGUAGE=java
+CMD ["handler.handler"]

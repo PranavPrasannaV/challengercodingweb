@@ -130,7 +130,7 @@ public class Main {
         `,
         showCompiler: true,
         showAutograder: false,
-        initialCode: `public class Calculator {
+        initialCode: `class Calculator {
     // Create a method that returns the difference of two numbers
     // Create a method that returns the quotient of two numbers
     // Create a method that returns the remainder of two numbers
@@ -188,7 +188,7 @@ public class Main {
         `,
         showCompiler: true,
         showAutograder: false,
-        initialCode: `public class Rectangle {
+        initialCode: `class Rectangle {
     // Create a method 'area' that takes length and width as parameters
     // and returns the area
 }

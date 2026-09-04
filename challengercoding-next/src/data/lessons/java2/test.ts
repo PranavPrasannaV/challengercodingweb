@@ -228,6 +228,17 @@ export const java2Test = [
 }</code></pre>
             </div>
         `,
+        initialCode: `public class DiagonalSum {
+    public static int sumDiagonal(int[][] array) {
+        // Your code here
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        int[][] matrix = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        System.out.println(sumDiagonal(matrix));  // Should output 15 (1 + 5 + 9)
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "15"
@@ -252,6 +263,16 @@ export const java2Test = [
 }</code></pre>
             </div>
         `,
+        initialCode: `public class Fibonacci {
+    public static int fibonacci(int n) {
+        // Your code here
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(fibonacci(10));  // Should print the 10th Fibonacci number
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "55"

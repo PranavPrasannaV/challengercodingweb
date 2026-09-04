@@ -1,0 +1,19 @@
+# Lambda container image for the API (production) — the same FastAPI app as
+# api/Dockerfile, invoked through Mangum (api/app/lambda_handler.py) instead
+# of uvicorn. Local dev still uses api/Dockerfile via docker-compose,
+# unchanged. Build context is the repo root (see infra/terraform/api.tf).
+FROM public.ecr.aws/lambda/python:3.12
+
+WORKDIR /srv
+
+COPY api/requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt -t /srv
+
+COPY shared ./shared
+COPY api/app ./app
+COPY frontend ./frontend
+
+# Not the Lambda default (/var/task) — kept as /srv to match api/Dockerfile's
+# layout so main.py's hardcoded "/srv/frontend" static path needs no change.
+ENV PYTHONPATH=/srv
+CMD ["app.lambda_handler.handler"]

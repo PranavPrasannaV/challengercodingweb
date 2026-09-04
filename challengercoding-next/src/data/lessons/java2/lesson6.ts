@@ -75,6 +75,32 @@ public class ListExample {
                 <p class="tutorial-text">This example demonstrates creating a List, adding elements, accessing elements, and performing basic operations. Try running this code in the compiler below and experiment with different List operations.</p>
             </div>
         `,
+        initialCode: `import java.util.List;
+import java.util.ArrayList;
+
+public class ListExample {
+    public static void main(String[] args) {
+        // Creating a List of Strings
+        List<String> fruits = new ArrayList<>();
+
+        // Adding elements to the List
+        fruits.add("Apple");
+        fruits.add("Banana");
+        fruits.add("Orange");
+
+        // Printing the List
+        System.out.println("Fruits: " + fruits);
+
+        // Accessing elements by index
+        System.out.println("First fruit: " + fruits.get(0));
+
+        // Checking if an element exists
+        System.out.println("Contains 'Banana': " + fruits.contains("Banana"));
+
+        // Getting the size of the List
+        System.out.println("Number of fruits: " + fruits.size());
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Fruits: [Apple, Banana, Orange]\nFirst fruit: Apple\nContains 'Banana': true\nNumber of fruits: 3"
@@ -133,6 +159,38 @@ public class ArrayListExample {
                 <p class="tutorial-text">Try running this code in the compiler and experiment with different ArrayList operations. Can you add more elements or perform other operations on the ArrayList?</p>
             </div>
         `,
+        initialCode: `import java.util.ArrayList;
+
+public class ArrayListExample {
+    public static void main(String[] args) {
+        ArrayList<Integer> numbers = new ArrayList<>();
+
+        // Adding elements
+        numbers.add(10);
+        numbers.add(20);
+        numbers.add(30);
+
+        System.out.println("ArrayList: " + numbers);
+
+        // Adding an element at a specific index
+        numbers.add(1, 15);
+        System.out.println("After adding 15 at index 1: " + numbers);
+
+        // Removing an element
+        numbers.remove(2);
+        System.out.println("After removing element at index 2: " + numbers);
+
+        // Updating an element
+        numbers.set(0, 5);
+        System.out.println("After updating element at index 0: " + numbers);
+
+        // Checking if an element exists
+        System.out.println("Contains 20? " + numbers.contains(20));
+
+        // Getting the size
+        System.out.println("Size of ArrayList: " + numbers.size());
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "ArrayList: [10, 20, 30]\nAfter adding 15 at index 1: [10, 15, 20, 30]\nAfter removing element at index 2: [10, 15, 30]\nAfter updating element at index 0: [5, 15, 30]\nContains 20? false\nSize of ArrayList: 3"
@@ -212,6 +270,57 @@ public class ListOperationsExample {
                 <p class="tutorial-text">Run this code in the compiler and observe how different List operations affect the collection. Try modifying the code to perform additional operations or use different data types.</p>
             </div>
         `,
+        initialCode: `import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class ListOperationsExample {
+    public static void main(String[] args) {
+        List<String> colors = new ArrayList<>();
+
+        // Adding elements
+        colors.add("Red");
+        colors.add("Green");
+        colors.add("Blue");
+        colors.add("Yellow");
+        System.out.println("Original list: " + colors);
+
+        // Adding at a specific index
+        colors.add(2, "Purple");
+        System.out.println("After adding Purple at index 2: " + colors);
+
+        // Removing an element
+        colors.remove("Green");
+        System.out.println("After removing Green: " + colors);
+
+        // Removing by index
+        colors.remove(1);
+        System.out.println("After removing element at index 1: " + colors);
+
+        // Checking if an element exists
+        System.out.println("Contains Blue? " + colors.contains("Blue"));
+
+        // Getting the index of an element
+        System.out.println("Index of Yellow: " + colors.indexOf("Yellow"));
+
+        // Getting a sublist
+        List<String> subList = colors.subList(0, 2);
+        System.out.println("Sublist (0 to 2): " + subList);
+
+        // Sorting the list
+        Collections.sort(colors);
+        System.out.println("Sorted list: " + colors);
+
+        // Reversing the list
+        Collections.reverse(colors);
+        System.out.println("Reversed list: " + colors);
+
+        // Clearing the list
+        colors.clear();
+        System.out.println("After clearing: " + colors);
+        System.out.println("Is the list empty? " + colors.isEmpty());
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Original list: [Red, Green, Blue, Yellow]\nAfter adding Purple at index 2: [Red, Green, Purple, Blue, Yellow]\nAfter removing Green: [Red, Purple, Blue, Yellow]\nAfter removing element at index 1: [Red, Blue, Yellow]\nContains Blue? true\nIndex of Yellow: 2\nSublist (0 to 2): [Red, Blue]\nSorted list: [Blue, Red, Yellow]\nReversed list: [Yellow, Red, Blue]\nAfter clearing: []\nIs the list empty? true"
@@ -294,6 +403,50 @@ public class ListIterationExample {
 Try modifying the code to perform operations on the elements while iterating, such as filtering or transforming the data.</p>
             </div>
         `,
+        initialCode: `import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+public class ListIterationExample {
+    public static void main(String[] args) {
+        List<String> fruits = new ArrayList<>();
+        fruits.add("Apple");
+        fruits.add("Banana");
+        fruits.add("Cherry");
+        fruits.add("Date");
+
+        // 1. For-each loop
+        System.out.println("Using for-each loop:");
+        for (String fruit : fruits) {
+            System.out.println(fruit);
+        }
+
+        // 2. Traditional for loop
+        System.out.println("\\nUsing traditional for loop:");
+        for (int i = 0; i < fruits.size(); i++) {
+            System.out.println(fruits.get(i));
+        }
+
+        // 3. Iterator
+        System.out.println("\\nUsing Iterator:");
+        Iterator<String> iterator = fruits.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+
+        // 4. ListIterator (allows backward iteration)
+        System.out.println("\\nUsing ListIterator (backward):");
+        ListIterator<String> listIterator = fruits.listIterator(fruits.size());
+        while (listIterator.hasPrevious()) {
+            System.out.println(listIterator.previous());
+        }
+
+        // 5. Java 8 forEach() method with lambda
+        System.out.println("\\nUsing forEach() with lambda:");
+        fruits.forEach(fruit -> System.out.println(fruit));
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Using for-each loop:\nApple\nBanana\nCherry\nDate\n\nUsing traditional for loop:\nApple\nBanana\nCherry\nDate\n\nUsing Iterator:\nApple\nBanana\nCherry\nDate\n\nUsing ListIterator (backward):\nDate\nCherry\nBanana\nApple\n\nUsing forEach() with lambda:\nApple\nBanana\nCherry\nDate"
@@ -449,6 +602,62 @@ public class TaskManagerApp {
                 <p class="tutorial-text">Implement the Task class and the methods in the TaskManager class. Use the List operations we've learned to manage the tasks effectively. Once you've completed the implementation, use the compiler to test your Task Manager application. Make sure to handle different scenarios, such as adding multiple tasks, marking them as completed, and removing tasks.</p>
             </div>
         `,
+        initialCode: `import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Task {
+    // Implement Task class
+}
+
+class TaskManager {
+    private List<Task> tasks;
+
+    public TaskManager() {
+        tasks = new ArrayList<>();
+    }
+
+    // Implement methods for managing tasks
+}
+
+public class TaskManagerApp {
+    public static void main(String[] args) {
+        TaskManager manager = new TaskManager();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\\n1. Add Task");
+            System.out.println("2. Mark Task as Completed");
+            System.out.println("3. Remove Task");
+            System.out.println("4. List All Tasks");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    // Implement add task
+                    break;
+                case 2:
+                    // Implement mark task as completed
+                    break;
+                case 3:
+                    // Implement remove task
+                    break;
+                case 4:
+                    // Implement list all tasks
+                    break;
+                case 5:
+                    System.out.println("Exiting Task Manager. Goodbye!");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "1. Add Task\n2. Mark Task as Completed\n3. Remove Task\n4. List All Tasks\n5. Exit\nEnter your choice: 1\nTask added: Buy groceries\n1. Add Task\n2. Mark Task as Completed\n3. Remove Task\n4. List All Tasks\n5. Exit\nEnter your choice: 4\nTasks:\n1. Buy groceries (Not Completed)\n1. Add Task\n2. Mark Task as Completed\n3. Remove Task\n4. List All Tasks\n5. Exit\nEnter your choice: 2\nTask marked as completed: Buy groceries\n1. Add Task\n2. Mark Task as Completed\n3. Remove Task\n4. List All Tasks\n5. Exit\nEnter your choice: 4\nTasks:\n1. Buy groceries (Completed)\n1. Add Task\n2. Mark Task as Completed\n3. Remove Task\n4. List All Tasks\n5. Exit\nEnter your choice: 5\nExiting Task Manager. Goodbye!"

@@ -52,7 +52,7 @@ export const javaLesson3 = [
         initialCode: `public class GradeCalculator {
     public static void main(String[] args) {
         int score = 70;
-        char grade;
+        char grade = ' ';
 
         // Your code here
         // Use if-else statements to determine the grade
@@ -93,7 +93,7 @@ export const javaLesson3 = [
     public static void main(String[] args) {
         int age = 20;
         boolean isWeekend = true;
-        double ticketPrice;
+        double ticketPrice = 0;
 
         // Your code here
         // Use nested if statements to determine the ticket price
@@ -138,7 +138,7 @@ export const javaLesson3 = [
     public static void main(String[] args) {
         int age = 30;
         boolean isMember = false;
-        boolean eligibleForDiscount;
+        boolean eligibleForDiscount = false;
 
         // Your code here
         // Use logical operators to determine discount eligibility
@@ -183,7 +183,7 @@ export const javaLesson3 = [
         boolean isRaining = true;
         int availableTime = 30; // in minutes
 
-        String suggestedTransportation;
+        String suggestedTransportation = "";
 
         // Your code here
         // Use if-else statements, nested ifs, and logical operators

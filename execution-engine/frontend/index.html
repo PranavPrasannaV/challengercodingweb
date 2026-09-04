@@ -1,0 +1,429 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Code Execution Engine</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 14px 24px;
+      background: #161b27;
+      border-bottom: 1px solid #2d3748;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header h1 { font-size: 15px; font-weight: 600; color: #a0aec0; letter-spacing: .03em; }
+    header .dot { width: 8px; height: 8px; border-radius: 50%; background: #48bb78; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr;
+      gap: 16px;
+      padding: 16px;
+      height: calc(100vh - 53px);
+    }
+
+    /* ── cell panel ── */
+    .cell-panel {
+      grid-column: 1;
+      grid-row: 1 / 3;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .panel {
+      background: #161b27;
+      border: 1px solid #2d3748;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 8px 14px;
+      background: #1a2035;
+      border-bottom: 1px solid #2d3748;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #718096;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2d3748;
+    }
+    .controls label { font-size: 12px; color: #718096; }
+    .controls input, .controls select {
+      background: #0f1117;
+      border: 1px solid #2d3748;
+      border-radius: 4px;
+      color: #e2e8f0;
+      font-size: 12px;
+      padding: 4px 8px;
+    }
+    .controls input { width: 200px; }
+
+    textarea#code {
+      display: block;
+      width: 100%;
+      height: 200px;
+      background: #0f1117;
+      color: #e2e8f0;
+      border: none;
+      border-bottom: 1px solid #2d3748;
+      font-family: "JetBrains Mono", "Fira Code", monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      padding: 12px;
+      resize: vertical;
+      outline: none;
+    }
+
+    .run-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+    }
+
+    button#run {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 6px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    button#run:hover { background: #2563eb; }
+    button#run:disabled { background: #374151; cursor: default; }
+
+    button#loadExercise {
+      background: transparent;
+      border: 1px solid #2d3748;
+      border-radius: 5px;
+      color: #a0aec0;
+      padding: 4px 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    #runStatus { font-size: 12px; color: #a0aec0; }
+
+    .output-block { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+    .output-block pre {
+      flex: 1;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      padding: 12px;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      min-height: 60px;
+    }
+    .stdout { color: #e2e8f0; }
+    .stderr { color: #fc8181; }
+
+    /* ── trace panel ── */
+    .trace-panel { grid-column: 2; grid-row: 1; }
+
+    .stages { padding: 14px; display: flex; flex-direction: column; gap: 0; }
+
+    .stage {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      position: relative;
+    }
+    .stage:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 20px;
+      width: 1px;
+      height: calc(100% + 2px);
+      background: #2d3748;
+    }
+
+    .stage-icon {
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      border: 2px solid #2d3748;
+      background: #0f1117;
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      z-index: 1;
+      transition: all .2s;
+    }
+    .stage-icon.done   { border-color: #48bb78; background: #48bb78; }
+    .stage-icon.active { border-color: #3b82f6; background: #3b82f6; animation: pulse 1s infinite; }
+    .stage-icon.error  { border-color: #fc8181; background: #fc8181; }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(59,130,246,.4); }
+      50% { box-shadow: 0 0 0 4px rgba(59,130,246,.1); }
+    }
+
+    .stage-body { padding-bottom: 18px; flex: 1; }
+    .stage-name { font-size: 12px; font-weight: 600; color: #a0aec0; }
+    .stage-time { font-size: 11px; color: #4a5568; margin-top: 2px; }
+    .stage-detail { font-size: 11px; color: #718096; margin-top: 3px; font-family: monospace; }
+
+    /* ── trace panel fills right column ── */
+    .trace-panel { grid-column: 2; grid-row: 1; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="dot"></div>
+  <h1>Code Execution Engine</h1>
+</header>
+
+<div class="layout">
+
+  <!-- ── Cell panel ── -->
+  <div class="cell-panel">
+    <div class="panel">
+      <div class="panel-header">
+        <span>Code Cell</span>
+        <span id="exerciseInfo" style="color:#4a5568;font-weight:400;text-transform:none;letter-spacing:0"></span>
+      </div>
+
+      <div class="controls">
+        <label>Lang
+          <select id="language" style="margin-left:4px">
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+          </select>
+        </label>
+        <label style="margin-left:8px">Exercise ID
+          <input id="exerciseId" placeholder="optional" style="width:260px;margin-left:4px" />
+        </label>
+        <button id="loadExercise">Load</button>
+        <label style="margin-left:auto">User
+          <input id="userId" value="student-1" style="width:90px;margin-left:4px" />
+        </label>
+      </div>
+
+      <textarea id="code">print("hello world")</textarea>
+
+      <div class="run-bar">
+        <button id="run">▶ Run</button>
+        <span id="runStatus"></span>
+      </div>
+    </div>
+
+    <div class="panel output-block">
+      <div class="panel-header">stdout</div>
+      <pre id="stdout" class="stdout"></pre>
+    </div>
+    <div class="panel output-block" style="max-height:120px">
+      <div class="panel-header">stderr</div>
+      <pre id="stderr" class="stderr"></pre>
+    </div>
+  </div>
+
+  <!-- ── Trace panel ── -->
+  <div class="panel trace-panel">
+    <div class="panel-header">
+      <span>Request Trace</span>
+      <span id="traceRunId" style="font-family:monospace;color:#4a5568;font-weight:400;text-transform:none;letter-spacing:0"></span>
+    </div>
+    <div class="stages" id="stages">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const $ = id => document.getElementById(id);
+
+  function apiBase() {
+    const v = $("apiBase")?.value?.trim();
+    return v || window.location.origin;
+  }
+
+  // ── Trace ─────────────────────────────────────────────────────────────────
+
+  const STAGES = [
+    { key: "submit",    label: "API Submit",        detail: id => `POST /run → ${id.slice(0,8)}…` },
+    { key: "queued",    label: "Enqueued (SQS)",    detail: () => "message on code-run-queue" },
+    { key: "running",   label: "Worker picked up",  detail: () => "status → running" },
+    { key: "container", label: "Container running", detail: (_, lang) => `code-runner-${lang}:latest` },
+    { key: "done",      label: "Result written",    detail: (_, __, r) => r ? `status → ${r.status}` : "" },
+  ];
+
+  let traceState = {}; // key → { ts, icon }
+
+  function initTrace() {
+    traceState = {};
+    const el = $("stages");
+    el.innerHTML = STAGES.map(s => `
+      <div class="stage" id="stage-${s.key}">
+        <div class="stage-icon" id="icon-${s.key}"></div>
+        <div class="stage-body">
+          <div class="stage-name">${s.label}</div>
+          <div class="stage-time" id="time-${s.key}">—</div>
+          <div class="stage-detail" id="detail-${s.key}"></div>
+        </div>
+      </div>`).join("");
+  }
+
+  function markStage(key, state, detail = "", elapsed = null) {
+    const icon = $(`icon-${key}`);
+    if (!icon) return;
+    icon.className = "stage-icon " + state;
+    icon.textContent = state === "done" ? "✓" : state === "error" ? "✕" : "";
+    if (elapsed !== null) $(`time-${key}`).textContent = `+${elapsed}ms`;
+    if (detail) $(`detail-${key}`).textContent = detail;
+  }
+
+  // ── Load exercise ─────────────────────────────────────────────────────────
+
+  $("loadExercise").onclick = async () => {
+    const id = $("exerciseId").value.trim();
+    if (!id) return;
+    try {
+      const res = await fetch(`${apiBase()}/exercises/${id}`);
+      if (!res.ok) { $("exerciseInfo").textContent = `error ${res.status}`; return; }
+      const ex = await res.json();
+      $("language").value = ex.language;
+      $("code").value = ex.starter_code;
+      $("exerciseInfo").textContent = `${ex.title} [${ex.kind}]`;
+    } catch (e) {
+      $("exerciseInfo").textContent = `fetch failed: ${e.message}`;
+    }
+  };
+
+  // ── Run ───────────────────────────────────────────────────────────────────
+
+  $("run").onclick = async () => {
+    $("run").disabled = true;
+    $("runStatus").textContent = "";
+    $("stdout").textContent = "";
+    $("stderr").textContent = "";
+    initTrace();
+
+    const lang = $("language").value;
+    const t0 = Date.now();
+
+    // Stage: submit
+    markStage("submit", "active", "POST /run…");
+
+    const body = {
+      language: lang,
+      code: $("code").value,
+      user_id: $("userId").value,
+      exercise_id: $("exerciseId").value.trim() || null,
+    };
+
+    let run_id;
+    try {
+      const runRes = await fetch(`${apiBase()}/run`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!runRes.ok) {
+        const txt = await runRes.text();
+        markStage("submit", "error", `${runRes.status}: ${txt}`);
+        $("runStatus").textContent = `error: ${runRes.status}`;
+        $("run").disabled = false;
+        return;
+      }
+      ({ run_id } = await runRes.json());
+    } catch (e) {
+      markStage("submit", "error", e.message);
+      $("runStatus").textContent = `could not reach API — is the stack running?`;
+      $("run").disabled = false;
+      return;
+    }
+
+    const submitMs = Date.now() - t0;
+    markStage("submit", "done", `POST /run → ${run_id.slice(0,8)}…`, submitMs);
+    markStage("queued", "done", "message on code-run-queue", submitMs);
+    markStage("running", "active", "waiting for worker…");
+    $("traceRunId").textContent = run_id.slice(0,8) + "…";
+    $("runStatus").textContent = `run ${run_id.slice(0,8)}… queued`;
+
+    let workerPickedUp = false;
+
+    const poll = async () => {
+      try {
+        const res = await fetch(`${apiBase()}/check/${run_id}`);
+        const run = await res.json();
+        const elapsed = Date.now() - t0;
+
+        if (run.status === "running" && !workerPickedUp) {
+          workerPickedUp = true;
+          markStage("running", "done", "status → running", elapsed);
+          markStage("container", "active", `code-runner-${lang}:latest`);
+          $("runStatus").textContent = `run ${run_id.slice(0,8)}… running`;
+        }
+
+        if (run.status === "pending" || run.status === "running") {
+          setTimeout(poll, 800);
+          return;
+        }
+
+        // terminal state
+        const isError = run.status === "error" || run.status === "timeout";
+        if (!workerPickedUp) {
+          markStage("running", "done", "status → " + run.status, elapsed);
+        }
+        markStage("container", isError ? "error" : "done", `code-runner-${lang}:latest`, elapsed);
+        markStage("done", isError ? "error" : "done", `status → ${run.status}`, elapsed);
+
+        // output
+        $("stdout").textContent = run.stdout || "";
+        $("stderr").textContent  = run.stderr  || "";
+
+        // status line
+        let statusTxt = `${run.status}  ·  ${run.runtime_ms ?? "?"}ms`;
+        if (run.passed === true)  statusTxt += "  ·  ✓ PASS";
+        if (run.passed === false) statusTxt += "  ·  ✗ FAIL";
+        $("runStatus").textContent = statusTxt;
+
+        $("run").disabled = false;
+      } catch (e) {
+        $("runStatus").textContent = `poll error: ${e.message}`;
+        $("run").disabled = false;
+      }
+    };
+
+    setTimeout(poll, 800);
+  };
+
+  initTrace();
+</script>
+</body>
+</html>

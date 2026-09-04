@@ -61,6 +61,8 @@ for (int i = 0; i < numbers.length; i++) {
                 </div>
             </div>
         `,
+        initialCode: `// TODO: create a 1D array of your favorite fruits and print them
+// using a for-each loop`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Apple Banana Orange"
@@ -92,6 +94,8 @@ grid[2][0] = 7; grid[2][1] = 8; grid[2][2] = 9;</code></pre>
                 <p class="tutorial-text">Try creating a 2D array representing a tic-tac-toe board. Use 'X', 'O', and ' ' (space) as elements. Print out the board using nested loops.</p>
             </div>
         `,
+        initialCode: `// TODO: create a 2D array representing a tic-tac-toe board
+// using 'X', 'O', and ' ', then print it with nested loops`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "X O X\nO X O\nX   O"
@@ -124,6 +128,8 @@ for (int i = 0; i < matrix.length; i++) {
                 </div>
             </div>
         `,
+        initialCode: `// TODO: create a 3x3 2D array of student grades and print
+// each student's average grade`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Student 1 average: 85.0\nStudent 2 average: 78.33\nStudent 3 average: 92.67"
@@ -259,6 +265,39 @@ public class TicTacToe {
                 <p class="tutorial-text">Implement the missing methods and game logic. Use the online compiler to write and test your code. Once you're satisfied with your program, paste the output of a complete game in the autograder to check your work.</p>
             </div>
         `,
+        initialCode: `import java.util.Scanner;
+
+public class TicTacToe {
+    private static char[][] board = new char[3][3];
+    private static char currentPlayer = 'X';
+
+    public static void main(String[] args) {
+        initializeBoard();
+        playGame();
+    }
+
+    private static void initializeBoard() {
+        // Initialize the board with empty spaces
+    }
+
+    private static void printBoard() {
+        // Print the current state of the board
+    }
+
+    private static void playGame() {
+        // Implement the game logic here
+    }
+
+    private static boolean checkWin() {
+        // Check for a win condition
+        return false;
+    }
+
+    private static boolean isBoardFull() {
+        // Check if the board is full (draw condition)
+        return false;
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Player X wins!"

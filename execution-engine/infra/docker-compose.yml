@@ -1,0 +1,141 @@
+name: code-execution-engine
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: codeexec
+      POSTGRES_PASSWORD: codeexec
+      POSTGRES_DB: codeexec
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U codeexec"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  localstack:
+    image: localstack/localstack:3
+    environment:
+      SERVICES: sqs
+      DEFAULT_REGION: us-east-1
+    ports:
+      - "4566:4566"
+    volumes:
+      - localstack_data:/var/lib/localstack
+
+  localstack-init:
+    image: amazon/aws-cli:2.17.62
+    depends_on:
+      - localstack
+    entrypoint: ["sh", "/infra/init_localstack.sh"]
+    environment:
+      AWS_ENDPOINT_URL: http://localstack:4566
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_REGION: us-east-1
+    volumes:
+      - ./init_localstack.sh:/infra/init_localstack.sh:ro
+
+  # Build-only targets for the per-language runner images. They're never
+  # started (`profiles` keeps `docker-compose up` from touching them) — run
+  # `docker-compose --profile build-runners build` or the Makefile target.
+  code-runner-python:
+    build:
+      context: ../runners/python
+    image: code-runner-python:latest
+    profiles: ["build-runners"]
+
+  code-runner-java:
+    build:
+      context: ../runners/java
+    image: code-runner-java:latest
+    profiles: ["build-runners"]
+
+  # Schema is alembic-managed, not create_all() — this one-off must complete
+  # before anything that reads/writes exercises/lessons/runs starts.
+  migrate:
+    build:
+      context: ..
+      dockerfile: api/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg2://codeexec:codeexec@postgres:5432/codeexec
+    working_dir: /srv
+    entrypoint: ["alembic", "upgrade", "head"]
+
+  api:
+    build:
+      context: ..
+      dockerfile: api/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+      localstack-init:
+        condition: service_completed_successfully
+      migrate:
+        condition: service_completed_successfully
+    environment:
+      DATABASE_URL: postgresql+psycopg2://codeexec:codeexec@postgres:5432/codeexec
+      AWS_ENDPOINT_URL: http://localstack:4566
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_REGION: us-east-1
+      RUN_QUEUE_NAME: code-run-queue
+    ports:
+      - "8000:8000"
+
+  worker:
+    build:
+      context: ..
+      dockerfile: worker/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+      localstack-init:
+        condition: service_completed_successfully
+      migrate:
+        condition: service_completed_successfully
+    environment:
+      DATABASE_URL: postgresql+psycopg2://codeexec:codeexec@postgres:5432/codeexec
+      AWS_ENDPOINT_URL: http://localstack:4566
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_REGION: us-east-1
+      RUN_QUEUE_NAME: code-run-queue
+      # Warm pool — containers pre-warmed per language on worker startup.
+      POOL_SIZE: "2"
+      POOL_MAX_USES: "100"
+      # Seccomp profile: docker run --security-opt seccomp=<path> is read by
+      # the Docker CLI on the caller's side (inside this container), so we
+      # pass the container-local bind-mount path, not the host path.
+      SECCOMP_PATH: /seccomp/runner.json
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      # seccomp-runner.json is bind-mounted into the worker so the path
+      # ${PWD}/seccomp-runner.json is valid on the host for dockerd to read.
+      - ./seccomp-runner.json:/seccomp/runner.json:ro
+
+  seed:
+    build:
+      context: ..
+      dockerfile: api/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    environment:
+      DATABASE_URL: postgresql+psycopg2://codeexec:codeexec@postgres:5432/codeexec
+    volumes:
+      - ./seed.py:/srv/seed.py:ro
+    entrypoint: ["python", "/srv/seed.py"]
+
+volumes:
+  pgdata:
+  localstack_data:

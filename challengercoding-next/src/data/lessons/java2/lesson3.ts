@@ -109,6 +109,36 @@ export const java2Lesson3 = [
                 <p class="tutorial-text">Try creating a class with different access modifiers and experiment with accessing them from another class. Use the compiler below to write your code.</p>
             </div>
         `,
+        initialCode: `public class AccessModifierDemo {
+    public int publicVar = 1;
+    protected int protectedVar = 2;
+    int defaultVar = 3;
+    private int privateVar = 4;
+
+    public void publicMethod() {
+        System.out.println("This is a public method");
+    }
+
+    protected void protectedMethod() {
+        System.out.println("This is a protected method");
+    }
+
+    void defaultMethod() {
+        System.out.println("This is a default method");
+    }
+
+    private void privateMethod() {
+        System.out.println("This is a private method");
+    }
+
+    // TODO: print the four lines from the expected output below — call
+    // publicMethod/protectedMethod/defaultMethod and print
+    // "<Name> method accessed" after each; privateMethod can't be called
+    // from outside this class, so just print "Private method not accessible"
+    public static void main(String[] args) {
+        AccessModifierDemo demo = new AccessModifierDemo();
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Public method accessed\nProtected method accessed\nDefault method accessed\nPrivate method not accessible"
@@ -163,6 +193,39 @@ export const java2Lesson3 = [
                 <p class="tutorial-text">Try creating a class with private fields and implement getters and setters for them. Use the compiler below to write your code.</p>
             </div>
         `,
+        initialCode: `public class Person {
+    private String name;
+    private int age;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        if (age > 0 && age < 120) {
+            this.age = age;
+        } else {
+            System.out.println("Invalid age");
+        }
+    }
+
+    public static void main(String[] args) {
+        Person person = new Person();
+        person.setName("John Doe");
+        person.setAge(25);
+        System.out.println("Name: " + person.getName());
+        System.out.println("Age: " + person.getAge());
+        person.setAge(-5);
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Name: John Doe\nAge: 25\nInvalid age"
@@ -229,6 +292,59 @@ export const java2Lesson3 = [
                 <p class="tutorial-text">Try creating a class that follows these best practices. Implement proper encapsulation for at least three attributes, including one read-only attribute. Use the compiler below to write your code.</p>
             </div>
         `,
+        initialCode: `public class Employee {
+    private String name;
+    private double salary;
+    private final String employeeId;  // read-only
+
+    public Employee(String name, String employeeId) {
+        this.name = name;
+        this.employeeId = employeeId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        if (name != null && !name.isEmpty()) {
+            this.name = name;
+        } else {
+            throw new IllegalArgumentException("Name cannot be null or empty");
+        }
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        if (salary > 0) {
+            this.salary = salary;
+        } else {
+            throw new IllegalArgumentException("Salary must be positive");
+        }
+    }
+
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    public static void main(String[] args) {
+        Employee employee = new Employee("Alice Johnson", "EMP001");
+        employee.setSalary(50000.0);
+
+        System.out.println("Name: " + employee.getName());
+        System.out.println("Employee ID: " + employee.getEmployeeId());
+        System.out.println("Salary: " + employee.getSalary());
+
+        try {
+            employee.setSalary(-100);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Illegal Argument Exception: " + e.getMessage());
+        }
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Name: Alice Johnson\nEmployee ID: EMP001\nSalary: 50000.0\nIllegal Argument Exception: Salary must be positive"
@@ -360,6 +476,38 @@ public class BankAccount {
                 <p class="tutorial-text">Implement the BankAccount class and demonstrate its usage in the main method. Make sure to include proper encapsulation and validation. Use the online compiler to write and test your code. Once you're satisfied with your program, paste a sample output of creating an account, depositing money, withdrawing money, and printing account details in the autograder to check your work.</p>
             </div>
         `,
+        initialCode: `import java.util.Date;
+
+public class BankAccount {
+    private String accountNumber;
+    private double balance;
+    private String ownerName;
+    private final Date creationDate;
+
+    // Constructor
+    public BankAccount(String accountNumber, String ownerName) {
+        // Initialize fields here
+        this.creationDate = new Date();
+    }
+
+    // Implement getters and setters
+
+    public void deposit(double amount) {
+        // Implement deposit logic
+    }
+
+    public void withdraw(double amount) {
+        // Implement withdrawal logic
+    }
+
+    public void printAccountDetails() {
+        // Print account details
+    }
+
+    public static void main(String[] args) {
+        // Create bank accounts and perform operations
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Account created for John Doe\nDeposit: $1000.0\nWithdrawal: $500.0\nAccount Details:\nAccount Number: AC001\nOwner: John Doe\nBalance: $500.0\nCreation Date: [Current Date]"

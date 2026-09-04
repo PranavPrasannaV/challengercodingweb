@@ -56,6 +56,11 @@ export const javaLesson1 = [
               </div>
           </div>
       `,
+        initialCode: `public class HelloJava {
+    public static void main(String[] args) {
+        System.out.println("Hello, Java!");
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Welcome to Java class!"
@@ -94,6 +99,11 @@ four lines of output.</code></pre>
               <p class="text-lg leading-relaxed text-gray-700 mb-4">Use the online compiler below to write and run your code. Then, paste your output in the autograder to check your work.</p>
           </div>
       `,
+        initialCode: `public class ProgramName {
+    public static void main(String[] args) {
+        // Your code goes here
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Hello, world!\n\nThis program produces\nfour lines of output."
@@ -126,6 +136,14 @@ four lines of output.</code></pre>
               <p class="text-lg leading-relaxed text-gray-700 mb-4">Try to fix the errors in the code above. Use the online compiler to test your solutions. Once you've corrected all the errors and the program runs without any issues, paste the output in the autograder to check your work.</p>
           </div>
       `,
+        initialCode: `public class DebugExample {
+    public static void main(String[] args) {
+        System.out.println("Let's debug this program!)
+        int x = 5
+        int y = 0;
+        System.out.println(x / y);
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Let's debug this program!\nCannot divide by zero" // Note: This expected output might be tricky if user fixes div by zero differently. Just preserving original logic essentially.
@@ -217,6 +235,11 @@ four lines of output.</code></pre>
               </div>
           </div>
       `,
+        initialCode: `public class PersonalInfo {
+    public static void main(String[] args) {
+        // Your code here
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Name: [Your Name]\nAge: [Your Age]\nFavorite Language: [Your Favorite Language]\nWhy I'm learning Java: [Your Reason]"

@@ -83,6 +83,16 @@ interface LessonExport {
 
 const lessons: LessonExport[] = [];
 const warnings: string[] = [];
+// Unlike `warnings` (informational), an entry here fails the export: a
+// showCompiler step with no initialCode gets classified as free_run by
+// exerciseShapeFor() (it has no code to detect a `public class` in), which
+// silently wraps whatever the student types in a hidden Main class. If the
+// step's own prose teaches "write a full class" (as early Java lessons do),
+// that wrapping produces a class declaration nested inside a method body —
+// a compile error for a student who followed the lesson correctly. That's
+// not a case to warn-and-ship; the step needs a real initialCode starter
+// (which also self-corrects the kind detection) before it can export.
+const errors: string[] = [];
 
 for (const course of courses) {
     course.lessons.forEach((lesson, index) => {
@@ -104,7 +114,7 @@ for (const course of courses) {
                 const starter = step.initialCode ?? '';
                 const { kind, template } = exerciseShapeFor(language, starter);
                 if (!starter) {
-                    warnings.push(`${key}: step "${step.title}" has showCompiler but no initialCode`);
+                    errors.push(`${key}: step "${step.title}" has showCompiler but no initialCode`);
                 }
                 blocks.push({
                     block_type: 'exercise_ref',
@@ -146,6 +156,12 @@ for (const course of courses) {
             blocks,
         });
     });
+}
+
+if (errors.length) {
+    console.error(`${errors.length} error(s) — refusing to write export:`);
+    for (const e of errors) console.error(`  - ${e}`);
+    process.exit(1);
 }
 
 const outPath = resolvePath(process.cwd(), process.argv[2] ?? 'lessons-export.json');

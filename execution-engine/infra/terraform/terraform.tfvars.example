@@ -1,0 +1,17 @@
+# Copy to terraform.tfvars (gitignored) and fill in.
+
+aws_region = "us-east-1"
+
+# Supabase pooler DSN (transaction mode, usually port 6543) — see the
+# database_url description in variables.tf for why the pooler host matters.
+database_url = "postgresql+psycopg2://postgres.xxxx:CHANGEME@aws-0-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require"
+
+# Bump these once images are built and pushed past the ECR repos' initial
+# empty state (see ecr.tf for the build/push commands).
+python_image_tag = "latest"
+java_image_tag   = "latest"
+api_image_tag    = "latest"
+
+# Your deployed frontend origin(s), comma-separated. Empty string = allow all
+# (fine for early testing, tighten before real traffic).
+allowed_origins = "https://challengercoding.org"

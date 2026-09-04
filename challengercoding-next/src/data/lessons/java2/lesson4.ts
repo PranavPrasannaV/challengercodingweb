@@ -71,6 +71,25 @@ public class Main {
                 <p class="tutorial-text">In this example, <code>Dog</code> inherits from <code>Animal</code>, so it can use the <code>eat()</code> method defined in <code>Animal</code>.</p>
             </div>
         `,
+        initialCode: `class Animal {
+    void eat() {
+        System.out.println("This animal eats food");
+    }
+}
+
+class Dog extends Animal {
+    void bark() {
+        System.out.println("The dog barks");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog myDog = new Dog();
+        myDog.eat();  // Inherited method
+        myDog.bark(); // Dog's own method
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "This animal eats food\nThe dog barks"
@@ -123,6 +142,35 @@ public class Main {
                 <p class="tutorial-text">Try creating a class hierarchy demonstrating hierarchical inheritance. Create a base class <code>Vehicle</code> and two subclasses <code>Car</code> and <code>Motorcycle</code>. Use the compiler to implement and test your code.</p>
             </div>
         `,
+        initialCode: `class Vehicle {
+    void start() {
+        // TODO: print "Vehicle started"
+    }
+}
+
+class Car extends Vehicle {
+    void drive() {
+        // TODO: print "Car is driving"
+    }
+}
+
+class Motorcycle extends Vehicle {
+    void ride() {
+        // TODO: print "Motorcycle is riding"
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Vehicle vehicle = new Vehicle();
+        Car car = new Car();
+        Motorcycle motorcycle = new Motorcycle();
+
+        vehicle.start();
+        car.drive();
+        motorcycle.ride();
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Vehicle started\nCar is driving\nMotorcycle is riding"
@@ -178,6 +226,41 @@ public class Main {
                 <p class="tutorial-text">In this example, both <code>Circle</code> and <code>Square</code> extend <code>Shape</code>, inheriting its properties and methods. Try modifying this example by adding a new shape, like <code>Triangle</code>, and implement its <code>draw()</code> method. Use the compiler to test your code.</p>
             </div>
         `,
+        initialCode: `class Shape {
+    void draw() {
+        System.out.println("Drawing a shape");
+    }
+}
+
+class Circle extends Shape {
+    void draw() {
+        System.out.println("Drawing a circle");
+    }
+}
+
+class Square extends Shape {
+    void draw() {
+        System.out.println("Drawing a square");
+    }
+}
+
+class Triangle extends Shape {
+    // TODO: override draw() to print "Drawing a triangle"
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Shape shape = new Shape();
+        Circle circle = new Circle();
+        Square square = new Square();
+        Triangle triangle = new Triangle();
+
+        shape.draw();
+        circle.draw();
+        square.draw();
+        triangle.draw();
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Drawing a shape\nDrawing a circle\nDrawing a square\nDrawing a triangle"
@@ -235,6 +318,43 @@ public class Main {
                 <p class="tutorial-text">In this example, both <code>Dog</code> and <code>Cat</code> override the <code>makeSound()</code> method from the <code>Animal</code> class. Try adding a new animal, like <code>Cow</code>, and override its <code>makeSound()</code> method. Use the compiler to implement and test your code.</p>
             </div>
         `,
+        initialCode: `class Animal {
+    public void makeSound() {
+        System.out.println("The animal makes a sound");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("The dog barks");
+    }
+}
+
+class Cat extends Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("The cat meows");
+    }
+}
+
+class Cow extends Animal {
+    // TODO: override makeSound() to print "The cow moos"
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal animal = new Animal();
+        Animal dog = new Dog();
+        Animal cat = new Cat();
+        Animal cow = new Cow();
+
+        animal.makeSound();
+        dog.makeSound();
+        cat.makeSound();
+        cow.makeSound();
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "The animal makes a sound\nThe dog barks\nThe cat meows\nThe cow moos"
@@ -299,6 +419,45 @@ public class Main {
                 <p class="tutorial-text">In this example, we use <code>super</code> to call the superclass constructor, access a superclass field, and call a superclass method. Try modifying this example by adding a new method in the <code>Animal</code> class and use <code>super</code> to call it from a method in the <code>Dog</code> class. Use the compiler to implement and test your code.</p>
             </div>
         `,
+        initialCode: `class Animal {
+    String name = "Animal";
+
+    Animal() {
+        System.out.println("Animal constructor called");
+    }
+
+    void eat() {
+        System.out.println("Animal is eating");
+    }
+}
+
+class Dog extends Animal {
+    String name = "Dog";
+
+    Dog() {
+        super(); // Call to superclass constructor
+        System.out.println("Dog constructor called");
+    }
+
+    void printName() {
+        System.out.println("Local name: " + name);
+        System.out.println("Superclass name: " + super.name);
+    }
+
+    @Override
+    void eat() {
+        super.eat(); // Call to superclass method
+        System.out.println("Dog is eating");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog myDog = new Dog();
+        myDog.printName();
+        myDog.eat();
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Animal constructor called\nDog constructor called\nLocal name: Dog\nSuperclass name: Animal\nAnimal is eating\nDog is eating"
@@ -433,6 +592,59 @@ public class Main {
                 <p class="tutorial-text">Implement the missing parts of the Shape hierarchy. Create instances of different shapes, calculate their areas and perimeters, and display their information. Use the online compiler to write and test your code. Once you're satisfied with your program, paste a sample output showing the information for at least three different shapes in the autograder to check your work.</p>
             </div>
         `,
+        initialCode: `abstract class Shape {
+    String name;
+
+    Shape(String name) {
+        this.name = name;
+    }
+
+    abstract double calculateArea();
+    abstract double calculatePerimeter();
+
+    void displayInfo() {
+        System.out.println("Shape: " + name);
+        System.out.println("Area: " + calculateArea());
+        System.out.println("Perimeter: " + calculatePerimeter());
+    }
+}
+
+class Circle extends Shape {
+    Circle(String name) {
+        super(name);
+    }
+
+    // TODO: implement calculateArea() and calculatePerimeter() for a circle
+    double calculateArea() { return 0; }
+    double calculatePerimeter() { return 0; }
+}
+
+class Rectangle extends Shape {
+    Rectangle(String name) {
+        super(name);
+    }
+
+    // TODO: implement calculateArea() and calculatePerimeter() for a rectangle
+    double calculateArea() { return 0; }
+    double calculatePerimeter() { return 0; }
+}
+
+class Triangle extends Shape {
+    Triangle(String name) {
+        super(name);
+    }
+
+    // TODO: implement calculateArea() and calculatePerimeter() for a triangle
+    double calculateArea() { return 0; }
+    double calculatePerimeter() { return 0; }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Create instances of different shapes
+        // Call methods to demonstrate inheritance and polymorphism
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "Shape: Circle\nArea: 78.54\nPerimeter: 31.42\nShape: Rectangle\nArea: 24.00\nPerimeter: 20.00\nShape: Triangle\nArea: 6.00\nPerimeter: 12.00"

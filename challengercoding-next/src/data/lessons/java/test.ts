@@ -252,6 +252,22 @@ export const javaTest = [
                 </div>
             </div>
         `,
+        initialCode: `public class FinalTest {
+    public static int sumEvenNumbers(int[] numbers) {
+        // Your code here
+        return 0;
+    }
+
+    public static void printFibonacci(int n) {
+        // Your code here
+    }
+
+    public static void main(String[] args) {
+        int[] numbers = {1, 2, 3, 4, 5, 6};
+        System.out.println(sumEvenNumbers(numbers));  // Should output 12
+        printFibonacci(10);  // Should print the first 10 Fibonacci numbers
+    }
+}`,
         showCompiler: true,
         showAutograder: true,
         expectedOutput: "12\n0 1 1 2 3 5 8 13 21 34"
