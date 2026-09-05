@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Newsreader, Source_Sans_3, JetBrains_Mono } from "next/font/google";
+import { Newsreader, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
+import AnnouncementBar from "./components/AnnouncementBar";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { OG_IMAGE, SITE } from "@/src/site";
@@ -12,7 +13,7 @@ const newsreader = Newsreader({
   axes: ["opsz"],
 });
 
-const sourceSans = Source_Sans_3({
+const sans = Hanken_Grotesk({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-source-sans",
@@ -98,7 +99,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${newsreader.variable} ${sourceSans.variable} ${jetbrainsMono.variable}`}
+      className={`${newsreader.variable} ${sans.variable} ${jetbrainsMono.variable}`}
     >
       <body className="bg-paper text-ink">
         <a
@@ -107,6 +108,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        <AnnouncementBar />
         <Navbar />
         {children}
         <Footer />

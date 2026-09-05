@@ -18,11 +18,40 @@ import { ENROLL_URL } from '@/src/config';
  */
 export default function EnrollNote({
     variant = 'lesson',
+    theme = 'site',
 }: {
     variant?: 'lesson' | 'quiet';
+    /** "home" matches the redesigned homepage/courses-catalog look; "site"
+     *  (default) is the original theme every lesson page still uses. */
+    theme?: 'site' | 'home';
 }) {
     if (variant === 'quiet') {
         // No rule of its own — the syllabus list above closes with one.
+        if (theme === 'home') {
+            return (
+                <section className="mt-14">
+                    <p className="max-w-[60ch] text-sm text-home-ink-soft">
+                        These lessons are free to read on your own. We also teach them live,
+                        in free classes run by high school volunteers.{' '}
+                        <Link
+                            href={ENROLL_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-semibold text-home-teal underline underline-offset-2 transition-colors hover:text-home-teal-deep"
+                        >
+                            Enroll in a live class
+                            <ArrowUpRight
+                                className="ml-1 inline h-4 w-4 align-[-0.15em]"
+                                aria-hidden="true"
+                            />
+                        </Link>
+                    </p>
+                    <p className="mt-2 max-w-[60ch] text-xs text-home-ink-soft">
+                        Opens the sign-up form on forms.office.com in a new tab.
+                    </p>
+                </section>
+            );
+        }
         return (
             <section className="mt-14">
                 <p className="text-small text-ink-muted measure">
@@ -45,6 +74,30 @@ export default function EnrollNote({
                     Opens the sign-up form on forms.office.com in a new tab.
                 </p>
             </section>
+        );
+    }
+
+    if (theme === 'home') {
+        return (
+            <aside className="mt-12 border-l-[3px] border-home-teal py-1 pl-5">
+                <h2 className="font-sans text-sm font-semibold text-home-ink">Live classes</h2>
+                <p className="mt-2 max-w-[60ch] text-base leading-relaxed text-home-ink-soft">
+                    These lessons are free to read on your own. We also teach them live, in
+                    free classes run by high school volunteers. Signing up takes one form.
+                </p>
+                <Link
+                    href={ENROLL_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-5 inline-flex items-center justify-center gap-2 rounded-md border border-home-ink/15 px-6 py-3.5 font-sans font-semibold text-home-ink transition-colors hover:bg-home-ink/[0.04]"
+                >
+                    Enroll in a live class
+                    <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+                <p className="mt-3 text-xs text-home-ink-soft">
+                    Opens the sign-up form on forms.office.com in a new tab.
+                </p>
+            </aside>
         );
     }
 

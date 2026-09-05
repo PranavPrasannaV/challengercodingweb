@@ -45,16 +45,16 @@ const reference: Item[] = [
 function Directory({ title, items, note }: { title: string; items: Item[]; note?: string }) {
     return (
         <section className="mt-14 first:mt-0">
-            <div className="flex flex-wrap items-baseline justify-between gap-3 pb-4 border-b border-rule">
-                <h2 className="text-h2 font-serif text-ink">{title}</h2>
-                {note && <p className="text-small text-ink-meta">{note}</p>}
+            <div className="flex flex-wrap items-baseline justify-between gap-3 pb-4 border-b border-home-rule">
+                <h2 className="font-sans text-2xl font-semibold tracking-tight text-home-ink">{title}</h2>
+                {note && <p className="font-mono text-sm text-home-ink-soft">{note}</p>}
             </div>
 
             {/* A directory, not fourteen cards. Every link is legible in
                 roughly the space four cards used to take. */}
             <ul className="sm:grid sm:grid-cols-2 sm:gap-x-12">
                 {items.map((item) => (
-                    <li key={item.url} className="border-b border-rule">
+                    <li key={item.url} className="border-b border-home-rule">
                         <a
                             href={item.url}
                             target="_blank"
@@ -62,18 +62,18 @@ function Directory({ title, items, note }: { title: string; items: Item[]; note?
                             className="group block py-4"
                         >
                             <span className="flex items-baseline justify-between gap-4">
-                                <span className="text-ink group-hover:text-brand transition-colors inline-flex items-center gap-1">
+                                <span className="inline-flex items-center gap-1 text-home-ink transition-colors group-hover:text-home-teal">
                                     {item.name}
                                     <ArrowUpRight
-                                        className="w-3.5 h-3.5 text-ink-meta"
+                                        className="w-3.5 h-3.5 text-home-ink-soft"
                                         aria-hidden="true"
                                     />
                                 </span>
-                                <span className="font-mono text-small text-ink-meta shrink-0">
+                                <span className="shrink-0 font-mono text-sm text-home-ink-soft">
                                     {host(item.url)}
                                 </span>
                             </span>
-                            <span className="block text-small text-ink-muted mt-1">
+                            <span className="mt-1 block text-sm text-home-ink-soft">
                                 {item.desc}
                             </span>
                         </a>
@@ -86,12 +86,13 @@ function Directory({ title, items, note }: { title: string; items: Item[]; note?
 
 export default function Resources() {
     return (
-        <main id="main" className="wrap section">
-            <header className="border-b border-rule pb-6">
-                <h1 className="text-h1 text-ink">Links and resources</h1>
+        <main id="main" className="bg-home-bg text-home-ink">
+          <div className="wrap section">
+            <header className="border-b border-home-rule pb-6">
+                <h1 className="font-sans text-4xl font-semibold tracking-tight text-home-ink">Links and resources</h1>
             </header>
 
-            <p className="text-lead measure mt-8">
+            <p className="mt-8 max-w-[60ch] font-sans text-lg leading-relaxed text-home-ink-soft">
                 Places we point students when they want more practice, and the
                 official documentation for the three languages we teach.
             </p>
@@ -102,6 +103,7 @@ export default function Resources() {
                 <Directory title="Install" items={install} note="Set up your own machine" />
                 <Directory title="Reference" items={reference} note="Official documentation" />
             </div>
+          </div>
         </main>
     );
 }

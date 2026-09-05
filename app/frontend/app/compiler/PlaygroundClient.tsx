@@ -22,15 +22,15 @@ export default function PlaygroundClient() {
                         role="tab"
                         aria-selected={lang === option.id}
                         onClick={() => setLang(option.id)}
-                        className={`px-3 py-1.5 rounded-sm text-small font-semibold transition-colors ${
-                            lang === option.id ? 'bg-card text-brand' : 'text-ink-muted hover:text-ink'
+                        className={`px-3 py-1.5 rounded-sm font-sans text-sm font-semibold transition-colors ${
+                            lang === option.id ? 'bg-white text-home-teal' : 'text-home-ink-soft hover:text-home-ink'
                         }`}
                     >
                         {option.label}
                     </button>
                 ))}
             </div>
-            <CodeRunner key={lang} language={lang} initialCode="" />
+            <CodeRunner key={lang} language={lang} initialCode="" theme="home" />
         </div>
     );
 }

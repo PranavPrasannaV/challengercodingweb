@@ -3,35 +3,38 @@
 /* ==========================================================================
    Challenger Coding — design tokens
 
-   Three hues, one warm neutral ramp. Teal is the institution, terracotta is
-   the invitation, ochre marks the beginner track. Everything else is paper
-   and ink. Every foreground/background pair below meets WCAG AA at its
-   intended size; the ratios are noted where they are close.
+   Retinted to match the homepage redesign: a cool near-white ground and a
+   single teal accent everywhere, no warm paper stock and no separate
+   terracotta hue. This is the one place that changes — every page and
+   component keeps reading these same token names, so nothing else needed
+   to be touched. Every foreground/background pair below meets WCAG AA at
+   its intended size; the ratios are noted where they are close.
    ========================================================================== */
 
 @theme {
-  /* Neutrals — warm paper stock */
-  --color-paper: #FAF8F4;        /* page ground */
-  --color-paper-sunk: #F2EDE4;   /* recessed bands, quiet fills */
+  /* Neutrals */
+  --color-paper: #FFFFFF;        /* page ground */
+  --color-paper-sunk: #F5F6F8;   /* recessed bands, quiet fills */
   --color-card: #FFFFFF;         /* raised surfaces */
 
-  --color-ink: #1B1917;          /* 16.5:1 on paper */
-  --color-ink-muted: #5A554E;    /*  7.0:1 on paper — body copy */
-  --color-ink-meta: #6B645B;     /*  5.5:1 on paper — labels, captions */
+  --color-ink: #14171C;          /* 17.5:1 on paper */
+  --color-ink-muted: #3F4552;    /*  9.7:1 on paper — body copy */
+  --color-ink-meta: #5B6270;     /*  5.1:1 on paper — labels, captions */
 
-  --color-rule: #E4DDD2;         /* hairlines */
-  --color-rule-strong: #D6CCBD;  /* dividers that need to read */
-  --color-field: #8C8271;        /*  3.6:1 — form borders, non-text contrast */
+  --color-rule: #E1E4E9;         /* hairlines */
+  --color-rule-strong: #C7CCD6;  /* dividers that need to read */
+  --color-field: #8B93A1;        /*  3.6:1 — form borders, non-text contrast */
 
-  /* Brand — teal */
-  --color-brand: #1A5C5C;        /*  7.3:1 on paper */
-  --color-brand-deep: #124442;   /* 10.2:1 — dark bands, hover */
-  --color-brand-tint: #E8F0EE;
+  /* Brand — teal, the site's one accent hue */
+  --color-brand: #0E7C6B;        /*  4.2:1 on paper */
+  --color-brand-deep: #0A5F52;   /*  6.7:1 — dark bands, hover */
+  --color-brand-tint: #E5F2EF;
 
-  /* Accent — terracotta (darkened from the old #C6694E, which failed AA) */
-  --color-accent: #A9482F;       /*  5.4:1 on paper; white on it = 5.8:1 */
-  --color-accent-deep: #8E3B26;
-  --color-accent-tint: #F7ECE7;
+  /* Accent used to be a separate terracotta; the homepage never introduced
+     a second hue, so this now matches brand exactly rather than fighting it. */
+  --color-accent: #0E7C6B;
+  --color-accent-deep: #0A5F52;
+  --color-accent-tint: #E5F2EF;
 
   /* Warm highlight, used only on dark grounds */
   --color-sand: #E4C88F;         /*  6.7:1 on brand-deep */
@@ -47,15 +50,19 @@
   --color-danger: #9A3B33;       /*  6.5:1 on paper, 5.8:1 on its tint */
   --color-danger-tint: #F7E9E6;
 
-  /* Code surfaces */
-  --color-code-bg: #17312F;
-  --color-code-fg: #E8E4DC;
+  /* Code surfaces — matched to the homepage hero demo's terminal. */
+  --color-code-bg: #0B0F14;
+  --color-code-fg: #E7EAEE;
   --color-code-keyword: #F0A88A;
   --color-code-string: #9FD6B4;
   --color-code-comment: #8FA39F;
 
-  /* Type */
-  --font-serif: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  /* Type. --font-serif now points at the same sans stack as --font-sans —
+     the homepage theme has no serif voice, and every h1–h4 (see @layer base
+     below) and .font-serif call site reads this token rather than hardcoding
+     a family, so retiring Newsreader took one line instead of a find/replace
+     across lesson-prose, CourseCard, EnrollNote and the rest. */
+  --font-serif: var(--font-source-sans), system-ui, -apple-system, sans-serif;
   --font-sans: var(--font-source-sans), system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, "SF Mono", monospace;
 
@@ -75,6 +82,32 @@
 
   /* The fixed header height. Reserved once, on <body>. */
   --nav-h: 4rem;
+  /* The announcement strip fixed above the navbar (AnnouncementBar.tsx).
+     The navbar's own top offset and every --nav-h consumer below add this
+     in, so the stack reserves its space in exactly one place. */
+  --announce-h: 2.25rem;
+
+  /* ------------------------------------------------------------------------
+     Homepage redesign tokens.
+
+     Scoped to the homepage only (used under the `.home` wrapper in
+     app/page.tsx) rather than replacing --color-paper/--color-accent above —
+     those are load-bearing across ~40 lesson pages with their own documented
+     AA ratios. A cool near-white + single teal accent, no cream/terracotta.
+     ------------------------------------------------------------------------ */
+  --color-home-bg: #FFFFFF;
+  --color-home-ink: #14171C;         /* 15.6:1 on home-bg */
+  --color-home-ink-soft: #5B6270;    /*  5.1:1 on home-bg */
+  --color-home-teal: #0E7C6B;        /*  4.2:1 on home-bg; white on it = 3.9:1 */
+  --color-home-teal-deep: #0A5F52;
+  --color-home-teal-tint: #E5F2EF;
+  --color-home-terminal: #0B0F14;
+  --color-home-terminal-fg: #E7EAEE;
+  --color-home-rule: #E1E4E9;
+
+  /* Scratch scene backdrop — a soft stage, not bare white grid paper. */
+  --color-home-stage: #DCEFEA;
+  --color-home-stage-floor: #C3E3DA;
 }
 
 /* ==========================================================================
@@ -84,7 +117,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: calc(var(--nav-h) + 1.5rem);
+    scroll-padding-top: calc(var(--announce-h) + var(--nav-h) + 1.5rem);
   }
 
   body {
@@ -93,9 +126,9 @@
     font-family: var(--font-sans);
     font-size: 1.0625rem;
     line-height: 1.65;
-    /* The header is fixed. Reserve its height once here rather than
-       compensating with a different pt-* on every page. */
-    padding-top: var(--nav-h);
+    /* The announcement bar and header are both fixed. Reserve their height
+       once here rather than compensating with a different pt-* on every page. */
+    padding-top: calc(var(--announce-h) + var(--nav-h));
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -171,7 +204,7 @@
    orange fill against paper is 2.2:1 — it is decoration, and the numeral
    inside it carries the information. */
 :root { --track: var(--color-brand); --track-ink: #FFFFFF; }
-[data-track="scratch"] { --track: #FF8C1A; --track-ink: #1B1917; }
+[data-track="scratch"] { --track: #FF8C1A; --track-ink: var(--color-ink); }
 
 /* Scratch students are 8-12 — a slightly larger reading size than the other
    tracks, kept for that reason. The narrower 56ch measure this used to also
@@ -188,6 +221,264 @@
 
 @keyframes vt-fade-out { to { opacity: 0; } }
 @keyframes vt-fade-in { from { opacity: 0; } }
+
+/* Stats ticker (StatsTicker.tsx). Two identical copies of the row sit end
+   to end in one track; sliding exactly -50% loops it seamlessly, since the
+   second copy lands pixel-for-pixel where the first started. */
+@keyframes stats-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.stats-ticker-track {
+  animation: stats-marquee 32s linear infinite;
+}
+.stats-ticker-track:hover {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .stats-ticker-track {
+    animation: none;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    row-gap: 0.5rem;
+  }
+  .ticker-copy-dup { display: none; }
+}
+
+/* Hero demo's typing cursor (Scene 1, scripted). */
+@keyframes home-cursor-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+.home-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 1em;
+  transform: translateY(2px);
+  background-color: var(--color-home-teal);
+  animation: home-cursor-blink 0.9s steps(1) infinite;
+}
+
+/* ==========================================================================
+   "Our Offerings" demo loops (ScratchOfferingDemo / PythonOfferingDemo /
+   JavaOfferingDemo). Each is a single infinite, self-contained loop — no JS
+   timeline — so every staggered element shares one @keyframes' percentages
+   rather than using animation-delay, which would only offset the FIRST lap
+   and fall out of sync on every lap after. Global reduced-motion handling
+   (see the @media block near the top of this file, which forces
+   iteration-count:1) already covers these correctly, so nothing here
+   special-cases it.
+   ========================================================================== */
+
+@keyframes offering-scratch-sprite {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(84px); }
+}
+.offering-scratch-sprite { animation: offering-scratch-sprite 4s ease-in-out infinite; }
+
+@keyframes offering-scratch-snap {
+  0% { transform: translateY(10px); opacity: 0; }
+  8% { transform: translateY(10px); opacity: 1; }
+  20%, 85% { transform: translateY(0); opacity: 1; }
+  95%, 100% { transform: translateY(10px); opacity: 0; }
+}
+.offering-scratch-block-2 { animation: offering-scratch-snap 5s ease-in-out infinite; }
+
+@keyframes offering-py-type-1 {
+  0%, 4% { width: 0; }
+  20%, 100% { width: 7ch; }
+}
+@keyframes offering-py-type-2 {
+  0%, 24% { width: 0; }
+  46%, 100% { width: 24ch; }
+}
+@keyframes offering-py-output {
+  0%, 55% { opacity: 0; transform: translateY(4px); }
+  65%, 88% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(0); }
+}
+.offering-py-type-1 { animation: offering-py-type-1 6s ease-in-out infinite; }
+.offering-py-type-2 { animation: offering-py-type-2 6s ease-in-out infinite; }
+.offering-py-output { animation: offering-py-output 6s ease-in-out infinite; }
+
+@keyframes offering-java-line-1 {
+  0%, 6% { opacity: 0; transform: translateY(4px); }
+  14%, 88% { opacity: 1; transform: translateY(0); }
+  96%, 100% { opacity: 0; transform: translateY(0); }
+}
+@keyframes offering-java-line-2 {
+  0%, 26% { opacity: 0; transform: translateY(4px); }
+  34%, 88% { opacity: 1; transform: translateY(0); }
+  96%, 100% { opacity: 0; transform: translateY(0); }
+}
+@keyframes offering-java-line-3 {
+  0%, 46% { opacity: 0; transform: translateY(4px); }
+  54%, 88% { opacity: 1; transform: translateY(0); }
+  96%, 100% { opacity: 0; transform: translateY(0); }
+}
+.offering-java-line-1 { animation: offering-java-line-1 6s ease-in-out infinite; }
+.offering-java-line-2 { animation: offering-java-line-2 6s ease-in-out infinite; }
+.offering-java-line-3 { animation: offering-java-line-3 6s ease-in-out infinite; }
+
+/* ==========================================================================
+   Hero demo stage
+
+   frame  > wrap > stage (perspective, preserve-3d)
+                                        > canvas (scale, preserve-3d)
+                                          > drift (idle tilt + turn push-back, preserve-3d)
+                                            > scene-page ×3 (page-turn, preserve-3d)
+                                              > base layer (translateZ(0), flat leaf)
+                                              > centre object (flat leaf)
+                                              > panel (±translateZ, preserve-3d)
+                                                > panel-inner (tilt, preserve-3d)
+                                                  > shadow > body (flat leaves)
+
+   THE 3D CHAIN MUST STAY UNBROKEN. Every element from .hero-stage down to
+   .hero-panel-inner declares `transform-style: preserve-3d` explicitly (it
+   does not inherit), and none of them may carry overflow other than
+   visible, filter, backdrop-filter, clip-path, mask, mix-blend-mode,
+   contain, or a fractional opacity — any one of those flattens the whole
+   subtree into a 2D layer before the outer rotation applies, and the
+   scene turns like a photograph instead of an object with volume. Those
+   properties are only allowed on LEAVES (the base layer, the centre
+   object, the panel shadow/body), which carry no 3D transforms of their
+   own. If the stage ever needs clipping, clip .hero-stage-frame — outside
+   the chain — never anything inside it.
+
+   The frame reads as one device/screen set apart from the page. The stage
+   takes the frame's inner width at a fixed aspect ratio; the design canvas
+   (HeroDemo's STAGE_W × STAGE_H px) is scaled by --stage-scale so the whole
+   composition resizes as one unit. Panels are placed in %-of-canvas
+   coordinates (see stage.ts), never viewport px.
+   ========================================================================== */
+.hero-stage-frame {
+  position: relative;
+  background: #EAEBEE;
+  border-radius: 20px;
+  padding: 24px;
+}
+@media (max-width: 640px) {
+  .hero-stage-frame { padding: 14px; border-radius: 16px; }
+}
+.hero-stage-wrap {
+  position: relative;
+  margin-inline: auto;
+}
+
+.hero-stage {
+  position: relative;
+  width: 100%;
+  perspective: 1100px; /* mirrored by STAGE_PERSPECTIVE in stage.ts */
+  transform-style: preserve-3d;
+  --stage-scale: 1;
+}
+.hero-stage-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: scale(var(--stage-scale));
+  transform-origin: top left;
+  transform-style: preserve-3d;
+}
+.hero-stage-drift {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+/* One scene = one page. Pages are siblings that turn around the stage's
+   centre; the back of a page (and of everything on it) is never drawn. */
+.scene-page {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 50%;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform;
+  visibility: hidden; /* GSAP reveals the active page; avoids a stacked flash pre-hydration */
+}
+.scene-page:first-child { visibility: visible; }
+.scene-page * { backface-visibility: hidden; }
+
+/* The scene's base layer (IDE / browser / Scratch editor). Not the floor
+   of the scene but one more object in it: a child of the preserve-3d page
+   at translateZ(0), so it turns with the panels as one rigid unit, and
+   panels with negative depth sort BEHIND it. Inset from the canvas edges (8% / 6%)
+   (mirrored by BASE_INSET in stage.ts) so those behind-panels can stick
+   out past it. It is a flat leaf — its overflow/opacity/filter are fine
+   here because nothing below it carries a 3D transform. */
+/* opacity here is deliberate: a satellite panel with negative depth (see
+   stage.ts) sits BEHIND the base and would otherwise be fully cut off
+   wherever its rect falls under this rectangle. Translucency lets it bleed
+   through instead of vanishing at the base's edge. Safe on this element —
+   see the "flat leaf" note above. */
+.hero-base {
+  position: absolute;
+  inset: 13% 9%;
+  transform: translateZ(0);
+  opacity: 0.88;
+}
+.hero-base-editor > * {
+  opacity: 0.62;
+  filter: saturate(0.55);
+}
+.hero-scripts {
+  background-image: radial-gradient(circle, rgb(20 23 28 / 0.12) 1px, transparent 1.1px);
+  background-size: 18px 18px;
+  background-color: #F8F9FB;
+}
+
+/* Floating panels — a two-level transform hierarchy so three motions
+   compose instead of overwriting each other:
+     .hero-panel        position, depth, parallax rotateY (from stage drift)
+     .hero-panel-inner  rest tilt + the panel's own ambient oscillation
+   Below the inner wrapper everything is a flat leaf. The drop-shadow
+   filter lives on its own wrapper (.hero-panel-shadow) around the
+   clip-path'd body — a filter and a clip-path on the same element would
+   clip the shadow away, and a filter on .hero-panel-inner would flatten
+   the panel's own 3D context. Panels are square-cornered. */
+.hero-panel {
+  position: absolute;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+.hero-panel-inner {
+  position: relative;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+.hero-panel-shadow {
+  filter: drop-shadow(0 18px 22px rgb(20 23 28 / 0.16));
+}
+.hero-panel-body {
+  clip-path: inset(50% 50% 50% 50%);
+  opacity: 0;
+}
+/* Sharp corners and a legible 1px edge on every panel, including real site
+   components shown through a Cutout, whose own rounding would otherwise
+   peek out at the clip's square corners. The border is the primary "this
+   is a distinct object" cue against the frame and against the base layer
+   behind it. */
+.hero-panel-body > *,
+.hero-cutout,
+.hero-cutout > div > * {
+  border-radius: 0 !important;
+}
+.hero-panel-body > * {
+  border: 1px solid rgb(20 23 28 / 0.16) !important;
+}
+/* Coda slides: flat screenshots on their own (flat, rotationY 0) page.
+   Each is centred and 84% of the canvas; GSAP crossfades them. */
+.hero-slide {
+  position: absolute;
+  left: 8%;
+  top: 11%;
+  width: 84%;
+  height: 78%;
+  opacity: 0;
+  visibility: hidden;
+  transform-origin: 50% 50%;
+}
 
 /* ==========================================================================
    Components
@@ -399,7 +690,7 @@
    Overriding outline/box-shadow at :focus used to cancel :focus-visible. */
 .field:focus { border-color: var(--color-brand); }
 
-.min-h-page { min-height: calc(100svh - var(--nav-h)); }
+.min-h-page { min-height: calc(100svh - var(--announce-h) - var(--nav-h)); }
 
 }
 

@@ -17,17 +17,9 @@ const navLinks = [
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const closeRef = useRef<HTMLButtonElement>(null);
   const openRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   useEffect(() => {
     setMobileOpen(false);
@@ -56,9 +48,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 h-16 bg-paper border-b transition-colors ${
-          scrolled ? 'border-rule' : 'border-transparent'
-        }`}
+        className="fixed top-[var(--announce-h)] left-0 right-0 z-50 h-16 bg-card border-b border-rule"
       >
         <div className="wrap h-full">
           <div className="flex items-center justify-between h-full gap-6">
@@ -82,25 +72,27 @@ export default function Navbar() {
               ))}
             </ul>
 
-            <Link
-              href={ENROLL_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-primary hidden md:inline-flex text-small py-2.5 px-5"
-            >
-              Enroll
-            </Link>
+            <div className="flex items-center">
+              <Link
+                href={ENROLL_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn hidden md:inline-flex text-small py-2.5 px-5 bg-home-teal text-white hover:bg-home-teal-deep"
+              >
+                Enroll
+              </Link>
 
-            <button
-              ref={openRef}
-              onClick={() => setMobileOpen(true)}
-              className="md:hidden -mr-2 p-2 text-ink rounded-sm"
-              aria-label="Open menu"
-              aria-expanded={mobileOpen}
-              aria-controls="mobile-nav"
-            >
-              <Menu className="w-6 h-6" aria-hidden="true" />
-            </button>
+              <button
+                ref={openRef}
+                onClick={() => setMobileOpen(true)}
+                className="md:hidden -mr-2 p-2 text-ink rounded-sm"
+                aria-label="Open menu"
+                aria-expanded={mobileOpen}
+                aria-controls="mobile-nav"
+              >
+                <Menu className="w-6 h-6" aria-hidden="true" />
+              </button>
+            </div>
           </div>
         </div>
       </nav>
@@ -161,7 +153,7 @@ export default function Navbar() {
             href={ENROLL_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn btn-primary w-full"
+            className="btn w-full bg-home-teal text-white hover:bg-home-teal-deep"
           >
             Enroll
           </Link>

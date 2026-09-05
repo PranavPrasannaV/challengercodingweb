@@ -4,21 +4,26 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import {
   courses,
   coursesInTrack,
-  totalLessons,
   TRACKS,
+  type Track,
 } from "@/src/data/courses";
-import { fetchLessonSteps } from "@/src/lib/lessons";
 import { ENROLL_URL } from "@/src/config";
-import { SITE, STATS } from "@/src/site";
+import { fetchLessonSteps } from "@/src/lib/lessons";
+import HeroDemo from "./components/home/HeroDemo";
+import HeroIntro from "./components/home/HeroIntro";
+import MotionCta from "./components/home/MotionCta";
+import Reveal from "./components/home/Reveal";
+import StatsTicker from "./components/home/StatsTicker";
+import ScratchOfferingDemo from "./components/home/ScratchOfferingDemo";
+import PythonOfferingDemo from "./components/home/PythonOfferingDemo";
+import JavaOfferingDemo from "./components/home/JavaOfferingDemo";
 
-/* The hero shows the real first exercise of Python Week 1, derived from the
-   lesson data so it can never drift from what a student is actually asked
-   to write. Falls back to the known value only if the engine is unreachable
-   at request time — better than a blank hero. */
-async function firstExerciseOutput() {
-  const steps = await fetchLessonSteps("python-1");
-  return steps?.[0]?.expectedOutput ?? "hello, world";
-}
+/** One looping preview per track, shown beside its description in "Our Offerings". */
+const OFFERING_DEMOS: Record<Track, () => React.JSX.Element> = {
+  scratch: ScratchOfferingDemo,
+  python: PythonOfferingDemo,
+  java: JavaOfferingDemo,
+};
 
 /* Quoted verbatim from the previous site, which attributed all three to
    "Current Parent" and nothing more. Splitting them by course or year would
@@ -43,298 +48,209 @@ const testimonials = [
 ];
 
 export default async function Home() {
-  const expectedOutput = await firstExerciseOutput();
-  const heroCode = `print('${expectedOutput}')`;
+  // Scene 2 of the hero demo renders this lesson's real content through the
+  // real Blocks renderer — not a mock-up. Null only when the execution
+  // engine is unreachable; HeroDemo falls back to a static approximation in
+  // that case (see its FALLBACK_JAVA_BLOCKS), same as any other lesson page
+  // degrades when the engine is down.
+  const javaWeek1 = await fetchLessonSteps("java-1");
+  const javaBlocks = javaWeek1?.[0]?.blocks ?? null;
+
   return (
-    <main id="main">
+    <main id="main" className="bg-home-bg text-home-ink">
       {/* ---------------------------------------------------------------- */}
-      <section className="wrap section-lg">
-        <div className="grid gap-14 lg:grid-cols-12 lg:gap-16 lg:items-start">
+      <section className="wrap pt-8 pb-6 md:pt-12 md:pb-6">
+        <div className="grid gap-8 lg:grid-cols-12 lg:gap-10 lg:items-center">
+          <div className="lg:col-span-5">
+            <HeroIntro enrollUrl={ENROLL_URL} />
+          </div>
+
+          {/* Live, runnable demo — not a screenshot. It plays itself once on
+              load, then you can edit the code and hit Run yourself. */}
           <div className="lg:col-span-7">
-            <h1 className="text-display text-ink">
-              Free coding classes, taught by high schoolers.
-            </h1>
-
-            <p className="text-lead measure mt-7">
-              Challenger Coding is a student-run nonprofit in Sammamish,
-              Washington. We have been teaching Scratch, Python and Java to
-              K&#8211;12 students since the summer of {SITE.founded}, and we have
-              never charged for a class.
-            </p>
-
-            <div className="flex flex-wrap gap-3 mt-9">
-              <Link
-                href={ENROLL_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-primary"
-              >
-                Enroll in a class
-                <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
-              </Link>
-              <Link href="/tutorials" className="btn btn-outline">
-                See all the courses
-              </Link>
-            </div>
-
-            <p className="text-body text-ink-muted measure mt-7">
-              New here? Start with{" "}
-              <Link href="/lessons/scratch/1" className="link-quiet font-semibold">
-                Scratch Week 1
-              </Link>
-              ,{" "}
-              <Link href="/lessons/python/1" className="link-quiet font-semibold">
-                Python Week 1
-              </Link>{" "}
-              or{" "}
-              <Link href="/lessons/java/1" className="link-quiet font-semibold">
-                Java Week 1
-              </Link>
-              . Every lesson is free to read, with no account needed.
-            </p>
-          </div>
-
-          {/* The panel is the real week-one exercise, and it is the front
-              door to it — not a picture of one. */}
-          <div className="lg:col-span-5 space-y-5">
-            {/* Scratch is the entry course for half the catalogue and had no
-                door above the fold. Real block screenshots, unframed — a block
-                in a border reads as a picture of a block, not as a block. */}
-            <Link
-              href="/lessons/scratch/1"
-              className="card card-link group block overflow-hidden"
-            >
-              <div className="px-5 py-3 border-b border-rule">
-                <span className="eyebrow">Scratch &middot; Week 1</span>
-              </div>
-              <div className="px-5 py-6 flex flex-col items-start gap-1.5">
-                <Image src="/greenflag.png" alt="when green flag clicked block" width={141} height={71} className="h-9 w-auto" />
-                <Image src="/movesteps.png" alt="move 10 steps block" width={135} height={55} className="h-8 w-auto" />
-              </div>
-              <div className="px-5 py-4 border-t border-rule flex items-center justify-between gap-4">
-                <span className="text-small text-ink-muted">
-                  Drag two blocks. The cat moves.
-                </span>
-                <ArrowRight
-                  className="w-4 h-4 text-brand shrink-0 transition-transform group-hover:translate-x-0.5"
-                  aria-hidden="true"
-                />
-              </div>
-            </Link>
-
-            <Link
-              href="/lessons/python/1"
-              className="card card-link group block overflow-hidden"
-            >
-              <div className="flex items-center justify-between px-5 py-3 border-b border-rule">
-                <span className="font-mono text-small text-ink-meta">week1.py</span>
-                <span className="eyebrow">Python &middot; Week 1</span>
-              </div>
-
-              <pre className="bg-code-bg text-code-fg font-mono text-small leading-relaxed px-5 py-5 overflow-x-auto">
-                <code>{heroCode}</code>
-              </pre>
-
-              <div className="px-5 py-4 border-t border-rule">
-                <p className="eyebrow">Output</p>
-                <p className="font-mono text-small text-ink mt-1.5">
-                  {expectedOutput}
-                </p>
-              </div>
-
-              <div className="px-5 py-4 border-t border-rule flex items-center justify-between gap-4">
-                <span className="text-small text-ink-muted">
-                  The first thing every Python student writes.
-                </span>
-                <ArrowRight
-                  className="w-4 h-4 text-brand shrink-0 transition-transform group-hover:translate-x-0.5"
-                  aria-hidden="true"
-                />
-              </div>
-            </Link>
+            <HeroDemo javaBlocks={javaBlocks} />
           </div>
         </div>
       </section>
 
       {/* ---------------------------------------------------------------- */}
-      <section className="border-y border-rule">
-        <div className="wrap section-sm">
-          <dl className="grid gap-10 md:grid-cols-12 md:gap-0">
-            <div className="md:col-span-4">
-              <dd className="text-display tnum text-ink leading-none">
-                {STATS.studentsTaught}
-              </dd>
-              <dt className="eyebrow mt-3">Students taught since {SITE.founded}</dt>
-            </div>
-            <div className="md:col-span-3 md:border-l md:border-rule md:pl-10">
-              <dd className="text-display tnum text-ink leading-none">
-                {STATS.hoursOfContent}
-              </dd>
-              <dt className="eyebrow mt-3">Hours of lessons</dt>
-            </div>
-            <div className="md:col-span-3 md:border-l md:border-rule md:pl-10">
-              <dd className="text-display tnum text-ink leading-none">
-                {totalLessons}
-              </dd>
-              <dt className="eyebrow mt-3">Lessons, all free to read</dt>
-            </div>
-            <div className="md:col-span-2 md:border-l md:border-rule md:pl-10">
-              <dd className="text-display tnum text-ink leading-none">
-                {courses.length}
-              </dd>
-              <dt className="eyebrow mt-3">Courses</dt>
-            </div>
-          </dl>
-        </div>
-      </section>
+      <StatsTicker />
 
       {/* ---------------------------------------------------------------- */}
-      <section className="bg-brand-deep text-paper">
-        <div className="wrap section-lg">
+      <section className="wrap section-sm">
+        <Reveal>
           <div className="grid gap-10 md:grid-cols-12">
             <div className="md:col-span-7">
-              <h2 className="text-h1 text-paper">
-                It started with one summer class
-              </h2>
-              <p className="text-lead text-paper/75 measure mt-6">
-                Jaden Tang and Aadi Saraf started Challenger Coding in the summer
-                of {SITE.founded}, after looking for coding lessons aimed at
-                younger students and finding almost nothing written for them. It
-                is still planned, written and taught by students, and it is still
-                free.
+              <p className="max-w-[48ch] font-sans text-xl font-medium leading-snug text-home-ink sm:text-2xl">
+                Challenger Coding is a student-run nonprofit based in
+                Sammamish, Washington, teaching Scratch, Python, and Java to
+                K&#8211;12 students both in person and online. Founded in
+                June 2023, we operate as an official after-school program of
+                the Lake Washington School District.
               </p>
-              <Link
+              <MotionCta
                 href="/about"
-                className="inline-flex items-center gap-2 mt-8 text-sand font-semibold hover:text-paper transition-colors"
+                className="mt-6 inline-flex items-center gap-2 font-sans font-semibold text-home-teal transition-colors hover:text-home-teal-deep"
               >
                 Read our story
-                <ArrowRight className="w-4 h-4" aria-hidden="true" />
-              </Link>
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </MotionCta>
             </div>
-            <div className="md:col-span-4 md:col-start-9 md:text-right">
-              <p className="font-mono text-small text-paper/60 leading-loose">
-                Founded {SITE.founded}
-                <br />
-                {SITE.locality}, {SITE.region}
-                <br />
-                Run by students
-              </p>
+            <div className="flex flex-col items-center text-center md:col-span-4 md:col-start-9">
+              <div className="relative h-24 w-24 overflow-hidden rounded-full border border-home-rule bg-home-teal-tint">
+                <Image
+                  src="/jaden-headshot.jpg"
+                  alt="Jaden Tang"
+                  fill
+                  className="object-cover object-center"
+                  sizes="6rem"
+                />
+              </div>
+              <p className="mt-4 font-sans text-sm font-semibold text-home-ink">Jaden Tang</p>
+              <p className="mt-0.5 font-sans text-sm text-home-ink-soft">Founder</p>
+              <p className="mt-1 font-mono text-sm text-home-ink-soft">CS @ Georgia Tech</p>
+              <a
+                href="https://jadentang.xyz"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex items-center gap-1 rounded-full border border-home-rule px-3 py-1 font-sans text-xs font-semibold text-home-teal transition-colors hover:bg-home-teal-tint"
+              >
+                Website
+                <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
+              </a>
             </div>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ---------------------------------------------------------------- */}
       <section className="wrap section">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between border-b border-rule pb-6">
-          <h2 className="text-h1 text-ink">Three languages, two levels each</h2>
-          <p className="text-small text-ink-meta">
-            Scratch first, then Python, then Java.
-          </p>
-        </div>
-
-        <ul className="mt-10 grid gap-8 md:grid-cols-3">
-          {TRACKS.map((track) => {
-            const inTrack = coursesInTrack(track.id);
-            const first = inTrack[0];
-            return (
-              <li key={track.id} className="flex flex-col">
-                <Image
-                  src={track.mark}
-                  alt=""
-                  width={44}
-                  height={44}
-                  className="h-11 w-auto object-contain self-start"
-                />
-                <h3 className="text-h2 font-serif text-ink mt-5">{track.label}</h3>
-                <p className="text-small text-ink-muted mt-3 measure-tight">
-                  {first.blurb}
-                </p>
-                <ul className="mt-5 md:mt-auto md:pt-5 divide-y divide-rule border-t border-rule">
-                  {inTrack.map((course) => (
-                    <li key={course.id}>
-                      <Link
-                        href={course.link}
-                        className="flex items-baseline justify-between gap-4 py-3 group"
-                      >
-                        <span className="text-ink group-hover:text-brand transition-colors">
-                          {course.shortTitle}
-                        </span>
-                        <span className="text-small text-ink-meta shrink-0">
-                          {course.level}
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            );
-          })}
-        </ul>
-
-        <Link
-          href="/tutorials"
-          className="link-quiet inline-flex items-center gap-1.5 mt-10 font-semibold"
-        >
-          See all {courses.length} courses
-          <ArrowRight className="w-4 h-4" aria-hidden="true" />
-        </Link>
-      </section>
-
-      {/* ---------------------------------------------------------------- */}
-      <section className="bg-paper-sunk">
-        <div className="wrap section">
-          <h2 className="text-h2 text-ink">What parents tell us</h2>
-          <div className="mt-10 grid gap-10 md:grid-cols-3 md:gap-14">
-            <figure className="md:col-span-2">
-              <blockquote className="text-h3 font-serif italic font-normal text-ink measure">
-                {testimonials[0].quote}
-              </blockquote>
-              <figcaption className="eyebrow mt-4">
-                {testimonials[0].source}
-              </figcaption>
-            </figure>
-
-            <div className="space-y-8">
-              {testimonials.slice(1).map((t) => (
-                <figure key={t.quote}>
-                  <blockquote className="text-ink-muted">{t.quote}</blockquote>
-                  <figcaption className="eyebrow mt-3">{t.source}</figcaption>
-                </figure>
-              ))}
-            </div>
+        <Reveal>
+          <div className="flex flex-col gap-3 border-b border-home-rule pb-6 sm:flex-row sm:items-end sm:justify-between">
+            <h2 className="font-sans text-3xl font-semibold tracking-tight text-home-ink">
+              Our Offerings
+            </h2>
+            <p className="font-mono text-sm text-home-ink-soft">
+              Scratch, Python and Java — two levels each.
+            </p>
           </div>
-        </div>
+
+          <div className="mt-14 space-y-16 md:space-y-24">
+            {TRACKS.map((track, i) => {
+              const inTrack = coursesInTrack(track.id);
+              const first = inTrack[0];
+              const reversed = i % 2 === 1;
+              const Demo = OFFERING_DEMOS[track.id];
+              return (
+                <Reveal key={track.id} as="div" className="grid gap-8 md:grid-cols-2 md:items-center md:gap-14">
+                  <div className={reversed ? "md:order-2" : undefined}>
+                    <Image
+                      src={track.mark}
+                      alt=""
+                      width={36}
+                      height={36}
+                      className="h-9 w-auto object-contain"
+                    />
+                    <h3 className="mt-4 font-sans text-2xl font-semibold text-home-ink">{track.label}</h3>
+                    <p className="mt-3 max-w-[46ch] font-sans text-base leading-relaxed text-home-ink-soft">
+                      {first.description}
+                    </p>
+                    <ul className="mt-6 max-w-[26rem] divide-y divide-home-rule border-t border-home-rule">
+                      {inTrack.map((course) => (
+                        <li key={course.id}>
+                          <Link
+                            href={course.link}
+                            className="group flex items-baseline justify-between gap-4 py-3"
+                          >
+                            <span className="text-home-ink transition-colors group-hover:text-home-teal">
+                              {course.shortTitle}
+                            </span>
+                            <span className="shrink-0 font-mono text-xs text-home-ink-soft">
+                              {course.level}
+                            </span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className={reversed ? "md:order-1" : undefined}>
+                    <Demo />
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+
+          <MotionCta
+            href="/tutorials"
+            className="mt-14 inline-flex items-center gap-1.5 font-sans font-semibold text-home-teal"
+          >
+            See all {courses.length} courses
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </MotionCta>
+        </Reveal>
       </section>
 
       {/* ---------------------------------------------------------------- */}
-      <section className="bg-brand text-paper">
-        <div className="wrap section-lg text-center">
-          <h2 className="text-h1 text-paper measure mx-auto">
+      <section className="wrap section">
+        <Reveal>
+          <div className="flex flex-col gap-3 border-b border-home-rule pb-6 sm:flex-row sm:items-end sm:justify-between">
+            <h2 className="font-sans text-3xl font-semibold tracking-tight text-home-ink">
+              What parents tell us
+            </h2>
+            <p className="font-mono text-sm text-home-ink-soft">
+              Quoted, not paraphrased.
+            </p>
+          </div>
+
+          <ul className="mt-10 grid gap-6 md:grid-cols-3">
+            {testimonials.map((t, i) => (
+              <Reveal
+                key={t.quote}
+                as="li"
+                delay={i * 0.08}
+                className="flex flex-col rounded-xl border border-home-rule bg-white p-6 shadow-[0_1px_3px_rgb(20_23_28_/_0.06)]"
+              >
+                <figure className="flex flex-1 flex-col">
+                  <blockquote className="flex-1 font-sans text-base leading-relaxed text-home-ink">
+                    &ldquo;{t.quote}&rdquo;
+                  </blockquote>
+                  <figcaption className="mt-5 border-t border-home-rule pt-3 font-mono text-sm text-home-ink-soft">
+                    {t.source}
+                  </figcaption>
+                </figure>
+              </Reveal>
+            ))}
+          </ul>
+        </Reveal>
+      </section>
+
+      {/* ---------------------------------------------------------------- */}
+      <section className="bg-home-teal text-white">
+        <Reveal className="wrap section text-center" as="section">
+          <h2 className="mx-auto max-w-[22ch] font-sans text-3xl font-semibold tracking-tight text-white">
             Start with the first lesson
           </h2>
-          <p className="text-lead text-paper/75 measure mx-auto mt-6">
+          <p className="mx-auto mt-4 max-w-[44ch] font-sans text-base leading-relaxed text-white/80">
             Every lesson is free and open — no account needed to read them.
-            Enrollment for live classes runs through the form below.
           </p>
-          <div className="flex flex-wrap justify-center gap-3 mt-9">
-            <Link
+          <div className="mt-8 flex flex-col items-center gap-4">
+            <MotionCta
               href={ENROLL_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-primary"
+              external
+              className="inline-flex items-center justify-center gap-2 rounded-md bg-white px-6 py-3.5 font-sans font-semibold text-home-teal-deep transition-colors hover:bg-white/90"
             >
               Enroll in a class
-              <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
-            </Link>
-            <Link
+              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+            </MotionCta>
+            <MotionCta
               href="/lessons/scratch/1"
-              className="btn text-paper border border-paper/35 hover:bg-paper/10"
+              className="font-sans text-sm font-semibold text-white/80 underline underline-offset-2 transition-colors hover:text-white"
             >
-              Open Scratch Week 1
-            </Link>
+              Or open Scratch Week 1 →
+            </MotionCta>
           </div>
-        </div>
+        </Reveal>
       </section>
     </main>
   );

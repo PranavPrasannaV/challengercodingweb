@@ -27,6 +27,7 @@ export default function CodeRunner({
     initialCode,
     exerciseId,
     onFinished,
+    theme = 'site',
 }: {
     language: string;
     initialCode?: string;
@@ -34,6 +35,9 @@ export default function CodeRunner({
     /** Called with every terminal run result — lets a caller (e.g. a lesson's
      * expected-output check) react to stdout without re-implementing run/poll. */
     onFinished?: (result: RunResult) => void;
+    /** "home" matches the redesigned homepage/playground look; "site"
+     *  (default) is the original theme every lesson page still uses. */
+    theme?: 'site' | 'home';
 }) {
     const [code, setCode] = useState(initialCode ?? '');
     const [running, setRunning] = useState(false);
@@ -68,10 +72,31 @@ export default function CodeRunner({
         }
     };
 
+    const t =
+        theme === 'home'
+            ? {
+                  border: 'border-home-rule',
+                  headerBg: 'bg-home-teal-tint',
+                  label: 'font-sans text-sm font-semibold text-home-ink',
+                  reset: 'text-sm font-semibold text-home-teal underline underline-offset-2 transition-colors hover:text-home-teal-deep',
+                  run: 'inline-flex items-center gap-1.5 rounded-md bg-home-teal px-3 py-1.5 font-sans text-sm font-semibold text-white transition-colors hover:bg-home-teal-deep disabled:opacity-60',
+                  status: 'mb-2 text-sm text-home-ink-soft',
+                  stdout: 'font-mono text-sm text-home-ink whitespace-pre-wrap',
+              }
+            : {
+                  border: 'border-rule',
+                  headerBg: 'bg-paper-sunk',
+                  label: 'label',
+                  reset: 'link-quiet text-small font-semibold',
+                  run: 'btn btn-brand inline-flex items-center gap-1.5 !py-1.5 !px-3 text-small disabled:opacity-60',
+                  status: 'text-small text-ink-muted mb-2',
+                  stdout: 'font-mono text-small text-ink whitespace-pre-wrap',
+              };
+
     return (
-        <div className="border border-rule rounded-md overflow-hidden">
-            <div className="flex items-center justify-between gap-4 px-4 py-2 bg-paper-sunk border-b border-rule">
-                <span className="label">{language}</span>
+        <div className={`border ${t.border} rounded-md overflow-hidden`}>
+            <div className={`flex items-center justify-between gap-4 px-4 py-2 ${t.headerBg} border-b ${t.border}`}>
+                <span className={t.label}>{language}</span>
                 <div className="flex items-center gap-4">
                     {initialCode !== undefined && code !== initialCode && (
                         <button
@@ -80,16 +105,12 @@ export default function CodeRunner({
                                 setResult(null);
                                 setError(null);
                             }}
-                            className="link-quiet text-small font-semibold"
+                            className={t.reset}
                         >
                             Reset to starter code
                         </button>
                     )}
-                    <button
-                        onClick={run}
-                        disabled={running}
-                        className="btn btn-brand inline-flex items-center gap-1.5 !py-1.5 !px-3 text-small disabled:opacity-60"
-                    >
+                    <button onClick={run} disabled={running} className={t.run}>
                         {running ? (
                             <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
                         ) : (
@@ -108,18 +129,16 @@ export default function CodeRunner({
             />
 
             {(result || error) && (
-                <div className="border-t border-rule px-4 py-3 bg-paper-sunk">
+                <div className={`border-t ${t.border} px-4 py-3 ${t.headerBg}`}>
                     {error && <p className="text-small text-danger">{error}</p>}
                     {result && (
                         <>
-                            <p role="status" className="text-small text-ink-muted mb-2">
+                            <p role="status" className={t.status}>
                                 {result.status}
                                 {result.runtime_ms != null && ` — ${result.runtime_ms}ms`}
                                 {result.passed != null && (result.passed ? ' — passed' : ' — did not match expected output')}
                             </p>
-                            {result.stdout && (
-                                <pre className="font-mono text-small text-ink whitespace-pre-wrap">{result.stdout}</pre>
-                            )}
+                            {result.stdout && <pre className={t.stdout}>{result.stdout}</pre>}
                             {result.stderr && (
                                 <pre className="font-mono text-small text-danger whitespace-pre-wrap">{result.stderr}</pre>
                             )}

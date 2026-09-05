@@ -52,19 +52,19 @@ const leadership = [
 
 export default function About() {
     return (
-        <main id="main">
+        <main id="main" className="bg-home-bg text-home-ink">
             <section className="wrap section">
-                <h1 className="text-h1 text-ink measure">
+                <h1 className="max-w-[24ch] font-sans text-4xl font-semibold tracking-tight text-home-ink sm:text-5xl">
                     Founded in {SITE.founded}. Still planned, written and taught by students.
                 </h1>
             </section>
 
-            <section className="border-y border-rule">
+            <section className="border-y border-home-rule">
                 <div className="wrap section-sm">
                     <div className="grid gap-12 md:grid-cols-12">
                         <div className="md:col-span-7">
-                            <h2 className="text-h2 text-ink">Why we started</h2>
-                            <div className="measure mt-6 space-y-4 text-ink-muted">
+                            <h2 className="font-sans text-2xl font-semibold tracking-tight text-home-ink">Why we started</h2>
+                            <div className="mt-6 max-w-[60ch] space-y-4 text-base leading-relaxed text-home-ink-soft">
                                 <p>
                                     Challenger Coding started in the summer of {SITE.founded} as a
                                     weekly Scratch class for younger students in {SITE.locality}.
@@ -80,14 +80,16 @@ export default function About() {
                             </div>
                         </div>
 
-                        <dl className="md:col-span-5 md:col-start-8 border-t border-rule">
+                        <dl className="border-t border-home-rule md:col-span-5 md:col-start-8">
                             {facts.map((fact) => (
                                 <div
                                     key={fact.term}
-                                    className="flex gap-6 py-3 border-b border-rule text-small"
+                                    className="flex gap-6 border-b border-home-rule py-3 text-sm"
                                 >
-                                    <dt className="eyebrow w-24 shrink-0 pt-0.5">{fact.term}</dt>
-                                    <dd className="text-ink-muted">{fact.detail}</dd>
+                                    <dt className="w-24 shrink-0 pt-0.5 font-sans text-xs font-semibold uppercase tracking-wide text-home-ink-soft">
+                                        {fact.term}
+                                    </dt>
+                                    <dd className="text-home-ink-soft">{fact.detail}</dd>
                                 </div>
                             ))}
                         </dl>
@@ -99,9 +101,9 @@ export default function About() {
             <section className="wrap section">
                 <div className="grid gap-10 md:grid-cols-12 md:gap-14">
                     <div className="md:col-span-4">
-                        <div className="relative aspect-[3/4] bg-paper-sunk rounded-md overflow-hidden border border-rule">
+                        <div className="relative aspect-[3/4] overflow-hidden rounded-md border border-home-rule bg-home-teal-tint">
                             <Image
-                                src="/jaden.jpg"
+                                src="/jaden-headshot.jpg"
                                 alt="Jaden Tang"
                                 fill
                                 className="object-cover object-center"
@@ -111,10 +113,12 @@ export default function About() {
                     </div>
 
                     <div className="md:col-span-7 md:col-start-6">
-                        <p className="eyebrow">Co-founder, {SITE.founded}</p>
-                        <h2 className="text-h2 font-serif text-ink mt-2">Jaden Tang</h2>
+                        <p className="font-sans text-xs font-semibold uppercase tracking-wide text-home-ink-soft">
+                            Co-founder, {SITE.founded}
+                        </p>
+                        <h2 className="mt-2 font-sans text-2xl font-semibold tracking-tight text-home-ink">Jaden Tang</h2>
 
-                        <div className="measure mt-6 space-y-4 text-ink-muted">
+                        <div className="mt-6 max-w-[60ch] space-y-4 text-base leading-relaxed text-home-ink-soft">
                             <p>
                                 Jaden and Aadi Saraf started Challenger Coding in the summer of{' '}
                                 {SITE.founded}, after looking for coding lessons aimed at younger
@@ -133,18 +137,18 @@ export default function About() {
                             </p>
                         </div>
 
-                        <div className="flex items-center gap-3 mt-8 pt-6 border-t border-rule">
+                        <div className="mt-8 flex items-center gap-3 border-t border-home-rule pt-6">
                             <span
                                 aria-hidden="true"
-                                className="w-10 h-10 shrink-0 rounded-md bg-paper-sunk border border-rule flex items-center justify-center font-serif text-brand"
+                                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-home-rule bg-home-teal-tint font-sans font-semibold text-home-teal"
                             >
                                 AS
                             </span>
                             <span>
-                                <span className="block text-small text-ink-meta">
+                                <span className="block text-sm text-home-ink-soft">
                                     Co-founder and President
                                 </span>
-                                <span className="block text-ink font-semibold">Aadi Saraf</span>
+                                <span className="block font-semibold text-home-ink">Aadi Saraf</span>
                             </span>
                         </div>
                     </div>
@@ -152,30 +156,30 @@ export default function About() {
             </section>
 
             {/* Leadership ------------------------------------------------ */}
-            <section className="bg-paper-sunk">
+            <section className="bg-home-teal-tint">
                 <div className="wrap section">
-                    <h2 className="text-h2 text-ink">Who runs it now</h2>
+                    <h2 className="font-sans text-2xl font-semibold tracking-tight text-home-ink">Who runs it now</h2>
 
-                    <ul className="mt-8 border-t border-rule">
+                    <ul className="mt-8 border-t border-home-rule">
                         {leadership.map((person) => (
                             <li
                                 key={person.name}
-                                className="flex gap-5 py-6 border-b border-rule"
+                                className="flex gap-5 border-b border-home-rule py-6"
                             >
                                 <span
                                     aria-hidden="true"
-                                    className="w-11 h-11 shrink-0 rounded-md bg-paper border border-rule flex items-center justify-center font-serif text-brand"
+                                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-home-rule bg-white font-sans font-semibold text-home-teal"
                                 >
                                     {person.initials}
                                 </span>
                                 <div className="min-w-0">
                                     <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
-                                        <h3 className="text-h3 font-serif text-ink">
+                                        <h3 className="font-sans text-lg font-semibold text-home-ink">
                                             {person.name}
                                         </h3>
-                                        <p className="text-small text-ink-meta">{person.role}</p>
+                                        <p className="text-sm text-home-ink-soft">{person.role}</p>
                                     </div>
-                                    <p className="text-small text-ink-muted measure mt-1.5">
+                                    <p className="mt-1.5 max-w-[60ch] text-sm text-home-ink-soft">
                                         {person.desc}
                                     </p>
                                 </div>
@@ -183,13 +187,19 @@ export default function About() {
                         ))}
                     </ul>
 
-                    <p className="text-small text-ink-meta mt-8">
+                    <p className="mt-8 text-sm text-home-ink-soft">
                         Want to teach a section?{' '}
-                        <a href={`mailto:${SITE.email}`} className="link-quiet">
+                        <a
+                            href={`mailto:${SITE.email}`}
+                            className="font-semibold text-home-teal underline underline-offset-2 transition-colors hover:text-home-teal-deep"
+                        >
                             Email us
                         </a>
                         , or{' '}
-                        <Link href="/tutorials" className="link-quiet">
+                        <Link
+                            href="/tutorials"
+                            className="font-semibold text-home-teal underline underline-offset-2 transition-colors hover:text-home-teal-deep"
+                        >
                             read a course first
                         </Link>
                         .

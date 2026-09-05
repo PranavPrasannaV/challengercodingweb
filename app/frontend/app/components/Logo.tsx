@@ -1,12 +1,8 @@
 import Link from "next/link";
 
 /**
- * The wordmark, set once.
- *
- * It sits off the heading scale deliberately — a fixed optical size and its
- * own tracking — so it reads as a mark rather than as another h2. The weight
- * shift between the two words is the whole device; there is no glyph, because
- * a drawn mark should be drawn by a person and this org has students who can.
+ * The wordmark, set once: both words at the same full weight, no glyph —
+ * a drawn mark should be drawn by a person, and this org has students who can.
  */
 export default function Logo({
   size = "md",
@@ -21,10 +17,9 @@ export default function Logo({
 
   const inner = (
     <span
-      className={`font-serif ${scale} leading-none tracking-[-0.015em] text-brand whitespace-nowrap`}
+      className={`font-sans font-bold ${scale} leading-none tracking-[-0.015em] text-brand whitespace-nowrap`}
     >
-      <span className="font-semibold">Challenger</span>{" "}
-      <span className="font-normal">Coding</span>
+      Challenger Coding
     </span>
   );
 

@@ -70,14 +70,15 @@ export default async function CourseHub({ params }: { params: Promise<Params> })
     };
 
     return (
-        <main id="main" className="wrap section-sm" data-track={course.track}>
-            <nav aria-label="Breadcrumb" className="text-meta text-ink-meta">
-                <Link href="/tutorials" className="hover:text-ink transition-colors">
+        <main id="main" className="bg-home-bg text-home-ink" data-track={course.track}>
+          <div className="wrap section-sm">
+            <nav aria-label="Breadcrumb" className="text-sm text-home-ink-soft">
+                <Link href="/tutorials" className="transition-colors hover:text-home-ink">
                     Courses
                 </Link>
             </nav>
 
-            <header className="mt-6 pb-6 border-b border-rule">
+            <header className="mt-6 pb-6 border-b border-home-rule">
                 <div className="flex items-center gap-4">
                     {mark && (
                         <Image
@@ -88,21 +89,26 @@ export default async function CourseHub({ params }: { params: Promise<Params> })
                             className="h-12 w-auto object-contain"
                         />
                     )}
-                    <p className="eyebrow">{course.level}</p>
+                    <p className="font-sans text-xs font-semibold uppercase tracking-wide text-home-ink-soft">
+                        {course.level}
+                    </p>
                 </div>
 
-                <h1 className="text-h1 text-ink mt-5">{course.title}</h1>
-                <p className="text-lead measure mt-5">{course.description}</p>
+                <h1 className="mt-5 font-sans text-4xl font-semibold tracking-tight text-home-ink">{course.title}</h1>
+                <p className="mt-5 max-w-[60ch] font-sans text-lg leading-relaxed text-home-ink-soft">{course.description}</p>
 
                 {/* The length of this line varies by course. That is the point —
                     an intro course has two facts, a continuation has three. */}
-                <p className="text-small text-ink-meta mt-6">
+                <p className="mt-6 text-sm text-home-ink-soft">
                     {weeks} weekly lessons
                     {hasFinalProject(course) && ' + a final project'}
                     {prereq && (
                         <>
                             {' '}&middot; do{' '}
-                            <Link href={prereq.link} className="link-quiet">
+                            <Link
+                                href={prereq.link}
+                                className="font-semibold text-home-teal underline underline-offset-2 transition-colors hover:text-home-teal-deep"
+                            >
                                 {prereq.title}
                             </Link>{' '}
                             first
@@ -110,26 +116,31 @@ export default async function CourseHub({ params }: { params: Promise<Params> })
                     )}
                 </p>
 
-                <ResumeButton course={course} />
+                <ResumeButton course={course} theme="home" />
             </header>
 
-            <SyllabusList course={course} />
+            <SyllabusList course={course} theme="home" />
 
             {/* One line, after the syllabus — the moment a parent has seen what
                 is taught and wants to know how to join. The hairline above it is
                 the syllabus list closing itself; the note draws none of its own. */}
-            <EnrollNote variant="quiet" />
+            <EnrollNote variant="quiet" theme="home" />
 
             {siblings.length > 0 && (
                 <section className="mt-14">
-                    <h2 className="label">Also in {course.track === 'java' ? 'Java' : course.track === 'python' ? 'Python' : 'Scratch'}</h2>
+                    <h2 className="font-sans text-sm font-semibold text-home-ink">
+                        Also in {course.track === 'java' ? 'Java' : course.track === 'python' ? 'Python' : 'Scratch'}
+                    </h2>
                     <ul className="mt-4 space-y-3">
                         {siblings.map((sibling) => (
                             <li key={sibling.id}>
-                                <Link href={sibling.link} className="link-quiet">
+                                <Link
+                                    href={sibling.link}
+                                    className="font-semibold text-home-teal underline underline-offset-2 transition-colors hover:text-home-teal-deep"
+                                >
                                     {sibling.title}
                                 </Link>
-                                <span className="text-small text-ink-meta"> — {sibling.blurb}</span>
+                                <span className="text-sm text-home-ink-soft"> — {sibling.blurb}</span>
                             </li>
                         ))}
                     </ul>
@@ -140,6 +151,7 @@ export default async function CourseHub({ params }: { params: Promise<Params> })
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
+          </div>
         </main>
     );
 }
