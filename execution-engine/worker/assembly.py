@@ -65,6 +65,20 @@ def resolve_java_entry(source: str) -> str:
 
 
 def build_job(language: str, template: Optional[str], code: str, kind: str) -> AssembledJob:
+    if language == "java" and kind != "write_class" and JAVA_CLASS_NAME_RE.search(code):
+        # No exercise context (a bare /cell submission, or a caller that
+        # hasn't wired exercise_id through yet — see CodeRunner in the
+        # frontend), but the submitted code is already a complete standalone
+        # program with its own public class. Wrapping it in the
+        # free_run/fill_function Main shell would nest that class declaration
+        # inside main() and fail to compile ("illegal start of expression"),
+        # so treat it like write_class instead: pass the code through
+        # unwrapped and resolve its own class name. Mirrors the same
+        # heuristic export-lessons.mts's exerciseShapeFor() uses at export
+        # time, applied here as a runtime safety net.
+        kind = "write_class"
+        template = "{{code}}"
+
     source = assemble_source(language, template, code)
 
     if language == "python":
