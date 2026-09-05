@@ -1,5 +1,5 @@
 /**
- * Client for the code-execution-engine API (lessons, exercises, and code
+ * Client for the code-app/backend API (lessons, exercises, and code
  * runs). Lesson reads happen server-side (see src/lib/lessons.ts, called
  * from Server Components) with Next's fetch cache providing ISR-style
  * revalidation; run submission/polling stays client-side since it's
@@ -20,7 +20,7 @@ export interface LessonSummary {
     order_index: number;
 }
 
-// Mirrors execution-engine/api/app/schemas.py's block content models —
+// Mirrors app/backend/api/app/schemas.py's block content models —
 // see src/data/lessons/blocks.ts for the frontend-side render types these
 // map onto (src/lib/lessons.ts does the mapping).
 export interface StepBlockContent { title: string }

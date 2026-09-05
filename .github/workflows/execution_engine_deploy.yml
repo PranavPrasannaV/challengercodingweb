@@ -1,0 +1,93 @@
+name: Deploy execution engine
+
+# Each of the three Lambdas (api, runner-python, runner-java) is a container
+# image with no auto-deploy — pushing a new image to ECR doesn't make Lambda
+# use it; something has to call update-function-code with the new digest.
+# Before this workflow, that "something" was a person typing four commands
+# by hand, and on at least one occasion not knowing they needed to (a code
+# change was live in the repo, but the running Lambda still 500'd because it
+# was serving the old image). This workflow is exactly those four manual
+# steps, run per image, only for the image(s) whose inputs actually changed.
+#
+# Schema migrations (alembic upgrade head) are deliberately NOT run here —
+# unlike a Lambda image swap, a bad migration can be destructive, so it stays
+# a reviewed, manual step (see infra/backfill_lessons.py's own docstring for
+# the same reasoning applied to content).
+
+on:
+  push:
+    branches: ["main"]
+    paths: ["app/backend/**"]
+  workflow_dispatch:
+
+concurrency:
+  group: backend-deploy
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: us-east-1
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      api: ${{ steps.filter.outputs.api }}
+      python_runner: ${{ steps.filter.outputs.python_runner }}
+      java_runner: ${{ steps.filter.outputs.java_runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            # Mirrors each Dockerfile.lambda's own COPY list (see
+            # app/backend/api/Dockerfile.lambda and
+            # app/backend/runners/{python,java}/Dockerfile.lambda) — a
+            # path not copied into an image can't affect it, so it's absent
+            # from that image's list here.
+            api:
+              - 'app/backend/api/**'
+              - 'app/backend/shared/**'
+              - 'app/backend/frontend/**'
+            python_runner:
+              - 'app/backend/runners/python/**'
+              - 'app/backend/shared/**'
+              - 'app/backend/worker/assembly.py'
+              - 'app/backend/worker/grading.py'
+              - 'app/backend/lambda_runner/**'
+            java_runner:
+              - 'app/backend/runners/java/**'
+              - 'app/backend/shared/**'
+              - 'app/backend/worker/assembly.py'
+              - 'app/backend/worker/grading.py'
+              - 'app/backend/lambda_runner/**'
+
+  api:
+    needs: changes
+    if: github.event_name == 'workflow_dispatch' || needs.changes.outputs.api == 'true'
+    uses: ./.github/workflows/_deploy_lambda_image.yml
+    with:
+      image-name: code-run-api
+      function-name: code-run-api
+      dockerfile: app/backend/api/Dockerfile.lambda
+    secrets: inherit
+
+  python-runner:
+    needs: changes
+    if: github.event_name == 'workflow_dispatch' || needs.changes.outputs.python_runner == 'true'
+    uses: ./.github/workflows/_deploy_lambda_image.yml
+    with:
+      image-name: code-run-python-lambda
+      function-name: code-run-runner-python
+      dockerfile: app/backend/runners/python/Dockerfile.lambda
+    secrets: inherit
+
+  java-runner:
+    needs: changes
+    if: github.event_name == 'workflow_dispatch' || needs.changes.outputs.java_runner == 'true'
+    uses: ./.github/workflows/_deploy_lambda_image.yml
+    with:
+      image-name: code-run-java-lambda
+      function-name: code-run-runner-java
+      dockerfile: app/backend/runners/java/Dockerfile.lambda
+    secrets: inherit

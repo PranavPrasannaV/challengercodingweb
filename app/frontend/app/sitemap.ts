@@ -12,7 +12,7 @@ import { SITE } from '@/src/site';
  * The three localStorage-profile routes are deliberately absent. A sitemap
  * that lists everything is generated; one that leaves things out was written.
  */
-// Lesson content now comes from the execution-engine API — cache the
+// Lesson content now comes from the app/backend API — cache the
 // sitemap rather than regenerating it on every crawler hit.
 export const revalidate = 300;
 

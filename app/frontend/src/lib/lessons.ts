@@ -1,6 +1,6 @@
 /**
  * Server-side lesson content: fetches the flat lesson_blocks stream from the
- * execution-engine API and regroups it into the LessonStep[] shape the site's
+ * app/backend API and regroups it into the LessonStep[] shape the site's
  * components render (src/data/lessons/blocks.ts) — the same shape the 46
  * static TS files used to export directly. This is the only place that
  * translation happens; everything downstream (LessonViewerClient,

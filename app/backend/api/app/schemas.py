@@ -83,7 +83,7 @@ class StepBlockContent(BaseModel):
     """Marks the start of a lesson step. lesson_blocks is a flat, ordered
     list with no other notion of step boundaries — the frontend regroups the
     block stream into steps by splitting on these (see
-    challengercoding-next/src/lib/lessons.ts)."""
+    app/frontend/src/lib/lessons.ts)."""
 
     title: str
 

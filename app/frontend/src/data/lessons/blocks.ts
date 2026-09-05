@@ -1,8 +1,8 @@
 /**
  * Structured lesson content. Replaces raw HTML strings — every field here is
  * plain data with no markup, rendered by app/components/lesson-blocks.tsx.
- * Mirrors the block_type/content shape the execution-engine API already
- * uses for quiz/exercise_ref (see execution-engine/api/app/schemas.py),
+ * Mirrors the block_type/content shape the app/backend API already
+ * uses for quiz/exercise_ref (see app/backend/api/app/schemas.py),
  * extended to cover prose.
  */
 

@@ -1,14 +1,16 @@
 """
-One-time backfill: reads lessons-export.json (produced by
-challengercoding-next/scripts/export-lessons.mts from the ~40 static TS
-lesson files) and writes Lesson / LessonBlock / Exercise /
-LessonExerciseRef rows into the same Postgres instance the execution
-engine already owns.
+Reads a lessons-export.json (originally produced by app/frontend's now-deleted
+scripts/export-lessons.mts, when lesson content still lived in ~40 static TS
+files there) and writes Lesson / LessonBlock / Exercise / LessonExerciseRef
+rows into Postgres. This module's backfill_lesson() is also imported
+directly by infra/admin/compile_lesson.py — that's the ongoing way to
+add/edit a lesson now that content lives only in the database; this file
+stays as the shared write path both go through, and as a way to reload the
+full lesson set from a JSON snapshot if ever needed.
 
-DB writes happen only here, in Python, even though the export step runs in
-the frontend repo — one process, one language, owns writes to the shared
-schema (see the migration-plan discussion: two backends touching one DB is
-the thing being avoided).
+DB writes happen only here, in Python — one process, one language, owns
+writes to the shared schema (two backends touching one DB is the thing
+being avoided).
 
 Idempotent on lesson slug: re-running replaces a lesson's blocks (and the
 exercises those exercise_ref blocks own) rather than duplicating them, so a

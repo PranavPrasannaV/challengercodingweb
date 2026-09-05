@@ -77,7 +77,7 @@ Requires Docker + Docker Compose v2 and the host Docker socket
 (`/var/run/docker.sock`).
 
 ```bash
-cd execution-engine
+cd app/backend
 
 # 1. Build the per-language sandbox images (one-time; re-run after Dockerfile changes).
 make build-runners
@@ -90,11 +90,9 @@ make up
 # 3. Seed exercises (in a second terminal, or wait for the stack to be healthy).
 make seed
 
-# 4. Optional: backfill real lesson content from the frontend's static TS files
-#    (run from challengercoding-next — see scripts/export-lessons.mts).
-#    cd ../challengercoding-next && node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON \
-#      --import ./scripts/ts-resolve.mjs scripts/export-lessons.mts /tmp/lessons-export.json
-#    cd ../execution-engine && python infra/backfill_lessons.py /tmp/lessons-export.json
+# 4. Optional: author/edit lesson content (see infra/admin/README.md) and push
+#    it in — lesson content lives in Postgres, not in any file in this repo.
+#    python infra/admin/compile_lesson.py infra/admin/example_lesson.yaml --apply
 ```
 
 Open **http://localhost:8000/cell** — the API base auto-detects same-origin, no
@@ -185,7 +183,7 @@ cd infra/terraform
 cp terraform.tfvars.example terraform.tfvars   # fill in database_url, allowed_origins
 terraform init && terraform apply              # creates SQS/ECR/IAM/API Gateway, empty Lambdas
 
-cd .. && cd ..   # back to execution-engine/
+cd .. && cd ..   # back to app/backend/
 make push-lambda-images ECR_REGISTRY=<account>.dkr.ecr.<region>.amazonaws.com
 
 cd infra/terraform && terraform apply          # re-apply to pick up the pushed image tags
@@ -193,7 +191,7 @@ terraform output api_url                       # the API's public URL
 ```
 
 Alembic migrations aren't wired into this deploy path — run `alembic upgrade
-head` (from `execution-engine/`, `DATABASE_URL` pointed at Supabase) by hand
+head` (from `app/backend/`, `DATABASE_URL` pointed at Supabase) by hand
 or from CI before the first deploy and after any schema change.
 
 **Not addressed by this path** (same seams as local — see "What's left as a

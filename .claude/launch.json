@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "challengercoding-next",
+      "name": "frontend",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
-      "cwd": "challengercoding-next",
+      "cwd": "app/frontend",
       "port": 3000
     }
   ]

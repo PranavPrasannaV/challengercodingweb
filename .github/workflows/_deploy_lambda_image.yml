@@ -1,0 +1,80 @@
+name: (reusable) build, push, and deploy one Lambda image
+
+# Called by execution_engine_deploy.yml once per image that changed — never
+# triggered directly. Build context is always app/backend/ — matching every
+# Dockerfile.lambda's own header comment ("build context is the repo root",
+# meaning app/backend's own root) and the Makefile's build-lambda-images
+# target, which cd's into app/backend before building.
+
+on:
+  workflow_call:
+    inputs:
+      image-name:
+        required: true
+        type: string
+      function-name:
+        required: true
+        type: string
+      dockerfile:
+        required: true
+        type: string
+
+jobs:
+  build-push-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - uses: aws-actions/amazon-ecr-login@v2
+        id: ecr
+
+      # Lambda runs these on arm64 (Graviton — see infra/terraform/lambda.tf
+      # for the cost reasoning), but Actions' runners are x86_64, so building
+      # a native arm64 image needs qemu-backed emulation via buildx.
+      - uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/build-push-action@v6
+        id: build
+        with:
+          context: app/backend
+          file: ${{ inputs.dockerfile }}
+          platforms: linux/arm64
+          push: true
+          # Both false, matching the Makefile's build-lambda-images target:
+          # buildx's default provenance/SBOM attestations produce a manifest
+          # list Lambda's UpdateFunctionCode flatly rejects
+          # (InvalidParameterValueException: "image manifest, config or
+          # layer media type ... is not supported") — found by hitting this
+          # for real doing the first manual deploy of the new lesson-block
+          # schema, not from reading the Makefile comment ahead of time.
+          provenance: false
+          sbom: false
+          tags: |
+            ${{ steps.ecr.outputs.registry }}/${{ inputs.image-name }}:latest
+            ${{ steps.ecr.outputs.registry }}/${{ inputs.image-name }}:${{ github.sha }}
+
+      # Deploy by digest, not the ":latest" tag — a tag can be re-pointed
+      # (by this same workflow racing itself, or a manual push) between the
+      # push above and this step; the digest this build actually produced
+      # can't drift out from under it. The ":latest" tag above still gets
+      # updated, so a `terraform apply` later sees the same image this
+      # workflow just deployed rather than reverting to whatever ":latest"
+      # meant before this run — see infra/terraform/*.tf's `*_image_tag`
+      # variables (all default to "latest").
+      # configure-aws-credentials above already exported the session for
+      # every step in this job — nothing further to authenticate here.
+      - name: Point the Lambda at the new image
+        run: |
+          aws lambda update-function-code \
+            --function-name "${{ inputs.function-name }}" \
+            --image-uri "${{ steps.ecr.outputs.registry }}/${{ inputs.image-name }}@${{ steps.build.outputs.digest }}" \
+            --region us-east-1

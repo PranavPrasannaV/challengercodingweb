@@ -35,7 +35,7 @@ from infra.backfill_lessons import backfill_lesson  # noqa: E402
 from infra.admin.markdown_blocks import markdown_to_blocks  # noqa: E402
 from shared.db import session_scope  # noqa: E402
 
-# Mirrors challengercoding-next/scripts/export-lessons.mts's
+# Mirrors app/frontend/scripts/export-lessons.mts's
 # exerciseShapeFor() — a Java starter that doesn't declare its own class is
 # a bare snippet meant to run inside the engine's Main/main() shell; anything
 # else (Python, or a full Java class) is submitted as-is. Kept in sync by

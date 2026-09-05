@@ -1,6 +1,6 @@
 """
 Converts one step's Markdown prose into the same LessonContentBlock shapes
-the frontend renders (challengercoding-next/src/data/lessons/blocks.ts) —
+the frontend renders (app/frontend/src/data/lessons/blocks.ts) —
 heading/paragraph/list/code/callout/table/image/embed. Deliberately a small,
 known subset rather than a general Markdown engine: an admin writing lesson
 content should never discover a Markdown feature that produces something the
