@@ -1,0 +1,51 @@
+# Template/example for infra/admin/compile_lesson.py — copy this file to
+# author a new lesson or edit an existing one (slug determines whether it's
+# an insert or an update; see infra/admin/README.md).
+
+slug: python-example
+title: "Week 0: Example Lesson"
+track: python
+order_index: 0
+
+steps:
+  - title: Say hello
+    # Markdown prose — see infra/admin/README.md for the full block syntax
+    # (headings, lists, code fences, callouts, images, tables). Inline
+    # **bold**, *italic*, `code`, and [links](url) work anywhere in here.
+    body: |
+      ## Exercise 1: Say hello
+
+      Welcome to your first Python exercise! We use the `print()` function
+      to display text on the screen.
+
+      ```python
+      print('Hello, World!')
+      ```
+
+      > [!tip] Try it yourself
+      > Modify the program to print "Welcome to Python!" instead, then run
+      > it and check your output below.
+
+    # Optional — adds the code runner + autograder panel to this step.
+    exercise:
+      starter_code: |
+        # Write your code here to print 'hello, world'
+      expected_output: "hello, world"
+
+    # Optional — adds a "Quick check" quiz after this step.
+    quiz:
+      - question: "What does print() do?"
+        options:
+          - { label: "Displays text on the screen", value: a }
+          - { label: "Deletes a variable", value: b }
+          - { label: "Reads user input", value: c }
+        correct: a
+
+  - title: Print your name
+    body: |
+      ## Exercise 2: Print your name
+
+      Now personalize it — print your own name instead of "Hello, World!".
+    exercise:
+      starter_code: |
+        # Write code to print your name

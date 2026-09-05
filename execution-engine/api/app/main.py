@@ -15,18 +15,25 @@ from sqlalchemy import desc
 
 from app.ratelimit import enforce_run_rate_limit
 from app.schemas import (
+    CalloutBlockContent,
+    CodeBlockContent,
+    EmbedBlockContent,
     ExerciseOut,
     ExerciseRefBlockContent,
+    HeadingBlockContent,
     ImageBlockContent,
     LessonBlockOut,
     LessonOut,
     LessonSummary,
-    ProseBlockContent,
+    ListBlockContent,
+    ParagraphBlockContent,
     QuizBlockContent,
     RunCreate,
     RunCreateOut,
     RunOut,
     RunSummary,
+    StepBlockContent,
+    TableBlockContent,
 )
 
 logger = logging.getLogger("api")
@@ -47,9 +54,16 @@ app.add_middleware(
 VALID_LANGUAGES = {"python", "java"}
 
 BLOCK_CONTENT_MODELS = {
-    "prose": ProseBlockContent,
+    "step": StepBlockContent,
+    "heading": HeadingBlockContent,
+    "paragraph": ParagraphBlockContent,
+    "list": ListBlockContent,
+    "code": CodeBlockContent,
+    "callout": CalloutBlockContent,
+    "table": TableBlockContent,
     "quiz": QuizBlockContent,
     "image": ImageBlockContent,
+    "embed": EmbedBlockContent,
     # "exercise_ref" is handled separately in _resolve_block — its stored
     # content is just {"exercise_id": ...} and gets resolved against the
     # exercises table, not parsed directly into ExerciseRefBlockContent.

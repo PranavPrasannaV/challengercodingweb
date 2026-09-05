@@ -1,0 +1,4 @@
+# infra/admin/compile_lesson.py needs everything api/requirements.txt
+# installs (sqlalchemy, psycopg2-binary, pydantic — reused for validation)
+# plus this one extra:
+pyyaml==6.0.2

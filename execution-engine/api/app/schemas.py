@@ -79,12 +79,55 @@ class LessonSummary(BaseModel):
         from_attributes = True
 
 
-class ProseBlockContent(BaseModel):
-    html: str
-    # The old stepper UI's per-step sidebar label (e.g. "Say hello"). Optional
-    # because not every prose block starts a step — only carried through so a
-    # frontend can rebuild that nav without a separate "steps" concept here.
-    step_title: Optional[str] = None
+class StepBlockContent(BaseModel):
+    """Marks the start of a lesson step. lesson_blocks is a flat, ordered
+    list with no other notion of step boundaries — the frontend regroups the
+    block stream into steps by splitting on these (see
+    challengercoding-next/src/lib/lessons.ts)."""
+
+    title: str
+
+
+class HeadingBlockContent(BaseModel):
+    level: int  # 2 | 3 | 4
+    text: str
+
+
+class ParagraphBlockContent(BaseModel):
+    # Small inline-markdown subset: **bold**, *italic*, `code`, [text](url).
+    # Never raw HTML — the frontend renders this without dangerouslySetInnerHTML.
+    text: str
+
+
+class ListBlockContent(BaseModel):
+    style: str  # "bullet" | "number"
+    items: list[str]
+
+
+class CodeBlockContent(BaseModel):
+    code: str
+    language: Optional[str] = None
+
+
+class CalloutBodyBlock(BaseModel):
+    # One of ParagraphBlockContent | ListBlockContent | CodeBlockContent |
+    # ImageBlockContent — not a discriminated union here because callout
+    # bodies are constructed straight from the lesson-content export, which
+    # already validates shape; keeping this loose avoids a second copy of
+    # the same four models nested a level down.
+    type: str
+    model_config = {"extra": "allow"}
+
+
+class CalloutBlockContent(BaseModel):
+    tone: str  # "info" | "tip" | "warning" | "success" | "danger"
+    title: Optional[str] = None
+    body: list[CalloutBodyBlock]
+
+
+class TableBlockContent(BaseModel):
+    headers: list[str]
+    rows: list[list[str]]
 
 
 class QuizChoice(BaseModel):
@@ -101,6 +144,12 @@ class QuizBlockContent(BaseModel):
 class ImageBlockContent(BaseModel):
     src: str
     alt: str = ""
+    caption: Optional[str] = None
+
+
+class EmbedBlockContent(BaseModel):
+    kind: str  # "youtube" | "scratch" | "iframe"
+    src: str
 
 
 class ExerciseRefBlockContent(BaseModel):
@@ -116,11 +165,25 @@ class ExerciseRefBlockContent(BaseModel):
 class LessonBlockOut(BaseModel):
     id: str
     position: int
-    block_type: str  # "prose" | "quiz" | "exercise_ref" | "image"
+    # "heading" | "paragraph" | "list" | "code" | "callout" | "table" |
+    # "image" | "embed" | "quiz" | "exercise_ref"
+    block_type: str
     version: int
     # Shape depends on block_type; typed per-block above rather than as one
     # BaseModel so a caller can't accidentally read the wrong fields.
-    content: ProseBlockContent | QuizBlockContent | ExerciseRefBlockContent | ImageBlockContent
+    content: (
+        StepBlockContent
+        | HeadingBlockContent
+        | ParagraphBlockContent
+        | ListBlockContent
+        | CodeBlockContent
+        | CalloutBlockContent
+        | TableBlockContent
+        | QuizBlockContent
+        | ExerciseRefBlockContent
+        | ImageBlockContent
+        | EmbedBlockContent
+    )
 
 
 class LessonOut(BaseModel):
