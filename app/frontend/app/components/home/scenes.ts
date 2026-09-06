@@ -10,14 +10,13 @@
  * settled before the whole scene is swept away by the next page-turn.
  */
 export interface SceneConfig {
-  id: "terminal" | "lesson" | "scratch";
+  id: "terminal" | "lesson";
   duration: number;
 }
 
 export const SCENES: SceneConfig[] = [
   { id: "terminal", duration: 7000 },
   { id: "lesson", duration: 6800 },
-  { id: "scratch", duration: 6800 },
 ];
 
 /** The coda: quiet product screenshots after Scene 3 (see CodaSlides). */

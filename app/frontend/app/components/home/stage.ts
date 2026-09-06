@@ -20,7 +20,7 @@ export const STAGE_MAX_W = 700;
 
 import { TEXT_RECTS } from "./textRects";
 
-export type SceneId = "python" | "lesson" | "scratch";
+export type SceneId = "python" | "lesson";
 
 export interface Satellite {
   scene: SceneId;
@@ -77,8 +77,6 @@ export const importantText = (scene: SceneId): Rect[] =>
 export const FOCAL: Partial<Record<SceneId, { x: number; y: number; w: number; h: number }>> = {
   // Terminal: 360px wide, centred; ~236px tall once the canned output is open.
   python: { x: STAGE_W / 2 - 180, y: 172, w: 360, h: 236 },
-  // Mascot stage card: 320px wide at (54%, 44%); 176px stage + 30px footer.
-  scratch: { x: STAGE_W * 0.54 - 160, y: 152, w: 320, h: 206 },
 };
 
 /**
@@ -127,24 +125,6 @@ export const SATELLITES = {
   },
   resume: {
     scene: "lesson", x: 86, y: 91.5, w: 168, h: 58,
-    restRotateX: 0, restRotateY: 0, restRotateZ: 0, depth: -36,
-  },
-
-  // ------------------------------------------------------------ Scene 3
-  activity3: {
-    scene: "scratch", x: 17, y: 8.5, w: 196, h: 46,
-    restRotateX: 0, restRotateY: 0, restRotateZ: 0, depth: 56, dropOnSmall: true,
-  },
-  sprite: {
-    scene: "scratch", x: 89, y: 10.5, w: 160, h: 90,
-    restRotateX: 0, restRotateY: 0, restRotateZ: 0, depth: -44,
-  },
-  blocks: {
-    scene: "scratch", x: 18, y: 79, w: 168, h: 100,
-    restRotateX: 0, restRotateY: 0, restRotateZ: 0, depth: 60,
-  },
-  enrollNote: {
-    scene: "scratch", x: 85, y: 92, w: 216, h: 92,
     restRotateX: 0, restRotateY: 0, restRotateZ: 0, depth: -36,
   },
 } satisfies Record<string, Satellite>;
@@ -278,7 +258,7 @@ const gap = (a: Rect, b: Rect) => {
 
 export function checkOverlaps(): OverlapIssue[] {
   const issues: OverlapIssue[] = [];
-  const scenes: SceneId[] = ["python", "lesson", "scratch"];
+  const scenes: SceneId[] = ["python", "lesson"];
   for (const scene of scenes) {
     const ids = satellitesFor(scene);
     for (let i = 0; i < ids.length; i++) {
@@ -313,7 +293,7 @@ export function checkOverlaps(): OverlapIssue[] {
 
 // CLI entry: report every pair, flag the ones over the limit.
 if (typeof process !== "undefined" && process.argv?.[1]?.endsWith("stage.ts")) {
-  const scenes: SceneId[] = ["python", "lesson", "scratch"];
+  const scenes: SceneId[] = ["python", "lesson"];
   for (const scene of scenes) {
     const ids = satellitesFor(scene);
     const focal = FOCAL[scene];

@@ -138,21 +138,3 @@ export function QuizCard() {
     </SkeletonCard>
   );
 }
-
-export function SpriteCard() {
-  return (
-    <SkeletonCard width={160} title="Sprite1" status="SHOW">
-      <div className="grid grid-cols-2 gap-x-2 gap-y-1 font-mono text-[9px] text-home-ink-soft">
-        <span>x <span className="text-home-ink">96</span></span>
-        <span>y <span className="text-home-ink">0</span></span>
-        <span>size <span className="text-home-ink">100</span></span>
-        <span>dir <span className="text-home-ink">90</span></span>
-      </div>
-      <div className="mt-2 flex gap-1.5" aria-hidden="true">
-        <span className="h-6 w-6 rounded-md bg-home-teal/80" />
-        <span className="h-6 w-6 rounded-md bg-home-ink/[0.08]" />
-        <span className="h-6 w-6 rounded-md bg-home-ink/[0.08]" />
-      </div>
-    </SkeletonCard>
-  );
-}

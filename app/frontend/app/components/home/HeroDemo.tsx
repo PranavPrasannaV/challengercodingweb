@@ -1,28 +1,24 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Play } from "lucide-react";
 import gsap from "gsap";
 import { submitRun, pollRun } from "@/src/lib/executionApi";
 import { getCourse } from "@/src/data/courses";
 import CourseCard from "@/app/components/CourseCard";
-import EnrollNote from "@/app/components/EnrollNote";
 import { SyllabusList, ResumeButton } from "@/app/tutorials/[courseId]/CourseProgress";
 import Blocks from "@/app/components/lesson-blocks";
 import type { LessonContentBlock } from "@/src/data/lessons/blocks";
 import { SCENES, CODA, STARTER_CODE, CANNED_OUTPUT_LINES, type SceneConfig } from "./scenes";
-import { STAGE_W, STAGE_H, STAGE_MAX_W, SATELLITES, satellitesFor, entranceOrder, entranceAt, type SatelliteId, type SceneId } from "./stage";
+import { STAGE_W, STAGE_H, STAGE_MAX_W, satellitesFor, entranceOrder, entranceAt, type SatelliteId, type SceneId } from "./stage";
 import { setPanelHidden, setPanelShown, startAmbient, buildPanelEntrance, ENTRANCE_DUR } from "./panelMotion";
 import Panel from "./Panel";
 import Cutout from "./Cutout";
-import Mascot from "./Mascot";
 import EditorChrome from "./EditorChrome";
 import LessonBase from "./LessonBase";
-import ScratchBase from "./ScratchBase";
 import CodaSlides, { CODA_SLIDES } from "./CodaSlides";
-import { ActivityCard, TestsCard, ProgressCard, StreakCard, QuizCard, SpriteCard } from "./skeletons";
+import { ActivityCard, TestsCard, ProgressCard, StreakCard, QuizCard } from "./skeletons";
 
 function anonId(): string {
   if (typeof window === "undefined") return "anonymous";
@@ -99,7 +95,6 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
   const driftRef = useRef<HTMLDivElement>(null);
   const pythonPageRef = useRef<HTMLDivElement>(null);
   const lessonPageRef = useRef<HTMLDivElement>(null);
-  const scratchPageRef = useRef<HTMLDivElement>(null);
   const codaPageRef = useRef<HTMLDivElement>(null);
 
   // Scene 1 terminal internals the script drives directly.
@@ -127,7 +122,7 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
     return () => ro.disconnect();
   }, []);
 
-  /* The master timeline: three scenes joined by 3D page turns, looping
+  /* The master timeline: two scenes joined by 3D page turns, looping
      forever like a promo video — hovering never pauses it. Only real input
      (a click into the terminal, or Run) stops the loop and hands the
      terminal over live (see jumpToLive). Sub-durations are literals; each
@@ -139,10 +134,9 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
     const pages: Record<SceneId, HTMLDivElement | null> = {
       python: pythonPageRef.current,
       lesson: lessonPageRef.current,
-      scratch: scratchPageRef.current,
     };
     const coda = codaPageRef.current;
-    if (!canvas || !drift || !coda || !pages.python || !pages.lesson || !pages.scratch) return;
+    if (!canvas || !drift || !coda || !pages.python || !pages.lesson) return;
     const slides = CODA_SLIDES.map((_, i) => q(coda, `slide${i}`));
 
     const panels: Partial<Record<SatelliteId, HTMLElement>> = {};
@@ -155,11 +149,6 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
         if (el) fn(el, id);
       });
 
-    // Scene 3 internals
-    const blockMove = q(pages.scratch, "blockMove");
-    const mascot = q(pages.scratch, "mascot");
-    const streak = q(pages.scratch, "streak");
-    const snapGlow = q(pages.scratch, "snapGlow");
     // Scene 2 internals
     const scrollFrame = q(pages.lesson, "scrollFrame");
     const scrollContent = q(pages.lesson, "scrollContent");
@@ -169,18 +158,17 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
     if (reduceMotion) {
       // Instant cut to the settled, interactive end state. No script, no
       // builds, no page turns, no drift.
-      gsap.set([pages.lesson, pages.scratch, coda], { display: "none" });
+      gsap.set([pages.lesson, coda], { display: "none" });
       gsap.set(pages.python, { autoAlpha: 1, rotationY: 0 });
       eachPanel("python", setPanelShown);
       eachPanel("lesson", setPanelHidden);
-      eachPanel("scratch", setPanelHidden);
       setMode("live");
       return;
     }
 
     // ------------------------------------------------------------ initial
     gsap.set(pages.python, { autoAlpha: 1, rotationY: 0 });
-    gsap.set([pages.lesson, pages.scratch], { autoAlpha: 0, rotationY: 100 });
+    gsap.set(pages.lesson, { autoAlpha: 0, rotationY: 100 });
     gsap.set(coda, { autoAlpha: 0, rotationY: 0 });
     gsap.set(slides, { autoAlpha: 0, scale: 0.97 });
     (Object.keys(panels) as SatelliteId[]).forEach((id) => setPanelHidden(panels[id]!, id));
@@ -189,10 +177,6 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
     gsap.set([outputLine1Ref.current, outputLine2Ref.current], { autoAlpha: 0, y: 4 });
     gsap.set(runBtnRef.current, { scale: 1 });
     gsap.set(scrollContent, { y: 0 });
-    gsap.set(blockMove, { x: 34, y: -6, rotation: 8, autoAlpha: 0 });
-    gsap.set(snapGlow, { autoAlpha: 0 });
-    gsap.set(mascot, { x: 0, scaleX: 1, scaleY: 1 });
-    gsap.set(streak, { autoAlpha: 0 });
 
     // Stage-level idle drift — one shared, slow motion on the drift wrapper.
     // Panels themselves stay flat and straight: no per-panel oscillation and
@@ -325,43 +309,14 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
     }
 
     const hold2 = Math.max(1.5, sceneDuration("lesson") - (0.2 + scrollDur));
-    tl.to({}, { duration: hold2 }, `scene2+=${0.2 + scrollDur}`).addLabel("turn3");
-    pageTurn("lesson", pages.lesson, pages.scratch, "turn3", false, -1);
-
-    // ============================================================= Scene 3
-    tl.addLabel("scene3", `turn3+=${landed}`);
-    tl.addLabel("panels3", `turn3+=${TURN_PANELS_AT}`);
-    buildPanels("scratch", "panels3");
-
-    // Blocks snap together inside their (now built) panel, then the mascot
-    // takes off with a motion trail and a squash-and-stretch bounce.
-    const moveDistance = 96;
-    tl.to(blockMove, { x: 0, y: 0, rotation: 0, autoAlpha: 1, duration: 0.4, ease: "power2.out" }, "scene3+=0.9")
-      .to(snapGlow, { autoAlpha: 0.9, duration: 0.08 }, "-=0.05")
-      .to(blockMove, { scale: 1.06, duration: 0.12, yoyo: true, repeat: 1, ease: "power1.inOut" }, "<")
-      .to(snapGlow, { autoAlpha: 0, duration: 0.35 }, "<0.1")
-      .to(streak, { autoAlpha: 0.5, duration: 0.1 }, "+=0.05")
-      .to(mascot, { scaleX: 1.18, scaleY: 0.82, duration: 0.1, ease: "power1.out" }, "<")
-      .to(mascot, { x: moveDistance, duration: 0.5, ease: "power2.out" }, "<0.05")
-      .to(mascot, { scaleX: 0.88, scaleY: 1.16, duration: 0.12 }, "-=0.32")
-      .to(mascot, { scaleX: 1, scaleY: 1, duration: 0.22, ease: "back.out(3)" })
-      .to(streak, { autoAlpha: 0, duration: 0.3 }, "<");
-
-    // The block snap + mascot hop run 0.9–2.6s; panels settle by ~1.6s.
-    const hold3 = Math.max(1.5, sceneDuration("scratch") - Math.max(2.6, panelsSettled("scratch")));
-    tl.to({}, { duration: hold3 }).addLabel("turnHome");
-
-    // Reset the terminal's canned output while its page is still turned
-    // away, so it comes back clean and ready for a real Run.
-    tl.set(outputPanelRef.current, { height: 0, opacity: 0 }, "turnHome")
-      .set([outputLine1Ref.current, outputLine2Ref.current], { autoAlpha: 0, y: 4 }, "turnHome");
+    tl.to({}, { duration: hold2 }, `scene2+=${0.2 + scrollDur}`).addLabel("turnCoda");
 
     // ================================================================ Coda
-    // Scene 3 is swept away like the others; the coda page is already flat,
+    // Scene 2 is swept away like the others; the coda page is already flat,
     // so its slides just fade/scale in one after another and crossfade —
     // no page turn, no dots, no ambient motion. A quiet beat before the
     // loop closes.
-    pageTurn("scratch", pages.scratch, coda, "turnCoda", true, 1);
+    pageTurn("lesson", pages.lesson, coda, "turnCoda", true, -1);
     tl.addLabel("coda", `turnCoda+=${TURN.out}`);
     let t = 0;
     slides.forEach((slide) => {
@@ -380,7 +335,7 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
     // page lands, terminal types, panels build. The coda page turns away
     // exactly like a full scene does.
     tl.addLabel("turnHome", `coda+=${t}`);
-    pageTurn(null, coda, pages.python, "turnHome", false, -1);
+    pageTurn(null, coda, pages.python, "turnHome", false, 1);
     tl.to({}, { duration: 0.3 }, `turnHome+=${landed}`);
 
     return () => {
@@ -435,7 +390,7 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
     tlRef.current?.kill();
     const canvas = canvasRef.current;
     if (driftRef.current) gsap.set(driftRef.current, { z: 0 });
-    gsap.set([lessonPageRef.current, scratchPageRef.current], { autoAlpha: 0, rotationY: 100 });
+    gsap.set(lessonPageRef.current, { autoAlpha: 0, rotationY: 100 });
     gsap.set(codaPageRef.current, { autoAlpha: 0 });
     gsap.set(pythonPageRef.current, { autoAlpha: 1, rotationY: 0 });
     canvas?.querySelectorAll<HTMLElement>("[data-panel]").forEach((el) => {
@@ -464,27 +419,33 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
         <div ref={stageRef} className="hero-stage" style={{ aspectRatio: `${STAGE_W} / ${STAGE_H}` }}>
           <div ref={canvasRef} className="hero-stage-canvas" style={{ width: STAGE_W, height: STAGE_H }}>
             <div ref={driftRef} className="hero-stage-drift">
-              {/* ================================================ Scene 1: Python */}
+              {/* ================================================ Scene 1: Playground */}
               <div ref={pythonPageRef} className="scene-page">
                 <EditorChrome />
 
-                {/* Centre object: the real terminal (scripted, then live) */}
+                {/* Centre object: the real Playground's CodeRunner (scripted, then live) — same
+                    chrome as CodeRunner.tsx: label + Run button, bg-code-bg editor, bg-paper-sunk
+                    result panel. */}
                 <div
                   data-hero="terminal"
                   onPointerDown={jumpToLive}
-                  className="absolute left-1/2 top-1/2 w-[360px] max-w-[92%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl border border-white/10 bg-home-terminal shadow-[0_34px_60px_-18px_rgb(11_15_20_/_0.55)]"
+                  className="absolute left-1/2 top-1/2 w-[360px] max-w-[92%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-md border border-rule shadow-[0_34px_60px_-18px_rgb(20_23_28_/_0.35)]"
                 >
-                  <div className="flex items-center justify-between border-b border-white/10 px-4 py-2.5">
-                    <div className="flex items-center gap-1.5" aria-hidden="true">
-                      <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
-                      <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
-                      <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
-                    </div>
-                    <span className="font-mono text-[11px] text-white/50">week1.py</span>
+                  <div className="flex items-center justify-between gap-4 border-b border-rule bg-paper-sunk px-4 py-2">
+                    <span className="label text-[11px]">python</span>
+                    <button
+                      ref={runBtnRef}
+                      onClick={handleRunClick}
+                      disabled={running}
+                      className="btn btn-brand inline-flex items-center gap-1.5 !px-3 !py-1.5 text-[11px] disabled:opacity-60"
+                    >
+                      <Play className="h-3 w-3" aria-hidden="true" />
+                      {running ? "Running…" : "Run"}
+                    </button>
                   </div>
 
                   {mode === "script" ? (
-                    <div className="min-h-[5.75rem] whitespace-pre-wrap px-4 py-4 font-mono text-[13px] leading-relaxed text-home-terminal-fg">
+                    <div className="min-h-[5.75rem] whitespace-pre-wrap bg-code-bg px-4 py-4 font-mono text-[13px] leading-relaxed text-code-fg">
                       <span ref={codeDisplayRef} />
                       <span className="home-cursor align-middle" aria-hidden="true" />
                     </div>
@@ -494,31 +455,20 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
                       value={code}
                       onChange={(e) => setCode(e.target.value)}
                       spellCheck={false}
-                      rows={3}
+                      rows={4}
                       aria-label="Python code to run"
-                      className="w-full resize-none bg-transparent px-4 py-4 font-mono text-[13px] leading-relaxed text-home-terminal-fg focus:outline-none"
+                      className="w-full resize-none bg-code-bg px-4 py-4 font-mono text-[13px] leading-relaxed text-code-fg focus:outline-none"
                     />
                   )}
 
-                  <div className="flex items-center justify-between px-4 pb-3.5">
-                    <span className="font-mono text-[11px] text-white/35">python3</span>
-                    <button
-                      ref={runBtnRef}
-                      onClick={handleRunClick}
-                      disabled={running}
-                      className="inline-flex items-center gap-1.5 rounded-md bg-home-teal px-3 py-1.5 font-mono text-[12px] font-semibold text-white transition-colors hover:bg-home-teal-deep disabled:opacity-50"
-                    >
-                      {running ? "Running…" : "Run ▸"}
-                    </button>
-                  </div>
-
                   {/* Scripted, canned output — never touches the execution API */}
-                  <div ref={outputPanelRef} className="border-t border-white/10">
+                  <div ref={outputPanelRef} className="border-t border-rule bg-paper-sunk">
                     <div className="px-4 py-3">
-                      <div ref={outputLine1Ref} className="font-mono text-[12px] text-home-terminal-fg">
+                      <p className="mb-1.5 text-[11px] text-ink-muted">done — passed</p>
+                      <div ref={outputLine1Ref} className="font-mono text-[12px] text-ink">
                         {CANNED_OUTPUT_LINES[0]}
                       </div>
-                      <div ref={outputLine2Ref} className="font-mono text-[12px] text-home-terminal-fg">
+                      <div ref={outputLine2Ref} className="font-mono text-[12px] text-ink">
                         {CANNED_OUTPUT_LINES[1]}
                       </div>
                     </div>
@@ -531,10 +481,10 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
                     }`}
                   >
                     <div className="overflow-hidden">
-                      <div className="border-t border-white/10 px-4 py-3">
-                        {errorMsg && <p className="font-mono text-[12px] text-amber-300">{errorMsg}</p>}
-                        {stdout && <pre className="whitespace-pre-wrap font-mono text-[12px] text-home-terminal-fg">{stdout}</pre>}
-                        {stderr && <pre className="whitespace-pre-wrap font-mono text-[12px] text-red-300">{stderr}</pre>}
+                      <div className="border-t border-rule bg-paper-sunk px-4 py-3">
+                        {errorMsg && <p className="font-mono text-[12px] text-danger">{errorMsg}</p>}
+                        {stdout && <pre className="whitespace-pre-wrap font-mono text-[12px] text-ink">{stdout}</pre>}
+                        {stderr && <pre className="whitespace-pre-wrap font-mono text-[12px] text-danger">{stderr}</pre>}
                       </div>
                     </div>
                   </div>
@@ -594,73 +544,6 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
                 <Panel id="resume">
                   <Cutout width={168} height={58} scale={0.82}>
                     <ResumeButton course={javaCourse} />
-                  </Cutout>
-                </Panel>
-              </div>
-
-              {/* ================================================ Scene 3: Scratch-style */}
-              <div ref={scratchPageRef} className="scene-page">
-                <ScratchBase />
-
-                {/* Centre object: the mascot's stage */}
-                <div
-                  data-hero="stage"
-                  className="absolute left-[54%] top-[44%] w-[320px] max-w-[80%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl border border-home-rule shadow-[0_30px_60px_-20px_rgb(20_23_28_/_0.3)]"
-                >
-                  <div className="relative h-44 overflow-hidden" style={{ backgroundColor: "var(--color-home-stage)" }}>
-                    <div
-                      className="absolute inset-x-0 bottom-0 h-11"
-                      style={{ backgroundColor: "var(--color-home-stage-floor)" }}
-                      aria-hidden="true"
-                    />
-                    <div
-                      data-hero="streak"
-                      className="absolute left-12 top-[4.75rem] h-6 w-16 rounded-full bg-home-teal/40 blur-md"
-                      aria-hidden="true"
-                    />
-                    <div data-hero="mascot" className="absolute left-10 top-[3.25rem]">
-                      <Mascot className="h-14 w-14" />
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between bg-white px-3 py-2 font-sans text-[10px] text-home-ink-soft">
-                    <span>Stage · 480 × 360</span>
-                    <span className="inline-flex items-center gap-1">
-                      <span className="inline-block h-2 w-2 rounded-full bg-[#59C059]" />
-                      running
-                    </span>
-                  </div>
-                </div>
-
-                <Panel id="activity3">
-                  <ActivityCard text="Maya finished Scratch Week 2" when="Just now · 12 blocks" />
-                </Panel>
-                <Panel id="sprite">
-                  <SpriteCard />
-                </Panel>
-                <Panel id="blocks">
-                  <div className="w-[168px] border border-home-rule bg-white px-3 py-3" aria-hidden="true">
-                    <p className="mb-2 font-sans text-[10px] font-semibold text-home-ink-soft">Two blocks, one move</p>
-                    <div className="relative h-16">
-                      <div
-                        data-hero="snapGlow"
-                        className="absolute -left-1 top-6 h-10 w-[140px] rounded-md bg-home-teal/30 blur-sm"
-                      />
-                      <Image
-                        src="/greenflag.png"
-                        alt="when green flag clicked block"
-                        width={141}
-                        height={71}
-                        className="absolute left-0 top-0 h-7 w-auto"
-                      />
-                      <div data-hero="blockMove" className="absolute left-0 top-8">
-                        <Image src="/movesteps.png" alt="move 10 steps block" width={135} height={55} className="h-7 w-auto" />
-                      </div>
-                    </div>
-                  </div>
-                </Panel>
-                <Panel id="enrollNote">
-                  <Cutout width={216} height={92} scale={0.52}>
-                    <EnrollNote variant="quiet" />
                   </Cutout>
                 </Panel>
               </div>
