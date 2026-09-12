@@ -400,9 +400,8 @@
   transform-style: preserve-3d;
   backface-visibility: hidden;
   will-change: transform;
-  visibility: hidden; /* GSAP reveals the active page; avoids a stacked flash pre-hydration */
+  visibility: hidden; /* GSAP reveals the active page once its timeline runs */
 }
-.scene-page:first-child { visibility: visible; }
 .scene-page * { backface-visibility: hidden; }
 
 /* The scene's base layer (IDE / browser / Scratch editor). Not the floor
