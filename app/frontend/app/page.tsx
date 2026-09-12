@@ -1,29 +1,16 @@
-import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import {
-  courses,
-  coursesInTrack,
-  TRACKS,
-  type Track,
-} from "@/src/data/courses";
+import { courses } from "@/src/data/courses";
 import { ENROLL_URL } from "@/src/config";
 import { fetchLessonSteps } from "@/src/lib/lessons";
+import GrainOverlay from "./components/GrainOverlay";
+import HeroBackground from "./components/home/HeroBackground";
 import HeroDemo from "./components/home/HeroDemo";
-import HeroIntro from "./components/home/HeroIntro";
 import MotionCta from "./components/home/MotionCta";
 import Reveal from "./components/home/Reveal";
 import StatsTicker from "./components/home/StatsTicker";
-import ScratchOfferingDemo from "./components/home/ScratchOfferingDemo";
-import PythonOfferingDemo from "./components/home/PythonOfferingDemo";
-import JavaOfferingDemo from "./components/home/JavaOfferingDemo";
-
-/** One looping preview per track, shown beside its description in "Our Offerings". */
-const OFFERING_DEMOS: Record<Track, () => React.JSX.Element> = {
-  scratch: ScratchOfferingDemo,
-  python: PythonOfferingDemo,
-  java: JavaOfferingDemo,
-};
+import TrackPanels from "./components/home/TrackPanels";
+import OfferingCarousel from "./components/home/OfferingCarousel";
 
 /* Quoted verbatim from the previous site, which attributed all three to
    "Current Parent" and nothing more. Splitting them by course or year would
@@ -59,24 +46,48 @@ export default async function Home() {
   return (
     <main id="main" className="bg-home-bg text-home-ink">
       {/* ---------------------------------------------------------------- */}
-      <section className="wrap pt-8 pb-6 md:pt-12 md:pb-6">
-        <div className="grid gap-8 lg:grid-cols-12 lg:gap-10 lg:items-center">
-          <div className="lg:col-span-5">
-            <HeroIntro enrollUrl={ENROLL_URL} />
-          </div>
+      {/* Full-bleed landing image — no separate text banner above it; the
+          heading/subtext/CTAs are now the demo's own intro title card (see
+          HeroDemo's introRef), fading out into the terminal scene. Negative
+          margin pulls the section up under the fixed announcement bar +
+          navbar (both position:fixed, so they reserve no flow space of
+          their own to cancel) so the image runs behind them edge to edge;
+          the matching top padding keeps the actual demo content clear of
+          that band. Navbar reads this section's id to know when to turn
+          solid as the page scrolls past it (see Navbar.tsx).
 
-          {/* Live, runnable demo — not a screenshot. It plays itself once on
-              load, then you can edit the code and hit Run yourself. */}
-          <div className="lg:col-span-7">
-            <HeroDemo javaBlocks={javaBlocks} />
-          </div>
+          min-h-svh (rather than letting the demo's own size dictate height)
+          + flex-centering the content makes this a proper full-screen
+          landing section regardless of viewport size — StatsTicker no
+          longer sits right below it (see its own new home further down the
+          page), so there's nothing else to reserve room for here. */}
+      <section
+        id="hero"
+        className="relative isolate -mt-[calc(var(--announce-h)+var(--nav-h))] flex min-h-svh flex-col justify-center overflow-hidden bg-[#0B0D10] pb-10 md:pb-14"
+        style={{ paddingTop: "calc(var(--announce-h) + var(--nav-h) + 2rem)" }}
+      >
+        {/* Moody backdrop, clipped to this section only. Both layers are
+            plain DOM-order siblings — painted before .wrap below, never
+            pushed behind the page with a negative z-index, which is what
+            silently sank the whole thing under <main>'s own white
+            background. A near-black gradient over the grainy eclipse photo
+            keeps it a backdrop, not a second focal point; the demo's own
+            hero-stage-frame is the light card that actually pops against it. */}
+        <HeroBackground />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/20 to-black/70" />
+        <GrainOverlay />
+
+        {/* Live, runnable demo — not a screenshot. It plays itself once on
+            load, then you can edit the code and hit Run yourself. HeroDemo
+            caps its own width and centers itself (see hero-stage-wrap). */}
+        <div className="wrap relative">
+          <HeroDemo javaBlocks={javaBlocks} />
         </div>
       </section>
 
       {/* ---------------------------------------------------------------- */}
-      <StatsTicker />
-
-      {/* ---------------------------------------------------------------- */}
+      {/* No longer right under the hero — it now appears once you've
+          scrolled down into the "about" copy below, not on first load. */}
       <section className="wrap section-sm">
         <Reveal>
           <div className="grid gap-10 md:grid-cols-12">
@@ -124,61 +135,33 @@ export default async function Home() {
       </section>
 
       {/* ---------------------------------------------------------------- */}
+      <StatsTicker />
+
+      {/* ---------------------------------------------------------------- */}
       <section className="wrap section">
         <Reveal>
-          <div className="flex flex-col gap-3 border-b border-home-rule pb-6 sm:flex-row sm:items-end sm:justify-between">
+          <div className="border-b border-home-rule pb-6">
             <h2 className="font-sans text-3xl font-semibold tracking-tight text-home-ink">
               Our Offerings
             </h2>
-            <p className="font-mono text-sm text-home-ink-soft">
-              Scratch, Python and Java — two levels each.
-            </p>
           </div>
 
           <div className="mt-14 space-y-16 md:space-y-24">
-            {TRACKS.map((track, i) => {
-              const inTrack = coursesInTrack(track.id);
-              const first = inTrack[0];
-              const reversed = i % 2 === 1;
-              const Demo = OFFERING_DEMOS[track.id];
-              return (
-                <Reveal key={track.id} as="div" className="grid gap-8 md:grid-cols-2 md:items-center md:gap-14">
-                  <div className={reversed ? "md:order-2" : undefined}>
-                    <Image
-                      src={track.mark}
-                      alt=""
-                      width={36}
-                      height={36}
-                      className="h-9 w-auto object-contain"
-                    />
-                    <h3 className="mt-4 font-sans text-2xl font-semibold text-home-ink">{track.label}</h3>
-                    <p className="mt-3 max-w-[46ch] font-sans text-base leading-relaxed text-home-ink-soft">
-                      {first.description}
-                    </p>
-                    <ul className="mt-6 max-w-[26rem] divide-y divide-home-rule border-t border-home-rule">
-                      {inTrack.map((course) => (
-                        <li key={course.id}>
-                          <Link
-                            href={course.link}
-                            className="group flex items-baseline justify-between gap-4 py-3"
-                          >
-                            <span className="text-home-ink transition-colors group-hover:text-home-teal">
-                              {course.shortTitle}
-                            </span>
-                            <span className="shrink-0 font-mono text-xs text-home-ink-soft">
-                              {course.level}
-                            </span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className={reversed ? "md:order-1" : undefined}>
-                    <Demo />
-                  </div>
-                </Reveal>
-              );
-            })}
+            {/* Same width the old Scratch-description-beside-its-demo row
+                used — now one demo carousel spanning it, cycling all three
+                tracks with tabs. Each track's actual description/course-
+                list/demo (Scratch included) lives in TrackPanels below. */}
+            <Reveal as="div">
+              <OfferingCarousel />
+            </Reveal>
+
+            <Reveal as="div">
+              {/* Bleeds past .wrap's own side padding so the panels read as
+                  slightly wider than the text column above them. */}
+              <div className="-mx-6 md:-mx-8">
+                <TrackPanels />
+              </div>
+            </Reveal>
           </div>
 
           <MotionCta

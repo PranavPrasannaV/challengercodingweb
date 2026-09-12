@@ -17,13 +17,39 @@ const navLinks = [
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  // Starts true on the homepage so server and first client paint agree (no
+  // flash of the solid navbar before the scroll listener runs) — false
+  // everywhere else, where there's no hero image for it to sit on top of.
   const pathname = usePathname();
+  const isHome = pathname === '/';
+  const [overHero, setOverHero] = useState(isHome);
   const closeRef = useRef<HTMLButtonElement>(null);
   const openRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
+
+  // Transparent, glass navbar while the hero's #hero section is still behind
+  // it; solid the moment the page scrolls past it (or on any other page,
+  // which never sets overHero true to begin with).
+  useEffect(() => {
+    if (!isHome) {
+      setOverHero(false);
+      return;
+    }
+    const check = () => {
+      const hero = document.getElementById('hero');
+      setOverHero(!!hero && hero.getBoundingClientRect().bottom > 80);
+    };
+    check();
+    window.addEventListener('scroll', check, { passive: true });
+    window.addEventListener('resize', check);
+    return () => {
+      window.removeEventListener('scroll', check);
+      window.removeEventListener('resize', check);
+    };
+  }, [isHome]);
 
   // Scroll lock, focus handoff and Escape belong to the same moment, so they
   // live in the same effect and can never fall out of step.
@@ -48,11 +74,15 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className="fixed top-[var(--announce-h)] left-0 right-0 z-50 h-16 bg-card border-b border-rule"
+        className={`fixed top-[calc(var(--announce-h)+0.625rem)] left-3 right-3 sm:left-6 sm:right-6 md:left-10 md:right-10 z-50 h-14 rounded-2xl border transition-colors duration-300 ${
+          overHero
+            ? 'border-white/15 bg-white/10 backdrop-blur-md'
+            : 'border-rule bg-card shadow-[0_1px_3px_rgb(20_23_28_/_0.08)]'
+        }`}
       >
         <div className="wrap h-full">
           <div className="flex items-center justify-between h-full gap-6">
-            <Logo />
+            <Logo light={overHero} />
 
             <ul className="hidden md:flex items-center gap-1 text-small">
               {navLinks.map((link) => (
@@ -61,9 +91,13 @@ export default function Navbar() {
                     href={link.href}
                     aria-current={isActive(link.href) ? 'page' : undefined}
                     className={`block px-3 py-2 rounded-sm transition-colors ${
-                      isActive(link.href)
-                        ? 'text-brand font-semibold'
-                        : 'text-ink-muted hover:text-ink'
+                      overHero
+                        ? isActive(link.href)
+                          ? 'text-white font-semibold'
+                          : 'text-white/75 hover:text-white'
+                        : isActive(link.href)
+                          ? 'text-brand font-semibold'
+                          : 'text-ink-muted hover:text-ink'
                     }`}
                   >
                     {link.label}
@@ -77,7 +111,11 @@ export default function Navbar() {
                 href={ENROLL_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn hidden md:inline-flex text-small py-2.5 px-5 bg-home-teal text-white hover:bg-home-teal-deep"
+                className={`btn hidden md:inline-flex text-small py-2.5 px-5 ${
+                  overHero
+                    ? 'bg-white text-home-ink hover:bg-white/90'
+                    : 'bg-home-teal text-white hover:bg-home-teal-deep'
+                }`}
               >
                 Enroll
               </Link>
@@ -85,7 +123,7 @@ export default function Navbar() {
               <button
                 ref={openRef}
                 onClick={() => setMobileOpen(true)}
-                className="md:hidden -mr-2 p-2 text-ink rounded-sm"
+                className={`md:hidden -mr-2 p-2 rounded-sm ${overHero ? 'text-white' : 'text-ink'}`}
                 aria-label="Open menu"
                 aria-expanded={mobileOpen}
                 aria-controls="mobile-nav"

@@ -1,20 +1,25 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { Play, Clipboard, CheckCircle2 } from "lucide-react";
 import Blocks from "@/app/components/lesson-blocks";
 import type { LessonContentBlock } from "@/src/data/lessons/blocks";
 
 /**
- * A scripted, looping walkthrough of the REAL Python Week 1 · Exercise 1
- * ("Say hello") — same copy, same starter code, same expected output, and
- * the same starter-code / CodeRunner / autograder chrome the real lesson
- * page renders (see LessonViewerClient.tsx's ExercisePanel and
- * CodeRunner.tsx), not an invented mock-up. It scrolls the page, types the
- * fix, runs it, and shows the real "That's it." success message — the same
- * beats a student actually goes through.
+ * A scripted, looping walkthrough of the REAL Python Week 1 page —
+ * breadcrumb, sidebar of steps, header, step-progress bar, then Exercise 1
+ * ("Say hello")'s content, starter code and CodeRunner/autograder chrome —
+ * same structure and classes as
+ * app/lessons/[courseId]/[lessonId]/LessonViewerClient.tsx, scaled down.
+ * Content verified against the lesson API (`curl localhost:8000/lessons/
+ * python-1`) and its real groupIntoSteps() transform (src/lib/lessons.ts),
+ * not an invented mock-up. It scrolls the step, types the fix, runs it, and
+ * shows the real "That's it." success message — the same beats a student
+ * actually goes through.
  */
+const STEP_TITLES = ["Say hello", "Print your name", "Debugging", "Printing Art", "Weekly Project"];
+
 const LESSON_BLOCKS: LessonContentBlock[] = [
   { type: "heading", level: 2, text: "Exercise 1: Say hello" },
   {
@@ -34,11 +39,11 @@ const LESSON_BLOCKS: LessonContentBlock[] = [
 const STARTER_CODE = "# Write your code here to print 'hello, world'\n";
 const SOLUTION_CODE = "print('hello, world')";
 const EXPECTED_OUTPUT = "hello, world";
-const LESSON_SCALE = 0.72;
+const LESSON_SCALE = 0.48;
 
 const TIMINGS = { scroll: 2.8, hold1: 0.6, type: 1.1, run: 0.3, hold2: 2.4, fade: 0.4 } as const;
 
-export default function PythonOfferingDemo() {
+export default function PythonOfferingDemo({ paused = false }: { paused?: boolean }) {
   const scrollFrameRef = useRef<HTMLDivElement>(null);
   const scrollContentRef = useRef<HTMLDivElement>(null);
   const fadeRef = useRef<HTMLDivElement>(null);
@@ -47,6 +52,7 @@ export default function PythonOfferingDemo() {
   const resultRef = useRef<HTMLDivElement>(null);
   const stdoutRef = useRef<HTMLPreElement>(null);
   const statusRef = useRef<HTMLParagraphElement>(null);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
 
   useLayoutEffect(() => {
     const scrollFrame = scrollFrameRef.current;
@@ -79,6 +85,7 @@ export default function PythonOfferingDemo() {
     gsap.set(runBtn, { scale: 1 });
 
     const tl = gsap.timeline({ repeat: -1 });
+    tlRef.current = tl;
 
     tl.addLabel("start")
       .to(scrollContent, { y: -scrollDistance, duration: TIMINGS.scroll, ease: "power1.inOut" }, "start")
@@ -92,7 +99,7 @@ export default function PythonOfferingDemo() {
         duration: TIMINGS.type,
         ease: "none",
         onUpdate: () => {
-          code.textContent = SOLUTION_CODE.slice(0, Math.round(typeState.n));
+          if (codeRef.current) codeRef.current.textContent = SOLUTION_CODE.slice(0, Math.round(typeState.n));
         },
       })
       .to(runBtn, { scale: 0.92, duration: 0.1 }, "+=0.15")
@@ -111,8 +118,16 @@ export default function PythonOfferingDemo() {
 
     return () => {
       tl.kill();
+      tlRef.current = null;
     };
   }, []);
+
+  // Hovering the sibling panel pauses this loop mid-frame rather than
+  // resetting it, so it picks back up exactly where it left off.
+  useEffect(() => {
+    if (paused) tlRef.current?.pause();
+    else tlRef.current?.play();
+  }, [paused]);
 
   return (
     <div
@@ -129,62 +144,117 @@ export default function PythonOfferingDemo() {
         </span>
       </div>
 
-      <div ref={fadeRef} className="absolute inset-0 top-9 flex flex-col">
-        <div ref={scrollFrameRef} className="relative min-h-0 flex-1 overflow-hidden px-5 pb-4 pt-4">
-          <div
-            ref={scrollContentRef}
-            className="relative origin-top-left"
-            style={{ width: `${100 / LESSON_SCALE}%`, transform: `scale(${LESSON_SCALE})` }}
-          >
-            <Blocks blocks={LESSON_BLOCKS} />
+      <div ref={fadeRef} data-track="python" className="absolute inset-0 top-9 overflow-hidden bg-paper">
+        <div
+          className="relative origin-top-left"
+          style={{ width: `${100 / LESSON_SCALE}%`, transform: `scale(${LESSON_SCALE})` }}
+        >
+          {/* Breadcrumb — same markup as the real page's <nav aria-label="Breadcrumb">. */}
+          <nav className="px-5 pt-4 text-meta text-ink-meta">
+            Courses <span className="mx-2">/</span> Python Programming
+          </nav>
 
-            {/* Starter code — same chrome as the real lesson's "Starter code" box. */}
-            <section className="mt-2 overflow-hidden rounded-md border border-rule">
-              <div className="flex items-center justify-between gap-4 border-b border-rule bg-paper-sunk px-4 py-2">
-                <span className="label text-[11px]">Starter code</span>
-                <Clipboard className="h-3.5 w-3.5 text-brand" aria-hidden="true" />
-              </div>
-              <pre className="overflow-x-auto bg-code-bg px-4 py-3 font-mono text-[11px] leading-relaxed text-code-fg">
-                <code>{STARTER_CODE}</code>
-              </pre>
-            </section>
+          <div className="mt-6 flex items-start gap-8 px-5">
+            {/* Steps sidebar — lg:sticky on the real page, so it doesn't
+                scroll with the content there either; it's outside the
+                scrolling frame below for the same reason. */}
+            <aside className="w-56 shrink-0">
+              <h2 className="label">Steps in this lesson</h2>
+              <ol className="mt-4 border-t border-rule">
+                {STEP_TITLES.map((title, i) => (
+                  <li key={title} className="border-b border-rule">
+                    <div
+                      className={`flex gap-3 py-3 pl-3 text-small border-l-[3px] ${
+                        i === 0 ? "font-semibold" : "border-transparent text-ink-muted"
+                      }`}
+                      style={i === 0 ? { borderColor: "var(--track)", color: "var(--track)" } : undefined}
+                    >
+                      <span className="font-mono text-ink-meta tnum shrink-0">{String(i + 1).padStart(2, "0")}</span>
+                      <span>{title}</span>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </aside>
 
-            {/* Write your code here — the real CodeRunner, typed and run. */}
-            <section className="mt-6">
-              <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-4">
-                <h2 className="label text-[11px]">Write your code here</h2>
-                <p className="text-[11px] text-ink-muted">
-                  Make it print <code className="font-mono text-ink">{EXPECTED_OUTPUT}</code>
+            {/* Content column — header and progress bar are static (they
+                don't scroll on the real page either, thanks to the sticky
+                step-progress bar); only the step content below scrolls. */}
+            <div className="min-w-0 flex-1">
+              <header className="border-b border-rule pb-6">
+                <p className="eyebrow">Python Programming · Week 1</p>
+                <h1 className="text-h1 mt-3 text-ink">Hello World</h1>
+              </header>
+
+              <div className="mt-6 flex items-center gap-4">
+                <p className="tnum shrink-0 text-body text-ink">
+                  Step <strong className="font-semibold">1</strong> of {STEP_TITLES.length}
                 </p>
-              </div>
-              <div className="overflow-hidden rounded-md border border-rule">
-                <div className="flex items-center justify-between gap-4 border-b border-rule bg-paper-sunk px-4 py-2">
-                  <span className="label text-[11px]">python</span>
-                  <button
-                    ref={runBtnRef}
-                    tabIndex={-1}
-                    className="btn btn-brand inline-flex items-center gap-1.5 !px-3 !py-1.5 text-[11px]"
-                  >
-                    <Play className="h-3 w-3" aria-hidden="true" />
-                    Run
-                  </button>
-                </div>
-                <div className="bg-code-bg px-4 py-3 font-mono text-[12px] leading-relaxed text-code-fg">
-                  <span ref={codeRef} />
-                  <span className="home-cursor align-middle" />
-                </div>
-                <div ref={resultRef} className="overflow-hidden border-t border-rule bg-paper-sunk px-4 py-3">
-                  <p className="mb-1.5 text-[11px] text-ink-muted">done — 42ms — passed</p>
-                  <pre ref={stdoutRef} className="font-mono text-[12px] text-ink">
-                    {EXPECTED_OUTPUT}
-                  </pre>
+                <div className="flex flex-1 gap-1">
+                  {STEP_TITLES.map((title, i) => (
+                    <span
+                      key={title}
+                      className="h-1 flex-1"
+                      style={{ backgroundColor: i <= 0 ? "var(--track)" : "var(--color-rule-strong)" }}
+                    />
+                  ))}
                 </div>
               </div>
-              <p ref={statusRef} className="mt-3 inline-flex items-center gap-1.5 text-[12px] font-semibold text-success">
-                <CheckCircle2 className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                That&rsquo;s it.
-              </p>
-            </section>
+
+              <div ref={scrollFrameRef} className="relative mt-6 h-[420px] overflow-hidden">
+                <div ref={scrollContentRef} className="pt-2">
+                  <Blocks blocks={LESSON_BLOCKS} />
+
+                  {/* Starter code — same chrome as the real lesson's "Starter code" box. */}
+                  <section className="mt-2 overflow-hidden rounded-md border border-rule">
+                    <div className="flex items-center justify-between gap-4 border-b border-rule bg-paper-sunk px-4 py-2">
+                      <span className="label text-[11px]">Starter code</span>
+                      <Clipboard className="h-3.5 w-3.5 text-brand" aria-hidden="true" />
+                    </div>
+                    <pre className="overflow-x-auto bg-code-bg px-4 py-3 font-mono text-[11px] leading-relaxed text-code-fg">
+                      <code>{STARTER_CODE}</code>
+                    </pre>
+                  </section>
+
+                  {/* Write your code here — the real CodeRunner, typed and run. */}
+                  <section className="mt-6">
+                    <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-4">
+                      <h2 className="label text-[11px]">Write your code here</h2>
+                      <p className="text-[11px] text-ink-muted">
+                        Make it print <code className="font-mono text-ink">{EXPECTED_OUTPUT}</code>
+                      </p>
+                    </div>
+                    <div className="overflow-hidden rounded-md border border-rule">
+                      <div className="flex items-center justify-between gap-4 border-b border-rule bg-paper-sunk px-4 py-2">
+                        <span className="label text-[11px]">python</span>
+                        <button
+                          ref={runBtnRef}
+                          tabIndex={-1}
+                          className="btn btn-brand inline-flex items-center gap-1.5 !px-3 !py-1.5 text-[11px]"
+                        >
+                          <Play className="h-3 w-3" aria-hidden="true" />
+                          Run
+                        </button>
+                      </div>
+                      <div className="bg-code-bg px-4 py-3 font-mono text-[12px] leading-relaxed text-code-fg">
+                        <span ref={codeRef} />
+                        <span className="home-cursor align-middle" />
+                      </div>
+                      <div ref={resultRef} className="overflow-hidden border-t border-rule bg-paper-sunk px-4 py-3">
+                        <p className="mb-1.5 text-[11px] text-ink-muted">done — 42ms — passed</p>
+                        <pre ref={stdoutRef} className="font-mono text-[12px] text-ink">
+                          {EXPECTED_OUTPUT}
+                        </pre>
+                      </div>
+                    </div>
+                    <p ref={statusRef} className="mt-3 inline-flex items-center gap-1.5 text-[12px] font-semibold text-success">
+                      <CheckCircle2 className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                      That&rsquo;s it.
+                    </p>
+                  </section>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

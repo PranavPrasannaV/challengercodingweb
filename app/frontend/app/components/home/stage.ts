@@ -15,8 +15,10 @@
 export const STAGE_W = 660;
 export const STAGE_H = 580;
 
-/** Never upscale past this; on very wide screens the demo holds its size. */
-export const STAGE_MAX_W = 700;
+/** Never upscale past this; on very wide screens the demo holds its size.
+ *  Trimmed down from 700 so the hero section is shorter and the stats
+ *  ticker sits closer to the fold. */
+export const STAGE_MAX_W = 560;
 
 import { TEXT_RECTS } from "./textRects";
 

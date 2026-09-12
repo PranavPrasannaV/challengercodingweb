@@ -1,20 +1,37 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { Play, Clipboard, CheckCircle2 } from "lucide-react";
 import Blocks from "@/app/components/lesson-blocks";
 import type { LessonContentBlock } from "@/src/data/lessons/blocks";
 
 /**
- * A scripted, looping walkthrough of the REAL Java Week 1 · Exercise 1 ("My
- * First Java Program") — same copy, same starter code, same expected
- * output, same starter-code / CodeRunner / autograder chrome the real
- * lesson page renders. Java's starter code already compiles and runs (it
- * just prints the wrong thing), so — unlike Python's from-scratch typing —
- * this edits the one line a real student edits: the string inside
- * println(), then reruns it.
+ * A scripted, looping walkthrough of the REAL Java Week 1 page —
+ * breadcrumb, sidebar of steps, header, step-progress bar, then step 2
+ * ("My First Java Program")'s content, starter code and CodeRunner/
+ * autograder chrome — same structure and classes as
+ * app/lessons/[courseId]/[lessonId]/LessonViewerClient.tsx, scaled down.
+ * Content verified against the lesson API (`curl localhost:8000/lessons/
+ * java-1`) and its real groupIntoSteps() transform (src/lib/lessons.ts).
+ * Step 2 is the active one here, not step 1 — the real "Lesson Overview"
+ * step has no exercise at all (no code, no CodeRunner), so it's step 2
+ * where the actual runnable program lives.
+ *
+ * Java's starter code already compiles and runs (it just prints the wrong
+ * thing), so — unlike Python's from-scratch typing — this edits the one
+ * line a real student edits: the string inside println(), then reruns it.
  */
+const STEP_TITLES = [
+  "Lesson Overview",
+  "My First Java Program",
+  "Syntax and Java Basics",
+  "Debugging",
+  "Quiz",
+  "Weekly Project",
+];
+const ACTIVE_STEP = 1;
+
 const LESSON_BLOCKS: LessonContentBlock[] = [
   { type: "heading", level: 2, text: "1. My First Java Program" },
   { type: "heading", level: 3, text: "Hello, Java!" },
@@ -37,11 +54,11 @@ const LESSON_BLOCKS: LessonContentBlock[] = [
 
 const ORIGINAL_TEXT = "Hello, Java!";
 const EXPECTED_OUTPUT = "Welcome to Java class!";
-const LESSON_SCALE = 0.72;
+const LESSON_SCALE = 0.48;
 
 const TIMINGS = { scroll: 2.8, hold1: 0.6, edit: 0.6, run: 0.3, hold2: 2.4, fade: 0.4 } as const;
 
-export default function JavaOfferingDemo() {
+export default function JavaOfferingDemo({ paused = false }: { paused?: boolean }) {
   const scrollFrameRef = useRef<HTMLDivElement>(null);
   const scrollContentRef = useRef<HTMLDivElement>(null);
   const fadeRef = useRef<HTMLDivElement>(null);
@@ -50,6 +67,7 @@ export default function JavaOfferingDemo() {
   const resultRef = useRef<HTMLDivElement>(null);
   const stdoutRef = useRef<HTMLPreElement>(null);
   const statusRef = useRef<HTMLParagraphElement>(null);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
 
   useLayoutEffect(() => {
     const scrollFrame = scrollFrameRef.current;
@@ -82,6 +100,7 @@ export default function JavaOfferingDemo() {
     gsap.set(literal, { backgroundColor: "rgba(14,124,107,0)" });
 
     const tl = gsap.timeline({ repeat: -1 });
+    tlRef.current = tl;
 
     tl.addLabel("start")
       .to(scrollContent, { y: -scrollDistance, duration: TIMINGS.scroll, ease: "power1.inOut" }, "start")
@@ -109,8 +128,16 @@ export default function JavaOfferingDemo() {
 
     return () => {
       tl.kill();
+      tlRef.current = null;
     };
   }, []);
+
+  // Hovering the sibling panel pauses this loop mid-frame rather than
+  // resetting it, so it picks back up exactly where it left off.
+  useEffect(() => {
+    if (paused) tlRef.current?.pause();
+    else tlRef.current?.play();
+  }, [paused]);
 
   return (
     <div
@@ -127,67 +154,122 @@ export default function JavaOfferingDemo() {
         </span>
       </div>
 
-      <div ref={fadeRef} className="absolute inset-0 top-9 flex flex-col">
-        <div ref={scrollFrameRef} className="relative min-h-0 flex-1 overflow-hidden px-5 pb-4 pt-4">
-          <div
-            ref={scrollContentRef}
-            className="relative origin-top-left"
-            style={{ width: `${100 / LESSON_SCALE}%`, transform: `scale(${LESSON_SCALE})` }}
-          >
-            <Blocks blocks={LESSON_BLOCKS} />
+      <div ref={fadeRef} data-track="java" className="absolute inset-0 top-9 overflow-hidden bg-paper">
+        <div
+          className="relative origin-top-left"
+          style={{ width: `${100 / LESSON_SCALE}%`, transform: `scale(${LESSON_SCALE})` }}
+        >
+          {/* Breadcrumb — same markup as the real page's <nav aria-label="Breadcrumb">. */}
+          <nav className="px-5 pt-4 text-meta text-ink-meta">
+            Courses <span className="mx-2">/</span> Java Programming
+          </nav>
 
-            {/* Starter code — same chrome as the real lesson's "Starter code" box. */}
-            <section className="mt-2 overflow-hidden rounded-md border border-rule">
-              <div className="flex items-center justify-between gap-4 border-b border-rule bg-paper-sunk px-4 py-2">
-                <span className="label text-[11px]">Starter code</span>
-                <Clipboard className="h-3.5 w-3.5 text-brand" aria-hidden="true" />
-              </div>
-              <pre className="overflow-x-auto bg-code-bg px-4 py-3 font-mono text-[11px] leading-relaxed text-code-fg">
-                <code>{"public class HelloJava {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, Java!\");\n    }\n}"}</code>
-              </pre>
-            </section>
+          <div className="mt-6 flex items-start gap-8 px-5">
+            {/* Steps sidebar — lg:sticky on the real page, so it doesn't
+                scroll with the content there either; it's outside the
+                scrolling frame below for the same reason. */}
+            <aside className="w-56 shrink-0">
+              <h2 className="label">Steps in this lesson</h2>
+              <ol className="mt-4 border-t border-rule">
+                {STEP_TITLES.map((title, i) => (
+                  <li key={title} className="border-b border-rule">
+                    <div
+                      className={`flex gap-3 py-3 pl-3 text-small border-l-[3px] ${
+                        i === ACTIVE_STEP ? "font-semibold" : "border-transparent text-ink-muted"
+                      }`}
+                      style={i === ACTIVE_STEP ? { borderColor: "var(--track)", color: "var(--track)" } : undefined}
+                    >
+                      <span className="font-mono text-ink-meta tnum shrink-0">{String(i + 1).padStart(2, "0")}</span>
+                      <span>{title}</span>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </aside>
 
-            {/* Write your code here — the real CodeRunner, edited and run. */}
-            <section className="mt-6">
-              <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-4">
-                <h2 className="label text-[11px]">Write your code here</h2>
-                <p className="text-[11px] text-ink-muted">
-                  Make it print <code className="font-mono text-ink">{EXPECTED_OUTPUT}</code>
+            {/* Content column — header and progress bar are static (they
+                don't scroll on the real page either, thanks to the sticky
+                step-progress bar); only the step content below scrolls. */}
+            <div className="min-w-0 flex-1">
+              <header className="border-b border-rule pb-6">
+                <p className="eyebrow">Java Programming · Week 1</p>
+                <h1 className="text-h1 mt-3 text-ink">Hello World</h1>
+              </header>
+
+              <div className="mt-6 flex items-center gap-4">
+                <p className="tnum shrink-0 text-body text-ink">
+                  Step <strong className="font-semibold">{ACTIVE_STEP + 1}</strong> of {STEP_TITLES.length}
                 </p>
-              </div>
-              <div className="overflow-hidden rounded-md border border-rule">
-                <div className="flex items-center justify-between gap-4 border-b border-rule bg-paper-sunk px-4 py-2">
-                  <span className="label text-[11px]">java</span>
-                  <button
-                    ref={runBtnRef}
-                    tabIndex={-1}
-                    className="btn btn-brand inline-flex items-center gap-1.5 !px-3 !py-1.5 text-[11px]"
-                  >
-                    <Play className="h-3 w-3" aria-hidden="true" />
-                    Run
-                  </button>
-                </div>
-                <pre className="whitespace-pre-wrap bg-code-bg px-4 py-3 font-mono text-[11.5px] leading-relaxed text-code-fg">
-                  <code>
-                    {"public class HelloJava {\n    public static void main(String[] args) {\n        System.out.println(\""}
-                    <span ref={literalRef} className="rounded-sm">
-                      {ORIGINAL_TEXT}
-                    </span>
-                    {"\");\n    }\n}"}
-                  </code>
-                </pre>
-                <div ref={resultRef} className="overflow-hidden border-t border-rule bg-paper-sunk px-4 py-3">
-                  <p className="mb-1.5 text-[11px] text-ink-muted">done — 118ms — passed</p>
-                  <pre ref={stdoutRef} className="font-mono text-[12px] text-ink">
-                    {EXPECTED_OUTPUT}
-                  </pre>
+                <div className="flex flex-1 gap-1">
+                  {STEP_TITLES.map((title, i) => (
+                    <span
+                      key={title}
+                      className="h-1 flex-1"
+                      style={{ backgroundColor: i <= ACTIVE_STEP ? "var(--track)" : "var(--color-rule-strong)" }}
+                    />
+                  ))}
                 </div>
               </div>
-              <p ref={statusRef} className="mt-3 inline-flex items-center gap-1.5 text-[12px] font-semibold text-success">
-                <CheckCircle2 className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                That&rsquo;s it.
-              </p>
-            </section>
+
+              <div ref={scrollFrameRef} className="relative mt-6 h-[420px] overflow-hidden">
+                <div ref={scrollContentRef} className="pt-2">
+                  <Blocks blocks={LESSON_BLOCKS} />
+
+                  {/* Starter code — same chrome as the real lesson's "Starter code" box. */}
+                  <section className="mt-2 overflow-hidden rounded-md border border-rule">
+                    <div className="flex items-center justify-between gap-4 border-b border-rule bg-paper-sunk px-4 py-2">
+                      <span className="label text-[11px]">Starter code</span>
+                      <Clipboard className="h-3.5 w-3.5 text-brand" aria-hidden="true" />
+                    </div>
+                    <pre className="overflow-x-auto bg-code-bg px-4 py-3 font-mono text-[11px] leading-relaxed text-code-fg">
+                      <code>{"public class HelloJava {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, Java!\");\n    }\n}"}</code>
+                    </pre>
+                  </section>
+
+                  {/* Write your code here — the real CodeRunner, edited and run. */}
+                  <section className="mt-6">
+                    <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-4">
+                      <h2 className="label text-[11px]">Write your code here</h2>
+                      <p className="text-[11px] text-ink-muted">
+                        Make it print <code className="font-mono text-ink">{EXPECTED_OUTPUT}</code>
+                      </p>
+                    </div>
+                    <div className="overflow-hidden rounded-md border border-rule">
+                      <div className="flex items-center justify-between gap-4 border-b border-rule bg-paper-sunk px-4 py-2">
+                        <span className="label text-[11px]">java</span>
+                        <button
+                          ref={runBtnRef}
+                          tabIndex={-1}
+                          className="btn btn-brand inline-flex items-center gap-1.5 !px-3 !py-1.5 text-[11px]"
+                        >
+                          <Play className="h-3 w-3" aria-hidden="true" />
+                          Run
+                        </button>
+                      </div>
+                      <pre className="whitespace-pre-wrap bg-code-bg px-4 py-3 font-mono text-[11.5px] leading-relaxed text-code-fg">
+                        <code>
+                          {"public class HelloJava {\n    public static void main(String[] args) {\n        System.out.println(\""}
+                          <span ref={literalRef} className="rounded-sm">
+                            {ORIGINAL_TEXT}
+                          </span>
+                          {"\");\n    }\n}"}
+                        </code>
+                      </pre>
+                      <div ref={resultRef} className="overflow-hidden border-t border-rule bg-paper-sunk px-4 py-3">
+                        <p className="mb-1.5 text-[11px] text-ink-muted">done — 118ms — passed</p>
+                        <pre ref={stdoutRef} className="font-mono text-[12px] text-ink">
+                          {EXPECTED_OUTPUT}
+                        </pre>
+                      </div>
+                    </div>
+                    <p ref={statusRef} className="mt-3 inline-flex items-center gap-1.5 text-[12px] font-semibold text-success">
+                      <CheckCircle2 className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                      That&rsquo;s it.
+                    </p>
+                  </section>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

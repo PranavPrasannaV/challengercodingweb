@@ -1,7 +1,6 @@
 import { CheckCircle2, ArrowUpRight } from "lucide-react";
-import { courses, TRACKS } from "@/src/data/courses";
+import { courses, coursesInTrack, TRACKS, totalLessons, weeksIn } from "@/src/data/courses";
 import Image from "next/image";
-import { Bar } from "./skeletons";
 
 /**
  * The coda: three quiet product screenshots that play after the three
@@ -30,56 +29,74 @@ function Window({ url, children }: { url: string; children: React.ReactNode }) {
   );
 }
 
+/** Mirrors app/tutorials/page.tsx: grouped by track, each track's real
+ *  courses shown as their own compact cards — not one card per track. */
 function CoursesSlide() {
-  const shown = TRACKS.map((t) => courses.find((c) => c.track === t.id)).filter((c) => c !== undefined);
   return (
-    <Window url="challengercoding.com/learn">
+    <Window url="challengercoding.org/tutorials">
       <div className="px-6 py-5 font-sans">
-        <p className="font-serif text-[18px] text-home-ink">Your courses</p>
-        <p className="mt-1 text-[9.5px] text-home-ink-soft">Every course is open. Pick up wherever you left off.</p>
-        <div className="mt-4 grid grid-cols-3 gap-3">
-          {shown.map((c) => {
-            const mark = TRACKS.find((t) => t.id === c.track)?.mark;
-            return (
-              <div key={c.id} className="flex flex-col gap-2 border border-home-rule bg-white p-3">
-                <div className="flex items-start gap-2">
-                  {mark && <Image src={mark} alt="" width={24} height={24} className="h-6 w-auto shrink-0 object-contain" />}
-                  <p className="font-serif text-[11px] leading-tight text-home-ink">{c.title}</p>
-                </div>
-                <Bar w="90%" h={4} tone="soft" />
-                <Bar w="70%" h={4} tone="soft" />
-                <span className="mt-1 inline-flex items-center gap-1 text-[8.5px] font-semibold text-home-teal">
-                  View lessons <ArrowUpRight className="h-2.5 w-2.5" aria-hidden="true" />
-                </span>
+        <div className="flex items-end justify-between border-b border-home-rule pb-2">
+          <p className="font-serif text-[16px] text-home-ink">Courses</p>
+          <p className="font-mono text-[7px] text-home-ink-soft">
+            {courses.length} courses · {totalLessons} lessons
+          </p>
+        </div>
+        <div className="mt-3 space-y-3">
+          {TRACKS.map((track) => (
+            <div key={track.id}>
+              <div className="flex items-center gap-1.5">
+                <Image src={track.mark} alt="" width={14} height={14} className="h-3.5 w-auto object-contain" />
+                <p className="text-[9px] font-semibold text-home-ink">{track.label}</p>
               </div>
-            );
-          })}
+              <div className="mt-1.5 grid grid-cols-2 gap-2">
+                {coursesInTrack(track.id).map((c) => (
+                  <div key={c.id} className="border border-home-rule bg-white p-1.5">
+                    <p className="text-[8px] font-semibold leading-tight text-home-ink">
+                      {c.shortTitle}
+                      {c.stage === 2 && <sup className="text-home-teal">II</sup>}
+                    </p>
+                    <p className="mt-0.5 text-[6.5px] text-home-ink-soft">
+                      {c.level} · {weeksIn(c)}w
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </Window>
   );
 }
 
-const RESOURCES = [
+/** Mirrors app/resources/page.tsx: all four real directories (Practice,
+ *  Other courses, Install, Reference) with their actual item names — the
+ *  old version invented "Resources" as the title and dropped two of the
+ *  four sections entirely. */
+const DIRECTORIES = [
   ["Practice", ["CodingBat", "Codewars", "HackerRank", "LeetCode"]],
+  ["Other courses", ["Codecademy", "edX", "Udemy", "W3Schools"]],
   ["Install", ["Visual Studio Code", "Python", "Java JDK"]],
+  ["Reference", ["Python standard library", "Java SE 8 API", "MDN HTML reference"]],
 ] as const;
 
 function ResourcesSlide() {
   return (
-    <Window url="challengercoding.com/resources">
+    <Window url="challengercoding.org/resources">
       <div className="px-6 py-5 font-sans">
-        <p className="font-serif text-[18px] text-home-ink">Resources</p>
-        <p className="mt-1 text-[9.5px] text-home-ink-soft">Practice sites we point students to, and the official docs.</p>
-        <div className="mt-4 grid grid-cols-2 gap-x-8">
-          {RESOURCES.map(([title, items]) => (
+        <p className="font-serif text-[16px] text-home-ink">Links and resources</p>
+        <p className="mt-1 text-[8px] leading-snug text-home-ink-soft">
+          Places we point students for more practice, and the official docs.
+        </p>
+        <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-3">
+          {DIRECTORIES.map(([title, items]) => (
             <div key={title}>
-              <p className="border-b border-home-rule pb-1.5 font-serif text-[12px] text-home-ink">{title}</p>
+              <p className="border-b border-home-rule pb-1 text-[9px] font-semibold text-home-ink">{title}</p>
               <ul>
                 {items.map((name) => (
-                  <li key={name} className="flex items-center justify-between border-b border-home-rule py-2">
-                    <span className="text-[9.5px] font-semibold text-home-ink">{name}</span>
-                    <ArrowUpRight className="h-2.5 w-2.5 text-home-ink-soft" aria-hidden="true" />
+                  <li key={name} className="flex items-center justify-between border-b border-home-rule py-1">
+                    <span className="text-[7.5px] font-medium text-home-ink">{name}</span>
+                    <ArrowUpRight className="h-2 w-2 text-home-ink-soft" aria-hidden="true" />
                   </li>
                 ))}
               </ul>
@@ -95,7 +112,7 @@ const STEPS = ["Hello, world", "Variables", "Types and casting", "Conditionals",
 
 function CompletedSlide() {
   return (
-    <Window url="challengercoding.com/lessons/java-1">
+    <Window url="challengercoding.org/lessons/java/1">
       <div className="flex h-full font-sans">
         <aside className="w-[34%] shrink-0 border-r border-home-rule px-4 py-4">
           <p className="mb-2 text-[8.5px] font-semibold tracking-wide text-home-ink-soft">JAVA · WEEK 1</p>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowUpRight, Play } from "lucide-react";
 import gsap from "gsap";
 import { submitRun, pollRun } from "@/src/lib/executionApi";
+import { ENROLL_URL } from "@/src/config";
 import { getCourse } from "@/src/data/courses";
 import CourseCard from "@/app/components/CourseCard";
 import { SyllabusList, ResumeButton } from "@/app/tutorials/[courseId]/CourseProgress";
@@ -74,7 +75,7 @@ const LESSON_SCALE = 0.7;
  * volume swinging through depth, not a card spinning on a turntable.
  * Scene B's panels start building at ~70% of B's turn.
  */
-const TURN = { out: 0.55, inDelay: 0.3, in: 1.2, push: 150 } as const;
+const TURN = { out: 0.8, inDelay: 0.4, in: 1.7, push: 150 } as const;
 const TURN_CROSS = TURN.out * 0.96; // outgoing page edge-on
 const TURN_LANDED = TURN.inDelay + TURN.in; // when the incoming page is flat
 const TURN_PANELS_AT = TURN.inDelay + TURN.in * 0.7;
@@ -92,6 +93,7 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
 
   const stageRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
+  const introRef = useRef<HTMLDivElement>(null);
   const driftRef = useRef<HTMLDivElement>(null);
   const pythonPageRef = useRef<HTMLDivElement>(null);
   const lessonPageRef = useRef<HTMLDivElement>(null);
@@ -157,7 +159,8 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
 
     if (reduceMotion) {
       // Instant cut to the settled, interactive end state. No script, no
-      // builds, no page turns, no drift.
+      // builds, no page turns, no drift, no intro title card.
+      gsap.set(introRef.current, { autoAlpha: 0 });
       gsap.set([pages.lesson, coda], { display: "none" });
       gsap.set(pages.python, { autoAlpha: 1, rotationY: 0 });
       eachPanel("python", setPanelShown);
@@ -167,7 +170,9 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
     }
 
     // ------------------------------------------------------------ initial
-    gsap.set(pages.python, { autoAlpha: 1, rotationY: 0 });
+    // Hidden, not shown: the intro title card is what's visible first (see
+    // introRef below); pages.python is revealed once it fades out.
+    gsap.set(pages.python, { autoAlpha: 0, rotationY: 0 });
     gsap.set(pages.lesson, { autoAlpha: 0, rotationY: 100 });
     gsap.set(coda, { autoAlpha: 0, rotationY: 0 });
     gsap.set(slides, { autoAlpha: 0, scale: 0.97 });
@@ -254,6 +259,50 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
     const panels1At = 2.3;
     const hold1 = Math.max(1.5, sceneDuration("terminal") - (panels1At + panelsSettled("python")));
 
+    // ================================================ Intro: title card
+    // Panel 0 — plays once at the start of every lap, before Scene 1's
+    // terminal takes over. The heading/subtext/buttons glide in one after
+    // another (not a flat cut), hold long enough to actually read, then
+    // glide back out. pages.python stays hidden underneath the whole time
+    // (set here, not in the initial block above) and is only revealed once
+    // the card has fully cleared — otherwise the terminal is visible from
+    // the start and just shows through/around the card instead of being
+    // covered by it.
+    // power2.out (or any strong ease-out) front-loads most of an OPACITY
+    // change into the first third of the tween — the eye is far more
+    // sensitive to the jump from invisible to partly-visible than to the
+    // slow tail after, so it reads as an instant pop no matter how long the
+    // duration is. power1.inOut spreads the change evenly (slow start, slow
+    // end, most of it in the middle) — the same curve the exit already
+    // used, which is why the exit already looked gradual and the entrance
+    // didn't.
+    const introChildren = introRef.current ? (Array.from(introRef.current.children) as HTMLElement[]) : [];
+    const INTRO_IN = 1.1;
+    const INTRO_STAGGER = 0.18;
+    const INTRO_HOLD = 3.6;
+    const INTRO_OUT = 0.7;
+    // .set() immediately before .to(), not .fromTo() — on a timeline that
+    // repeats forever, a .fromTo() positioned at the very start of a lap is
+    // prone to GSAP not re-rendering its "from" state at the exact repeat
+    // boundary (the loop wrap and the tween's own start land on the same
+    // instant), so after the first lap it just snaps straight to the "to"
+    // values instead of animating from them. An explicit .set() forces that
+    // starting state to actually render every time, no ambiguity.
+    tl.set(introRef.current, { autoAlpha: 1 })
+      .set(pages.python, { autoAlpha: 0 })
+      .set(introChildren, { autoAlpha: 0, y: 26 })
+      .to(introChildren, { autoAlpha: 1, y: 0, duration: INTRO_IN, ease: "power1.inOut", stagger: INTRO_STAGGER })
+      .to({}, { duration: INTRO_HOLD })
+      // Cross-dissolve, not a hard cut: the terminal fades in at the same
+      // time the card fades out, so there's never an instant where either
+      // is just snapped on — same "not sudden" complaint this whole intro
+      // was built to fix in the first place, now applied to the handoff too.
+      .set(pages.python, { rotationY: 0 })
+      .addLabel("introOut")
+      .to(introChildren, { autoAlpha: 0, y: -14, duration: INTRO_OUT, ease: "power1.inOut", stagger: INTRO_STAGGER * 0.5 }, "introOut")
+      .to(pages.python, { autoAlpha: 1, duration: INTRO_OUT + 0.5, ease: "power1.inOut" }, "introOut")
+      .set(introRef.current, { autoAlpha: 0 });
+
     tl.addLabel("scene1")
       // Loop seam: the previous cycle left the terminal full; clear it.
       .call(() => {
@@ -330,13 +379,15 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
     // Once hidden, every slide resets its scale, ready for the next loop.
     tl.set(slides, { scale: 0.97 }, `coda+=${t + CODA.crossfade}`);
 
-    // The Python page comes back around bare (its panels were reset when it
-    // left), so the loop seam is the same cold open as the first play:
-    // page lands, terminal types, panels build. The coda page turns away
-    // exactly like a full scene does.
-    tl.addLabel("turnHome", `coda+=${t}`);
-    pageTurn(null, coda, pages.python, "turnHome", false, 1);
-    tl.to({}, { duration: 0.3 }, `turnHome+=${landed}`);
+    // Fade the coda page out and loop straight back to the intro title
+    // card, rather than turning back into the terminal scene first — the
+    // Python page comes back around bare (its panels were reset when it
+    // left) once the intro's own hold hands off to it, same cold open as
+    // the first play: page lands, terminal types, panels build.
+    tl.to(coda, { autoAlpha: 0, duration: 0.5, ease: "power1.inOut" }, `coda+=${t}`).to(
+      {},
+      { duration: 0.3 },
+    );
 
     return () => {
       tl.kill();
@@ -388,6 +439,7 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
     if (mode === "live") return;
     focusOnLiveRef.current = true;
     tlRef.current?.kill();
+    gsap.set(introRef.current, { autoAlpha: 0 });
     const canvas = canvasRef.current;
     if (driftRef.current) gsap.set(driftRef.current, { z: 0 });
     gsap.set(lessonPageRef.current, { autoAlpha: 0, rotationY: 100 });
@@ -554,6 +606,45 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* ================================================ Intro: title card
+          A sibling of hero-stage-wrap, not hero-stage — hero-stage-wrap is
+          the thing capped at STAGE_MAX_W, so living outside it lets the card
+          span the full width of hero-stage-frame (the page's own .wrap
+          column) instead of being squeezed into the narrower demo stage.
+          Not part of the canvas's preserve-3d chain either — it only ever
+          fades, so it doesn't need one. Painted last in DOM order, so it
+          sits on top with no z-index required (see the "THE 3D CHAIN MUST
+          STAY UNBROKEN" note above hero-stage in globals.css for why nothing
+          in the chain itself may do this). */}
+      <div
+        ref={introRef}
+        className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
+      >
+        <h1 className="font-sans text-[clamp(2.5rem,1.8rem+3.6vw,4.75rem)] font-semibold leading-[1.03] tracking-tight text-white">
+          Digital fluency for all students.
+        </h1>
+        <p className="mt-5 max-w-[46ch] font-sans text-lg font-medium leading-snug text-white/90 sm:text-2xl">
+          Free programming courses, taught by high schoolers.
+        </p>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+          <a
+            href={ENROLL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="pointer-events-auto inline-flex items-center justify-center gap-2 rounded-md bg-home-teal px-6 py-3.5 font-sans text-base font-semibold text-white transition-colors hover:bg-home-teal-deep"
+          >
+            Enroll in a class
+            <ArrowUpRight className="h-5 w-5" aria-hidden="true" />
+          </a>
+          <Link
+            href="/tutorials"
+            className="pointer-events-auto inline-flex items-center justify-center gap-2 rounded-md border border-white/25 px-6 py-3.5 font-sans text-base font-semibold text-white transition-colors hover:bg-white/10"
+          >
+            See all the courses
+          </Link>
         </div>
       </div>
     </div>

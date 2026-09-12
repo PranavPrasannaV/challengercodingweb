@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 
 const container: Variants = {
   hidden: {},
@@ -21,6 +21,11 @@ const btnPrimary =
 const btnOutline =
   "inline-flex items-center justify-center gap-2 rounded-md border border-home-ink/15 px-6 py-3.5 font-sans font-semibold text-home-ink transition-colors hover:bg-home-ink/[0.04]";
 
+/**
+ * The page's own plain banner — not layered over the hero image, which
+ * lives in its own section below (see page.tsx). Heading on the left,
+ * subtext + CTAs on the right, side by side.
+ */
 export default function HeroIntro({
   enrollUrl,
 }: {
@@ -35,61 +40,48 @@ export default function HeroIntro({
   // but flags the diff. suppressHydrationWarning on each animated element is
   // the documented way to silence that specific, harmless mismatch.
   return (
-    <motion.div initial="hidden" animate="visible" variants={container}>
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={container}
+      className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between sm:gap-10"
+    >
       <motion.h1
         variants={v}
         suppressHydrationWarning
-        className="font-sans text-[clamp(2.5rem,1.9rem+2.8vw,3.75rem)] font-semibold leading-[1.05] tracking-tight text-home-ink"
+        className="font-sans text-[clamp(2.5rem,1.9rem+2.8vw,3.75rem)] font-semibold leading-[1.05] tracking-tight text-home-ink sm:max-w-[13ch]"
       >
         Digital fluency for all students.
       </motion.h1>
 
-      <motion.p
-        variants={v}
-        suppressHydrationWarning
-        className="mt-4 max-w-[36ch] font-sans text-xl font-medium leading-snug text-home-ink"
-      >
-        Free programming courses, taught by high schoolers.
-      </motion.p>
-
-      <motion.div variants={v} suppressHydrationWarning className="mt-7 flex flex-wrap gap-3">
-        <motion.a
-          href={enrollUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          whileHover={{ scale: reduceMotion ? 1 : 1.03 }}
-          whileTap={{ scale: reduceMotion ? 1 : 0.97 }}
-          className={btnPrimary}
+      <div className="sm:max-w-md sm:pt-2">
+        <motion.p
+          variants={v}
+          suppressHydrationWarning
+          className="font-sans text-xl font-medium leading-snug text-home-ink"
         >
-          Enroll in a class
-          <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-        </motion.a>
-        <motion.div whileHover={{ scale: reduceMotion ? 1 : 1.03 }} whileTap={{ scale: reduceMotion ? 1 : 0.97 }}>
-          <Link href="/tutorials" className={btnOutline}>
-            See all the courses
-          </Link>
-        </motion.div>
-      </motion.div>
+          Free programming courses, taught by high schoolers.
+        </motion.p>
 
-      <motion.p
-        variants={v}
-        suppressHydrationWarning
-        className="mt-8 max-w-[42ch] font-sans text-sm text-home-ink-soft"
-      >
-        New here? Start with{" "}
-        <Link href="/lessons/scratch/1" className="font-semibold text-home-teal underline underline-offset-2">
-          Scratch Week 1
-        </Link>
-        ,{" "}
-        <Link href="/lessons/python/1" className="font-semibold text-home-teal underline underline-offset-2">
-          Python Week 1
-        </Link>{" "}
-        or{" "}
-        <Link href="/lessons/java/1" className="font-semibold text-home-teal underline underline-offset-2">
-          Java Week 1
-        </Link>
-        . Every lesson is free to read, no account needed.
-      </motion.p>
+        <motion.div variants={v} suppressHydrationWarning className="mt-5 flex flex-wrap items-center gap-3">
+          <motion.a
+            href={enrollUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: reduceMotion ? 1 : 1.03 }}
+            whileTap={{ scale: reduceMotion ? 1 : 0.97 }}
+            className={btnPrimary}
+          >
+            Enroll in a class
+            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+          </motion.a>
+          <motion.div whileHover={{ scale: reduceMotion ? 1 : 1.03 }} whileTap={{ scale: reduceMotion ? 1 : 0.97 }}>
+            <Link href="/tutorials" className={btnOutline}>
+              See all the courses
+            </Link>
+          </motion.div>
+        </motion.div>
+      </div>
     </motion.div>
   );
 }

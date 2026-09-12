@@ -25,28 +25,35 @@
   --color-rule-strong: #C7CCD6;  /* dividers that need to read */
   --color-field: #8B93A1;        /*  3.6:1 — form borders, non-text contrast */
 
-  /* Brand — teal, the site's one accent hue */
-  --color-brand: #0E7C6B;        /*  4.2:1 on paper */
-  --color-brand-deep: #0A5F52;   /*  6.7:1 — dark bands, hover */
-  --color-brand-tint: #E5F2EF;
+  /* Brand — was a teal accent; retinted to near-black/white on request
+     ("the green is too much, just black and white"). Every page and
+     component still reads these same token names, so this one edit is the
+     whole change. */
+  --color-brand: #14171C;        /* 17.5:1 on paper */
+  --color-brand-deep: #000000;   /* dark bands, hover */
+  --color-brand-tint: #F0F1F3;
 
-  /* Accent used to be a separate terracotta; the homepage never introduced
-     a second hue, so this now matches brand exactly rather than fighting it. */
-  --color-accent: #0E7C6B;
-  --color-accent-deep: #0A5F52;
-  --color-accent-tint: #E5F2EF;
+  /* Accent used to be a separate terracotta, then matched brand's teal; it
+     still just mirrors brand, now in black/white. */
+  --color-accent: #14171C;
+  --color-accent-deep: #000000;
+  --color-accent-tint: #F0F1F3;
 
   /* Warm highlight, used only on dark grounds */
   --color-sand: #E4C88F;         /*  6.7:1 on brand-deep */
 
-  /* Scratch is the only track that needs a hue of its own. Python and Java
-     tokens were byte-identical to --color-brand and --color-accent, so they
-     were deleted rather than left as an invitation to color-code cards. */
+  /* Scratch is the only track that keeps a hue of its own — it's wayfinding
+     for 8–12-year-olds, not decorative branding, so it's exempt from the
+     black/white pass above. Python and Java tokens were byte-identical to
+     --color-brand and --color-accent, so they were deleted rather than left
+     as an invitation to color-code cards. */
   --color-track-scratch: #96601A;  /* 5.0:1 on paper */
 
-  /* Status */
-  --color-success: #2F6B4F;      /*  5.9:1 on paper, 5.4:1 on its tint */
-  --color-success-tint: #E7F0EA;
+  /* Status. Success was also a green; folded into the same black/white
+     pass. Danger stays red — that hue carries real meaning (errors), not
+     brand decoration. */
+  --color-success: #14171C;      /* 17.5:1 on paper */
+  --color-success-tint: #F0F1F3;
   --color-danger: #9A3B33;       /*  6.5:1 on paper, 5.8:1 on its tint */
   --color-danger-tint: #F7E9E6;
 
@@ -80,8 +87,11 @@
   --default-transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
   --duration-300: 300ms;
 
-  /* The fixed header height. Reserved once, on <body>. */
-  --nav-h: 4rem;
+  /* Reserved once, on <body>. The navbar now floats with a gap above it
+     (see Navbar.tsx's top-[calc(...+0.625rem)]) rather than sitting flush,
+     so this covers that gap plus the bar's own h-14 — keep all three in
+     sync if either changes. */
+  --nav-h: 4.125rem;
   /* The announcement strip fixed above the navbar (AnnouncementBar.tsx).
      The navbar's own top offset and every --nav-h consumer below add this
      in, so the stack reserves its space in exactly one place. */
@@ -98,16 +108,17 @@
   --color-home-bg: #FFFFFF;
   --color-home-ink: #14171C;         /* 15.6:1 on home-bg */
   --color-home-ink-soft: #5B6270;    /*  5.1:1 on home-bg */
-  --color-home-teal: #0E7C6B;        /*  4.2:1 on home-bg; white on it = 3.9:1 */
-  --color-home-teal-deep: #0A5F52;
-  --color-home-teal-tint: #E5F2EF;
+  --color-home-teal: #14171C;        /* was teal; black/white pass */
+  --color-home-teal-deep: #000000;
+  --color-home-teal-tint: #F0F1F3;
   --color-home-terminal: #0B0F14;
   --color-home-terminal-fg: #E7EAEE;
   --color-home-rule: #E1E4E9;
 
-  /* Scratch scene backdrop — a soft stage, not bare white grid paper. */
-  --color-home-stage: #DCEFEA;
-  --color-home-stage-floor: #C3E3DA;
+  /* Scratch scene backdrop — a soft stage, not bare white grid paper. Was a
+     mint-green tint; folded into the black/white pass. */
+  --color-home-stage: #EEF0F2;
+  --color-home-stage-floor: #DBDEE3;
 }
 
 /* ==========================================================================
@@ -349,14 +360,10 @@
    composition resizes as one unit. Panels are placed in %-of-canvas
    coordinates (see stage.ts), never viewport px.
    ========================================================================== */
+/* No card of its own — the stage sits directly on the hero's backdrop image
+   now, so the only light surface visible is the terminal panel inside it. */
 .hero-stage-frame {
   position: relative;
-  background: #EAEBEE;
-  border-radius: 20px;
-  padding: 24px;
-}
-@media (max-width: 640px) {
-  .hero-stage-frame { padding: 14px; border-radius: 16px; }
 }
 .hero-stage-wrap {
   position: relative;
