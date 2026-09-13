@@ -33,48 +33,46 @@ export default function Navbar() {
   // Transparent, glass navbar while the hero's #hero section is still behind
   // it; solid the moment the page scrolls past it (or on any other page,
   // which never sets overHero true to begin with).
+  //
+  // This used to be driven by a one-shot getBoundingClientRect() check,
+  // re-run only on 'scroll'/'resize' events and a ResizeObserver on #hero
+  // itself. That left a gap: anything that changed the *correct* answer
+  // without firing one of those — a layout settle that isn't a hero resize,
+  // a bfcache/tab resume, a slow first paint on a cold connection — left
+  // overHero stuck wrong until the user happened to scroll. An
+  // IntersectionObserver doesn't have that gap: the browser re-evaluates it
+  // whenever the real geometry changes, for any reason, so there's no stale
+  // state to get stuck in.
   useEffect(() => {
     if (!isHome) {
       setOverHero(false);
       return;
     }
     let raf = 0;
-    let ro: ResizeObserver | null = null;
-    const check = () => {
-      const hero = document.getElementById('hero');
-      setOverHero(!!hero && hero.getBoundingClientRect().bottom > 80);
-    };
-    // Two races can leave this stuck on "solid" until a scroll event
-    // happens to fire and recompute it:
-    //  1. A client-side navigation to "/" flips isHome before the home
-    //     page's own content — including #hero — has committed to the DOM,
-    //     so a one-shot check() right here finds no hero at all.
-    //  2. In dev, CSS can finish applying a beat after the DOM commits
-    //     (Turbopack injects styles via JS rather than a blocking <link>),
-    //     so #hero can briefly sit at its unstyled height instead of the
-    //     full min-h-svh — check() then measures a too-small bottom before
-    //     the real layout has settled.
-    // Poll for #hero instead of trusting it's already there, then keep a
-    // ResizeObserver on it so any later layout change (that CSS applying,
-    // fonts swapping, images loading) re-triggers check() on its own.
+    let io: IntersectionObserver | null = null;
+    // rootMargin shrinks the viewport's top edge by 80px, so "intersecting"
+    // is true exactly while hero's bottom edge is more than 80px from the
+    // real top — the same threshold the old rect check used.
+    //
+    // A client-side navigation to "/" can flip isHome before the home
+    // page's own content — including #hero — has committed to the DOM, so
+    // poll for it instead of trusting it's already there on the first run.
     const waitForHero = () => {
       const hero = document.getElementById('hero');
       if (hero) {
-        check();
-        ro = new ResizeObserver(check);
-        ro.observe(hero);
+        io = new IntersectionObserver(
+          ([entry]) => setOverHero(entry.isIntersecting),
+          { rootMargin: '-80px 0px 0px 0px' }
+        );
+        io.observe(hero);
         return;
       }
       raf = requestAnimationFrame(waitForHero);
     };
     waitForHero();
-    window.addEventListener('scroll', check, { passive: true });
-    window.addEventListener('resize', check);
     return () => {
       cancelAnimationFrame(raf);
-      ro?.disconnect();
-      window.removeEventListener('scroll', check);
-      window.removeEventListener('resize', check);
+      io?.disconnect();
     };
   }, [isHome]);
 
