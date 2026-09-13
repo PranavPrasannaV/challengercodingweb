@@ -38,14 +38,41 @@ export default function Navbar() {
       setOverHero(false);
       return;
     }
+    let raf = 0;
+    let ro: ResizeObserver | null = null;
     const check = () => {
       const hero = document.getElementById('hero');
       setOverHero(!!hero && hero.getBoundingClientRect().bottom > 80);
     };
-    check();
+    // Two races can leave this stuck on "solid" until a scroll event
+    // happens to fire and recompute it:
+    //  1. A client-side navigation to "/" flips isHome before the home
+    //     page's own content — including #hero — has committed to the DOM,
+    //     so a one-shot check() right here finds no hero at all.
+    //  2. In dev, CSS can finish applying a beat after the DOM commits
+    //     (Turbopack injects styles via JS rather than a blocking <link>),
+    //     so #hero can briefly sit at its unstyled height instead of the
+    //     full min-h-svh — check() then measures a too-small bottom before
+    //     the real layout has settled.
+    // Poll for #hero instead of trusting it's already there, then keep a
+    // ResizeObserver on it so any later layout change (that CSS applying,
+    // fonts swapping, images loading) re-triggers check() on its own.
+    const waitForHero = () => {
+      const hero = document.getElementById('hero');
+      if (hero) {
+        check();
+        ro = new ResizeObserver(check);
+        ro.observe(hero);
+        return;
+      }
+      raf = requestAnimationFrame(waitForHero);
+    };
+    waitForHero();
     window.addEventListener('scroll', check, { passive: true });
     window.addEventListener('resize', check);
     return () => {
+      cancelAnimationFrame(raf);
+      ro?.disconnect();
       window.removeEventListener('scroll', check);
       window.removeEventListener('resize', check);
     };
