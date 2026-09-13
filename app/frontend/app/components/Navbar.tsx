@@ -50,29 +50,50 @@ export default function Navbar() {
     }
     let raf = 0;
     let io: IntersectionObserver | null = null;
+    let hero: HTMLElement | null = null;
     // rootMargin shrinks the viewport's top edge by 80px, so "intersecting"
     // is true exactly while hero's bottom edge is more than 80px from the
     // real top — the same threshold the old rect check used.
-    //
+    const observe = () => {
+      if (!hero) return;
+      io?.disconnect();
+      io = new IntersectionObserver(
+        ([entry]) => setOverHero(entry.isIntersecting),
+        { rootMargin: '-80px 0px 0px 0px' }
+      );
+      io.observe(hero);
+    };
     // A client-side navigation to "/" can flip isHome before the home
     // page's own content — including #hero — has committed to the DOM, so
     // poll for it instead of trusting it's already there on the first run.
     const waitForHero = () => {
-      const hero = document.getElementById('hero');
+      hero = document.getElementById('hero');
       if (hero) {
-        io = new IntersectionObserver(
-          ([entry]) => setOverHero(entry.isIntersecting),
-          { rootMargin: '-80px 0px 0px 0px' }
-        );
-        io.observe(hero);
+        observe();
         return;
       }
       raf = requestAnimationFrame(waitForHero);
     };
     waitForHero();
+    // A tab that sits backgrounded for a long stretch (the reported case:
+    // left open for hours, then switched back to) can have its
+    // IntersectionObserver callbacks throttled or dropped by the browser
+    // while hidden, leaving `overHero` stuck on whatever it last delivered.
+    // Recreating the observer on return forces a synchronous re-read of the
+    // real geometry instead of trusting whatever stale entry is queued.
+    // `pageshow` covers the bfcache/back-forward-restore version of the same
+    // gap, which `visibilitychange` alone doesn't catch.
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') observe();
+    };
+    const onPageShow = () => observe();
+    document.addEventListener('visibilitychange', onVisible);
+    window.addEventListener('pageshow', onPageShow);
     return () => {
       cancelAnimationFrame(raf);
       io?.disconnect();
+      document.removeEventListener('visibilitychange', onVisible);
+      window.removeEventListener('pageshow', onPageShow);
     };
   }, [isHome]);
 
