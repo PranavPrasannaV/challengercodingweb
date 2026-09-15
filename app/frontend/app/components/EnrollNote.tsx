@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
-import { ENROLL_URL } from '@/src/config';
+import { SITE } from '@/src/site';
 
 /**
  * The way from reading a lesson to sitting in one.
@@ -34,7 +34,7 @@ export default function EnrollNote({
                         These lessons are free to read on your own. We also teach them live,
                         in free classes run by high school volunteers.{' '}
                         <Link
-                            href={ENROLL_URL}
+                            href={SITE.enrollUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="font-semibold text-home-teal underline underline-offset-2 transition-colors hover:text-home-teal-deep"
@@ -58,7 +58,7 @@ export default function EnrollNote({
                     These lessons are free to read on your own. We also teach them live,
                     in free classes run by high school volunteers.{' '}
                     <Link
-                        href={ENROLL_URL}
+                        href={SITE.enrollUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="link-quiet font-semibold"
@@ -86,7 +86,7 @@ export default function EnrollNote({
                     free classes run by high school volunteers. Signing up takes one form.
                 </p>
                 <Link
-                    href={ENROLL_URL}
+                    href={SITE.enrollUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-5 inline-flex items-center justify-center gap-2 rounded-md border border-home-ink/15 px-6 py-3.5 font-sans font-semibold text-home-ink transition-colors hover:bg-home-ink/[0.04]"
@@ -112,7 +112,7 @@ export default function EnrollNote({
                 free classes run by high school volunteers. Signing up takes one form.
             </p>
             <Link
-                href={ENROLL_URL}
+                href={SITE.enrollUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-outline mt-5"

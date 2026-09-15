@@ -97,7 +97,7 @@ export default function About() {
                 </div>
             </section>
 
-            {/* Founder --------------------------------------------------- */}
+            {/* Co-founder ------------------------------------------------ */}
             <section className="wrap section">
                 <div className="grid gap-10 md:grid-cols-12 md:gap-14">
                     <div className="md:col-span-4">

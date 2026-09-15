@@ -1,17 +1,10 @@
 import type { Metadata } from "next";
-import { Newsreader, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
 import AnnouncementBar from "./components/AnnouncementBar";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { OG_IMAGE, SITE } from "@/src/site";
 import "./globals.css";
-
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-newsreader",
-  axes: ["opsz"],
-});
 
 const sans = Hanken_Grotesk({
   subsets: ["latin"],
@@ -99,7 +92,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${newsreader.variable} ${sans.variable} ${jetbrainsMono.variable}`}
+      className={`${sans.variable} ${jetbrainsMono.variable}`}
     >
       <body className="bg-paper text-ink">
         <a
@@ -114,7 +107,6 @@ export default function RootLayout({
         <Footer />
         <script
           type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
       </body>

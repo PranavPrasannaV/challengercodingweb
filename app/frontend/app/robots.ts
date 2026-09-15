@@ -17,11 +17,6 @@ export default function robots(): MetadataRoute.Robots {
                     '/signup/',
                     '/learn/',
                 ],
-                // The 73 legacy .html pages are deliberately NOT disallowed.
-                // Each carries <meta name="robots" content="noindex, follow">
-                // and a canonical to its replacement, and a crawler has to be
-                // allowed to fetch a page in order to read those tags. Blocking
-                // them here would leave them indexed on link signals alone.
             },
         ],
         sitemap: `${SITE.url}/sitemap.xml`,

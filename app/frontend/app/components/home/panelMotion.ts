@@ -44,15 +44,6 @@ export function setPanelShown(panel: HTMLElement, id: SatelliteId) {
 }
 
 /**
- * Panels no longer rotate on their own — they stay flat and straight at
- * their rest position for as long as they're mounted. Kept as a hook (it
- * returns no tween) so callers don't need to change.
- */
-export function startAmbient(_panel: HTMLElement, _id: SatelliteId): gsap.core.Tween | null {
-  return null;
-}
-
-/**
  * Panel entrance. The body reveals from its own centre outward, slow-fast-
  * slow. Runs inside the panel's applied 3D tilt.
  */

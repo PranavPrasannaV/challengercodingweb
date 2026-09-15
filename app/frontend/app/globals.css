@@ -42,13 +42,6 @@
   /* Warm highlight, used only on dark grounds */
   --color-sand: #E4C88F;         /*  6.7:1 on brand-deep */
 
-  /* Scratch is the only track that keeps a hue of its own — it's wayfinding
-     for 8–12-year-olds, not decorative branding, so it's exempt from the
-     black/white pass above. Python and Java tokens were byte-identical to
-     --color-brand and --color-accent, so they were deleted rather than left
-     as an invitation to color-code cards. */
-  --color-track-scratch: #96601A;  /* 5.0:1 on paper */
-
   /* Status. Success was also a green; folded into the same black/white
      pass. Danger stays red — that hue carries real meaning (errors), not
      brand decoration. */
@@ -60,9 +53,6 @@
   /* Code surfaces — matched to the homepage hero demo's terminal. */
   --color-code-bg: #0B0F14;
   --color-code-fg: #E7EAEE;
-  --color-code-keyword: #F0A88A;
-  --color-code-string: #9FD6B4;
-  --color-code-comment: #8FA39F;
 
   /* Type. --font-serif now points at the same sans stack as --font-sans —
      the homepage theme has no serif voice, and every h1–h4 (see @layer base
@@ -112,13 +102,11 @@
   --color-home-teal-deep: #000000;
   --color-home-teal-tint: #F0F1F3;
   --color-home-terminal: #0B0F14;
-  --color-home-terminal-fg: #E7EAEE;
   --color-home-rule: #E1E4E9;
 
   /* Scratch scene backdrop — a soft stage, not bare white grid paper. Was a
      mint-green tint; folded into the black/white pass. */
   --color-home-stage: #EEF0F2;
-  --color-home-stage-floor: #DBDEE3;
 }
 
 /* ==========================================================================
@@ -145,11 +133,8 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Newsreader is a variable font with an optical size axis. Large headings
-     want tighter, higher-contrast shapes; running text wants the opposite. */
   h1, h2, h3, h4 {
     font-family: var(--font-serif);
-    font-optical-sizing: auto;
     text-wrap: balance;
   }
 
@@ -206,24 +191,15 @@
   }
 }
 
-/* Track color is wayfinding, never action and never correctness. It reaches
-   the lesson bodies — which are raw HTML strings a Tailwind utility can never
-   touch — through a custom property set on the page root.
+/* Track color is wayfinding, never action and never correctness. It is set
+   once on the page root and read through var(--track).
 
-   #FF8C1A is Scratch's own ui-dark-orange. Ink on it is 7.5:1; white would be
-   2.33:1, which is why the numeral inverts rather than staying white. The
-   orange fill against paper is 2.2:1 — it is decoration, and the numeral
-   inside it carries the information. */
-:root { --track: var(--color-brand); --track-ink: #FFFFFF; }
-[data-track="scratch"] { --track: #FF8C1A; --track-ink: var(--color-ink); }
+   #FF8C1A is Scratch's own ui-dark-orange. */
+:root { --track: var(--color-brand); }
+[data-track="scratch"] { --track: #FF8C1A; }
 
 /* Scratch students are 8-12 — a slightly larger reading size than the other
-   tracks, kept for that reason. The narrower 56ch measure this used to also
-   set here was removed for cross-track width consistency (every track's
-   lesson text now fills the content column, matching its code panels and
-   step bar) — see the image-caption comment below for the one place that
-   still assumes captions render in a narrower column. */
-[data-track="scratch"] .lesson-prose { font-size: 1.1875rem; }
+   tracks, kept for that reason. */
 [data-track="scratch"] .eyebrow {
   font-size: 0.875rem;
   letter-spacing: 0;
@@ -267,67 +243,6 @@
   background-color: var(--color-home-teal);
   animation: home-cursor-blink 0.9s steps(1) infinite;
 }
-
-/* ==========================================================================
-   "Our Offerings" demo loops (ScratchOfferingDemo / PythonOfferingDemo /
-   JavaOfferingDemo). Each is a single infinite, self-contained loop — no JS
-   timeline — so every staggered element shares one @keyframes' percentages
-   rather than using animation-delay, which would only offset the FIRST lap
-   and fall out of sync on every lap after. Global reduced-motion handling
-   (see the @media block near the top of this file, which forces
-   iteration-count:1) already covers these correctly, so nothing here
-   special-cases it.
-   ========================================================================== */
-
-@keyframes offering-scratch-sprite {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(84px); }
-}
-.offering-scratch-sprite { animation: offering-scratch-sprite 4s ease-in-out infinite; }
-
-@keyframes offering-scratch-snap {
-  0% { transform: translateY(10px); opacity: 0; }
-  8% { transform: translateY(10px); opacity: 1; }
-  20%, 85% { transform: translateY(0); opacity: 1; }
-  95%, 100% { transform: translateY(10px); opacity: 0; }
-}
-.offering-scratch-block-2 { animation: offering-scratch-snap 5s ease-in-out infinite; }
-
-@keyframes offering-py-type-1 {
-  0%, 4% { width: 0; }
-  20%, 100% { width: 7ch; }
-}
-@keyframes offering-py-type-2 {
-  0%, 24% { width: 0; }
-  46%, 100% { width: 24ch; }
-}
-@keyframes offering-py-output {
-  0%, 55% { opacity: 0; transform: translateY(4px); }
-  65%, 88% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(0); }
-}
-.offering-py-type-1 { animation: offering-py-type-1 6s ease-in-out infinite; }
-.offering-py-type-2 { animation: offering-py-type-2 6s ease-in-out infinite; }
-.offering-py-output { animation: offering-py-output 6s ease-in-out infinite; }
-
-@keyframes offering-java-line-1 {
-  0%, 6% { opacity: 0; transform: translateY(4px); }
-  14%, 88% { opacity: 1; transform: translateY(0); }
-  96%, 100% { opacity: 0; transform: translateY(0); }
-}
-@keyframes offering-java-line-2 {
-  0%, 26% { opacity: 0; transform: translateY(4px); }
-  34%, 88% { opacity: 1; transform: translateY(0); }
-  96%, 100% { opacity: 0; transform: translateY(0); }
-}
-@keyframes offering-java-line-3 {
-  0%, 46% { opacity: 0; transform: translateY(4px); }
-  54%, 88% { opacity: 1; transform: translateY(0); }
-  96%, 100% { opacity: 0; transform: translateY(0); }
-}
-.offering-java-line-1 { animation: offering-java-line-1 6s ease-in-out infinite; }
-.offering-java-line-2 { animation: offering-java-line-2 6s ease-in-out infinite; }
-.offering-java-line-3 { animation: offering-java-line-3 6s ease-in-out infinite; }
 
 /* ==========================================================================
    Hero demo stage
@@ -426,11 +341,6 @@
   opacity: 0.62;
   filter: saturate(0.55);
 }
-.hero-scripts {
-  background-image: radial-gradient(circle, rgb(20 23 28 / 0.12) 1px, transparent 1.1px);
-  background-size: 18px 18px;
-  background-color: #F8F9FB;
-}
 
 /* Floating panels — a two-level transform hierarchy so three motions
    compose instead of overwriting each other:
@@ -503,13 +413,6 @@
    heading never has to be tuned by hand at the call site.
    ========================================================================== */
 
-.text-display {
-  font-size: clamp(2.75rem, 1.9rem + 3.4vw, 4.25rem);
-  line-height: 1.04;
-  letter-spacing: -0.028em;
-  font-weight: 500;
-}
-
 .text-h1 {
   font-size: clamp(2.1rem, 1.6rem + 2vw, 3rem);
   line-height: 1.1;
@@ -581,17 +484,14 @@
    ========================================================================== */
 
 .wrap { width: 100%; max-width: 72rem; margin-inline: auto; padding-inline: 1.5rem; }
-.wrap-narrow { width: 100%; max-width: 52rem; margin-inline: auto; padding-inline: 1.5rem; }
 
 .section-sm { padding-block: 3.5rem; }
 .section    { padding-block: 5rem; }
-.section-lg { padding-block: 6rem; }
 
 @media (min-width: 768px) {
-  .wrap, .wrap-narrow { padding-inline: 2rem; }
+  .wrap { padding-inline: 2rem; }
   .section-sm { padding-block: 4.5rem; }
   .section    { padding-block: 7rem; }
-  .section-lg { padding-block: 9rem; }
 }
 
 /* Measure control — prose should never run wider than the eye can track. */
@@ -612,20 +512,11 @@
   border-radius: var(--radius-md);
 }
 
-.card-quiet {
-  background-color: var(--color-paper-sunk);
-  border: 1px solid transparent;
-  border-radius: var(--radius-md);
-}
-
 /* Interactive cards shift their border and ground, they do not lift. */
 .card-link {
   transition: border-color 0.18s ease, background-color 0.18s ease;
 }
 .card-link:hover { border-color: var(--color-brand); }
-
-.rule-top { border-top: 1px solid var(--color-rule); }
-.rule-bottom { border-bottom: 1px solid var(--color-rule); }
 
 /* ==========================================================================
    Controls
@@ -646,12 +537,6 @@
   cursor: pointer;
 }
 
-.btn-primary {
-  background-color: var(--color-accent);
-  color: #FFFFFF;
-}
-.btn-primary:hover { background-color: var(--color-accent-deep); }
-
 .btn-brand {
   background-color: var(--color-brand);
   color: #FFFFFF;
@@ -666,7 +551,6 @@
 .btn-outline:hover { background-color: var(--color-paper-sunk); border-color: var(--color-ink); }
 
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
-.btn-primary:disabled:hover { background-color: var(--color-accent); }
 .btn-brand:disabled:hover { background-color: var(--color-brand); }
 .btn-outline:disabled:hover { background-color: transparent; border-color: var(--color-field); }
 
@@ -696,19 +580,13 @@
    Overriding outline/box-shadow at :focus used to cancel :focus-visible. */
 .field:focus { border-color: var(--color-brand); }
 
-.min-h-page { min-height: calc(100svh - var(--announce-h) - var(--nav-h)); }
-
 }
 
 /* ==========================================================================
    Lesson prose
 
-   The lesson bodies are stored as HTML strings carrying two generations of
-   markup: semantic class names from the original site (.content-box,
-   .code-block, .tutorial-text …) that were never given styles, and Tailwind
-   utilities from a different palette (text-gray-700, text-blue-600,
-   bg-gray-800) that fight the brand. Rather than rewrite forty data files,
-   scope both vocabularies here and give them one voice.
+   The course notes (src/data/notes) are stored as HTML strings, which no
+   Tailwind utility at the call site can reach, so they are styled here.
    ========================================================================== */
 
 .lesson-prose {
@@ -717,51 +595,11 @@
   line-height: 1.7;
 }
 
-/* Vertical rhythm. The child combinator this used to use never reached
-   inside a callout, so ~1,090 paragraphs, lists and code blocks nested in
-   .content-box / .highlight-box / .step-box stacked flush against each other
-   (Tailwind preflight zeroes every margin). :where() keeps the specificity at
-   (0,1,0), so every override below still wins. */
+/* Vertical rhythm. Tailwind preflight zeroes every margin, and a child
+   combinator would never reach inside an .example-box. :where() keeps the
+   specificity at (0,1,0), so every override below still wins. */
 .lesson-prose :where(p, ul, ol, pre, table, blockquote, figure, div, h1, h2, h3, h4)
   + :where(p, ul, ol, pre, table, blockquote, figure, div) { margin-top: 1.1em; }
-
-/* ...but a grid or flex container already spaces its own children with gap.
-   Left alone, the rule above lands on every child after the first, offsetting
-   it inside its own cell, so the cards in a two-column "Key Concepts" block
-   sit ~21px lower than their row-mates. Same specificity (0,1,0), later in
-   source, so it wins without escalating. */
-.lesson-prose :where([class*="grid"], [class*="flex"]) > * { margin-top: 0; }
-
-/* Neutralize the off-brand utility colors the lesson HTML carries.
-   These are scoped to .lesson-prose so they never leak into the app shell. */
-/* .text-gray-700/600 (282 uses) and .tutorial-text (698 uses) both outrank
-   the bare `p` selector, so these are where instruction color is really
-   decided. */
-.lesson-prose .text-gray-700,
-.lesson-prose .text-gray-600 { color: var(--color-ink); }
-.lesson-prose .text-gray-800,
-.lesson-prose .text-gray-900 { color: var(--color-ink); }
-.lesson-prose .text-gray-500 { color: var(--color-ink-meta); }
-.lesson-prose .text-blue-600,
-.lesson-prose .text-blue-700,
-.lesson-prose .text-blue-500 { color: var(--color-brand); }
-.lesson-prose .border-blue-600,
-.lesson-prose .border-blue-500 { border-color: var(--color-brand); }
-.lesson-prose .bg-blue-500,
-.lesson-prose .bg-blue-600 { background-color: var(--color-brand); }
-.lesson-prose .bg-gray-100,
-.lesson-prose .bg-gray-50 { background-color: var(--color-paper-sunk); }
-.lesson-prose .bg-white { background-color: var(--color-card); }
-.lesson-prose .border-gray-200,
-.lesson-prose .border-gray-300 { border-color: var(--color-rule); }
-
-/* A heading is ink because it is a heading, not teal because whoever wrote
-   that lesson happened to type text-blue-600. The [class] selector is here
-   only to outrank the utility above it. */
-.lesson-prose h1[class],
-.lesson-prose h2[class],
-.lesson-prose h3[class],
-.lesson-prose h4[class] { color: var(--color-ink); }
 
 .lesson-prose h1,
 .lesson-prose h2,
@@ -848,11 +686,9 @@
   border: 1px solid var(--color-rule);
 }
 
-/* Code blocks — both the semantic class and the utility-styled divs */
+/* Code blocks — <pre> and the notes' .code-example divs */
 .lesson-prose pre,
-.lesson-prose .code-block,
-.lesson-prose .code-example,
-.lesson-prose .bg-gray-800 {
+.lesson-prose .code-example {
   font-family: var(--font-mono);
   font-size: 0.9rem;
   line-height: 1.6;
@@ -866,9 +702,7 @@
   word-break: break-word;
 }
 .lesson-prose pre code,
-.lesson-prose .code-block code,
-.lesson-prose .code-example code,
-.lesson-prose .bg-gray-800 code {
+.lesson-prose .code-example code {
   background: none;
   border: 0;
   padding: 0;
@@ -876,221 +710,4 @@
   font-size: 1em;
 }
 
-/* .content-box and .example-box are generic wrappers — 171 of them in the
-   Scratch course against 46 real callouts. Boxing them meant a "do this now"
-   panel and a paragraph of background looked identical, so a student learned
-   to skip both. They become plain flow; only the callouts below get a shape. */
-.lesson-prose .content-box,
-.lesson-prose .example-box {
-  background: none;
-  border: 0;
-  border-radius: 0;
-  padding: 0;
-  box-shadow: none;
-}
-
-/* The java course (not java2, not python, not python2) wraps every major
-   block in its own "bg-white p-6 rounded-xl shadow-md border ... mb-6" card
-   — no other track's data uses that combination. The effect: java reads as
-   a stack of distinct white cards while every other track (including its
-   own sequel course) reads as flowing prose. Scoped to [data-track="java"]
-   rather than unscoped because Scratch happens to use rounded-xl/shadow-md
-   too, for its own, unrelated styling — this must not touch that. */
-[data-track="java"] .lesson-prose .rounded-xl.shadow-md {
-  background: none;
-  border: 0;
-  border-radius: 0;
-  padding: 0;
-  box-shadow: none;
-}
-
-/* Callouts. One shape, three temperatures, distinguished by the left rule. */
-.lesson-prose .highlight-box,
-.lesson-prose .hint-box,
-.lesson-prose .key-point,
-.lesson-prose .interactive-demo,
-.lesson-prose .bg-blue-50 {
-  background-color: var(--color-paper-sunk);
-  border: 1px solid var(--color-rule);
-  border-left: 3px solid var(--color-rule-strong);
-  border-radius: var(--radius-sm);
-  padding: 1.1rem 1.25rem;
-  box-shadow: none;
-}
-.lesson-prose .highlight-box,
-.lesson-prose .key-point,
-.lesson-prose .bg-blue-50 {
-  background-color: var(--color-brand-tint);
-  border-left-color: var(--color-brand);
-}
-.lesson-prose .hint-box {
-  background-color: var(--color-accent-tint);
-  border-left-color: var(--color-accent);
-}
-.lesson-prose .content-box > :first-child,
-.lesson-prose .highlight-box > :first-child,
-.lesson-prose .example-box > :first-child,
-.lesson-prose .hint-box > :first-child { margin-top: 0; }
-
-/* Numbered steps.
-   Two shapes exist in the lesson data: a .step-box that wraps a single step
-   (those carry Tailwind's own `flex`), and a .step-box that wraps several
-   numbered paragraphs. Making the container flex unconditionally turned the
-   second kind into four narrow columns, so the default is block. */
-.lesson-prose .step-box {
-  display: block;
-  background-color: transparent;
-  border: 0;
-  border-top: 1px solid var(--color-rule);
-  border-radius: 0;
-  padding: 0.9rem 0 0;
-  margin-top: 0;
-  box-shadow: none;
-}
-/* A box of numbered steps is the one thing on the page a student must act on,
-   so it gets the track rule rather than a hairline above it. */
-.lesson-prose .step-box:has(.step-number) {
-  border-top: 0;
-  border-left: 3px solid var(--track);
-  padding: 0.15rem 0 0.15rem 1.1rem;
-}
-.lesson-prose .step-box.flex {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.85rem;
-}
-.lesson-prose .step-box > p { margin-top: 0.5rem; }
-.lesson-prose .step-box > p:first-child { margin-top: 0; }
-
-.lesson-prose .step-number {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 1.6rem;
-  height: 1.6rem;
-  margin-right: 0.5rem;
-  vertical-align: -0.3em;
-  border-radius: 999px;
-  background-color: var(--track);
-  color: var(--track-ink);
-  font-family: var(--font-sans);
-  font-size: 0.8rem;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.lesson-prose .image-block { margin-block: 1.5rem; }
-/* Captions are <p>. Centred, a caption's midpoint lands wherever its own
-   (possibly narrower) line wraps to, while its figure — a block image with
-   no auto margin — is centred on its own, much wider box: the two visually
-   disagree unless the caption happens to fill the same width as the figure.
-   Left-aligning binds the caption to the one edge the image actually has, so
-   they agree at any figure width regardless of how wide the caption's own
-   text measure is. Beats the .text-center some captions carry: this block
-   is unlayered. */
-.lesson-prose .image-caption {
-  font-size: 0.875rem;
-  color: var(--color-ink-meta);
-  text-align: left;
-  font-style: normal;
-  margin-top: 0.6rem;
-}
-
-.lesson-prose .tutorial-title {
-  font-family: var(--font-serif);
-  font-size: 1.9rem;
-  font-weight: 500;
-  color: var(--color-ink);
-  letter-spacing: -0.015em;
-}
-.lesson-prose .tutorial-text { color: var(--color-ink); }
-
-/* Legacy quiz markup rendered inside prose */
-.lesson-prose .quiz-container {
-  border: 1px solid var(--color-rule);
-  border-radius: var(--radius-md);
-  padding: 1.25rem;
-  background-color: var(--color-card);
-}
-.lesson-prose .quiz-question,
-.lesson-prose .question { font-weight: 600; color: var(--color-ink); }
-.lesson-prose .quiz-options { list-style: none; padding-left: 0; }
-.lesson-prose .quiz-option {
-  border: 1px solid var(--color-rule);
-  border-radius: var(--radius-sm);
-  padding: 0.6rem 0.8rem;
-  background-color: var(--color-paper);
-}
-.lesson-prose .quiz-feedback,
-.lesson-prose .hint { font-size: 0.9375rem; color: var(--color-ink-meta); }
-
-.lesson-prose .demo-button,
-.lesson-prose .button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  background-color: var(--color-brand);
-  color: #FFFFFF;
-  border: 0;
-  border-radius: var(--radius-sm);
-  padding: 0.55rem 1rem;
-  font-family: var(--font-sans);
-  font-size: 0.9375rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-/* The lesson HTML asks for drop shadows and heavy borders in a few places.
-   The site does not use them. */
-.lesson-prose .shadow-md,
-.lesson-prose .shadow-lg,
-.lesson-prose .shadow { box-shadow: none; }
-.lesson-prose .border-b-2 { border-bottom-width: 1px; }
-
-/* Legacy classes that reach the page from the lesson data and would otherwise
-   render unstyled or off-palette. Each of these appears in src/data/lessons/**. */
-
-/* Fixed-width YouTube and Scratch embeds in the Scratch 2 lessons carry
-   width="485"/"560" attributes and would push the column sideways. */
-.lesson-prose iframe,
-.lesson-prose video,
-.lesson-prose canvas,
-.lesson-prose embed {
-  display: block;
-  max-width: 100%;
-  border: 1px solid var(--color-rule);
-  border-radius: var(--radius-md);
-}
-.lesson-prose iframe { aspect-ratio: 16 / 9; height: auto; width: 100%; }
-.lesson-prose iframe[src*="scratch.mit.edu"] { aspect-ratio: 485 / 402; }
-
-/* The lesson HTML predates this palette and asks for colors that no longer
-   exist (bg-primary, bg-secondary) or that belong to a different one
-   (orange callouts). Without these the buttons render as white-on-white. */
-.lesson-prose .bg-primary { background-color: var(--color-brand); }
-.lesson-prose .bg-secondary { background-color: var(--color-ink-muted); }
-.lesson-prose .bg-orange-50 { background-color: var(--color-accent-tint); }
-.lesson-prose .border-orange-500,
-.lesson-prose .border-orange-400 { border-color: var(--color-accent); }
-.lesson-prose .text-orange-600,
-.lesson-prose .text-orange-700 { color: var(--color-accent); }
-.lesson-prose .bg-green-50 { background-color: var(--color-success-tint); }
-.lesson-prose .border-green-500 { border-color: var(--color-success); }
-.lesson-prose .text-green-600,
-.lesson-prose .text-green-700 { color: var(--color-success); }
-.lesson-prose .bg-red-50 { background-color: var(--color-danger-tint); }
-.lesson-prose .text-red-600,
-.lesson-prose .text-red-700 { color: var(--color-danger); }
-.lesson-prose .bg-yellow-50 { background-color: var(--color-paper-sunk); }
-.lesson-prose .border-yellow-400 { border-color: var(--color-sand); }
-
-/* The interactive demos were driven by inline handlers that were deleted with
-   the rest of the dead JavaScript — the functions they called never existed in
-   this app. Showing a button that cannot respond is worse than showing none. */
-.lesson-prose .interactive-demo,
-.lesson-prose .demo-controls,
-.lesson-prose .demo-button,
-.lesson-prose canvas[id] {
-  display: none;
-}
+.lesson-prose .example-box > :first-child { margin-top: 0; }

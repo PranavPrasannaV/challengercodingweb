@@ -1,0 +1,85 @@
+name: Deploy frontend to GitHub Pages
+
+# challengercoding.org is app/frontend exported to static files
+# (next.config.ts sets output: "export") and served by GitHub Pages.
+#
+# Lesson pages are built from the lesson API, not from files in this repo, so
+# a content edit made through the API only reaches the site on the next build.
+# The daily schedule bounds that delay; run the workflow by hand to publish
+# sooner.
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "app/frontend/**"
+      - ".github/workflows/frontend_deploy.yml"
+  schedule:
+    - cron: "17 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app/frontend
+    env:
+      # Not a secret: the browser calls this same URL to run student code, so
+      # it ships in the site's JavaScript either way.
+      NEXT_PUBLIC_EXECUTION_API_URL: https://fvnek7yuo2.execute-api.us-east-1.amazonaws.com
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: app/frontend/.nvmrc
+          cache: npm
+          cache-dependency-path: app/frontend/package-lock.json
+
+      - run: npm ci
+
+      # Also runs the postbuild step, which writes llms.txt and llms-full.txt
+      # into out/.
+      - run: npm run build
+
+      # A lesson the API failed to return still exports — as a "not found"
+      # page — and drops out of the sitemap and llms.txt. Keep the live site
+      # rather than publish a build with lessons missing.
+      - name: Check every lesson made it into the export
+        working-directory: app/frontend/out
+        run: |
+          exported=$(find lessons -name index.html | wc -l)
+          broken=$(grep -lE '<title>(Page|Lesson) not found' lessons/*/*/index.html | wc -l || true)
+          in_sitemap=$(grep -o '/lessons/[^<]*</loc>' sitemap.xml | wc -l)
+          in_llms=$(grep -c '/lessons/' llms.txt || true)
+          echo "lesson pages: $exported (not found: $broken), sitemap: $in_sitemap, llms.txt: $in_llms"
+          if [ "$exported" -eq 0 ] || [ "$broken" -ne 0 ] || [ "$exported" -ne "$in_sitemap" ] || [ "$exported" -ne "$in_llms" ]; then
+            echo "::error::Lesson content is missing from the export — the lesson API was unreachable or throttled during the build."
+            exit 1
+          fi
+          test -s llms-full.txt && test -f 404.html && test -f robots.txt
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: app/frontend/out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v5
+        id: deployment

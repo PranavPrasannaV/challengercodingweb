@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { courses } from "@/src/data/courses";
-import { ENROLL_URL } from "@/src/config";
+import { SITE } from "@/src/site";
 import { fetchLessonSteps } from "@/src/lib/lessons";
 import GrainOverlay from "./components/GrainOverlay";
 import HeroBackground from "./components/home/HeroBackground";
@@ -118,7 +118,7 @@ export default async function Home() {
                 />
               </div>
               <p className="mt-4 font-sans text-sm font-semibold text-home-ink">Jaden Tang</p>
-              <p className="mt-0.5 font-sans text-sm text-home-ink-soft">Founder</p>
+              <p className="mt-0.5 font-sans text-sm text-home-ink-soft">Co-founder</p>
               <p className="mt-1 font-mono text-sm text-home-ink-soft">CS @ Georgia Tech</p>
               <a
                 href="https://jadentang.xyz"
@@ -219,7 +219,7 @@ export default async function Home() {
           </p>
           <div className="mt-8 flex flex-col items-center gap-4">
             <MotionCta
-              href={ENROLL_URL}
+              href={SITE.enrollUrl}
               external
               className="inline-flex items-center justify-center gap-2 rounded-md bg-white px-6 py-3.5 font-sans font-semibold text-home-teal-deep transition-colors hover:bg-white/90"
             >

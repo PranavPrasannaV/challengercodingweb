@@ -197,11 +197,6 @@ export const lessonConcept = (lesson: LessonSummary) =>
 
 export const totalLessons = courses.reduce((n, c) => n + c.lessons.length, 0);
 
-export const totalNotes = courses.reduce(
-    (n, c) => n + c.lessons.filter((l) => l.notesLink).length,
-    0,
-);
-
 /** "6–8" — the honest range, rather than a single number that is wrong for four courses. */
 export const weekRange = (() => {
     const all = courses.map(weeksIn);

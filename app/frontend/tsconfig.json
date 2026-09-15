@@ -1,5 +1,4 @@
 {
-  // Trigger TS Server refresh
   "compilerOptions": {
     "target": "ES2017",
     "lib": [

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowUpRight, Play } from "lucide-react";
 import gsap from "gsap";
 import { submitRun, pollRun } from "@/src/lib/executionApi";
-import { ENROLL_URL } from "@/src/config";
+import { SITE } from "@/src/site";
 import { getCourse } from "@/src/data/courses";
 import CourseCard from "@/app/components/CourseCard";
 import { SyllabusList, ResumeButton } from "@/app/tutorials/[courseId]/CourseProgress";
@@ -13,7 +13,7 @@ import Blocks from "@/app/components/lesson-blocks";
 import type { LessonContentBlock } from "@/src/data/lessons/blocks";
 import { SCENES, CODA, STARTER_CODE, CANNED_OUTPUT_LINES, type SceneConfig } from "./scenes";
 import { STAGE_W, STAGE_H, STAGE_MAX_W, satellitesFor, entranceOrder, entranceAt, type SatelliteId, type SceneId } from "./stage";
-import { setPanelHidden, setPanelShown, startAmbient, buildPanelEntrance, ENTRANCE_DUR } from "./panelMotion";
+import { setPanelHidden, setPanelShown, buildPanelEntrance, ENTRANCE_DUR } from "./panelMotion";
 import Panel from "./Panel";
 import Cutout from "./Cutout";
 import EditorChrome from "./EditorChrome";
@@ -110,7 +110,6 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
   const focusOnLiveRef = useRef(false);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
   const driftTweenRef = useRef<gsap.core.Tween | null>(null);
-  const ambientRef = useRef<gsap.core.Tween[]>([]);
 
   // Keep the design canvas scaled to the stage's real width — the whole
   // composition resizes as one unit, never a per-panel reflow.
@@ -185,11 +184,7 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
 
     // Stage-level idle drift — one shared, slow motion on the drift wrapper.
     // Panels themselves stay flat and straight: no per-panel oscillation and
-    // no depth parallax rotation (see startAmbient, now a no-op).
-    ambientRef.current = (Object.keys(panels) as SatelliteId[])
-      .map((id) => startAmbient(panels[id]!, id))
-      .filter((t): t is gsap.core.Tween => t !== null);
-
+    // no depth parallax rotation.
     gsap.set(drift, { rotationX: -1, rotationY: -0.5, z: 0 });
     driftTweenRef.current = gsap.to(drift, {
       rotationX: "+=2",
@@ -392,7 +387,6 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
     return () => {
       tl.kill();
       driftTweenRef.current?.kill();
-      ambientRef.current.forEach((t) => t.kill());
     };
   }, []);
 
@@ -631,7 +625,7 @@ export default function HeroDemo({ javaBlocks }: { javaBlocks: LessonContentBloc
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <a
-            href={ENROLL_URL}
+            href={SITE.enrollUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="pointer-events-auto inline-flex items-center justify-center gap-2 rounded-md bg-home-teal px-6 py-3.5 font-sans text-base font-semibold text-white transition-colors hover:bg-home-teal-deep"

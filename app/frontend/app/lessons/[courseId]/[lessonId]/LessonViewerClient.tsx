@@ -144,7 +144,6 @@ export default function LessonViewerClient({
                         <ExercisePanel
                             key={i}
                             exercise={exercise}
-                            total={exercises.length}
                             active={i === current}
                             language={languageFor(course.id)}
                         />
@@ -226,12 +225,10 @@ export default function LessonViewerClient({
 
 function ExercisePanel({
     exercise,
-    total,
     active,
     language,
 }: {
     exercise: Exercise;
-    total: number;
     active: boolean;
     language: string;
 }) {

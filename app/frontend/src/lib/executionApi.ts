@@ -1,9 +1,9 @@
 /**
  * Client for the code-app/backend API (lessons, exercises, and code
- * runs). Lesson reads happen server-side (see src/lib/lessons.ts, called
- * from Server Components) with Next's fetch cache providing ISR-style
- * revalidation; run submission/polling stays client-side since it's
- * inherently per-visitor, interactive state.
+ * runs). Lesson reads happen at build time (see src/lib/lessons.ts, called
+ * from Server Components while the site is exported to static files); run
+ * submission/polling stays client-side since it's inherently per-visitor,
+ * interactive state.
  *
  * Unset NEXT_PUBLIC_EXECUTION_API_URL means "no engine configured yet": every
  * export here returns null/throws in a way callers are expected to treat as
@@ -103,26 +103,62 @@ function requireApiUrl(): string {
     return EXECUTION_API_URL;
 }
 
+/** A throttled (429) or failing (5xx) response is worth another try; any
+ *  other status is the real answer. */
+const isTransient = (status: number) => status === 429 || status >= 500;
+
+const backoff = (attempt: number) =>
+    new Promise((resolve) => setTimeout(resolve, 500 * 2 ** attempt * (0.5 + Math.random())));
+
 /** `revalidate` is a Next.js-only fetch extension — ignored by browsers, so
- *  the same helper works for the client-side run calls below. */
-async function apiFetch<T>(path: string, init?: RequestInit & { next?: { revalidate?: number } }): Promise<T> {
-    const res = await fetch(`${requireApiUrl()}${path}`, {
-        ...init,
-        headers: { 'Content-Type': 'application/json', ...init?.headers },
-    });
-    if (!res.ok) {
+ *  the same helper works for the client-side run calls below. `retries`
+ *  re-sends a dropped or transiently failed request, with jittered backoff. */
+async function apiFetch<T>(
+    path: string,
+    { retries = 0, ...init }: RequestInit & { next?: { revalidate?: number }; retries?: number } = {},
+): Promise<T> {
+    const url = `${requireApiUrl()}${path}`;
+    for (let attempt = 0; ; attempt++) {
+        const lastAttempt = attempt >= retries;
+        let res: Response;
+        try {
+            res = await fetch(url, {
+                ...init,
+                // A signal opts a retry out of Next's per-render fetch dedupe,
+                // which would otherwise replay the response that just failed.
+                ...(attempt > 0 ? { signal: AbortSignal.timeout(20_000) } : {}),
+                headers: { 'Content-Type': 'application/json', ...init.headers },
+            });
+        } catch (err) {
+            if (lastAttempt) throw err;
+            await backoff(attempt);
+            continue;
+        }
+        if (res.ok) return res.json() as Promise<T>;
+        if (!lastAttempt && isTransient(res.status)) {
+            await backoff(attempt);
+            continue;
+        }
         const body = await res.text().catch(() => '');
-        throw new Error(`${init?.method ?? 'GET'} ${path} -> ${res.status}: ${body}`);
+        throw new Error(`${init.method ?? 'GET'} ${path} -> ${res.status}: ${body}`);
     }
-    return res.json() as Promise<T>;
 }
 
-export const listLessons = () => apiFetch<LessonSummary[]>('/lessons', { next: { revalidate: 300 } });
+// Lesson reads happen at build time, dozens of pages at once, against an API
+// whose AWS account allows 10 concurrent Lambda executions in total. A burst
+// gets throttled (503), so these retry rather than export a lesson as a 404.
+const LESSON_READ_RETRIES = 5;
 
-/** Lesson content changes rarely — five minutes of staleness is an easy
- *  trade for not hitting Postgres on every page view. */
+export const listLessons = () =>
+    apiFetch<LessonSummary[]>('/lessons', { next: { revalidate: 300 }, retries: LESSON_READ_RETRIES });
+
+/** Five minutes in Next's fetch cache, so every page of a build that reads
+ *  the same lesson shares one request. */
 export const getLesson = (slug: string) =>
-    apiFetch<Lesson>(`/lessons/${encodeURIComponent(slug)}`, { next: { revalidate: 300 } });
+    apiFetch<Lesson>(`/lessons/${encodeURIComponent(slug)}`, {
+        next: { revalidate: 300 },
+        retries: LESSON_READ_RETRIES,
+    });
 
 export const submitRun = (body: {
     language: string;

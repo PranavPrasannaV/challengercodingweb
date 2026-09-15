@@ -5,7 +5,7 @@
  * drift from the curriculum by the end of the next term. The prose at the top
  * of llms.txt is written by hand and lives here so it stays that way.
  *
- * Run with: node --experimental-strip-types scripts/emit-llms.ts
+ * Runs as npm's postbuild hook, so `npm run build` produces it.
  */
 import { writeFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -28,7 +28,7 @@ import { SITE, STATS } from '../src/site.ts';
 // through Next's dev/build server, so .env.local isn't loaded automatically
 // the way it is for `next build` itself — read it directly before anything
 // that needs NEXT_PUBLIC_EXECUTION_API_URL (src/lib/lessons.ts) is imported.
-// On Vercel the var is already in the environment and this is a no-op.
+// In CI the var is already in the environment and this is a no-op.
 try {
     const envFile = join(import.meta.dirname, '../.env.local');
     if (existsSync(envFile)) {
@@ -57,7 +57,7 @@ for (const course of courses) {
     }
 }
 
-const OUT = join(process.cwd(), 'public');
+const OUT = join(process.cwd(), 'out');
 const notesMap: Record<string, Record<string, { title: string; description: string }[]>> = {
     python: pythonNotes as never,
     java: javaNotes as never,

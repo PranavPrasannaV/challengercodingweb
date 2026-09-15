@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
 import Logo from './Logo';
-import { ENROLL_URL } from '@/src/config';
+import { SITE } from '@/src/site';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -154,7 +154,7 @@ export default function Navbar() {
 
             <div className="flex items-center">
               <Link
-                href={ENROLL_URL}
+                href={SITE.enrollUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`btn hidden md:inline-flex text-small py-2.5 px-5 ${
@@ -234,7 +234,7 @@ export default function Navbar() {
 
         <div className="mt-auto px-6 pb-8">
           <Link
-            href={ENROLL_URL}
+            href={SITE.enrollUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="btn w-full bg-home-teal text-white hover:bg-home-teal-deep"

@@ -1,4 +1,4 @@
-import type { SubLesson, QuizQuestion } from './types';
+import type { SubLesson } from './types';
 
 export const pythonNotes: Record<string, SubLesson[]> = {
     '1': [
