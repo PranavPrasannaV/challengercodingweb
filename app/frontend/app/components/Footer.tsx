@@ -9,8 +9,8 @@ export default function Footer() {
       <div className="wrap section-sm">
         <div className="grid gap-12 md:grid-cols-12">
           <div className="md:col-span-4 space-y-4">
-            <div className="[&_span]:text-paper">
-              <Logo as="text" />
+            <div>
+              <Logo as="text" light mark />
             </div>
             <p className="text-small text-paper/70 measure-tight">
               Free Scratch, Python and Java classes for K&#8211;12 students, taught by
