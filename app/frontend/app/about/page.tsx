@@ -7,7 +7,7 @@ import { SITE, STATS } from '@/src/site';
 export const metadata: Metadata = {
     title: 'About',
     description:
-        'Challenger Coding was started in the summer of 2023 by Jaden Tang in Sammamish, Washington. It is still planned, written and taught by students.',
+        'Challenger Coding was started in the summer of 2023 by Jaden Tang and Aadi Saraf in Sammamish, Washington. It is still planned, written and taught by students.',
     alternates: { canonical: '/about/' },
 };
 
