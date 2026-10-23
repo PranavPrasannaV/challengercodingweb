@@ -61,5 +61,5 @@ export const STATS = {
   exercises: 300,
   schools: "10+",
   dailyActiveUsers: "200+",
-  retentionRate: ">80%",
+  retentionRate: ">90%",
 } as const;
