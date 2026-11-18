@@ -56,7 +56,7 @@ export const STATS = {
   lessons: 46,
   lessonsWithNotes: 14,
   languages: 3,
-  studentsTaught: "3,000+",
+  studentsTaught: "4,000+",
   hoursOfContent: "50+",
   exercises: 300,
   schools: "10+",
