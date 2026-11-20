@@ -23,11 +23,18 @@ const facts = [
     { term: 'Run by', detail: 'Four students, named below' },
 ];
 
-const leadership = [
+const leadership: {
+    name: string;
+    role: string;
+    initials: string;
+    photo?: string;
+    desc: string;
+}[] = [
     {
         name: 'Aadi Saraf',
         role: 'Co-founder and President',
         initials: 'AS',
+        photo: '/aadi-headshot.jpg',
         desc: "Leads Challenger Coding's curriculum, strategic expansion, and partnerships, helping grow our impact while maintaining a high-quality learning experience.",
     },
     {
@@ -138,11 +145,14 @@ export default function About() {
                         </div>
 
                         <div className="mt-8 flex items-center gap-3 border-t border-home-rule pt-6">
-                            <span
-                                aria-hidden="true"
-                                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-home-rule bg-home-teal-tint font-sans font-semibold text-home-teal"
-                            >
-                                AS
+                            <span className="relative h-10 w-10 shrink-0 overflow-hidden rounded-md border border-home-rule bg-home-teal-tint">
+                                <Image
+                                    src="/aadi-headshot.jpg"
+                                    alt=""
+                                    fill
+                                    className="object-cover object-center"
+                                    sizes="2.5rem"
+                                />
                             </span>
                             <span>
                                 <span className="block text-sm text-home-ink-soft">
@@ -166,12 +176,24 @@ export default function About() {
                                 key={person.name}
                                 className="flex gap-5 border-b border-home-rule py-6"
                             >
-                                <span
-                                    aria-hidden="true"
-                                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-home-rule bg-white font-sans font-semibold text-home-teal"
-                                >
-                                    {person.initials}
-                                </span>
+                                {person.photo ? (
+                                    <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md border border-home-rule bg-white">
+                                        <Image
+                                            src={person.photo}
+                                            alt=""
+                                            fill
+                                            className="object-cover object-center"
+                                            sizes="4rem"
+                                        />
+                                    </span>
+                                ) : (
+                                    <span
+                                        aria-hidden="true"
+                                        className="flex h-16 w-16 shrink-0 items-center justify-center rounded-md border border-home-rule bg-white font-sans text-lg font-semibold text-home-teal"
+                                    >
+                                        {person.initials}
+                                    </span>
+                                )}
                                 <div className="min-w-0">
                                     <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
                                         <h3 className="font-sans text-lg font-semibold text-home-ink">

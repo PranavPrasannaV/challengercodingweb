@@ -59,7 +59,7 @@ export const STATS = {
   studentsTaught: "4,000+",
   hoursOfContent: "50+",
   exercises: 300,
-  schools: "10+",
+  schools: "50+",
   dailyActiveUsers: "200+",
   retentionRate: ">90%",
 } as const;
